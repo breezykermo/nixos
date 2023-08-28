@@ -7,8 +7,12 @@
 
 		withPython3 = true;
 		withNodeJs = true;
+
 		extraPackages = [];
-		extraConfig = lib.fileContents ./init.lua;
+		plugins = [
+			vimPlugins.nvim-treesitter.withAllGrammars
+		];
+		extraConfig = lib.fileContents ./init.vim;
  	};
 
 	home.packages = with pkgs; [

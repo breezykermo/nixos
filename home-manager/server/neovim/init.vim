@@ -1,7 +1,6 @@
 " ----------------------------------------- "
 " Settings
 " ----------------------------------------- "
-
 set nocompatible              " be iMproved, required
 filetype off                  " required
 filetype plugin indent on     " required
@@ -533,6 +532,59 @@ set shortmess+=c
 " =================== Lua ========================
 "
 lua << END
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
+require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
+  use({
+    'rose-pine/neovim',
+    as = 'rose-pine',
+  })
+  use "rebelot/kanagawa.nvim"
+	use "neovim/nvim-lspconfig"
+	use "hrsh7th/nvim-cmp"
+	use "hrsh7th/cmp-nvim-lsp"
+	use "hrsh7th/cmp-path"
+	use "hrsh7th/cmp-buffer"
+	use "ray-x/lsp_signature.nvim"
+	use	"nvim-tree-sitter/nvim-treesitter"
+	use "kien/ctrlp.vim"
+	use "junegunn/fzf.vim"
+	use "preservim/nerdtree"
+	use "ryanoasis/vim-devicons"
+	use "tpope/vim-fugitive"
+	use "ludovicchabant/vim-gutentags"
+	use "Yggdroot/indentLine"
+	use "Raimondi/delimitMate"
+	use "tomtom/tcomment_vim"
+	use "ntpeters/vim-better-whitespace"
+	use "mg979/vim-visual-multi"
+
+	use "rust-lang/rust.vim"
+	use "simrat39/rust-tools.nvim"
+	use "godlygeek/tabular"
+
+
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
+end)
+
+
 -- DEPENDENCIES
 -- -----------------------------------------------------------
 local cmp = require'cmp'
@@ -682,34 +734,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
-
-local packer_bootstrap = ensure_packer()
-
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-  use({
-    'rose-pine/neovim',
-    as = 'rose-pine',
-  })
-  use "rebelot/kanagawa.nvim"
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
-
 local rp = require("rose-pine")
 rp.setup({
 	--- @usage 'main' | 'moon'
@@ -771,36 +795,4 @@ require('kanagawa').setup({
     theme = "default"           -- Load "default" theme or the experimental "light" theme
 })
 
--- local doomo = require("doom-one")
--- doomo.setup({
---   -- Add color to cursor
---   vim.g.doom_one_cursor_coloring = false
---   -- Set :terminal colors
---   vim.g.doom_one_terminal_colors = true
---   -- Enable italic comments
---   vim.g.doom_one_italic_comments = false
---   -- Enable TS support
---   vim.g.doom_one_enable_treesitter = true
---   -- Color whole diagnostic text or only underline
---   vim.g.doom_one_diagnostics_text_color = false
---   -- Enable transparent background
---   vim.g.doom_one_transparent_background = false
---
---   -- Pumblend transparency
---   vim.g.doom_one_pumblend_enable = false
---   vim.g.doom_one_pumblend_transparency = 20
---
---   -- Plugins integration
---   vim.g.doom_one_plugin_neorg = true
---   vim.g.doom_one_plugin_barbar = false
---   vim.g.doom_one_plugin_telescope = false
---   vim.g.doom_one_plugin_neogit = true
---   vim.g.doom_one_plugin_nvim_tree = true
---   vim.g.doom_one_plugin_dashboard = true
---   vim.g.doom_one_plugin_startify = true
---   vim.g.doom_one_plugin_whichkey = true
---   vim.g.doom_one_plugin_indent_blankline = true
---   vim.g.doom_one_plugin_vim_illuminate = true
---   vim.g.doom_one_plugin_lspsaga = false
--- })
 END
