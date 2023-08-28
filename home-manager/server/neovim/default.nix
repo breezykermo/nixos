@@ -8,6 +8,7 @@
 		withPython3 = true;
 		withNodeJs = true;
 		extraPackages = [];
+		extraConfig = lib.fileContents ./init.vim
  	};
 
 	home.packages = with pkgs; [
@@ -15,7 +16,7 @@
 		cmake
 		cmake-language-server
 		gcc
-		llvmPackages.clang-unwrapper
+		llvmPackages.clang-unwrapped
 		gdb
 
 		#-- python 
