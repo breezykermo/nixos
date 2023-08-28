@@ -1,4 +1,4 @@
-{ pkgs, lib, ...}: 
+{ pkgs, lib, ...}:
 let
   pluginGit = ref: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "${lib.strings.sanitizeDerivationName repo}";
@@ -23,6 +23,7 @@ with pkgs;
 		extraPackages = [];
 		plugins = [
 			vimPlugins.packer-nvim
+      vimPlugin.nvim-treesitter
 		];
 		extraConfig = lib.fileContents ./init.vim;
  	};
@@ -35,31 +36,31 @@ with pkgs;
 		llvmPackages.clang-unwrapped
 		gdb
 
-		#-- python 
+		#-- python
 		nodePackages.pyright # python language server
 		python311Packages.black # formatter
-		
-		#-- python 
+
+		#-- python
 		rust-analyzer
 		cargo
 		rustfmt
 
-		#-- nix 
+		#-- nix
 		nil
 		rnix-lsp
 		statix
 		deadnix
-		
-		#-- golang 
+
+		#-- golang
 		go
 		gotools
 		gopls # go language server
 
-		#-- bash 
+		#-- bash
 		nodePackages.bash-language-server
 		shellcheck
 
-		#-- misc 
+		#-- misc
 		tree-sitter
 	];
 }

@@ -545,7 +545,7 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-require('packer-nvim').startup(function(use)
+require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use({
     'rose-pine/neovim',
@@ -558,7 +558,6 @@ require('packer-nvim').startup(function(use)
 	use "hrsh7th/cmp-path"
 	use "hrsh7th/cmp-buffer"
 	use "ray-x/lsp_signature.nvim"
-	use	"nvim-tree-sitter/nvim-treesitter"
 	use "kien/ctrlp.vim"
 	use "junegunn/fzf.vim"
 	use "preservim/nerdtree"
