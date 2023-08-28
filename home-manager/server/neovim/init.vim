@@ -688,12 +688,12 @@ rt.setup({
   },
 })
 
-local parser_install_dir = vim.fn.stdpath("cache") .. "/treesitters"
+local parser_install_dir = vim.fn.stdpath("data") .. "/treesitters"
 vim.fn.mkdir(parser_install_dir, "p")
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "c", "go", "javascript", "json", "vim", "lua" },
+  ensure_installed = { "c", "go", "javascript", "json", "vim" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,

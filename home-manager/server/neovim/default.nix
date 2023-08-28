@@ -1,15 +1,4 @@
 { pkgs, lib, ...}:
-let
-  pluginGit = ref: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "${lib.strings.sanitizeDerivationName repo}";
-    version = ref;
-    src = builtins.fetchGit {
-      url = "https://github.com/${repo}.git";
-      ref = ref;
-    };
-  };
-in
-with pkgs;
 {
 	programs.neovim = {
 		enable = true;
