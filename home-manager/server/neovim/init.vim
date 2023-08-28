@@ -545,7 +545,7 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-require('packer').startup(function(use)
+require('packer-nvim').startup(function(use)
   use 'wbthomason/packer.nvim'
   use({
     'rose-pine/neovim',
