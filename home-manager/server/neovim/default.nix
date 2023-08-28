@@ -23,7 +23,7 @@ with pkgs;
 		extraPackages = [];
 		plugins = [
 			vimPlugins.packer-nvim
-      vimPlugin.nvim-treesitter
+      vimPlugins.nvim-treesitter
 		];
 		extraConfig = lib.fileContents ./init.vim;
  	};
@@ -62,5 +62,6 @@ with pkgs;
 
 		#-- misc
 		tree-sitter
+    universal-ctags
 	];
 }
