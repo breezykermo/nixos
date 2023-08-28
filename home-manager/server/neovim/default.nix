@@ -61,7 +61,6 @@ with pkgs;
 		shellcheck
 
 		#-- misc
-		tree-sitter
     universal-ctags
 	];
 }
