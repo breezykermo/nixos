@@ -2,9 +2,6 @@
   config,
   lib,
   pkgs,
-
-  userfullname,
-  useremail,
   ...
 }: {
   # `programs.git` will generate the config file: ~/.config/git/config
@@ -25,8 +22,8 @@
     enable = true;
     lfs.enable = true;
 
-    userName = userfullname;
-    userEmail = useremail;
+    userName = "Lachlan Kermode";
+    userEmail = "lachlankermode@live.com";
 
     extraConfig = {
       init.defaultBranch = "main";

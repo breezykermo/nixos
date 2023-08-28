@@ -7,5 +7,7 @@
     ./core.nix
     ./git.nix
     ./bat.nix
+
+    ./neovim
   ];
 }
