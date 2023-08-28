@@ -594,8 +594,6 @@ lspconfig.pyright.setup{}
 lspconfig.vuels.setup{}
 -- TYPESCRIPT
 lspconfig.tsserver.setup{}
--- LEAP
-require('leap').add_default_mappings()
 -- GOLANG
 require'lspconfig'.gopls.setup{}
 -- TERRAFORM
