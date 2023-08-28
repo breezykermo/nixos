@@ -1,4 +1,4 @@
-{ pkgs, ...}: {
+{ pkgs, lib, ...}: {
 	programs.neovim = {
 		enable = true;
 		defaultEditor = true;
@@ -8,7 +8,7 @@
 		withPython3 = true;
 		withNodeJs = true;
 		extraPackages = [];
-		extraConfig = lib.fileContents ./init.vim
+		extraConfig = lib.fileContents ./init.lua;
  	};
 
 	home.packages = with pkgs; [
