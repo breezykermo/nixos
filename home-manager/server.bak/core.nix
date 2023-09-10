@@ -35,9 +35,15 @@
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processer https://github.com/mikefarah/yq
 
+    # misc
+    # tldr
+    # cowsay
     file
     which
     tree
+    # gnutar
+    # zstd
+    # caddy
     gnupg
 
     # nix related
@@ -46,87 +52,16 @@
     # with more details log output
     nix-output-monitor
     nodePackages.node2nix
-
-    # Automatically trims your branches whose tracking remote refs are merged or gone
-    # It's really useful when you work on a project for a long time.
-    git-trim
   ];
 
-  home.shellAliases = {
-    # Enable colors
-    diff = "diff --color=auto";
-    grep = "grep --color=auto";
-    ip = "ip -color=auto";
-
-    # Shortcuts
-    l = "exa --long --all --group --git --group-directories-first";
-    e = "$EDITOR";
-    g = "lazygit";
-  };
-
   programs = {
-    # cd but better
-    zoxide.enable = true;
-
-    # ls but better
+    # A modern replacement for ‘ls’
+    # useful in bash/zsh prompt, not in nushell.
     exa = {
       enable = true;
       enableAliases = true;
       git = true;
       icons = true;
-    };
-
-    # cat but better
-    bat = {
-      enable = true;
-      config = {
-        theme = "gruvbox-dark";
-        pager = "less -FR";
-      };
-    };
-
-    git = {
-      enable = true;
-      userName = "Lachlan Kermode";
-      userEmail = "lachlankermode@live.com";
-
-      lfs.enable = true;
-      extraConfig = {
-        init.defaultBranch = "main";
-        push.autoSetupRemote = true;
-        pull.rebase = true;
-        core.editor = "$EDITOR";
-
-        # replace https with ssh
-        # url = {
-        #   "ssh://git@github.com/" = {
-        #     insteadOf = "https://github.com/";
-        #   };
-        #   "ssh://git@gitlab.com/" = {
-        #     insteadOf = "https://gitlab.com/";
-        #   };
-        #   "ssh://git@bitbucket.com/" = {
-        #     insteadOf = "https://bitbucket.com/";
-        #   };
-        # };
-      };
-
-      # signing = {
-      #   key = "xxx";
-      #   signByDefault = true;
-      # };
-
-      # A syntax-highlighting pager in Rust(2019 ~ Now)
-      delta = {
-        enable = true;
-        options = {
-          diff-so-fancy = true;
-          line-numbers = true;
-          true-color = "always";
-          # features => named groups of settings, used to keep related settings organized
-          # features = "";
-        };
-      };
     };
 
     # A command-line fuzzy finder
@@ -156,11 +91,5 @@
       enable = true;
       enableBashIntegration = true;
     };
-
-    dircolors = {
-      enable = true;
-    };
-
-    command-not-found.enable = false;
   };
 }

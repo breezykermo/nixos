@@ -2,12 +2,12 @@
   config,
   pkgs,
   ...
-}: let plugins =
-    pkgs.tmuxPlugins;
+}: let
+  plugins = pkgs.tmuxPlugins // pkgs.callPackage ./custom-plugins.nix {};
 in {
   programs.tmux = {
     enable = true;
-    # shell = "$SHELL";
+    shell = "${pkgs.nushell}/bin/nu";
 
     # Resize the window to the size of the smallest session for which it is the current window.
     #
@@ -25,6 +25,7 @@ in {
     terminal = "xterm-256color";
 
     plugins = with plugins; [
+      draculaTheme # theme
       {
         # https://github.com/tmux-plugins/tmux-continuum
         # Continuous saving of tmux environment. Automatic restore when tmux is started.

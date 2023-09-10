@@ -14,7 +14,7 @@
 			pkgs.vimPlugins.packer-nvim
       pkgs.vimPlugins.nvim-treesitter
 		];
-		extraConfig = builtins.readFile ./init.vim;
+		extraConfig = lib.fileContents ./init.vim;
  	};
 
 	home.packages = with pkgs; [

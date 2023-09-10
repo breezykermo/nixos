@@ -1,10 +1,16 @@
+" ----------------------------------------- "
+" Settings
+" ----------------------------------------- "
 set nocompatible              " be iMproved, required
 filetype off                  " required
 filetype plugin indent on     " required
 filetype plugin on
 syntax on
 set background=dark
+" hi Normal guibg=NONE ctermbg=NONE
+
 inoremap <C-k> <Esc>
+
 
 set noerrorbells                " No beeps
 set number                      " Show line numbers
@@ -22,9 +28,12 @@ set autowrite                   " Automatically save before :next, :make etc.
 set autoread                    " Automatically reread changed files without asking me anything
 set laststatus=2
 set hidden
+
 set ruler                       " Show the cursor position all the time
 au FocusLost * :wa              " Set vim to save the file on focus out.
+
 set fileformats=unix,dos,mac    " Prefer Unix over Windows over OS 9 formats
+
 set noshowmatch                 " Do not show matching brackets by flickering
 set noshowmode                  " We show the mode with airline or lightline
 set incsearch                   " Shows the match while typing
@@ -34,9 +43,11 @@ set smartcase                   " ... but not when search pattern contains upper
 set ttyfast
 set lazyredraw          	      " Wait to redraw "
 
+
 " speed up syntax highlighting
 set nocursorcolumn
 set nocursorline
+
 syntax sync minlines=256
 set synmaxcol=300
 set re=0
@@ -44,6 +55,10 @@ set re=0
 " do not hide markdown
 let g:vim_markdown_conceal = 0
 let g:markdown_folding = 1
+
+" open help vertically
+command! -nargs=* -complete=help Help vertical belowright help <args>
+autocmd FileType help wincmd L
 
 " Make Vim to handle long lines nicely.
 set wrap
@@ -129,10 +144,20 @@ if !exists(":DiffOrig")
 				\ | wincmd p | diffthis
 endif
 
+" Only do this part when compiled with support for autocommands.
 if has("autocmd")
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
     au!
+
+    " For all text files set 'textwidth' to 78 characters.
+    autocmd FileType text setlocal textwidth=78
 
     " When editing a file, always jump to the last known cursor position.
     " Don't do it when the position is invalid or when inside an event handler
@@ -153,6 +178,16 @@ endif " has("autocmd")
 " i.e: <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
+
+" This trigger takes advantage of the fact that the quickfix window can be
+" easily distinguished by its file-type, qf. The wincmd J command is
+" equivalent to the Ctrl+W, Shift+J shortcut telling Vim to move a window to
+" the very bottom (see :help :wincmd and :help ^WJ).
+autocmd FileType qf wincmd J
+
+" Dont show me any output when I build something
+" Because I am using quickfix for errors
+"nmap <leader>m :make<CR><enter>
 
 function! DeleteInactiveBufs()
   "From tabpagebuflist() help, get a list of all buffers in all tabs
@@ -218,6 +253,9 @@ autocmd BufEnter * silent! lcd %:p:h
 " trim all whitespaces away
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
+" Act like D and C
+" nnoremap Y y$
+
 " Do not show stupid q: window
 map q: :q
 
@@ -243,6 +281,8 @@ au BufNewFile,BufRead *.rs setlocal ts=4 sw=4
 " au BufNewFile,BufRead *.rs CocDisable
 au FileType nginx setlocal noet ts=4 sw=4 sts=4
 
+set rtp^="/home/lox/.opam/default/share/ocp-indent/vim"
+
 augroup filetypedetect
   au BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
   au BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
@@ -250,23 +290,48 @@ augroup filetypedetect
   au BufNewFile,BufRead .yml.tmpl setf yaml
 augroup END
 
+" Go settings
 au BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4
+
+" Markdown Settings
 autocmd BufNewFile,BufReadPost *.md setl ts=2 sw=4 sts=2 expandtab
+
+" Dockerfile settings
 autocmd FileType dockerfile set noexpandtab
+
+" shell/config/systemd settings
 autocmd FileType fstab,systemd set noexpandtab
 autocmd FileType itconfig,sh,toml set noexpandtab
+
+" python indent
 autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 smarttab expandtab
 autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
+" let g:python3_host_prog='/opt/miniconda3/bin/python'
+
+" toml settings
 au BufRead,BufNewFile MAINTAINERS set ft=toml
+
+" js syntax highlight full file
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
+" terraform settings
 autocmd BufWritePre *.tfvars lua vim.lsp.buf.format()
 autocmd BufWritePre *.tf lua vim.lsp.buf.format()
+
+" in makefiles, don't expand tabs to spaces, since actual tab characters are
+" needed, and have indentation at 8 chars to be sure that all indents are tabs
+" (despite the mappings later):
 autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
+
+" spell check for git commits
+" autocmd FileType gitcommit setlocal spell
 
 " Wildmenu completion {{{
 set wildmenu
+" set wildmode=list:longest
 set wildmode=list:full
+
 set wildignore+=.hg,.git,.svn                    " Version control
 set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
@@ -281,6 +346,10 @@ set wildignore+=go/bin                           " Go bin files
 set wildignore+=go/bin-vagrant                   " Go bin-vagrant files
 set wildignore+=*.pyc                            " Python byte code
 set wildignore+=*.orig                           " Merge resolution files
+
+" ----------------------------------------- "
+" Plugin configs 			    			"
+" ----------------------------------------- "
 
 " ==================== CtrlP ====================
 let g:ctrlp_cmd = 'CtrlP'
@@ -307,13 +376,15 @@ command! MyCtrlPTag call MyCtrlPTag()
 
 nmap <C-g> :MyCtrlPTag<cr>
 imap <C-g> <esc>:MyCtrlPTag<cr>
+
 nmap <C-b> :CtrlPCurWD<cr>
 imap <C-b> <esc>:CtrlPCurWD<cr>
 nnoremap <leader>. :CtrlPTag<cr>
 
-" ==================== Git blame ====================
+" ==================== Fugitive ====================
 nmap <leader>gb :Git blame<CR>
 
+" let g:gitgutter_git_executable="/usr/local/bin/git"
 " ==================== delimitMate ====================
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
@@ -321,7 +392,6 @@ let g:delimitMate_smart_quotes = 1
 let g:delimitMate_expand_inside_quotes = 0
 let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
 
-" Easily copy Github URL for the active file
 function CopyGithubURL(line1, line2)
   let cmd = "git remote get-url origin | sed -e 's/:/\\//' -e 's/git@/https:\\/\\//' -e 's/\\.git$//'"
   let projecturl = trim(system(cmd))
@@ -359,6 +429,12 @@ autocmd BufWritePre * if index(blacklist, &ft) < 0 | StripWhitespace
 
 " =================== vim-airline ========================
 let g:airline_theme='gruvbox'
+
+" set to use powerline fonts when not in a ssh session
+let g:remoteSession = ($STY == "")
+if !g:remoteSession
+  let g:airline_powerline_fonts=1
+endif
 
 " =================== rust.vim ========================
 let g:rustfmt_autosave = 1
@@ -426,7 +502,7 @@ let g:gutentags_ctags_exclude = [
     \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
     \ ]
 
-" =================== ack fuzzy searcher ========================
+" =================== ack ========================
 nnoremap <Leader>a :Rg!<CR>
 
 " =================== LSP Language Server ========================
@@ -436,17 +512,22 @@ hi LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
 
 " Code navigation shortcuts
 " as found in :help lsp
-" NOTE: should be covered by lua config
-" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+
+" Quick-fix
+nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+
 
 " =================== Lua ========================
 "
@@ -470,66 +551,30 @@ require('packer').startup(function(use)
     'rose-pine/neovim',
     as = 'rose-pine',
   })
-  use 'neovim/nvim-lspconfig'
-  use 'andymass/vim-matchup'
-  -- Speedup startup time
-  use 'nathom/filetype.nvim'
-  -- Completion framework (supports sources below)
-  use 'hrsh7th/nvim-cmp'
-  -- Completion from LSP
-  use 'hrsh7th/cmp-nvim-lsp'
-  -- Completion from the OS path
-  use 'hrsh7th/cmp-path'
-  -- Completion from VIM buffers
-  use 'hrsh7th/cmp-buffer'
-  -- Completion from vsnip (currently unused)
-  use 'hrsh7th/vim-vsnip'
-  use 'hrsh7th/cmp-vsnip'
-  -- Signatures in argument
-  use 'ray-x/lsp_signature.nvim'
-  -- use 'folke/trouble.nvim'
-  use 'kyazdani42/nvim-web-devicons'
-  -- Resotoring VIM buffers (with tmux-restore)
-  use 'tpope/vim-obsession'
-  -- Treesitter
-  use 'nvim-treesitter/nvim-treesitter'
-  -- Fuzzy file search
-  use 'kien/ctrlp.vim'
-  -- In file search
-  -- use 'mileszs/ack.vim'
-  use 'junegunn/fzf.vim'
-  -- Sidebar
-  use 'preservim/nerdtree'
-  use 'ryanoasis/vim-devicons'
-  -- Bottom bar
-  -- use 'vim-airline/vim-airline'
-  use 'vim-airline/vim-airline-themes'
-  -- Top bar
-  use 'ap/vim-buftabline'
-  -- Gblame
-  use 'tpope/vim-fugitive'
-  -- Code navigation
-  use 'ludovicchabant/vim-gutentags'
-  -- Dotted lines in indents
-  use 'Yggdroot/indentLine'
-  -- Auto-close parentheses etc
-  use 'Raimondi/delimitMate'
-  -- Comments
-  use 'tomtom/tcomment_vim'
-  -- No whitespace
-  use 'ntpeters/vim-better-whitespace'
-  -- Multi-cursor
-  use 'mg979/vim-visual-multi'
-  -- Webdev shortcuts
-  use 'mattn/emmet-vim'
-  -- Line up code effectively
-  use 'godlygeek/tabular'
-  -- General purpose motion plugin
-  use 'ggandor/leap.nvim'
-  -- Language highlighting
-  -- use 'rust-lang/rust.vim'
-  -- use 'preservim/vim-markdown'
-  -- use 'stephpy/vim-yaml'
+  use "rebelot/kanagawa.nvim"
+	use "neovim/nvim-lspconfig"
+	use "hrsh7th/nvim-cmp"
+	use "hrsh7th/cmp-nvim-lsp"
+	use "hrsh7th/cmp-path"
+	use "hrsh7th/cmp-buffer"
+	use "ray-x/lsp_signature.nvim"
+	use "kien/ctrlp.vim"
+	use "junegunn/fzf.vim"
+	use "preservim/nerdtree"
+	use "ryanoasis/vim-devicons"
+	use "tpope/vim-fugitive"
+	use "ludovicchabant/vim-gutentags"
+	use "Yggdroot/indentLine"
+	use "Raimondi/delimitMate"
+	use "tomtom/tcomment_vim"
+	use "ntpeters/vim-better-whitespace"
+	use "mg979/vim-visual-multi"
+
+	use "rust-lang/rust.vim"
+	use "simrat39/rust-tools.nvim"
+	use "godlygeek/tabular"
+
+
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -538,9 +583,24 @@ require('packer').startup(function(use)
   end
 end)
 
--- COMPLETION
+
+-- DEPENDENCIES
 -- -----------------------------------------------------------
 local cmp = require'cmp'
+local lspconfig = require'lspconfig'
+-- PYTHON
+lspconfig.pyright.setup{}
+-- VUE
+lspconfig.vuels.setup{}
+-- TYPESCRIPT
+lspconfig.tsserver.setup{}
+-- GOLANG
+require'lspconfig'.gopls.setup{}
+-- TERRAFORM
+require'lspconfig'.terraformls.setup{}
+
+-- COMPLETION
+-- -----------------------------------------------------------
 cmp.setup({
   snippet = {
     -- REQUIRED by nvim-cmp. get rid of it once we can
@@ -581,24 +641,7 @@ cmp.setup.cmdline({ '/', '?' }, {
   })
 })
 
--- TREESITTER
--- -----------------------------------------------------------
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "go", "javascript", "json", "terraform", "vim", "lua", "rust" },
-  sync_install = false,
-  auto_install = false,
-  ignore_install = {},
-  highlight = {
-    enable = true,
-    disable = {},
-    additional_vim_regex_highlighting = false,
-  },
-}
-
--- LSPCONFIG
-local lspconfig = require'lspconfig'
-
--- standardized shortcuts. Currently only applied in Rust
+-- Setup lspconfig.
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -623,11 +666,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
-
-  -- None of this semantics tokens business.
-  -- https://www.reddit.com/r/neovim/comments/143efmd/is_it_possible_to_disable_treesitter_completely/
-  client.server_capabilities.semanticTokensProvider = nil
+  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
   -- Get signatures (and _only_ signatures) when in argument lists.
   require "lsp_signature".on_attach({
@@ -638,54 +677,62 @@ local on_attach = function(client, bufnr)
   })
 end
 
-lspconfig.pyright.setup{} -- PYTHON
-lspconfig.vuels.setup{} -- VUE
-lspconfig.tsserver.setup{} -- TYPESCRIPT
-require('leap').add_default_mappings() -- LEAP
-require'lspconfig'.gopls.setup{} -- GOLANG
-require'lspconfig'.terraformls.setup{} -- TERRAFORM
+-- RUST
+-- -----------------------------------------------------------
+-- See https://github.com/hrsh7th/nvim-cmp#basic-configuration
+local rt = require("rust-tools")
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-lspconfig.rust_analyzer.setup {
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 150,
+rt.setup({
+  server = {
+    on_attach = on_attach,
   },
-  settings = {
-    ["rust-analyzer"] = {
-      cargo = {
-        allFeatures = true,
-      },
-      completion = {
-        postfix = {
-          enable = false,
-        },
-      },
-    },
-  },
-  capabilities = capabilities,
-}
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-  }
-)
-
--- Enable inlay hints
--- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
-vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-    callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client.server_capabilities.inlayHintProvider then
-            vim.lsp.inlay_hint(args.buf, true)
-        end
-        -- whatever other lsp config you want
-    end
 })
+
+local parser_install_dir = vim.fn.stdpath("data") .. "/treesitters"
+vim.fn.mkdir(parser_install_dir, "p")
+
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = { "vim" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  -- List of parsers to ignore installing (for "all")
+  ignore_install = {},
+
+  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  parser_install_dir = parser_install_dir, -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = {},
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
 
 local rp = require("rose-pine")
 rp.setup({
@@ -729,5 +776,23 @@ rp.setup({
 	}
 })
 
-vim.cmd('colorscheme rose-pine')
+require('kanagawa').setup({
+    undercurl = true,           -- enable undercurls
+    commentStyle = { italic = true },
+    functionStyle = {},
+    keywordStyle = { italic = true},
+    statementStyle = { bold = true },
+    typeStyle = {},
+    variablebuiltinStyle = { italic = true},
+    specialReturn = true,       -- special highlight for the return keyword
+    specialException = true,    -- special highlight for exception handling keywords
+    transparent = true,        -- do not set background color
+    dimInactive = false,        -- dim inactive window `:h hl-NormalNC`
+    globalStatus = false,       -- adjust window separators highlight for laststatus=3
+    terminalColors = true,      -- define vim.g.terminal_color_{0,17}
+    colors = {},
+    overrides = {},
+    theme = "default"           -- Load "default" theme or the experimental "light" theme
+})
+
 END

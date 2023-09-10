@@ -1,13 +1,11 @@
 {...}: {
   imports = [
-    ./nushell
+    ./core.nix
     ./tmux
 
-    ./bash.nix
-    ./core.nix
-    ./git.nix
-    ./bat.nix
-
     ./neovim
+    ./starship.nix
+    # ./broot.nix
+    # ./pass.nix
   ];
 }
