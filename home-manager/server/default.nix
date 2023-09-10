@@ -1,11 +1,11 @@
 {...}: {
   imports = [
     ./core.nix
+    ./starship.nix
     ./fish
     ./tmux
 
     ./neovim
-    ./starship.nix
     # ./broot.nix
     # ./pass.nix
   ];

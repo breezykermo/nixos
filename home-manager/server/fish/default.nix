@@ -2,7 +2,10 @@
 {
 	programs.fish = {
     enable = true;
-    interactiveShellInit = builtins.readFile ./fish.config;
+    interactiveShellInit = builtins.readFile ./config.fish;
+    plugins = [
+      { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+    ];
   };
 }
 

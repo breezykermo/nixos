@@ -7,7 +7,7 @@
 in {
   programs.tmux = {
     enable = true;
-    # shell = "";
+    shell = "fish";
 
     # Resize the window to the size of the smallest session for which it is the current window.
     #
