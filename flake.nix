@@ -17,7 +17,7 @@
 		nixosConfigurations = {
 			"nixos" = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
-				config = "./machines/thinkpad.nix";
+				config = ./machines/thinkpad.nix;
 				modules = [
 					./nixos/configuration.nix
 						home-manager.nixosModules.home-manager
