@@ -3,7 +3,7 @@
 {
 	imports = [
 		./server
-    # ./desktop
+		# ./desktop
 	];
 	home = {
 		username = "alice";

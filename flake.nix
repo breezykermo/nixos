@@ -13,12 +13,12 @@
 				system = "x86_64-linux";
 				modules = [
 					./nixos/configuration.nix
-					home-manager.nixosModules.home-manager
-					{
-						home-manager.useGlobalPkgs = true;
-						home-manager.useUserPackages = true;
-						home-manager.users.alice = import ./home-manager/home.nix;
-					}
+						home-manager.nixosModules.home-manager
+						{
+							home-manager.useGlobalPkgs = true;
+							home-manager.useUserPackages = true;
+							home-manager.users.alice = import ./home-manager/home.nix;
+						}
 				];
 			};
 		};
