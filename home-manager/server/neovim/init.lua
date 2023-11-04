@@ -226,41 +226,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- [[ Configure theme ]]
---
-require("rose-pine").setup {
-	--- @usage 'main' | 'moon'
-	dark_variant = 'moon',
-	bold_vert_split = false,
-	dim_nc_background = true,
-	disable_background = true,
-	disable_float_background = false,
-	disable_italics = false,
-
-	--- @usage string hex value or named color from rosepinetheme.com/palette
-	groups = {
-		background = 'base',
-		panel = 'surface',
-		border = 'highlight_med',
-		comment = 'muted',
-		link = 'iris',
-		punctuation = 'subtle',
-
-		error = 'love',
-		hint = 'iris',
-		info = 'foam',
-		warn = 'gold',
-
-		headings = 'subtle'
-	},
-
-	-- Change specific vim highlight groups
-	highlight_groups = {
-		ColorColumn = { bg = 'rose' }
-	}
-}
-vim.cmd.colorscheme 'rose-pine'
-
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {

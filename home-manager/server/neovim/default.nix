@@ -10,9 +10,8 @@
 		withNodeJs = true;
 
 		extraPackages = [];
-		plugins = [
-		      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-		];
+		extraConfig = ":luafile init.lua";
+		plugins = [];
  	};
 
 	home.packages = with pkgs; [
@@ -27,7 +26,7 @@
 		nodePackages.pyright # python language server
 		python311Packages.black # formatter
 
-		#-- python
+		#-- rust
 		rust-analyzer
 		cargo
 		rustfmt
