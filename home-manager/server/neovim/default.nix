@@ -11,7 +11,7 @@
 
 		extraPackages = [];
 		plugins = [
-      # pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+		      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
 		];
  	};
 
@@ -48,7 +48,6 @@
 		shellcheck
 
 		#-- misc
-    tree-sitter
-    universal-ctags
+		tree-sitter
 	];
 }
