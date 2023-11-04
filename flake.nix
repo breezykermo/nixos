@@ -20,19 +20,19 @@
 				modules = [
 					./nixos/configuration.nix
 					home-manager.nixosModules.home-manager
-          hyprland.nixosModules.default
+          # hyprland.nixosModules.default
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               sharedModules = [
-                {home.stateVersion = stateVersion;}
+                {home.stateVersion = "23.05";}
                 ./home-manager
-                hyprland.homeManagerModules.default
+                # hyprland.homeManagerModules.default
               ];
             };
           }
-					./machines/thinkpad.nix;
+					./machines/thinkpad.nix
 				];
 			};
 		};
