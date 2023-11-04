@@ -17,15 +17,22 @@
 		nixosConfigurations = {
 			"nixos" = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
-				config = ./machines/thinkpad.nix;
 				modules = [
 					./nixos/configuration.nix
-						home-manager.nixosModules.home-manager
-						{
-							home-manager.useGlobalPkgs = true;
-							home-manager.useUserPackages = true;
-							home-manager.users.alice = import ./home-manager/home.nix;
-						}
+					home-manager.nixosModules.home-manager
+          hyprland.nixosModules.default
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              sharedModules = [
+                {home.stateVersion = stateVersion;}
+                ./home-manager
+                hyprland.homeManagerModules.default
+              ];
+            };
+          }
+					./machines/thinkpad.nix;
 				];
 			};
 		};
