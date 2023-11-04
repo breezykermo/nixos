@@ -39,11 +39,6 @@ require('lazy').setup({
   'ryanoasis/vim-devicons',
 
   {
-    'rose-pine/neovim',
-    as = 'rose-pine',
-  },
-
-  {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -70,9 +65,6 @@ require('lazy').setup({
 
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
-
-      -- Adds a number of user-friendly snippets
-      'rafamadriz/friendly-snippets',
     },
   },
 
@@ -131,14 +123,14 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    main = 'ibl',
-    opts = {},
-  },
+  -- {
+  --   -- Add indentation guides even on blank lines
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   -- Enable `lukas-reineke/indent-blankline.nvim`
+  --   -- See `:help indent_blankline.txt`
+  --   main = 'ibl',
+  --   opts = {},
+  -- },
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
@@ -171,9 +163,9 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-  {
-    'HiPhish/nvim-ts-rainbow2'
-  },
+  -- {
+  --   'HiPhish/nvim-ts-rainbow2'
+  -- },
 }, {})
 
 -- [[ Setting options ]]
@@ -279,12 +271,12 @@ vim.defer_fn(function()
     auto_install = false,
 
     highlight = { enable = true },
-    rainbow = {
-      enable = true,
-      disable = {},
-      query = 'rainbow-parens',
-      strategy = require('ts-rainbow').strategy.global,
-    },
+    -- rainbow = {
+    --   enable = true,
+    --   disable = {},
+    --   query = 'rainbow-parens',
+    --   strategy = require('ts-rainbow').strategy.global,
+    -- },
     indent = { enable = true },
     incremental_selection = {
       enable = true,
@@ -521,6 +513,7 @@ cmp.setup {
   },
 }
 
+vim.cmd.colorscheme "industry"
 -- folds
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
