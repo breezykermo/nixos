@@ -79,7 +79,7 @@
     };
     waybar = {
       enable = mkDefault true;
-      modules = mkIf config.gui.laptop {
+      modules = {
         volume.enable = mkDefault true;
         brightness.enable = mkDefault true;
         battery.enable = mkDefault true;
