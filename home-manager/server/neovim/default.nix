@@ -10,7 +10,7 @@
 		withNodeJs = true;
 
 		extraPackages = [];
-		extraConfig = ":luafile init.lua";
+		extraConfig = ":luafile /home/alice/nixos-config/home-manager/server/neovim/init.lua";
 		plugins = [];
  	};
 
