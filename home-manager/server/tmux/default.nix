@@ -7,21 +7,10 @@
 in {
   programs.tmux = {
     enable = true;
-
-    # Resize the window to the size of the smallest session for which it is the current window.
-    #
-    aggressiveResize = true;
-
-    # https://github.com/tmux-plugins/tmux-sensible
-    # tmux-sensible overwrites default tmux shortcuts, makes them more sane.
     sensibleOnTop = true;
 
     extraConfig =  builtins.readFile ./tmux.conf;
     keyMode = "vi";
-
-    baseIndex = 1; # start index from 1
-    escapeTime = 0; # do not wait for escape key
-    terminal = "xterm-256color";
 
     plugins = with plugins; [
       {
