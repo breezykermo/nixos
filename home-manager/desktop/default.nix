@@ -128,7 +128,7 @@
           battery.enable = mkDefault true;
         };
       };
-      raw-browser.enable = mkDefault true;
+      raw-browser.enable = mkDefault false;
       mako.enable = mkDefault true;
       rofi.enable = mkDefault true;
       wezterm.enable = mkDefault true;
