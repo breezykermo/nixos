@@ -48,6 +48,7 @@
 		shellcheck
 
 		#-- misc
+		universal-ctags
 		tree-sitter
 	];
 }
