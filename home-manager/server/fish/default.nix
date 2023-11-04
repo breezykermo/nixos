@@ -1,10 +1,10 @@
 { pkgs, lib, ...}:
 {
-	programs.fish = {
+  programs.fish = {
     enable = true;
     interactiveShellInit = builtins.readFile ./config.fish;
     plugins = [
-      { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+    { name = "bass"; src = pkgs.fishPlugins.bass.src; }
     ];
   };
 }
