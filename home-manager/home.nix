@@ -7,20 +7,20 @@
 		./desktop
 	];
 
-	# gui = {
-	# 	monitor = {
-	# 		name = "eDP-1";
-	# 		height = 1440;
-	# 		width = 2560;
-	# 		scale = 1.5;
-	# 		touch = true;
-	# 	};
-	#
-	# 	waybar.modules = {
-	# 		label = "simon@x1carbon";
-	# 		cpu.temperaturePath = "/sys/class/hwmon/hwmon4/temp1_input";
-	# 	};
-	# };
+	gui = {
+		monitor = {
+			name = "eDP-1";
+			height = 1440;
+			width = 2560;
+			scale = 1.5;
+			touch = true;
+		};
+
+		waybar.modules = {
+			label = "simon@x1carbon";
+			cpu.temperaturePath = "/sys/class/hwmon/hwmon4/temp1_input";
+		};
+	};
 
 	home = {
 		username = "alice";
