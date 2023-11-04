@@ -1,7 +1,7 @@
 {pkgs, ...}: {
-  gui = {
-    enable = true;
-  };
+  # gui = {
+  #   enable = true;
+  # };
 
   services = {
     # Run `fprintd-enroll -f <finger> <user>` as root to add new fingerprint

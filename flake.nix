@@ -6,10 +6,6 @@
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
-    raw-browser = {
-      url = "sourcehut:~nomisiv/raw-browser";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     diosevka.url = "sourcehut:~nomisiv/diosevka";
 	};
 

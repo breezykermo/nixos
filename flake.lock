@@ -148,33 +148,12 @@
         "type": "github"
       }
     },
-    "raw-browser": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1696152826,
-        "narHash": "sha256-+QSPExxO8L3VplkGx5V5UQdZyfYs1JS8nCjjy40uRTU=",
-        "owner": "~nomisiv",
-        "repo": "raw-browser",
-        "rev": "b7976ae2589c8ff18a00f435352013a8f0fdcd67",
-        "type": "sourcehut"
-      },
-      "original": {
-        "owner": "~nomisiv",
-        "repo": "raw-browser",
-        "type": "sourcehut"
-      }
-    },
     "root": {
       "inputs": {
         "diosevka": "diosevka",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
-        "nixpkgs": "nixpkgs_3",
-        "raw-browser": "raw-browser"
+        "nixpkgs": "nixpkgs_3"
       }
     },
     "systems": {
