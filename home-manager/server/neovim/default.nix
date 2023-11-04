@@ -12,7 +12,7 @@
 		extraPackages = [];
 		plugins = [
 			pkgs.vimPlugins.packer-nvim
-      pkgs.vimPlugins.nvim-treesitter
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
 		];
 		extraConfig = builtins.readFile ./init.vim;
  	};
