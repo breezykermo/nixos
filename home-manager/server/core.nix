@@ -34,7 +34,7 @@
 		which
 		tree
 		gnupg
-		git-trim # trims your branches whose tracking remote refs are merged or gone
+		git-trim # trims branches when tracking remote refs are merged or gone
 
 		# nix related
 		nix-output-monitor # `nom` works just like `nix with more details
@@ -48,6 +48,7 @@
 		l = "exa --long --all --group --git --group-directories-first";
 		e = "$EDITOR";
 		g = "lazygit";
+		t = "tmux";
 	};
 
 	programs = {

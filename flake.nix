@@ -5,9 +5,17 @@
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
-		hyprland.url = "github:hyprwm/Hyprland";
-		# diosevka.url = "sourcehut:~nomisiv/diosevka";
-		neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
+    hyprland = {
+      url = "github:hyprwm/Hyprland/v0.33.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    doomemacs = {
+      url = "github:doomemacs/doomemacs";
+      flake = false;
+    };
+
 	};
 
 	outputs = inputs@{ nixpkgs, home-manager, ... }: {
@@ -18,17 +26,13 @@
 				modules = [
 					# NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
 					./nixos/configuration.nix
+					# Use home-manager to configure different users
 					home-manager.nixosModules.home-manager
-					# hyprland.nixosModules.default
 					{
 						home-manager = {
 							useGlobalPkgs = true;
 							useUserPackages = true;
 							users.alice = import ./home-manager;
-							# sharedModules = [
-							# 	{home.stateVersion = "23.05";}
-							# 	./home-manager
-							# ];
 						};
 					}
 					./machines/thinkpad.nix
