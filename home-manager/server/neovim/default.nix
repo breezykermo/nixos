@@ -37,17 +37,11 @@
 		statix
 		deadnix
 
-		#-- golang
-		go
-		gotools
-		gopls # go language server
-
 		#-- bash
 		nodePackages.bash-language-server
 		shellcheck
 
 		#-- misc
-		universal-ctags
 		tree-sitter
 	];
 }

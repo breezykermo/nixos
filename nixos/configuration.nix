@@ -28,26 +28,23 @@
 	# };
 
 	# X11 windowing system.
-	services.xserver.enable = true;
-	services.xserver.layout = "us";
-	services.xserver.xkbOptions = "eurosign:e,caps:escape";
-	services.xserver.libinput.enable = true; # touchpad support
+	# services.xserver.enable = true;
+	# services.xserver.layout = "us";
+	# services.xserver.xkbOptions = "eurosign:e,caps:escape";
+	# services.xserver.libinput.enable = true; # touchpad support
 
 	# CUPS to print documents.
 	# services.printing.enable = true;
 
 	# Sound.
-	sound.enable = true;
-	hardware.pulseaudio.enable = true;
+	# sound.enable = true;
+	# hardware.pulseaudio.enable = true;
 
 	# Define a user account. Don't forget to set a password with ‘passwd’.
 	users.users.alice = {
 		isNormalUser = true;
 		description = "alice";
 		extraGroups = [ "networkmanager" "wheel" ];
-		packages = with pkgs; [
-			# firefox
-		];
 	};
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];

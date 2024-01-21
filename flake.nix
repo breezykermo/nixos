@@ -6,15 +6,15 @@
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.33.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+		hyprland = {
+			url = "github:hyprwm/Hyprland/v0.33.1";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 
-    doomemacs = {
-      url = "github:doomemacs/doomemacs";
-      flake = false;
-    };
+		doomemacs = {
+			url = "github:doomemacs/doomemacs";
+			flake = false;
+		};
 
 	};
 

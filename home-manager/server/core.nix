@@ -51,6 +51,10 @@
 		t = "tmux";
 	};
 
+	home.sessionVariables = {
+		BROWSER = "firefox";
+	};
+
 	programs = {
 		alacritty = {
 			enable = true;
