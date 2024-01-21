@@ -12,15 +12,20 @@
     programs.alacritty = {
       enable = true;
       settings = {
+				env.TERM = "xterm-256color";
         window.padding = {
           x = 10;
           y = 10;
         };
 
         font = {
-          normal.family = "Diosevka";
-          size = 10;
+          # normal.family = "Diosevka";
+          size = 14;
+					draw_bold_text_with_bright_colors = true;
         };
+
+				scrolling.multiplier = 5;
+				selection.save_to_clipboard = true;
 
         colors = {
           primary = {
