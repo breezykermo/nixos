@@ -91,7 +91,7 @@
     ]
     ++ [ # Fonts
       material-design-icons
-      devicon
+      # devicon
       liberation_ttf
       twitter-color-emoji
     ]
