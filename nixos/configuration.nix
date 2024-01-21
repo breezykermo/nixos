@@ -10,9 +10,7 @@
 	boot.loader.efi.canTouchEfiVariables = true;
 
 	networking.hostName = "nixos";
-	# Pick only one of the below networking options.
-	# networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
-	networking.networkmanager.enable = true;	# Easiest to use and most distros use this by default.
+	networking.networkmanager.enable = true;
 
 	# Set your time zone.
 	time.timeZone = "Europe/Amsterdam";
@@ -29,22 +27,18 @@
 	#		useXkbConfig = true; # use xkbOptions in tty.
 	# };
 
-	# Enable the X11 windowing system.
-	# services.xserver.enable = true;
+	# X11 windowing system.
+	services.xserver.enable = true;
+	services.xserver.layout = "us";
+	services.xserver.xkbOptions = "eurosign:e,caps:escape";
+	services.xserver.libinput.enable = true; # touchpad support
 
-	# Configure keymap in X11
-	# services.xserver.layout = "us";
-	# services.xserver.xkbOptions = "eurosign:e,caps:escape";
-
-	# Enable CUPS to print documents.
+	# CUPS to print documents.
 	# services.printing.enable = true;
 
-	# Enable sound.
+	# Sound.
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;
-
-	# Enable touchpad support (enabled default in most desktopManager).
-	# services.xserver.libinput.enable = true;
 
 	# Define a user account. Don't forget to set a password with ‘passwd’.
 	users.users.alice = {
@@ -52,8 +46,7 @@
 		description = "alice";
 		extraGroups = [ "networkmanager" "wheel" ];
 		packages = with pkgs; [
-			vim
-			firefox
+			# firefox
 		];
 	};
 
@@ -66,13 +59,13 @@
 		curl
 	];
 
-	environment.variables.EDITOR = "vim";
+	environment.variables.EDITOR = "vi";
 
 	services.openssh = {
 		enable = true;
 		settings = {
 			X11Forwarding = true;
-			PermitRootLogin = true;
+			PermitRootLogin = "yes";
 			PasswordAuthentication = false;
 		};
 		openFirewall = true;
@@ -85,6 +78,4 @@
 	# Before changing this value read the documentation for this option
 	# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
 	system.stateVersion = "23.11"; # Did you read the comment?
-
 }
-
