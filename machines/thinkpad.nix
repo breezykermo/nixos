@@ -30,23 +30,22 @@
   };
 
   home-manager.users.alice = {
-    gui = {
-      enable = true;
-
-      monitor = {
-        name = "eDP-1";
-        height = 1440;
-        width = 2560;
-        scale = 1.5;
-        touch = true;
-      };
-
-      waybar.modules = {
-        label = "lox@x1carbon";
-      };
-
-      laptop = true;
-    };
-
+    # gui = {
+    #   enable = true;
+    #
+    #   monitor = {
+    #     name = "eDP-1";
+    #     height = 1440;
+    #     width = 2560;
+    #     scale = 1.5;
+    #     touch = true;
+    #   };
+    #
+    #   waybar.modules = {
+    #     label = "lox@x1carbon";
+    #   };
+    #
+    #   laptop = true;
+    # };
   };
 }
