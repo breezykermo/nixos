@@ -11,19 +11,24 @@
     # ./wezterm.nix
   ];
 
-  programs.sway.enable = true;
-  sound.enable = true;
-  nixpkgs.config.pulseaudio = true;
-  hardware.pulseaudio.enable = true;
+  home.packages = with pkgs;
+  [ # Base
+    firefox
+    xdg-utils
+  ]
+  ++ [ # Fonts
+    liberation_ttf
+  ];
 
-  config = {
-    home.packages = with pkgs;
-    [ # Base
-      firefox
-      xdg-utils
-    ]
-    ++ [ # Fonts
-      liberation_ttf
-    ];
+  wayland.windowManager.sway = {
+    enable = true;
+    modifer = "Mod4";
+    output = {
+      "DP-2" = {
+        mode = "1920x1200";
+      };
+    };
   };
+
+
 }

@@ -1,15 +1,5 @@
 {pkgs, ...}: {
-  # gui = {
-  #   enable = true;
-  # };
-
   services = {
-    # Run `fprintd-enroll -f <finger> <user>` as root to add new fingerprint
-    fprintd.enable = true;
-
-    # Add udev rules for flashing planck as regular user
-    udev.packages = [pkgs.qmk-udev-rules];
-
     upower = {
       enable = true;
       percentageLow = 30;
@@ -29,23 +19,11 @@
     };
   };
 
-  home-manager.users.alice = {
-    # gui = {
-    #   enable = true;
-    #
-    #   monitor = {
-    #     name = "eDP-1";
-    #     height = 1440;
-    #     width = 2560;
-    #     scale = 1.5;
-    #     touch = true;
-    #   };
-    #
-    #   waybar.modules = {
-    #     label = "lox@x1carbon";
-    #   };
-    #
-    #   laptop = true;
-    # };
-  };
+  hardware.pulseaudio.enable = true;
+  sound.enable = true;
+  nixpkgs.config.pulseaudio = true;
+
+  security.polkit.enable = true;
+  hardware.opengl.enable = true;
+
 }
