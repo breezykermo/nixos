@@ -1,8 +1,7 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [
-  ];
+  imports = [];
 
   home.packages = with pkgs;
   [ # Base
@@ -21,25 +20,25 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox.override {cfg.enableTridactylNative = true;};
+    # package = pkgs.firefox.override {cfg.enableTridactylNative = true;};
     profiles = {
       default = {
         id = 0;
         name = "default";
-        extensions = with inputs.rycee-nurpkgs.firefox-addons; [
-          aria2-integration
-            buster-captcha-solver
-            clearurls
-            decentraleyes
-            keepassxc-browser
-            libredirect
-            no-pdf-download
-            react-devtools
-            reduxdevtools
-            translate-web-pages
-            tridactyl
-            ublock-origin
-        ];
+        # extensions = with rycee-nurpkgs.firefox-addons; [
+        #   aria2-integration
+        #     buster-captcha-solver
+        #     clearurls
+        #     decentraleyes
+        #     keepassxc-browser
+        #     libredirect
+        #     no-pdf-download
+        #     react-devtools
+        #     reduxdevtools
+        #     translate-web-pages
+        #     tridactyl
+        #     ublock-origin
+        # ];
 
         search = {
           force = true;
@@ -148,4 +147,7 @@
     };
   };
 
+  services.dropbox = {
+    enable =  true;
+  };
 }
