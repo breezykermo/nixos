@@ -49,6 +49,7 @@
 		e = "$EDITOR";
 		g = "lazygit";
 		t = "tmux";
+		z = "zoxide";
 	};
 
 	home.sessionVariables = {

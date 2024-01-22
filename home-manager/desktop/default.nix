@@ -3,7 +3,6 @@
 {
   imports = [
     ./alacritty.nix
-    # ./hyprland.nix
     # ./waybar.nix
     # ./mako.nix
     # ./rofi.nix
@@ -24,7 +23,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
-      "$mod" = "SUPER";
+      "$mod" = "ALT";
       bind =
       [
         "$mod, w, exec, firefox"
