@@ -21,7 +21,17 @@
 
   programs.alacritty = {
     enable = true;
-    settings = builtins.readFile ./alacritty.nix;
+    settings = {
+      font = {
+        normal.family = "Liberation Mono";
+        size = 14;
+      };
+      shell = {
+        program = "${pkgs.fish}/bin/fish";
+        args = [ "--interactive" ];
+      };
+      draw_bold_text_with_bright_colors = true;
+    };
   };
 
 }
