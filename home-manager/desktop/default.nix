@@ -2,13 +2,6 @@
 
 {
   imports = [
-    ./alacritty.nix
-    # ./waybar.nix
-    # ./mako.nix
-    # ./rofi.nix
-    # ./alacritty.nix
-    # ./zathura.nix
-    # ./wezterm.nix
   ];
 
   home.packages = with pkgs;
@@ -24,6 +17,11 @@
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = builtins.readFile ./hypr.conf;
+  };
+
+  programs.alacritty = {
+    enable = true;
+    settings = builtins.readFile ./alacritty.nix;
   };
 
 }
