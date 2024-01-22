@@ -10,9 +10,6 @@
     ripgrep
     fd
   ]
-  ++ [ # Gui
-    firefox
-  ]
   ++ [ # Fonts
     liberation_ttf
   ];
@@ -20,6 +17,11 @@
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = builtins.readFile ./hypr.conf;
+  };
+
+  programs.firefox = {
+    enable = true;
+    userChrome = builtins.readFile ./firefox.userChrome.css;
   };
 
   programs.rofi = {
@@ -32,7 +34,7 @@
     settings = {
       font = {
         normal.family = "Liberation Mono";
-        size = 14;
+        size = 12;
       };
       window.decorations = "none";
       scrolling.history = 0;
