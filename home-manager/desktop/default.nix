@@ -6,9 +6,12 @@
 
   home.packages = with pkgs;
   [ # Base
-    firefox
     xdg-utils
-    rofi
+    ripgrep
+    fd
+  ]
+  ++ [ # Gui
+    firefox
   ]
   ++ [ # Fonts
     liberation_ttf
@@ -17,6 +20,11 @@
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = builtins.readFile ./hypr.conf;
+  };
+
+  programs.rofi = {
+    enable = true;
+    theme = "gruvbox-dark";
   };
 
   programs.alacritty = {
@@ -63,6 +71,12 @@
           white =   "0xd5c4a3";
         };
       };
+      keyboard.bindings = [
+        { key = "C";  mods = "Control";   action = "Copy"; } 
+        { key = "V";  mods = "Control";   action = "Paste"; } 
+        { key = "J";  mods = "Shift|Alt"; action = "DecreaseFontSize"; } 
+        { key = "K";  mods = "Shift|Alt"; action = "IncreaseFontSize"; } 
+      ];
     };
   };
 

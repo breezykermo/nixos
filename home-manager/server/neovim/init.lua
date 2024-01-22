@@ -163,6 +163,13 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
+  {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    config = true,
+    opts = {}, 
+  },
+
   -- {
   --   'HiPhish/nvim-ts-rainbow2'
   -- },
@@ -170,6 +177,7 @@ require('lazy').setup({
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
+vim.cmd.colorscheme "gruvbox"
 
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -503,7 +511,6 @@ cmp.setup {
   },
 }
 
-vim.cmd.colorscheme "industry"
 -- folds
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
