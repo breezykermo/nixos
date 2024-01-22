@@ -6,19 +6,13 @@
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-		# hyprland = {
-		# 	url = "github:hyprwm/Hyprland/v0.33.1";
-		# 	inputs.nixpkgs.follows = "nixpkgs";
-		# };
-
-		# doomemacs = {
-		# 	url = "github:doomemacs/doomemacs";
-		# 	flake = false;
-		# };
-
+		rycee-nurpkgs = {
+			url = gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons;
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 	};
 
-	outputs = inputs@{ nixpkgs, home-manager, ... }: {
+	outputs = inputs@{ nixpkgs, home-manager, rycee-nurpkgs, ... }: {
 		nixosConfigurations = {
 			"nixos" = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
@@ -32,7 +26,7 @@
 						home-manager = {
 							useGlobalPkgs = true;
 							useUserPackages = true;
-							users.alice = import ./home-manager;
+							users.alice = import ./home-manager { inherit inputs; };
 						};
 					}
 					./machines/thinkpad.nix
