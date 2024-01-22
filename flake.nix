@@ -12,11 +12,11 @@
 		};
 	};
 
-	outputs = inputs@{ nixpkgs, home-manager, rycee-nurpkgs, ... }: {
+	outputs = { nixpkgs, home-manager, ... }@inputs: {
 		nixosConfigurations = {
 			"nixos" = nixpkgs.lib.nixosSystem {
-				system = "x86_64-linux";
-				specialArgs = inputs; # Pass all input parameters to submodules
+				system = "x86_64-linux"; 
+				specialArgs = { inherit inputs; }; # Pass all input parameters to submodules
 				modules = [
 					# NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
 					./nixos/configuration.nix
@@ -26,7 +26,8 @@
 						home-manager = {
 							useGlobalPkgs = true;
 							useUserPackages = true;
-							users.alice = import ./home-manager { inherit inputs; };
+							extraSpecialArgs = { inherit inputs; };
+							users.alice = import ./home-manager;
 						};
 					}
 					./machines/thinkpad.nix
