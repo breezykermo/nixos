@@ -6,17 +6,26 @@
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-		rycee-nurpkgs = {
-			url = gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons;
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+		# rycee-nurpkgs = {
+		# 	url = gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons;
+		# 	inputs.nixpkgs.follows = "nixpkgs";
+		# };
+
+		nix-doom-emacs = {
+      url = "github:nix-community/nix-doom-emacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 	};
 
-	outputs = { nixpkgs, home-manager, ... }@inputs: {
+	outputs = inputs@{ nixpkgs, home-manager, ... }:
+	let 
+		system = "x86_64-linux";
+	in
+	{
 		nixosConfigurations = {
 			"nixos" = nixpkgs.lib.nixosSystem {
-				system = "x86_64-linux"; 
-				specialArgs = { inherit inputs; }; # Pass all input parameters to submodules
+				system = system; 
+				# specialArgs = { inherit inputs; }; # Pass all input parameters to submodules
 				modules = [
 					# NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
 					./nixos/configuration.nix
@@ -24,9 +33,11 @@
 					home-manager.nixosModules.home-manager
 					{
 						home-manager = {
+							# see https://blog.nobbz.dev/2022-12-12-getting-inputs-to-modules-in-a-flake/
+							extraSpecialArgs = { inherit inputs system; };
+
 							useGlobalPkgs = true;
 							useUserPackages = true;
-							extraSpecialArgs = { inherit inputs; };
 							users.alice = import ./home-manager;
 						};
 					}

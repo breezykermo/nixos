@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ system, inputs, config, lib, pkgs, ... }:
 
 {
   imports = [];
@@ -17,6 +17,8 @@
     enable = true;
     extraConfig = builtins.readFile ./hypr.conf;
   };
+  
+  programs.waybar.enable = true;
 
   programs.firefox = {
     enable = true;
@@ -25,7 +27,7 @@
       default = {
         id = 0;
         name = "default";
-        # extensions = with rycee-nurpkgs.firefox-addons; [
+        # extensions = with (inputs.rycee-nurpkgs.lib.${system}).firefox-addons; [
         #   aria2-integration
         #     buster-captcha-solver
         #     clearurls
