@@ -77,6 +77,12 @@
 			};
 		};
 
+		# file directory navigation
+		broot = {
+			enable = true;
+			enableFishIntegration = true;
+		};
+
 		git = {
 			enable = true;
 			userName = "Lachlan Kermode";
@@ -134,11 +140,8 @@
 	};
 
 	services = {
-		keybase = {
-			enable = true;
-		};
-		kbfs = {
-			enable = true;
-		};
+		keybase.enable = true;
+		kbfs.enable = true;
+		dropbox.enable = true;
 	};
 }

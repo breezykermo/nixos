@@ -148,8 +148,4 @@
       ];
     };
   };
-
-  services.dropbox = {
-    enable =  true;
-  };
 }
