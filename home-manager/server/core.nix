@@ -140,8 +140,8 @@
 	};
 
 	services = {
-		keybase.enable = true;
-		kbfs.enable = true;
-		dropbox.enable = true;
+		# keybase.enable = true;
+		# kbfs.enable = true;
+		# dropbox.enable = true;
 	};
 }

@@ -6,6 +6,7 @@
     ./tmux
     ./neovim
     ./emacs
+    ./dropbox
 
     # ./broot.nix
     # ./pass.nix
