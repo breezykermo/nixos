@@ -19,6 +19,7 @@
   };
   
   programs.waybar.enable = true;
+  programs.wdisplays.enable = true;
 
   programs.firefox = {
     enable = true;
