@@ -1,12 +1,12 @@
 { lib, pkgs, ... }:
 {
+
+  systemd.user.sessionVariables.DOOMDIR = "$HOME/.doom.d";
   programs.emacs = {
     enable = true; 
     package = pkgs.emacs;
     # extraConfig = builtins.readFile ./config.el;
   };
-
-  home.sessionVariables.DOOMDIR = "$HOME/.doom.d";
 
   home.file.".doom.d" = {
     source = ./doom.d;
