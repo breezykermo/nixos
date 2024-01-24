@@ -1,4 +1,4 @@
-{ pkg, ... }:
+{ pkgs, ... }:
 {
   home.sessionVariables.BROWSER = "firefox";
   programs.firefox = {
