@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 {
 
-  systemd.user.sessionVariables.DOOMDIR = "$HOME/.doom.d";
+  # user.sessionVariables.DOOMDIR = "$HOME/.doom.d";
   programs.emacs = {
     enable = true; 
     package = pkgs.emacs;
