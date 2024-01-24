@@ -52,26 +52,26 @@
 ;   :recipe (:host github
 ;            :repo "nobiot/md-roam"))
 
-(package! gitconfig-mode
-	  :recipe (:host github :repo "magit/git-modes"
-			 :files ("gitconfig-mode.el")))
-
-(package! gitignore-mode
-	  :recipe (:host github :repo "magit/git-modes"
-			 :files ("gitignore-mode.el")))
-
-(package! org-pandoc-import
-  :recipe (:host github
-           :repo "tecosaur/org-pandoc-import"
-           :files ("*.el" "filters" "preprocessors")))
-
-(package! image-roll :recipe
-          (:host github
-                 :repo "dalanicolai/image-roll.el"))
-
-(package! calfw :recipe
-          (:host github
-                 :repo "haji-ali/emacs-calfw"))
+;; (package! gitconfig-mode
+;; 	  :recipe (:host github :repo "magit/git-modes"
+;; 			 :files ("gitconfig-mode.el")))
+;;
+;; (package! gitignore-mode
+;; 	  :recipe (:host github :repo "magit/git-modes"
+;; 			 :files ("gitignore-mode.el")))
+;;
+;; (package! org-pandoc-import
+;;   :recipe (:host github
+;;            :repo "tecosaur/org-pandoc-import"
+;;            :files ("*.el" "filters" "preprocessors")))
+;;
+;; (package! image-roll :recipe
+;;           (:host github
+;;                  :repo "dalanicolai/image-roll.el"))
+;;
+;; (package! calfw :recipe
+;;           (:host github
+;;                  :repo "haji-ali/emacs-calfw"))
 ; (package! org-reveal)
 ; (package! ox-reveal)
 

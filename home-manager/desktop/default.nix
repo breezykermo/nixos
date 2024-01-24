@@ -20,6 +20,7 @@
   
   programs.waybar.enable = true;
 
+  home.sessionVariables.BROWSER = "firefox";
   programs.firefox = {
     enable = true;
     # package = pkgs.firefox.override {cfg.enableTridactylNative = true;};

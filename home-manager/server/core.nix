@@ -52,10 +52,6 @@
 		z = "zoxide";
 	};
 
-	home.sessionVariables = {
-		BROWSER = "firefox";
-	};
-
 	programs = {
 		# cd but better
 		zoxide.enable = true;
