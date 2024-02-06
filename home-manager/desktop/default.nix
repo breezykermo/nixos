@@ -18,19 +18,11 @@
     enable = true;
     systemd.enable = true;
     style = ''
-      ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
+    ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
 
     window#waybar {
-background: transparent;
-            border-bottom: none;
-    }
-
-    * {
-      ${if config.hostId == "yoga" then ''
-        font-size: 18px;
-        '' else ''
-
-          ''}
+      background: transparent;
+      border-bottom: none;
     }
     '';
     settings = [{
@@ -46,7 +38,7 @@ background: transparent;
           "cpu"
           "memory"
           "temperature"
-      ] ++ (if config.hostId == "yoga" then [ "battery" ] else [ ])
+      ] ++ [ "battery" ]
       ++ [
       "clock"
         "tray"
