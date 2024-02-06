@@ -16,7 +16,10 @@
   programs.waybar = {
     enable = true;
     systemd.enable = true;
-    style = builtins.readFile ./waybar.style.css;
+    style = ''
+    ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar.style.css"}
+    ${builtins.readFile ./waybar.style.css}
+    '';
     settings = [{
       height = 5;
       layer = "top";
