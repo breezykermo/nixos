@@ -52,7 +52,7 @@ window#waybar {
     background: @black-trans-two;
 }
 
-#scratchpad, #clock, #tray, #custom-bluelightfilter, #custom-vm, #custom-notification, #custom-containers, #custom-wfrecord, #custom-grimshot, #battery, #disk, #cpu, #memory, #temperature, #network, #pulseaudio, #backlight, #idle_inhibitor, #custom-settings{
+#scratchpad, #clock, #tray, #battery, #disk, #cpu, #memory, #temperature, #network, #pulseaudio, #backlight, #idle_inhibitor, #custom-settings {
     margin:             0px 1px 0px 1px;
     padding:            0px 6px 0px 6px;
     color:              @white;
@@ -89,32 +89,14 @@ window#waybar {
 #tray {
 }
 
-#custom-wfrecord {
-    font-size:          13px;
-}
-#custom-grimshot {
-    font-size:          15px;
-}
-
-#custom-wfrecord.recording {
-    color:              @green;
-}
-
-#custom-vm {
-    font-size:          12px;
-}
 #custom-vm.running {
     color:              @blue-light;
 }
 
-#custom-containers {
-}
 #custom-containers.running {
     color:              @blue-light;
 }
 
-#memory {
-}
 #memory.low {
     color:        @blue;
 }
@@ -137,9 +119,6 @@ window#waybar {
     color:        @red;
 }
 
-#disk {
-    font-size:          16px;
-}
 #disk.low {
     color:        @blue;
 }
@@ -152,14 +131,12 @@ window#waybar {
 
 #network {
     color:         @green;
-    font-size:          18px;
 }
 #network.disconnected {
     color:         @red;
 }
 
 #battery {
-    font-size:         12px;
     color:        @green;
 }
 #battery.warning {
@@ -170,7 +147,6 @@ window#waybar {
 }
 #battery.charging {
     color:         @green;
-    font-size:          13px;
 }
 
 #backlight {
@@ -186,7 +162,6 @@ window#waybar {
 }
 
 #pulseaudio {
-    font-size:           22px;
 }
 #pulseaudio.low {
     color:         @blue;
