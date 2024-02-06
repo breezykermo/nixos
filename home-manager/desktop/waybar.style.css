@@ -21,9 +21,7 @@
 @define-color turquoise-light       #4dc5c6;
 
 tooltip {
-    /* font-size:      20px; */
     background:     @black-trans;
-    /* border:         2px solid @blue; */
 }
 
 tooltip label {
@@ -31,14 +29,14 @@ tooltip label {
 }
 
 window#waybar {
-    /* border-bottom: .3px solid @grey-light; */
     background: @black-trans-two;
     font-family: "Noto Sans Mono";
 
 }
 
 #scratchpad, #clock, #tray, #battery, #disk, #cpu, #memory, #temperature, #network, #pulseaudio, #backlight, #idle_inhibitor, #custom-settings {
-    color:              @white;
+    background: @black-trans-two;
+    color: @white;
 }
 
 #clock {
