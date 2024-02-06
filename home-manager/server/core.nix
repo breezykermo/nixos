@@ -107,7 +107,7 @@
 			enable = true;
 			settings = {
 				user = {
-					name = "Lachlan Kermode"
+					name = "Lachlan Kermode";
 					email = "hi@ohrg.org";
 				};
 			};
