@@ -11,6 +11,8 @@
     xdg-utils
     ripgrep
     fd
+    slurp
+    grim
   ];
  
   programs.waybar = {
