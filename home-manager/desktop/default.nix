@@ -11,7 +11,6 @@
     xdg-utils
     ripgrep
     fd
-    liberation_ttf
   ];
  
   programs.waybar = {

@@ -41,6 +41,14 @@
 		nodePackages.node2nix
 	];
 
+	# fonts
+	fonts.packages = with pkgs; [
+    liberation_ttf
+		font-awesome
+		fira-code
+		noto-fonts
+	];
+
 	home.shellAliases = {
 		diff = "diff --color=auto";
 		grep = "grep --color=auto";
