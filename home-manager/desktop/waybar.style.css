@@ -20,11 +20,6 @@
 @define-color turquoise             #268889;
 @define-color turquoise-light       #4dc5c6;
 
-* {
-    font-family:    "Noto Sans Mono" !important;
-    font-size: 10px;
-}
-
 tooltip {
     font-size:      20px;
     background:     @black-trans;
@@ -32,12 +27,15 @@ tooltip {
 }
 
 tooltip label {
-  color: @grey-light;
+    color: @grey-light;
 }
 
 window#waybar {
-    border-bottom:         .3px solid @grey-light;
+    border-bottom: .3px solid @grey-light;
     background: @black-trans-two;
+    font-family:    "Noto Sans Mono" !important;
+    font-size: 10px;
+
 }
 
 #scratchpad, #clock, #tray, #battery, #disk, #cpu, #memory, #temperature, #network, #pulseaudio, #backlight, #idle_inhibitor, #custom-settings {
@@ -55,7 +53,7 @@ window#waybar {
 }
 
 #custom-notification {
-	color: #FFFFFF;
+    color: #FFFFFF;
 }
 
 #idle_inhibitor {
