@@ -17,7 +17,7 @@
     enable = true;
     systemd.enable = true;
     style = ''
-    ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar.style.css"}
+    ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
     ${builtins.readFile ./waybar.style.css}
     '';
     settings = [{
