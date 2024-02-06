@@ -102,6 +102,17 @@
 				};
 			};
 		};
+		
+		jujutsu = {
+			enable = true;
+			settings = {
+				user = {
+					name = "Lachlan Kermode"
+					email = "hi@ohrg.org";
+				};
+			};
+			enableFishIntegration = true;
+		};
 
 		# A command-line fuzzy finder
 		fzf = {
