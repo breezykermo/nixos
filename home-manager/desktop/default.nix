@@ -16,32 +16,23 @@
   programs.waybar = {
     enable = true;
     systemd.enable = true;
-    style = ''
-    ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
-
-    window#waybar {
-      background: transparent;
-      border-bottom: none;
-    }
-    '';
+    style = builtins.readFile ./waybar.style.css;
     settings = [{
-      height = 30;
+      height = 10;
       layer = "top";
       position = "bottom";
-      tray = { spacing = 10; };
+      tray = { spacing = 15; };
       modules-center = [ "hyprland/window" ];
       modules-left = [ "hyprland/workspaces" "hyprland/mode" ];
       modules-right = [
         "pulseaudio"
-          "network"
-          "cpu"
-          "memory"
-          "temperature"
-      ] ++ [ "battery" ]
-      ++ [
+        "network"
+        "cpu"
+        "memory"
+        "temperature"
+        "battery"
         "clock"
         "tray"
-      ];
       battery = {
         format = "{capacity}% {icon}";
         format-alt = "{time} {icon}";
@@ -100,7 +91,7 @@
   programs.swaylock = {
     enable = true;
     settings = {
-      color = "808080";
+      color = "480175";
       font-size = 24;
       indicator-idle-visible = false;
       indicator-radius = 100;
@@ -108,7 +99,6 @@
       show-failed-attempts = true;
     };
   };
-
 
   programs.rofi = {
     enable = true;

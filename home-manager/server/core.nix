@@ -41,7 +41,7 @@
 		nodePackages.node2nix
 
 		# fonts
-    liberation_ttf
+		liberation_ttf
 		font-awesome
 		fira-code
 		noto-fonts
