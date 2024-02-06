@@ -40,7 +40,7 @@
           "temperature"
       ] ++ [ "battery" ]
       ++ [
-      "clock"
+        "clock"
         "tray"
       ];
       battery = {
