@@ -20,24 +20,12 @@
 @define-color turquoise             #268889;
 @define-color turquoise-light       #4dc5c6;
 
-
-.modules-right {
-    font-family:    "Noto Sans Mono";
-    font-size:      10px;
-}
-
-.modules-center {
-    font-family:    "Noto Sans Mono";
-    font-size:      10px;
-}
-
-.modules-left {
-    font-family:    "Noto Sans Mono";
-    font-size:      10px;
+* {
+    font-family:    "Noto Sans Mono" !important;
+    font-size: 10px;
 }
 
 tooltip {
-    font-family:    "Noto Sans Mono";
     font-size:      20px;
     background:     @black-trans;
     border:         2px solid @blue;
