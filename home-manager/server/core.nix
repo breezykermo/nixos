@@ -39,10 +39,8 @@
 		# nix related
 		nix-output-monitor # `nom` works just like `nix with more details
 		nodePackages.node2nix
-	];
 
-	# fonts
-	fonts.packages = with pkgs; [
+		# fonts
     liberation_ttf
 		font-awesome
 		fira-code
