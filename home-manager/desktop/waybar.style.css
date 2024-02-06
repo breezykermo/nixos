@@ -23,24 +23,24 @@
 
 .modules-right {
     font-family:    "Noto Sans Mono";
-    font-size:      15px;
+    font-size:      10px;
 }
 
 .modules-center {
     font-family:    "Noto Sans Mono";
-    font-size:      15px;
+    font-size:      10px;
 }
 
 .modules-left {
     font-family:    "Noto Sans Mono";
-    font-size:      12px;
+    font-size:      10px;
 }
 
 tooltip {
     font-family:    "Noto Sans Mono";
-  font-size:        20px;
-  background:       @black-trans;
-  border:           2px solid @blue;
+    font-size:      20px;
+    background:     @black-trans;
+    border:         2px solid @blue;
 }
 
 tooltip label {
@@ -52,82 +52,6 @@ window#waybar {
     background: @black-trans-two;
 }
 
-/* === work spaces === */
-
-#workspaces {
-    padding:            0px 0px 0px 0px;
-    border-radius:      0px 0px 0px 0px;
-}
-
-#workspaces button {
-    margin:             0px 0px 0px 0px;
-    padding:            0px 5px 0px 5px;
-    color:              @grey-light;
-}
-
-#workspaces button.focused {
-    /* color:              @blue; */
-    color:              #FFFFFF;
-    background:         @blue;
-    border-radius:      1px;
-    border-top-left-radius:      0px;
-    border-top-right-radius:      0px;
-    /* border-bottom:      3px solid @blue; */
-}
-
-#workspaces button:hover {
-    color:              @white;
-    background:         @trans;
-    border-radius:      2px;
-    box-shadow:         none;
-    text-shadow:        none;
-    /* border-top-left-radius:       5px; */
-    /* border-top-right-radius:      5px; */
-}
-
-#workspaces button.urgent {
-    color:              @red; 
-}
-
-#custom-spotify-metadata, #custom-spotify-play-pause, #custom-spotify-prev, #custom-spotify-next, #custom-spotify-quit {
-    color:              @grey-light;
-    padding:            0px 6px 0px 6px;
-    font-size:          12px;
-}
-
-#custom-spotify-metadata {
-    margin:             0px 8px 0px 1px;
-    font-size:          16px;
-}
-#custom-spotify-metadata.playing {
-    color:              @green;
-}
-#custom-spotify-metadata.paused {
-    color:              @yellow;
-}
-#custom-spotify-prev {
-    margin:             0px 0px 0px 1px;
-}
-#custom-spotify-play-pause {
-    margin:             0px 0px 0px 1px;
-}
-#custom-spotify-next {
-    margin:             0px 0px 0px 1px;
-}
-#custom-spotify-quit {
-    margin:             0px 0px 0px 1px;
-}
-
-#clock, #mode {
-    margin:             0px 15px 0px 15px;
-    padding:            0px 0px 0px 0px;
-    color:              @white;
-}
-
-#mode { 
-    font-size:          20px;
-}
-
 #scratchpad, #clock, #tray, #custom-bluelightfilter, #custom-vm, #custom-notification, #custom-containers, #custom-wfrecord, #custom-grimshot, #battery, #disk, #cpu, #memory, #temperature, #network, #pulseaudio, #backlight, #idle_inhibitor, #custom-settings{
     margin:             0px 1px 0px 1px;
     padding:            0px 6px 0px 6px;
@@ -137,9 +61,9 @@ window#waybar {
 
 #clock {
     font-size: 15px;
-    background: @blue;
-	color: #FFFFFF;
-	border-radius: 2px;
+    background: @turquoise;
+    color: #FFFFFF;
+    border-radius: 2px;
 }
 
 #custom-notification {
@@ -276,5 +200,3 @@ window#waybar {
 #pulseaudio.muted {
     color:         @red;
 }
-
-

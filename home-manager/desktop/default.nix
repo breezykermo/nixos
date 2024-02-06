@@ -18,7 +18,7 @@
     systemd.enable = true;
     style = builtins.readFile ./waybar.style.css;
     settings = [{
-      height = 10;
+      height = 5;
       layer = "top";
       position = "bottom";
       tray = { spacing = 15; };
@@ -33,6 +33,7 @@
         "battery"
         "clock"
         "tray"
+      ];
       battery = {
         format = "{capacity}% {icon}";
         format-alt = "{time} {icon}";
@@ -55,7 +56,7 @@
       memory = { format = "{}% "; };
       network = {
         interval = 1;
-        format-alt = "{ifname}: {ipaddr}/{cidr}";
+        format-alt = "{ifname}";
         format-disconnected = "Disconnected ⚠";
         format-ethernet = "{ifname}: {ipaddr}/{cidr}   up: {bandwidthUpBits} down: {bandwidthDownBits}";
         format-linked = "{ifname} (No IP) ";
