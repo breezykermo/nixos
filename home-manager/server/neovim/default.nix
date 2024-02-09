@@ -28,7 +28,7 @@
 
 		#-- rust
 		rust-analyzer
-		cargo
+		rustup
 		rustfmt
 
 		#-- nix
