@@ -27,9 +27,7 @@
 		python311Packages.black # formatter
 
 		#-- rust
-		rust-analyzer
 		rustup
-		rustfmt
 
 		#-- nix
 		nil
