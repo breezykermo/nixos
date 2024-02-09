@@ -45,7 +45,11 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     dependencies = {
       -- Adds LSP completion capabilities
-      'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/cmp-buffer',
+			'hrsh7th/cmp-path',
+			'hrsh7th/cmp-cmdline',
+			'hrsh7th/nvim-cmp',
     },
   },
 
@@ -103,6 +107,11 @@ require('lazy').setup({
     opts = {}, 
   },
 
+	{
+		'mrcjkb/rustaceanvim',
+		version = '^4', -- Recommended
+		ft = { 'rust' },
+	}
   -- {
   --   'HiPhish/nvim-ts-rainbow2'
   -- },
