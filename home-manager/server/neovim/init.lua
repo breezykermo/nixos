@@ -408,6 +408,11 @@ vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     parser_install_dir = parser_install_dir,
 
+  	matchup = {
+    	enable = true,              -- mandatory, false will disable the whole extension
+			disable = { "c", "ruby" },  -- optional, list of language that will be disabled
+			-- [options]
+		},
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { 'c', 'cpp', 'lua', 'rust', 'vimdoc', 'vim' },
 
