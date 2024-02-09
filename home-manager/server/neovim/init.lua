@@ -244,6 +244,7 @@ require('lazy').setup({
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
+  { "folke/neodev.nvim", opts = {} },
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -408,11 +409,10 @@ vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     parser_install_dir = parser_install_dir,
 
-  	matchup = {
-    	enable = true,              -- mandatory, false will disable the whole extension
-			disable = { "c", "ruby" },  -- optional, list of language that will be disabled
-			-- [options]
-		},
+    matchup = {
+	    enable = true,              -- mandatory, false will disable the whole extension
+	    disable = { "lua" },  -- optional, list of language that will be disabled
+    },
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { 'c', 'cpp', 'lua', 'rust', 'vimdoc', 'vim' },
 
