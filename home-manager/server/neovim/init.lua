@@ -333,6 +333,31 @@ require('which-key').register {
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 }
 
+-- Enable inlay hints
+-- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+--   vim.lsp.diagnostic.on_publish_diagnostics, {
+--     virtual_text = true,
+--     signs = true,
+--     update_in_insert = true,
+--   }
+-- )
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+-- folds
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+-- NERDTree
+vim.keymap.set('n', '<leader>n', ':NERDTreeFind<cr>', { silent = true })
+vim.keymap.set('n', '<leader>m', ':NERDTreeToggle<cr>', { silent = true })
+
+-- LSP 
+-- Rust
+
 local nvim_lsp = require'lspconfig'
 
 local on_attach = function(client)
@@ -360,24 +385,5 @@ nvim_lsp.rust_analyzer.setup({
         }
     }
 });
--- Enable inlay hints
--- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---   vim.lsp.diagnostic.on_publish_diagnostics, {
---     virtual_text = true,
---     signs = true,
---     update_in_insert = true,
---   }
--- )
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
--- folds
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
--- NERDTree
-vim.keymap.set('n', '<leader>n', ':NERDTreeFind<cr>', { silent = true })
-vim.keymap.set('n', '<leader>m', ':NERDTreeToggle<cr>', { silent = true })

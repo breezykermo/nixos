@@ -28,7 +28,7 @@
 
 		#-- rust
 		rustup
-		rust-analyzer
+		# rust-analyzer
 
 		#-- nix
 		# nil
