@@ -230,12 +230,12 @@ require('lazy').setup({
 		end
 	},
 	-- Highlight matching parens so easier to see
-	{
-		'andymass/vim-matchup',
-		config = function()
-			vim.g.matchup_matchparen_offscreen = { method = "popup" }
-		end
-	},
+	-- {
+	-- 	'andymass/vim-matchup',
+	-- 	config = function()
+	-- 		vim.g.matchup_matchparen_offscreen = { method = "popup" }
+	-- 	end
+	-- },
 
 	-- inline function signatures
 	{
@@ -420,11 +420,11 @@ vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     parser_install_dir = parser_install_dir,
 
-    matchup = {
-	--- XXX not working at the moment for lua, too eanoying while editing
-	    enable = false,       -- mandatory, false will disable the whole extension
-	    disable = { "lua" },  -- optional, list of language that will be disabled
-    },
+ --    matchup = {
+	-- --- XXX not working at the moment for lua, too eanoying while editing
+	--     enable = false,       -- mandatory, false will disable the whole extension
+	--     disable = { "lua" },  -- optional, list of language that will be disabled
+ --    },
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { 'c', 'cpp', 'lua', 'rust', 'vimdoc', 'vim' },
 
