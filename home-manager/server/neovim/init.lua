@@ -1,8 +1,38 @@
--- Set <space> as the leader key
+-- Set <,> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
+
+-------------------------------------------------------------------------------
+--
+-- autocommands
+--
+-------------------------------------------------------------------------------
+-- highlight yanked text
+vim.api.nvim_create_autocmd(
+	'TextYankPost',
+	{
+		pattern = '*',
+		command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
+	}
+)
+-- jump to last edit position on opening file
+vim.api.nvim_create_autocmd(
+	'BufReadPost',
+	{
+		pattern = '*',
+		callback = function(ev)
+			if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+				-- except for in git commit messages
+				-- https://stackoverflow.com/questions/31449496/vim-ignore-specifc-file-in-autocommand
+				if not vim.fn.expand('%:p'):find('.git', 1, true) then
+					vim.cmd('exe "normal! g\'\\""')
+				end
+			end
+		end
+	}
+)
 
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -37,9 +67,8 @@ require('lazy').setup({
   -- Nerd tree
   'preservim/nerdtree',
   'ryanoasis/vim-devicons',
-  -- LSP Configuration & Plugins
-  'neovim/nvim-lspconfig',
 
+	-- Completions
 	{
 		"hrsh7th/nvim-cmp",
 		-- load cmp on InsertEnter
@@ -88,6 +117,115 @@ require('lazy').setup({
 			})
 		end
 	},
+
+	-- LSP
+	{
+		'neovim/nvim-lspconfig',
+		config = function()
+			-- Setup language servers.
+			local lspconfig = require('lspconfig')
+
+			-- Rust
+			lspconfig.rust_analyzer.setup {
+				-- Server-specific settings. See `:help lspconfig-setup`
+				settings = {
+					["rust-analyzer"] = {
+						cargo = {
+							allFeatures = true,
+						},
+						imports = {
+							group = {
+								enable = false,
+							},
+						},
+						completion = {
+							postfix = {
+								enable = false,
+							},
+						},
+					},
+				},
+			}
+
+			-- Bash LSP
+			local configs = require 'lspconfig.configs'
+			if not configs.bash_lsp and vim.fn.executable('bash-language-server') == 1 then
+				configs.bash_lsp = {
+					default_config = {
+						cmd = { 'bash-language-server', 'start' },
+						filetypes = { 'sh' },
+						root_dir = require('lspconfig').util.find_git_ancestor,
+						init_options = {
+							settings = {
+								args = {}
+							}
+						}
+					}
+				}
+			end
+			if configs.bash_lsp then
+				lspconfig.bash_lsp.setup {}
+			end
+
+			-- Global mappings.
+			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+			vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+			vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+			vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+			vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+
+			-- Use LspAttach autocommand to only map the following keys
+			-- after the language server attaches to the current buffer
+			vim.api.nvim_create_autocmd('LspAttach', {
+				group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+				callback = function(ev)
+					-- Enable completion triggered by <c-x><c-o>
+					vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+					-- Buffer local mappings.
+					-- See `:help vim.lsp.*` for documentation on any of the below functions
+					local opts = { buffer = ev.buf }
+					vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+					vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+					vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+					vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+					vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+					vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+					vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+					vim.keymap.set('n', '<leader>wl', function()
+						print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+					end, opts)
+					--vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+					vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
+					vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, opts)
+					vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+					vim.keymap.set('n', '<leader>f', function()
+						vim.lsp.buf.format { async = true }
+					end, opts)
+
+					local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+					-- When https://neovim.io/doc/user/lsp.html#lsp-inlay_hint stabilizes
+					-- *and* there's some way to make it only apply to the current line.
+					-- if client.server_capabilities.inlayHintProvider then
+					--     vim.lsp.inlay_hint(ev.buf, true)
+					-- end
+
+					-- None of this semantics tokens business.
+					-- https://www.reddit.com/r/neovim/comments/143efmd/is_it_possible_to_disable_treesitter_completely/
+					client.server_capabilities.semanticTokensProvider = nil
+				end,
+			})
+		end
+	},
+	-- Highlight matching parens so easier to see
+	{
+		'andymass/vim-matchup',
+		config = function()
+			vim.g.matchup_matchparen_offscreen = { method = "popup" }
+		end
+	},
+
 	-- inline function signatures
 	{
 		"ray-x/lsp_signature.nvim",
@@ -175,8 +313,10 @@ vim.cmd.colorscheme "gruvbox"
 -- Set highlight on search
 vim.o.hlsearch = false
 
--- Make line numbers default
-vim.wo.relativenumber = true 
+-- sweet sweet relative line numbers
+vim.opt.relativenumber = true
+-- and show the absolute line number for the current line
+vim.opt.number = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -269,7 +409,7 @@ vim.defer_fn(function()
     parser_install_dir = parser_install_dir,
 
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'racket', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim' },
+    ensure_installed = { 'c', 'cpp', 'lua', 'rust', 'vimdoc', 'vim' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -338,51 +478,51 @@ vim.defer_fn(function()
   }
 end, 0)
 
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+-- -- Diagnostic keymaps
+-- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+-- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = 'LSP: ' .. desc
-    end
-
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-  end
-
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-  -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-  -- Lesser used LSP functionality
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
-
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
-end
-
+-- local on_attach = function(_, bufnr)
+--   local nmap = function(keys, func, desc)
+--     if desc then
+--       desc = 'LSP: ' .. desc
+--     end
+--
+--     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+--   end
+--
+--   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+--   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+--
+--   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+--   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+--   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+--   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+--   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+--   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+--
+--   -- See `:help K` for why this keymap
+--   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+--   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+--
+--   -- Lesser used LSP functionality
+--   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+--   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+--   nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+--   nmap('<leader>wl', function()
+--     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--   end, '[W]orkspace [L]ist Folders')
+--
+--   -- Create a command `:Format` local to the LSP buffer
+--   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+--     vim.lsp.buf.format()
+--   end, { desc = 'Format current buffer with LSP' })
+-- end
+--
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
@@ -404,9 +544,9 @@ require('which-key').register {
 -- )
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+--
 -- folds
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -418,32 +558,32 @@ vim.keymap.set('n', '<leader>m', ':NERDTreeToggle<cr>', { silent = true })
 -- LSP 
 -- Rust
 
-local nvim_lsp = require'lspconfig'
-
-local on_attach = function(client)
-    require'completion'.on_attach(client)
-end
-
-nvim_lsp.rust_analyzer.setup({
-    on_attach=on_attach,
-    settings = {
-        ["rust-analyzer"] = {
-            imports = {
-                granularity = {
-                    group = "module",
-                },
-                prefix = "self",
-            },
-            cargo = {
-                buildScripts = {
-                    enable = true,
-                },
-            },
-            procMacro = {
-                enable = true
-            },
-        }
-    }
-});
-
-
+-- local nvim_lsp = require'lspconfig'
+--
+-- local on_attach = function(client)
+--     require'completion'.on_attach(client)
+-- end
+--
+-- nvim_lsp.rust_analyzer.setup({
+--     on_attach=on_attach,
+--     settings = {
+--         ["rust-analyzer"] = {
+--             imports = {
+--                 granularity = {
+--                     group = "module",
+--                 },
+--                 prefix = "self",
+--             },
+--             cargo = {
+--                 buildScripts = {
+--                     enable = true,
+--                 },
+--             },
+--             procMacro = {
+--                 enable = true
+--             },
+--         }
+--     }
+-- });
+--
+--
