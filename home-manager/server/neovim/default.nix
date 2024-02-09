@@ -6,8 +6,8 @@
 		viAlias = false;
 		vimAlias = true;
 
-		withPython3 = true;
-		withNodeJs = true;
+		# withPython3 = true;
+		# withNodeJs = true;
 
 		extraPackages = [];
 		extraConfig = ":luafile /home/alice/nixos-config/home-manager/server/neovim/init.lua";
@@ -23,17 +23,18 @@
 		gdb
 
 		#-- python
-		nodePackages.pyright # python language server
-		python311Packages.black # formatter
+		# nodePackages.pyright # python language server
+		# python311Packages.black # formatter
 
 		#-- rust
 		rustup
+		rust-analyzer
 
 		#-- nix
-		nil
-		rnix-lsp
-		statix
-		deadnix
+		# nil
+		# rnix-lsp
+		# statix
+		# deadnix
 
 		#-- bash
 		nodePackages.bash-language-server
