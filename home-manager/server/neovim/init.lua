@@ -149,7 +149,8 @@ require('lazy').setup({
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			-- REQUIRED by nvim-cmp. get rid of it once we can
-			-- "hrsh7th/vim-vsnip'",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
 		},
 		config = function()
 			local cmp = require'cmp'
@@ -157,7 +158,7 @@ require('lazy').setup({
 				snippet = {
 					-- REQUIRED by nvim-cmp. get rid of it once we can
 					expand = function(args)
-						vim.fn["vsnip#anonymous"](args.body)
+						require('luasnip').lsp_expand(args.body)
 					end,
 				},
 				mapping = cmp.mapping.preset.insert({
@@ -167,7 +168,7 @@ require('lazy').setup({
 					['<C-e>'] = cmp.mapping.abort(),
 					-- Accept currently selected item.
 					-- Set `select` to `false` to only confirm explicitly selected items.
-					['<CR>'] = cmp.mapping.confirm({ select = true }),
+					['<CR>'] = cmp.mapping.confirm({ select = false }),
 				}),
 				sources = cmp.config.sources({
 					{ name = 'nvim_lsp' },
