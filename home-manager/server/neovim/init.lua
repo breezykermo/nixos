@@ -167,6 +167,17 @@ require('lazy').setup({
 				lspconfig.bash_lsp.setup {}
 			end
 
+			-- Lua
+			lspconfig.lua_ls.setup {
+			  settings = {
+			    Lua = {
+			      completion = {
+				callSnippet = "Replace"
+			      }
+			    }
+			  }
+			}
+
 			-- Global mappings.
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 			vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
@@ -410,7 +421,8 @@ vim.defer_fn(function()
     parser_install_dir = parser_install_dir,
 
     matchup = {
-	    enable = true,              -- mandatory, false will disable the whole extension
+	--- XXX not working at the moment for lua, too eanoying while editing
+	    enable = false,       -- mandatory, false will disable the whole extension
 	    disable = { "lua" },  -- optional, list of language that will be disabled
     },
     -- Add languages to be installed here that you want installed for treesitter
