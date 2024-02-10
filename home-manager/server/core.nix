@@ -40,9 +40,9 @@
 		# nodePackages.node2nix
 
 		# fonts
-		liberation_ttf
-		font-awesome
 		fira-code
+		fira-code-symbols
+		font-awesome
 		noto-fonts
 	];
 
