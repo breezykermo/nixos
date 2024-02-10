@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd(
 --
 -------------------------------------------------------------------------------
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- sweet sweet relative line numbers
 vim.opt.relativenumber = true
@@ -56,7 +56,7 @@ vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
-vim.o.breakindent = true
+-- vim.o.breakindent = true
 
 -- Save undo history
 vim.o.undofile = true
