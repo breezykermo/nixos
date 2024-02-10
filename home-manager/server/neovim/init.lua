@@ -33,6 +33,15 @@ vim.api.nvim_create_autocmd(
 		end
 	}
 )
+-- .nix - ts=2, sw=2
+vim.cmd([[
+	autocmd FileType nix setlocal ts=2 sw=2
+]])
+-- .lua - ts=2, sw=2 
+vim.cmd([[
+	autocmd FileType lua setlocal ts=2 sw=2
+]])
+
 
 -------------------------------------------------------------------------------
 --
@@ -41,6 +50,10 @@ vim.api.nvim_create_autocmd(
 -------------------------------------------------------------------------------
 -- Set highlight on search
 vim.o.hlsearch = true
+
+-- Leader space to remove highlight 
+vim.api.nvim_set_keymap('n', '<leader><space>', ':nohlsearch<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('', '<space>', ':echo "remove search highlight"<CR>', { noremap = true, silent = true })
 
 -- sweet sweet relative line numbers
 vim.opt.relativenumber = true
@@ -81,9 +94,6 @@ vim.opt.foldmethod = "expr"
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
-
-vim.bo.tabstop = 2;
-vim.bo.shiftwidth = 2;
 
 -- [[ Basic Keymaps ]]
 

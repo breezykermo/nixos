@@ -40,8 +40,7 @@
 		# nodePackages.node2nix
 
 		# fonts
-		fira-code
-		fira-code-symbols
+		(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
 		font-awesome
 		noto-fonts
 	];
