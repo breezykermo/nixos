@@ -74,7 +74,6 @@ vim.o.timeoutlen = 300
 
 -- folds
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 
 -- Set completeopt to have a better completion experience
@@ -83,8 +82,8 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
--- vim.bo.tabstop = 2;
--- vim.bo.shiftwidth = 2;
+vim.bo.tabstop = 2;
+vim.bo.shiftwidth = 2;
 
 -- [[ Basic Keymaps ]]
 
@@ -168,7 +167,7 @@ require('lazy').setup({
 					['<C-e>'] = cmp.mapping.abort(),
 					-- Accept currently selected item.
 					-- Set `select` to `false` to only confirm explicitly selected items.
-					['<CR>'] = cmp.mapping.confirm({ select = false }),
+					['<Tab>'] = cmp.mapping.confirm({ select = false }),
 				}),
 				sources = cmp.config.sources({
 					{ name = 'nvim_lsp' },
@@ -219,13 +218,13 @@ require('lazy').setup({
 			}
 			-- Enable inlay hints
 			-- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
-			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-			--   vim.lsp.diagnostic.on_publish_diagnostics, {
-			--     virtual_text = true,
-			--     signs = true,
-			--     update_in_insert = true,
-			--   }
-			-- )
+			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+			  vim.lsp.diagnostic.on_publish_diagnostics, {
+			    virtual_text = true,
+			    signs = true,
+			    update_in_insert = true,
+			  }
+			)
 
 			-- Bash LSP
 			local configs = require 'lspconfig.configs'
@@ -275,7 +274,7 @@ require('lazy').setup({
 					vim.keymap.set('n', '<leader>wl', function()
 						print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 					end, opts)
-					--vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+					vim.keymap.set('n', '<space>t', vim.lsp.buf.type_definition, opts)
 					vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
 					vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, opts)
 					vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
@@ -361,15 +360,6 @@ require('lazy').setup({
 		},
 	},
 
-	{
-		-- Highlight, edit, and navigate code
-		'nvim-treesitter/nvim-treesitter',
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter-textobjects',
-		},
-		build = ':TSUpdate',
-	},
-
 	-- main color scheme
 	{
 		"wincent/base16-nvim",
@@ -435,92 +425,6 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
---- Necessary for Neovim on NixOS [from memory]
-local parser_install_dir = vim.fn.stdpath("cache") .. "/treesitters"
-vim.fn.mkdir(parser_install_dir, "p")
-vim.opt.runtimepath:append(parser_install_dir)
-
--- [[ Configure Treesitter ]]
--- See `:help nvim-treesitter`
--- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
--- XXX do I really need treesitter? I think I do for code intelligence, i.e. to go to function.
-vim.defer_fn(function()
-	require('nvim-treesitter.configs').setup {
-		parser_install_dir = parser_install_dir,
-
-		--    matchup = {
-		-- --- XXX not working at the moment for lua, too eanoying while editing
-		--     enable = false,       -- mandatory, false will disable the whole extension
-		--     disable = { "lua" },  -- optional, list of language that will be disabled
-		--    },
-
-		-- Add languages to be installed here that you want installed for treesitter
-		ensure_installed = { 'c', 'cpp', 'lua', 'rust' },
-
-		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-		auto_install = false,
-
-		highlight = { enable = true },
-
-		indent = { enable = true },
-
-		incremental_selection = {
-			enable = true,
-			keymaps = {
-				init_selection = '<c-space>',
-				node_incremental = '<c-space>',
-				scope_incremental = '<c-s>',
-				node_decremental = '<M-space>',
-			},
-		},
-
-		textobjects = {
-			select = {
-				enable = true,
-				lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-				keymaps = {
-					-- You can use the capture groups defined in textobjects.scm
-					['aa'] = '@parameter.outer',
-					['ia'] = '@parameter.inner',
-					['af'] = '@function.outer',
-					['if'] = '@function.inner',
-					['ac'] = '@class.outer',
-					['ic'] = '@class.inner',
-				},
-			},
-			move = {
-				enable = true,
-				set_jumps = true, -- whether to set jumps in the jumplist
-				goto_next_start = {
-					[']m'] = '@function.outer',
-					[']]'] = '@class.outer',
-				},
-				goto_next_end = {
-					[']M'] = '@function.outer',
-					[']['] = '@class.outer',
-				},
-				goto_previous_start = {
-					['[m'] = '@function.outer',
-					['[['] = '@class.outer',
-				},
-				goto_previous_end = {
-					['[M'] = '@function.outer',
-					['[]'] = '@class.outer',
-				},
-			},
-			swap = {
-				enable = true,
-				swap_next = {
-					['<leader>a'] = '@parameter.inner',
-				},
-				swap_previous = {
-					['<leader>A'] = '@parameter.inner',
-				},
-			},
-		},
-	}
-end, 0)
 
 require('which-key').register {
 	['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
