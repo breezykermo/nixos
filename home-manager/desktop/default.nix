@@ -115,7 +115,7 @@
     enable = true;
     settings = {
       font = {
-        normal.family = "Liberation Mono";
+        normal.family = "Fira Code";
         size = 12;
       };
       window.decorations = "none";

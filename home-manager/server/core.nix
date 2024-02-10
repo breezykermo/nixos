@@ -1,44 +1,43 @@
 {pkgs, config, ...}: {
 	home.packages = with pkgs; [
-		neofetch
+		# neofetch
 		lazygit		# git tui client
-		pandoc		# document processor
-		tectonic	# LaTeX compilation
-		bottom		# htop but better
+		# pandoc		# document processor
+		# tectonic	# LaTeX compilation
 
 		# archives
 		zip
 		xz
 
 		# networking tools
-		mtr				# A network diagnostic tool
-		dnsutils	# `dig` + `nslookup`
-		ldns			# replacement of `dig`, it provide the command `drill`
+		# mtr				# A network diagnostic tool
+		# dnsutils	# `dig` + `nslookup`
+		# ldns			# replacement of `dig`, it provide the command `drill`
 		nmap			# A utility for network discovery and security auditing
 
 		# Text Processing
 		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		gnugrep		# GNU grep, provides `grep`/`egrep`/`fgrep`
-		gnused		# GNU sed, mainly for replacing text in files
+		# gnugrep		# GNU grep, provides `grep`/`egrep`/`fgrep`
+		# gnused		# GNU sed, mainly for replacing text in files
 		gawk			# GNU awk, a pattern scanning and processing language
 		ripgrep		# recursively searches directories for a regex pattern
 		sad				# CLI search and replace, with diff preview 
 		delta			# A viewer for git and diff output
 
 		
-		ast-grep	# for code searching, linting, rewriting at large scale
+		# ast-grep	# for code searching, linting, rewriting at large scale
 		jq				# A lightweight and flexible command-line JSON processor
-		yq-go			# yaml processer https://github.com/mikefarah/yq
+		# yq-go			# yaml processer https://github.com/mikefarah/yq
 
 		file
 		which
 		tree
 		gnupg
-		git-trim # trims branches when tracking remote refs are merged or gone
+		# git-trim # trims branches when tracking remote refs are merged or gone
 
 		# nix related
-		nix-output-monitor # `nom` works just like `nix with more details
-		nodePackages.node2nix
+		# nix-output-monitor # `nom` works just like `nix with more details
+		# nodePackages.node2nix
 
 		# fonts
 		liberation_ttf
@@ -203,11 +202,5 @@
 				# ];
 			};
 		};
-	};
-
-	services = {
-		# keybase.enable = true;
-		# kbfs.enable = true;
-		# dropbox.enable = true;
 	};
 }
