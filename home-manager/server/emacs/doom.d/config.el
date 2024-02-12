@@ -20,13 +20,23 @@
 ;; ORG
 (after! org
         (setq org-latex-compiler "xelatex")
-        ;; (setq org-latex-default-packages-alist
-        ;;       '(("colorlinks=true" "hyperref" nil)
-        ;;         ("backend=biber" "biblatex" nil)
-        ;;         ("" "fancyhdr" nil)))
+        (setq org-latex-default-packages-alist
+              ("backend=biber" "biblatex" nil)
+              ("" "graphicx" t)
+              ("" "longtable" nil)
+              ("" "wrapfig" nil)
+              ("" "rotating" nil)
+              ("normalem" "ulem" nil)
+              ("" "amsmath" t)
+              ("" "amssymb" t)
+              ("" "capt-of" nil)
+              ("colorlinks=true" "hyperref" nil)
+              ("" "fancyhdr" nil))
         (setq org-latex-pdf-process
-              '("tectonic --keep-intermediates --reruns 0 %f"
-                "biber %b"
+              '(
+                ;; XXX these currently aren't working with biber
+                ;; "tectonic --keep-intermediates --reruns 0 %f"
+                ;; "biber %b"
                 "tectonic --keep-intermediates --reruns 0 %f"))
         (setq org-log-done 'time) ;; add timestamps to DONE
         (setq org-default-notes-file (format "%s/Dropbox (Brown)/lyt/org/notes.org" basep))
