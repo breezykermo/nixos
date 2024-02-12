@@ -5,10 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
     ;; TODO work out how to propagate the `basep` variable here
-   '("$HOME/Dropbox (Brown)/lyt/org/inbox.org"
-     "$HOME/Dropbox (Brown)/lyt/org/brown.org"
-     "$HOME/Dropbox (Brown)/lyt/org/emails.org"
-     "$HOME/Dropbox (Brown)/lyt/org/work.org"))
+   '(org-directory "$HOME/Dropbox (Brown)/lyt/org")
+   '(org-agenda-files (list org-directory)))
  '(package-selected-packages '(pbcopy)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
