@@ -7,7 +7,7 @@
       user-mail-address "lachiekermode@gmail.com")
 
 ;; FONTS, THEME et al
-(setq doom-font (font-spec :family "Liberation Mono" :size 20)
+(setq doom-font (font-spec :family "Fira Code" :size 20)
        doom-variable-pitch-font (font-spec :family "Hack" :size 20))
 (set-frame-parameter (selected-frame) 'alpha '(100 50))
 
@@ -18,13 +18,10 @@
 (setq display-line-numbers-type t)
 
 ;; ORG
-(setq PKB_DIR (format "%s/Dropbox (Brown)/lyt" basep))
-(setq org-directory PKB_DIR)
-(setq org-deadline-warning-days 3)
 (after! org
         (setq org-log-done 'time) ;; add timestamps to DONE
         (setq org-default-notes-file (format "%s/Dropbox (Brown)/lyt/org/notes.org" basep))
-)
+        (setq org-deadline-warning-days 3))
 
 (after! citar
   (setq! citar-bibliography '(format "%s/Dropbox (Brown)/lyt/references/master.bib" basep)))
