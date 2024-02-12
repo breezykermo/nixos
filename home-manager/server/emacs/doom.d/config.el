@@ -19,6 +19,8 @@
 
 ;; ORG
 (after! org
+        (setq org-latex-pdf-process
+              '("tectonic %f"))
         (setq org-log-done 'time) ;; add timestamps to DONE
         (setq org-default-notes-file (format "%s/Dropbox (Brown)/lyt/org/notes.org" basep))
         (setq org-deadline-warning-days 3))
@@ -48,5 +50,7 @@
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "firefox")
+
+
 
 (load custom-file)
