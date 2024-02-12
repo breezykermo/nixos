@@ -2,6 +2,7 @@
 {
   imports = [
     ./core.nix
+    ./pdf.nix
     ./fish
     ./tmux
     ./neovim
