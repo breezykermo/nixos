@@ -20,7 +20,7 @@
 ;; ORG
 (after! org
         (setq org-latex-pdf-process
-              '("tectonic %f"))
+              '("tectonic --keep-intermediates --reruns 0 %f"))
         (setq org-log-done 'time) ;; add timestamps to DONE
         (setq org-default-notes-file (format "%s/Dropbox (Brown)/lyt/org/notes.org" basep))
         (setq org-deadline-warning-days 3))
