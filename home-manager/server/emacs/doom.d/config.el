@@ -20,9 +20,10 @@
 ;; ORG
 (after! org
         (setq org-latex-compiler "xelatex")
-        (setq org-latex-default-packages-alist
-              '(("colorlinks=true" "hyperref" nil)
-                ("" "fancyhdr" nil)))
+        ;; (setq org-latex-default-packages-alist
+        ;;       '(("colorlinks=true" "hyperref" nil)
+        ;;         ("backend=biber" "biblatex" nil)
+        ;;         ("" "fancyhdr" nil)))
         (setq org-latex-pdf-process
               '("tectonic --keep-intermediates --reruns 0 %f"
                 "biber %b"
