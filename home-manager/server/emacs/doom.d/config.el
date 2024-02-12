@@ -21,19 +21,19 @@
 ;; XXX https://so.nwalsh.com/2020/01/05-latex
 (after! org
         ;; (setq org-latex-compiler "xelatex")
-        (setq org-latex-default-packages-alist
-              ("" "graphicx" t)
-              ("" "longtable" nil)
-              ("" "wrapfig" nil)
-              ("" "rotating" nil)
-              ("normalem" "ulem" nil)
-              ("" "amsmath" t)
-              ("" "amssymb" t)
-              ("" "capt-of" nil)
-              ("colorlinks=true" "hyperref" nil)
-              ("" "fancyhdr" nil))
-        (setq org-latex-pdf-process
-              '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -shell-escape -pdf -bibtex -f %f"))
+        ;; (setq org-latex-default-packages-alist
+        ;;       ("" "graphicx" t)
+        ;;       ("" "longtable" nil)
+        ;;       ("" "wrapfig" nil)
+        ;;       ("" "rotating" nil)
+        ;;       ("normalem" "ulem" nil)
+        ;;       ("" "amsmath" t)
+        ;;       ("" "amssymb" t)
+        ;;       ("" "capt-of" nil)
+        ;;       ("colorlinks=true" "hyperref" nil)
+        ;;       ("" "fancyhdr" nil))
+        ;; (setq org-latex-pdf-process
+        ;;       '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -shell-escape -pdf -bibtex -f %f"))
               ;; '("tectonic --keep-intermediates --reruns 0 %f"
               ;;   "biber %b"
               ;;   "tectonic --keep-intermediates --reruns 0 %f"))
