@@ -2,7 +2,7 @@
 
 	home.packages = with pkgs; [
 		tectonic
-		biber
+		biber-for-tectonic
 	];
 
 	programs = {
