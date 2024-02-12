@@ -14,7 +14,7 @@
 		texlive.enable = true;
 		texlive.extraPackages = tpkgs: {
 			inherit (tpkgs)
-				scheme-small
+				scheme-full
 				latex-bin
 				latexmk;
 		};
