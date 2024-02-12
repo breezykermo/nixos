@@ -21,7 +21,7 @@
 (after! org
         (setq org-latex-compiler "xelatex")
         (setq org-latex-default-packages-alist
-              ("backend=biber" "biblatex" nil)
+              ;; ("backend=biber" "biblatex" nil)
               ("" "graphicx" t)
               ("" "longtable" nil)
               ("" "wrapfig" nil)
