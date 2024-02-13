@@ -20,7 +20,7 @@
 ;; ORG
 ;; XXX https://so.nwalsh.com/2020/01/05-latex
 (after! org
-        (setq org-latex-compiler "xelatex")
+        ;; (setq org-latex-compiler "xelatex")
         ;; (setq org-latex-default-packages-alist
         ;;       ("" "graphicx" t)
         ;;       ("" "longtable" nil)
