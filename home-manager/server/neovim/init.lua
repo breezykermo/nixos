@@ -86,7 +86,7 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
 -- folds
-vim.opt.foldmethod = "expr"
+vim.opt.foldmethod = "indent"
 
 
 -- Set completeopt to have a better completion experience
