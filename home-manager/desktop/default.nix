@@ -14,7 +14,10 @@
     grim
     # citation management
     zotero
-
+    # 1. Log into account for zotero.org (lachlankermode@live.com). Wait for sync...
+    # 2. Install Better BibTex: https://retorque.re/zotero-better-bibtex/installation/
+    # 3. Export "My Library" (with "Keep updated") to lyt/references/master.bib
+    # 4. Install 'Zotero Connector' for Firefox.
   ];
  
   programs.waybar = {
