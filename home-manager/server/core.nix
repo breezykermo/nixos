@@ -1,9 +1,9 @@
 {pkgs, config, ...}: {
 	home.packages = with pkgs; [
-		# neofetch
+		neofetch
 		lazygit		# git tui client
 		# pandoc		# document processor
-		# tectonic	# LaTeX compilation
+		tectonic	# LaTeX compilation
 
 		# archives
 		zip
@@ -17,27 +17,18 @@
 
 		# Text Processing
 		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		# gnugrep		# GNU grep, provides `grep`/`egrep`/`fgrep`
-		# gnused		# GNU sed, mainly for replacing text in files
 		gawk			# GNU awk, a pattern scanning and processing language
 		ripgrep		# recursively searches directories for a regex pattern
 		sad				# CLI search and replace, with diff preview 
 		delta			# A viewer for git and diff output
-
-		
-		# ast-grep	# for code searching, linting, rewriting at large scale
+		ripgrep   # `rg` is a better grep
+		fd        # `fd` is a better find
 		jq				# A lightweight and flexible command-line JSON processor
-		# yq-go			# yaml processer https://github.com/mikefarah/yq
 
 		file
 		which
 		tree
 		gnupg
-		# git-trim # trims branches when tracking remote refs are merged or gone
-
-		# nix related
-		# nix-output-monitor # `nom` works just like `nix with more details
-		# nodePackages.node2nix
 
 		# fonts
 		fira-code

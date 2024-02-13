@@ -9,10 +9,12 @@
 
   home.packages = with pkgs; [
     xdg-utils
-    ripgrep
-    fd
+    # screenshots 
     slurp
     grim
+    # citation management
+    zotero
+
   ];
  
   programs.waybar = {
