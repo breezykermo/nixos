@@ -4,6 +4,7 @@
 		lazygit		# git tui client
 		# pandoc		# document processor
 		tectonic	# LaTeX compilation
+		pdftk     # pdf manipulation
 
 		# archives
 		zip
