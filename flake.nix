@@ -23,7 +23,7 @@
 	in
 	{
 		nixosConfigurations = {
-			"nixlox" = nixpkgs.lib.nixosSystem {
+			"loxnix" = nixpkgs.lib.nixosSystem {
 				system = system; 
 				# specialArgs = { inherit inputs; }; # Pass all input parameters to submodules
 				modules = [
@@ -41,7 +41,7 @@
 							users.alice = import ./home-manager;
 						};
 					}
-					./machines/thinkpad.nix
+					./machines/dellxps.nix
 				];
 			};
 		};
