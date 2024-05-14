@@ -23,7 +23,7 @@
 	in
 	{
 		nixosConfigurations = {
-			"nixos" = nixpkgs.lib.nixosSystem {
+			"nixlox" = nixpkgs.lib.nixosSystem {
 				system = system; 
 				# specialArgs = { inherit inputs; }; # Pass all input parameters to submodules
 				modules = [
