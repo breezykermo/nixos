@@ -161,7 +161,7 @@
         };
       };
       keyboard.bindings = [
-        { key = "C";  mods = "Control";   action = "Copy"; } 
+        { key = "C";  mods = "Option";   action = "Copy"; } 
         { key = "V";  mods = "Control";   action = "Paste"; } 
         { key = "J";  mods = "Shift|Alt"; action = "DecreaseFontSize"; } 
         { key = "K";  mods = "Shift|Alt"; action = "IncreaseFontSize"; } 
