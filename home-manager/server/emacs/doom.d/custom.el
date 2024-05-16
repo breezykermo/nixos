@@ -3,7 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (directory-files-recursively "./org/" "\\.org$"))
+ '(org-agenda-files '("~/Dropbox (Brown)/lyt/org/emails.org"
+		      "~/Dropbox (Brown)/lyt/org/brown.org"
+		      "~/Dropbox (Brown)/lyt/org/refs.org"
+		      "~/Dropbox (Brown)/lyt/org/inbox.org"))
  '(package-selected-packages '(pbcopy)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
