@@ -17,9 +17,18 @@
         "systemd-hybrid-sleep.service"
       ];
     };
+
+    # enable sound
+    pipewire = {
+      enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+      pulse.enable = true;
+    };
   };
 
-  # enable sound
   # hardware.pulseaudio.enable = true;
   # sound.enable = true;
   # nixpkgs.config.pulseaudio = true;
@@ -28,4 +37,7 @@
   security.pam.services.swaylock = {};
   security.polkit.enable = true;
   hardware.opengl.enable = true;
-}
+
+  # necessary for sound
+  security.rtkit.enable = true;
+  }

@@ -47,7 +47,7 @@
 	users.users.alice = {
 		isNormalUser = true;
 		description = "alice";
-		extraGroups = [ "networkmanager" "wheel" ];
+		extraGroups = [ "networkmanager" "wheel" "audio" ];
 	};
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
