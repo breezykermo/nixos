@@ -50,6 +50,9 @@
 	};
 
 	programs = {
+		# email in the terminal
+		aerc.enable = true;
+
 		# cd but better
 		zoxide.enable = true;
 
