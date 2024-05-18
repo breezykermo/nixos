@@ -21,6 +21,7 @@
     imagemagick
 
     # 'secure' messaging
+    # NB: services.keybase is already enabled in server/core.nix, required for this.
     keybase-gui
   ];
  
