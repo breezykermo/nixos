@@ -197,5 +197,7 @@
 				# ];
 			};
 		};
+
+		keybase.enable = true;
 	};
 }
