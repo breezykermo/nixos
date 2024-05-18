@@ -19,6 +19,9 @@
     # 3. Export "My Library" (with "Keep updated") to lyt/references/master.bib
     # 4. Install 'Zotero Connector' for Firefox.
     imagemagick
+
+    # 'secure' messaging
+    keybase-gui
   ];
  
   programs.waybar = {
