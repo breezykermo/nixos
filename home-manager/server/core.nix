@@ -1,4 +1,7 @@
 {pkgs, config, ...}: {
+	services = {
+		keybase.enable = true;
+	};
 	home.packages = with pkgs; [
 		neofetch
 		lazygit		# git tui client
@@ -197,7 +200,5 @@
 				# ];
 			};
 		};
-
-		keybase.enable = true;
 	};
 }
