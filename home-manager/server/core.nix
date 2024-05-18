@@ -6,30 +6,26 @@
 
 	home.packages = with pkgs; [
 		neofetch
-		lazygit		# git tui client
-		# pandoc		# document processor
-		tectonic	# LaTeX compilation
-		pdftk     # pdf manipulation
 
 		# archives
 		zip
 		xz
 
 		# networking tools
-		# mtr				# A network diagnostic tool
-		# dnsutils	# `dig` + `nslookup`
-		# ldns			# replacement of `dig`, it provide the command `drill`
-		nmap			# A utility for network discovery and security auditing
+		# mtr	# A network diagnostic tool
+		# dnsutils # `dig` + `nslookup`
+		# ldns	# replacement of `dig`, it provide the command `drill`
+		nmap	# A utility for network discovery and security auditing
 
 		# Text Processing
 		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		gawk			# GNU awk, a pattern scanning and processing language
-		ripgrep		# recursively searches directories for a regex pattern
-		sad				# CLI search and replace, with diff preview 
-		delta			# A viewer for git and diff output
-		ripgrep   # `rg` is a better grep
-		fd        # `fd` is a better find
-		jq				# A lightweight and flexible command-line JSON processor
+		gawk	# GNU awk, a pattern scanning and processing language
+		ripgrep	# recursively searches directories for a regex pattern
+		sad	# CLI search and replace, with diff preview 
+		delta	# A viewer for git and diff output
+		ripgrep	# `rg` is a better grep
+		fd	# `fd` is a better find
+		jq	# A lightweight and flexible command-line JSON processor
 
 		file
 		which
@@ -41,6 +37,12 @@
 		fira-code-symbols
 		font-awesome
 		noto-fonts
+
+		lazygit	# git tui client
+		pandoc	# document processor
+		tectonic# LaTeX compilation
+		pdftk	# pdf manipulation
+		bartib	# time tracking
 	];
 
 	home.shellAliases = {
