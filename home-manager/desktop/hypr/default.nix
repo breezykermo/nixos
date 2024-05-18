@@ -9,7 +9,7 @@
 		extraConfig = builtins.readFile ./hypr.conf;
 	};
 
-	home.file.".config/hypr/hyprpaper.conf".source = ".hyprpaper.conf";
+	home.file.".config/hypr/hyprpaper.conf".source = ./hyprpaper.conf;
 
 # NB: only available in unstable home manager, as of 2024.05.18
 #services.hyprpaper = {
