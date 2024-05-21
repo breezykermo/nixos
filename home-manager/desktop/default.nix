@@ -7,6 +7,16 @@
     ./zathura
   ];
 
+  home.pointerCursor = {
+	  name = "Adwaita";
+	  package = pkgs.gnome.adwaita-icon-theme;
+	  size = 24;
+	  x11 = {
+		  enable = true;
+		  defaultCursor = "Adwaita";
+	  };
+  };
+
   home.packages = with pkgs; [
     xdg-utils
     # screenshots 
@@ -104,17 +114,17 @@
     }];
   };
 
-  programs.swaylock = {
-    enable = true;
-    settings = {
-      color = "480175";
-      font-size = 24;
-      indicator-idle-visible = false;
-      indicator-radius = 100;
-      line-color = "ffffff";
-      show-failed-attempts = true;
-    };
-  };
+# programs.swaylock = {
+#   enable = true;
+#   settings = {
+#     color = "480175";
+#     font-size = 24;
+#     indicator-idle-visible = false;
+#     indicator-radius = 100;
+#     line-color = "ffffff";
+#     show-failed-attempts = true;
+#   };
+# };
 
   programs.rofi = {
     enable = true;
