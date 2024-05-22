@@ -33,7 +33,7 @@
 	# https://github.com/TechsupportOnHold/Batterylife/blob/main/laptop.nix
 	services.system76-scheduler.settings.cfsProfiles.enable = true;
 	services.thermald.enable = true;
-	powerManager.powertop.enable = true;
+	powerManagement.powertop.enable = true;
 	services.power-profiles-daemon.enable = false;
 	services.tlp = {
 		enable = true;
