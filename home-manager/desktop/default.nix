@@ -7,15 +7,15 @@
     ./zathura
   ];
 
-  home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.gnome.adwaita-icon-theme;
-    size = 24;
-    x11 = {
-      enable = true;
-      defaultCursor = "Adwaita";
-    };
-  };
+  # home.pointerCursor = {
+  #   name = "Adwaita";
+  #   package = pkgs.gnome.adwaita-icon-theme;
+  #   size = 24;
+  #   x11 = {
+  #     enable = true;
+  #     defaultCursor = "Adwaita";
+  #   };
+  # };
 
   home.packages = with pkgs; [
     xdg-utils
@@ -49,7 +49,7 @@
     ${builtins.readFile ./waybar.style.css}
     '';
     settings = [{
-      height = 5;
+      height = 10;
       layer = "top";
       position = "bottom";
       tray = { spacing = 10; };
@@ -130,7 +130,7 @@
     settings = {
       font = {
         normal.family = "Fira Code";
-        size = 12;
+        size = 20;
       };
       window.decorations = "none";
       scrolling.history = 0;
