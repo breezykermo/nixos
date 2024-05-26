@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-	# TODO: switch to Maestral, as this doesn't work
+	# TODO: switch to Maestral, as this doesn't work as well as it could...
 	systemd.user.services.dropbox = {
 		Unit = {
 			Description = "Dropbox";
