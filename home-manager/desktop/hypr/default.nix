@@ -7,6 +7,8 @@
 
 	home.packages = with pkgs; [
 		swaybg
+		wdisplays
+		way-displays
 	];
 
 	wayland.windowManager.hyprland = {

@@ -149,6 +149,10 @@
 
 		command-not-found.enable = false;
 
+		btop = {
+			enable = true;
+		}
+
 		htop = {
 			enable = true;
 			settings = {
@@ -194,17 +198,6 @@
 				color_scheme = 0;
 				enable_mouse = 1;
 				delay = 15;
-				# left_meters = with config.lib.htop; leftMeters [
-				#  (bar "LeftCPUs2")
-				#  (bar "Memory")
-				#  (bar "Swap)
-				# ];
-				# right_meters= with config.lib.htop; rightMeters [
-				# 	(bar "RightCPUs2")
-				# 	(bar "Tasks")
-				# 	(bar "LoadAverage")
-				# 	(bar "Uptime")
-				# ];
 			};
 		};
 	};
