@@ -151,7 +151,9 @@
 
 		btop = {
 			enable = true;
-			extraConfig.vim_keys = true;
+			settings = {
+				vim_keys = true;
+			};
 		};
 	};
 }

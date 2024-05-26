@@ -135,6 +135,9 @@ require('lazy').setup({
 	-- Detect tabstop and shiftwidth automatically
 	'tpope/vim-sleuth',
 
+	-- Automatically manage Vim.session (for tmux restore)
+	'tpope/vim-obsession',
+
 	-- Navigation straight out of Neovim into Tmux
 	'christoomey/vim-tmux-navigator',
 
