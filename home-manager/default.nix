@@ -1,6 +1,7 @@
 { ... }:
 
 {
+	# secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json");
 	imports = [
 		./server
 		./desktop

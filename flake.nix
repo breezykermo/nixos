@@ -34,7 +34,7 @@
 					{
 						home-manager = {
 							# see https://blog.nobbz.dev/2022-12-12-getting-inputs-to-modules-in-a-flake/
-							extraSpecialArgs = { inherit inputs system; secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json"); };
+							extraSpecialArgs = { inherit inputs system; };
 
 							useGlobalPkgs = true;
 							useUserPackages = true;
