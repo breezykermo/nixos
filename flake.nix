@@ -20,7 +20,6 @@
 	outputs = inputs@{ nixpkgs, home-manager, ... }:
 	let 
 		system = "x86_64-linux";
-		secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json"); 
 	in
 	{
 		nixosConfigurations = {
@@ -35,7 +34,7 @@
 					{
 						home-manager = {
 							# see https://blog.nobbz.dev/2022-12-12-getting-inputs-to-modules-in-a-flake/
-							extraSpecialArgs = { inherit inputs system secrets; };
+							extraSpecialArgs = { inherit inputs system; secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json"); };
 
 							useGlobalPkgs = true;
 							useUserPackages = true;
