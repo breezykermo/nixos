@@ -31,17 +31,16 @@
 				./nixos/configuration.nix
 
 				# Use home-manager to configure different users
-				home-manager.nixosModules.home-manager
-				{
+				home-manager.nixosModules.home-manager {
 					home-manager = {
-						# see https://blog.nobbz.dev/2022-12-12-getting-inputs-to-modules-in-a-flake/
-						extraSpecialArgs = { inherit inputs system; };
-
 						useGlobalPkgs = true;
 						useUserPackages = true;
+						extraSpecialArgs = { inherit inputs system; };
+
 						users.alice = import ./home-manager;
 					};
 				}
+
 				./machines/dellxps.nix
 			];
 		};
