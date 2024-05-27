@@ -22,28 +22,26 @@
 		system = "x86_64-linux";
 	in
 	{
-		nixosConfigurations = {
-			"loxnix" = nixpkgs.lib.nixosSystem {
-				system = system; 
-				# specialArgs = { inherit secrets; }; # Pass all secrets to submodules
-				modules = [
-					# NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
-					./nixos/configuration.nix
-					# Use home-manager to configure different users
-					home-manager.nixosModules.home-manager
-					{
-						home-manager = {
-							# see https://blog.nobbz.dev/2022-12-12-getting-inputs-to-modules-in-a-flake/
-							extraSpecialArgs = { inherit inputs system; };
+		nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
+			inherit system; 
+			modules = [
+				# hardware, NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
+				./nixos/configuration.nix
 
-							useGlobalPkgs = true;
-							useUserPackages = true;
-							users.alice = import ./home-manager;
-						};
-					}
-					./machines/dellxps.nix
-				];
-			};
+				# Use home-manager to configure different users
+				home-manager.nixosModules.home-manager
+				{
+					home-manager = {
+						# see https://blog.nobbz.dev/2022-12-12-getting-inputs-to-modules-in-a-flake/
+						extraSpecialArgs = { inherit inputs system; };
+
+						useGlobalPkgs = true;
+						useUserPackages = true;
+						users.alice = import ./home-manager;
+					};
+				}
+				./machines/dellxps.nix
+			];
 		};
 	};
 }

@@ -24,24 +24,6 @@
 
 	# Select internationalisation properties.
 	i18n.defaultLocale = "en_US.UTF-8";
-	# console = {
-	#		font = "Lat2-Terminus16";
-	#		keyMap = "us";
-	#		useXkbConfig = true; # use xkbOptions in tty.
-	# };
-
-	# X11 windowing system.
-	# services.xserver.enable = true;
-	# services.xserver.layout = "us";
-	# services.xserver.xkbOptions = "eurosign:e,caps:escape";
-	# services.xserver.libinput.enable = true; # touchpad support
-
-	# CUPS to print documents.
-	# services.printing.enable = true;
-
-	# Sound.
-	# sound.enable = true;
-	# hardware.pulseaudio.enable = true;
 
 	# Define a user account. Don't forget to set a password with ‘passwd’.
 	users.users.alice = {
@@ -50,8 +32,10 @@
 		extraGroups = [ "networkmanager" "wheel" "audio" ];
 	};
 
+	# Enable the flakes feature; requires `git` in systemPackages
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+	# Default packages
 	environment.systemPackages = with pkgs; [
 		git
 		vim
@@ -59,17 +43,17 @@
 		curl
 	];
 
-	environment.variables.EDITOR = "vi";
+	# environment.variables.EDITOR = "vi";
 
-	services.openssh = {
-		enable = true;
-		settings = {
-			X11Forwarding = true;
-			PermitRootLogin = "yes";
-			PasswordAuthentication = false;
-		};
-		openFirewall = true;
-	};
+	# services.openssh = {
+	# 	enable = true;
+	# 	settings = {
+	# 		X11Forwarding = true;
+	# 		PermitRootLogin = "yes";
+	# 		PasswordAuthentication = false;
+	# 	};
+	# 	openFirewall = true;
+	# };
 
 	# This value determines the NixOS release from which the default
 	# settings for stateful data, like file locations and database versions
