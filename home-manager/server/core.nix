@@ -5,6 +5,8 @@
 	};
 
 	home.packages = with pkgs; [
+		# profiling
+		nix-tree
 		neofetch
 
 		# archives
@@ -67,7 +69,6 @@
 		# ls but better
 		exa = {
 			enable = true;
-			enableAliases = true;
 			git = true;
 			icons = true;
 		};
@@ -122,7 +123,6 @@
 					email = "hi@ohrg.org";
 				};
 			};
-			enableFishIntegration = true;
 		};
 
 		# A command-line fuzzy finder
