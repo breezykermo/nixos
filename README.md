@@ -15,6 +15,15 @@ Hyprland
 ```
 
 ## Manual steps
+### Unencrypt secrets
+
+```bash
+pbpaste | base64 --decode > ./secret-key
+git-crypt unlock ./secret-key
+```
+
+See https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/ for more info.
+
 ### Install doom emacs
 `git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs`
 
@@ -23,3 +32,4 @@ Hyprland
 `~/.config/emacs/bin/doom sync`
 
 (See home-manager/server/emacs/default.nix for more information.)
+
