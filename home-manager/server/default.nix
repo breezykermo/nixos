@@ -7,6 +7,5 @@
     ./neovim
     ./emacs
     ./dropbox
-    # ./pass.nix
   ];
 }
