@@ -40,6 +40,7 @@
 		font-awesome
 		noto-fonts
 
+		just # better makefiles
 		lazygit	# git tui client
 		pandoc	# document processor
 		tectonic# LaTeX compilation
