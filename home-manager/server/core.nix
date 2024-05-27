@@ -43,6 +43,7 @@
 		tectonic# LaTeX compilation
 		pdftk	# pdf manipulation
 		bartib	# time tracking
+		git-crypt # encrypted git repos
 	];
 
 	home.shellAliases = {
