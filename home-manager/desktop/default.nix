@@ -5,6 +5,7 @@
     ./hypr
     ./firefox
     ./zathura
+    ./spotify
   ];
 
   home.packages = with pkgs; [
