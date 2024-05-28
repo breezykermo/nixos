@@ -1,3 +1,4 @@
+# PDF viewer
 { ... }:
 {
   programs.zathura = {
