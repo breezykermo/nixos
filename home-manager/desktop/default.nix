@@ -41,7 +41,7 @@
     settings = {
       font = {
         normal.family = "Fira Code";
-        size = 20;
+        size = 14;
       };
       window.decorations = "none";
       scrolling.history = 0;
