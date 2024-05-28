@@ -92,6 +92,10 @@
 			};
 		};
 
+		lf = {
+			enable = true;
+		};
+
 		git = {
 			enable = true;
 			userName = "Lachlan Kermode";
