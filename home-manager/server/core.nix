@@ -161,5 +161,9 @@
 				vim_keys = true;
 			};
 		};
+
+		yt-dlp = {
+			enable = true;
+		};
 	};
 }
