@@ -210,26 +210,26 @@ require('lazy').setup({
 			local lspconfig = require('lspconfig')
 
 			-- Rust
-			lspconfig.rust_analyzer.setup {
+			-- lspconfig.rust_analyzer.setup {
 				-- Server-specific settings. See `:help lspconfig-setup`
-				settings = {
-					["rust-analyzer"] = {
-						cargo = {
-							allFeatures = true,
-						},
-						imports = {
-							group = {
-								enable = false,
-							},
-						},
-						completion = {
-							postfix = {
-								enable = false,
-							},
-						},
-					},
-				},
-			}
+				-- settings = {
+				-- 	["rust-analyzer"] = {
+				-- 		cargo = {
+				-- 			allFeatures = true,
+				-- 		},
+				-- 		imports = {
+				-- 			group = {
+				-- 				enable = false,
+				-- 			},
+				-- 		},
+				-- 		completion = {
+				-- 			postfix = {
+				-- 				enable = false,
+				-- 			},
+				-- 		},
+				-- 	},
+				-- },
+			-- }
 			-- Enable inlay hints
 			-- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
 			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
