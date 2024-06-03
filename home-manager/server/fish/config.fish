@@ -1,5 +1,9 @@
 set fish_greeting # disable greeting
 
+# Important to ensure switching to fish_vi_key_bindings hasn't removed
+# anything important
+fish_default_key_bindings
+
 zoxide init fish | source
 
 # Necessary hack for environment variables
