@@ -58,6 +58,7 @@
 		g = "lazygit";
 		t = "tmux";
 		z = "zoxide";
+		b = "bartib";
 	};
 
 	programs = {
