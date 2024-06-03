@@ -51,4 +51,7 @@
 
 	# necessary for sound
 	security.rtkit.enable = true;
+
+	# bluetooth
+	hardware.bluetooth.enable = true;
 }
