@@ -58,7 +58,7 @@
 		g = "lazygit";
 		t = "tmux";
 		z = "zoxide";
-		b = "bartib";
+		b = "bartib -f ~/.bartib";
 	};
 
 	programs = {
