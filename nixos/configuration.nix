@@ -14,6 +14,8 @@
 
 	networking.hostName = "loxnix";
 	networking.networkmanager.enable = true;
+	# necessary for routing traffic through wireguard
+	networking.firewall.checkReversePath = false;
 
 	# Set your time zone.
 	time.timeZone = "Europe/Amsterdam";
