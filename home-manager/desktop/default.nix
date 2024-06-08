@@ -30,6 +30,9 @@
 
     # volume control
     pulsemixer
+
+    # backlight (control with "sudo xbacklight -dec 20")
+    acpilight
   ];
  
   programs.rofi = {
