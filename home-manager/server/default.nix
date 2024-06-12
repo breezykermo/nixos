@@ -6,6 +6,7 @@
     ./tmux
     ./neovim
     ./emacs
+    ./node
     ./dropbox
     ./llms
   ];
