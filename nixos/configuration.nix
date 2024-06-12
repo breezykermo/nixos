@@ -1,12 +1,24 @@
 { config, lib, pkgs, ... }:
-
+let
+# add unstable channel declaratively
+	unstableTarball =
+		fetchTarball
+			https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+in
 {
 	imports = [ 
 		./hardware-configuration.nix
 	];
 
-	# Allow unfree (Dropbox)
-	nixpkgs.config.allowUnfree = true;
+	# Allow unfree (Dropbox), and unstable (ollama)
+	nixpkgs.config = {
+		allowUnfree = true;
+		packageOverrides = pkgs: {
+			unstable = import unstableTarball {
+				config = config.nixpkgs.config;
+			};
+		};
+	};
 
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
@@ -45,23 +57,38 @@
 		curl
 	];
 
+	virtualisation = {
+		podman = {
+			enable = true;
+			dockerCompat = true;
+		};
+
+		oci-containers = {
+			backend = "podman";
+
+			containers = {
+				# open-webui = import ../home-manager/server/llms/openwebui.nix;
+			};
+		};
+	};
+
 	# Limit the number of generations to keep
-  boot.loader.systemd-boot.configurationLimit = 10;
-  # boot.loader.grub.configurationLimit = 10;
+	boot.loader.systemd-boot.configurationLimit = 10;
+	# boot.loader.grub.configurationLimit = 10;
 
-  # Perform garbage collection weekly to maintain low disk usage
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
-  };
+	# Perform garbage collection weekly to maintain low disk usage
+	nix.gc = {
+		automatic = true;
+		dates = "weekly";
+		options = "--delete-older-than 1w";
+	};
 
-  # Optimize storage
-  # You can also manually optimize the store via:
-  #    nix-store --optimise
-  # Refer to the following link for more details:
-  # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
-  nix.settings.auto-optimise-store = true;
+	# Optimize storage
+	# You can also manually optimize the store via:
+	#    nix-store --optimise
+	# Refer to the following link for more details:
+	# https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
+	nix.settings.auto-optimise-store = true;
 
 	# This value determines the NixOS release from which the default
 	# settings for stateful data, like file locations and database versions

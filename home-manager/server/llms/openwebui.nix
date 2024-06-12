@@ -8,7 +8,7 @@
   };
 
   volumes = [
-    "/home/alice/open-webui/data:/app/backend/data"
+    "/home/alice/.open-webui:/app/backend/data"
   ];
 
   ports = [
