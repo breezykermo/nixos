@@ -47,6 +47,8 @@
 		pdftk	# pdf manipulation
 		bartib	# time tracking
 		git-crypt # encrypted git repos
+
+		nodejs # npm, baby
 	];
 
 	home.shellAliases = {

@@ -14,3 +14,6 @@ set -gx DOOMDIR "$HOME/.doom.d"
 # 	hyprctl keyword "device:tpps/2-elan-trackpoint:enabled" false
 # 	hyprctl keyword "device:synaptics-tm3289-021:enabled" false
 # end
+
+# NPM packages go to home directory so as not to modify nix store
+fish_add_path ~/.npm-packages/bin
