@@ -7,5 +7,6 @@
     ./neovim
     ./emacs
     ./dropbox
+    ./llms
   ];
 }
