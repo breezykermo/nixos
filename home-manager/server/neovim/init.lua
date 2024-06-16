@@ -461,11 +461,11 @@ map('n', '<leader>f', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 map('n', '<c-p>', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+map('n', '<leader>a', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 map('n', '<leader>ss', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 map('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-map('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 map('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-map('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+map('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 map('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 map('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
