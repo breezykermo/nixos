@@ -472,6 +472,6 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<leader>n', ':NERDTreeFind<cr>', opts)
 vim.keymap.set('n', '<leader>k', ':NERDTreeToggle<cr>', opts)
 
--- Tabs
+-- Tabs, see https://github.com/romgrk/barbar.nvim
 map('n', '<C-z>', '<Cmd>BufferPrevious<CR>', opts)
 map('n', '<C-x>', '<Cmd>BufferNext<CR>', opts)
