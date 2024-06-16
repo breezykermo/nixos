@@ -48,7 +48,6 @@
 		bartib	# time tracking
 		git-crypt # encrypted git repos
 
-		nodejs # npm, baby
 	];
 
 	home.shellAliases = {
@@ -61,6 +60,7 @@
 		t = "tmux";
 		z = "zoxide";
 		b = "bartib -f ~/.bartib";
+		s = "sllm";
 	};
 
 	programs = {

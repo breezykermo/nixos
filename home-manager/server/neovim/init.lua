@@ -352,6 +352,22 @@ require('lazy').setup({
 		},
 	},
 
+	-- tabs at the top
+	{'romgrk/barbar.nvim',
+    dependencies = {
+      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+    },
+    init = function() vim.g.barbar_auto_setup = false end,
+    opts = {
+      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+      -- animation = true,
+      -- insert_at_start = true,
+      -- …etc.
+    },
+    version = '^1.0.0', -- optional: only update when a new 1.x version is released
+  },
+
 	-- "gc" to comment visual regions/lines
 	{ 'numToStr/Comment.nvim', opts = {} },
 
@@ -417,7 +433,6 @@ require('telescope').setup {
 		},
 	},
 }
-
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
@@ -450,7 +465,13 @@ require('which-key').register {
 	['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 }
 
--- NERDTree
-vim.keymap.set('n', '<leader>n', ':NERDTreeFind<cr>', { silent = true })
-vim.keymap.set('n', '<leader>m', ':NERDTreeToggle<cr>', { silent = true })
+-- General opts for remaps
+local opts = { noremap = true, silent = true }
 
+-- NERDTree
+vim.keymap.set('n', '<leader>n', ':NERDTreeFind<cr>', opts)
+vim.keymap.set('n', '<leader>k', ':NERDTreeToggle<cr>', opts)
+
+-- Tabs
+map('n', '<C-z>', '<Cmd>BufferPrevious<CR>', opts)
+map('n', '<C-x>', '<Cmd>BufferNext<CR>', opts)
