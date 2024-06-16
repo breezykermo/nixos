@@ -460,7 +460,7 @@ map('n', '<leader>f', function()
 	})
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-map('n', '<c-p>', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+map('n', '<leader>p', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 map('n', '<leader>a', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 map('n', '<leader>ss', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 map('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
