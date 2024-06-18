@@ -15,6 +15,9 @@
     slurp
     grim
 
+    # clipboard
+    wl-clipboard-rs # required for tmux-yank to copy to clipboard
+
     # citation management
     zotero
 
@@ -33,6 +36,9 @@
 
     # backlight (control with "sudo xbacklight -dec 20")
     acpilight
+
+    # for flashing ZSA keyboards
+    keymapp
   ];
  
   programs.rofi = {
