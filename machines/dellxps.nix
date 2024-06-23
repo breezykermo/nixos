@@ -56,7 +56,6 @@
 	hardware.bluetooth.enable = true;
 
 	# https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
-	environment.shells = with pkgs; [ bashInteractive fish ];
 	boot.kernelModules = [ "v412loopback" ];
 	boot.extraModulePackages = with config.boot.kernelPackages; [
 		v4l2loopback
@@ -65,4 +64,7 @@
 		options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
 	'';
 	environment.systemPackages = [ pkgs.v4l-utils ];
+	# NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4
+	environment.shells = with pkgs; [ bashInteractive fish ];
+  users.users.alice.shell = pkgs.fish;
 }
