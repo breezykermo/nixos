@@ -6,6 +6,7 @@
     ./firefox
     ./zathura
     ./spotify
+    ./obs
   ];
 
   home.packages = with pkgs; [
