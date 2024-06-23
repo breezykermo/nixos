@@ -56,6 +56,7 @@
 	hardware.bluetooth.enable = true;
 
 	# https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
+	environment.shells = with pkgs; [ bashInteractive zsh ];
 	boot.kernelModules = [ "v412loopback" ];
 	boot.extraModulePackages = with config.boot.kernelPackages; [
 		v4l2loopback
