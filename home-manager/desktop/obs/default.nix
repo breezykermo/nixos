@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  environment.shells = with pkgs; [ bashInteractive zsh ];
   programs.obs-studio = {
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [

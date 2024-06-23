@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   # user.sessionVariables.BROWSER = "firefox";
+  programs.chromium.enable = true;
   programs.firefox = {
     enable = true;
     # package = pkgs.firefox.override {cfg.enableTridactylNative = true;};
