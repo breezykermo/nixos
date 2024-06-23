@@ -65,6 +65,7 @@
 	'';
 	environment.systemPackages = [ pkgs.v4l-utils ];
 	# NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4
-	environment.shells = with pkgs; [ bashInteractive fish ];
-  users.users.alice.shell = pkgs.fish;
+	environment.shells = with pkgs; [ bashInteractive ];
+ #  users.users.alice.shell = pkgs.fish;
+	# users.users.alice.ignoreShellProgramCheck = true;
 }
