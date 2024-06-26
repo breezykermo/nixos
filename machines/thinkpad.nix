@@ -27,5 +27,5 @@
   # necessary for swaylock, see https://github.com/nix-community/home-manager/blob/master/modules/programs/swaylock.nix 
   security.pam.services.swaylock = {};
   security.polkit.enable = true;
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 }
