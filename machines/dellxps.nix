@@ -47,7 +47,7 @@
 
 	# necessary for sway
 	security.polkit.enable = true;
-	hardware.opengl.enable = true;
+	hardware.graphics.enable = true;
 
 	# necessary for sound
 	security.rtkit.enable = true;
