@@ -7,7 +7,6 @@
     ./zathura
     ./spotify
     ./obs
-    ./steam
   ];
 
   home.packages = with pkgs; [

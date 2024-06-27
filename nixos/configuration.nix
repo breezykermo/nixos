@@ -61,6 +61,9 @@ in
 		];
 	};
 
+	# NB: not ideal to put it here, but fine for now.
+	programs.steam.enable = true;
+
 	# Enable nix ld for running binaries: see https://github.com/Mic92/nix-ld
   # programs.nix-ld.enable = true;
 
