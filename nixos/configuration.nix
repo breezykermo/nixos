@@ -50,15 +50,16 @@ in
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 	# Default packages
-	environment.systemPackages = with pkgs; [
-		git
-		vim
-		wget
-		curl
-		# Dictionary lookup
+	environment = {
 		etc."dict.conf".text = "server dict.org";
-		systemPackages = with pkgs; [ dict ];
-	];
+		systemPackages = with pkgs; [
+			git
+			vim
+			wget
+			curl
+			dict
+		];
+	};
 
 	# for flashing keyboards with Keymapp
 	services.udev.extraRules = ''
