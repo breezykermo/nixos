@@ -61,6 +61,17 @@ in
 		];
 	};
 
+	# Enable nix ld
+  programs.nix-ld.enable = true;
+
+  # Sets up all the libraries to load
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    glib
+    # ...
+  ];
+
+
 	# for flashing keyboards with Keymapp
 	services.udev.extraRules = ''
 	# Rules for Oryx web flashing and live training
