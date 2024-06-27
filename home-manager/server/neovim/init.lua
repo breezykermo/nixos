@@ -419,6 +419,8 @@ require('lazy').setup({
 		version = '^4', -- Recommended
 		ft = { 'rust' },
 	}
+
+	-- Python
 }, {})
 
 -- [[ Configure Telescope ]]
