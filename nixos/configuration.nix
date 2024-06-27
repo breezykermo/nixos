@@ -61,15 +61,15 @@ in
 		];
 	};
 
-	# Enable nix ld
-  programs.nix-ld.enable = true;
+	# Enable nix ld for running binaries: see https://github.com/Mic92/nix-ld
+  # programs.nix-ld.enable = true;
 
   # Sets up all the libraries to load
-  programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc
-    glib
-    # ...
-  ];
+  # programs.nix-ld.libraries = with pkgs; [
+  #   stdenv.cc.cc
+  #   glib
+  #   # ...
+  # ];
 
 
 	# for flashing keyboards with Keymapp
