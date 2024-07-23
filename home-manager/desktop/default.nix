@@ -40,6 +40,9 @@
 
     # for flashing ZSA keyboards
     keymapp
+
+    # for flashcards
+    anki-bin
   ];
  
   programs.rofi = {
