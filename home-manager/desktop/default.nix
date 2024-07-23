@@ -11,6 +11,7 @@
 
   home.packages = with pkgs; [
     xdg-utils
+    # handlr
 
     # screenshots 
     slurp
