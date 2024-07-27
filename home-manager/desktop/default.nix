@@ -46,7 +46,7 @@
     # for flashcards
     anki-bin
   ];
- 
+
   programs.rofi = {
     enable = true;
     theme = "gruvbox-dark";
