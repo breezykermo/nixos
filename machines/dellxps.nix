@@ -57,6 +57,7 @@
 
 	# opengl
 	hardware.opengl.enable = true;
+	hardware.opengl.extraPackages = with pkgs; [ intel-media-driver ];
 
 	# https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
 	boot.kernelModules = [ "v412loopback" ];
