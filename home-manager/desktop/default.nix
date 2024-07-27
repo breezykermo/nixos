@@ -7,6 +7,7 @@
     ./zathura
     ./spotify
     ./obs
+    ./blender
   ];
 
   home.packages = with pkgs; [
