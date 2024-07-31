@@ -210,35 +210,36 @@ require('lazy').setup({
 			local lspconfig = require('lspconfig')
 
 			-- Rust
-			-- lspconfig.rust_analyzer.setup {
-				-- Server-specific settings. See `:help lspconfig-setup`
-				-- settings = {
-				-- 	["rust-analyzer"] = {
-				-- 		cargo = {
-				-- 			allFeatures = true,
-				-- 		},
-				-- 		imports = {
-				-- 			group = {
-				-- 				enable = false,
-				-- 			},
-				-- 		},
-				-- 		completion = {
-				-- 			postfix = {
-				-- 				enable = false,
-				-- 			},
-				-- 		},
-				-- 	},
-				-- },
-			-- }
+			lspconfig.rust_analyzer.setup({
+				on_attach = function(client, bufnr)
+					-- Enable inlay hints for Rust
+					rustacean.setup({ auto = true })
+					rustacean.inlay_hints.enable()
+				end,
+				settings = {
+					["rust-analyzer"] = {
+						assist = {
+							importGranularity = "module",
+							importPrefix = "by_self",
+						},
+						cargo = {
+							loadOutDirsFromCheck = true,
+						},
+						procMacro = {
+							enable = true
+						},
+					}
+				}
+			})
 			-- Enable inlay hints
 			-- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
-			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-			  vim.lsp.diagnostic.on_publish_diagnostics, {
-			    virtual_text = true,
-			    signs = true,
-			    update_in_insert = true,
-			  }
-			)
+			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+			--   vim.lsp.diagnostic.on_publish_diagnostics, {
+			--     virtual_text = true,
+			--     signs = true,
+			--     update_in_insert = true,
+			--   }
+			-- )
 
 			-- Bash LSP
 			local configs = require 'lspconfig.configs'
@@ -418,9 +419,12 @@ require('lazy').setup({
 		'mrcjkb/rustaceanvim',
 		version = '^4', -- Recommended
 		ft = { 'rust' },
-	}
+	},
 
-	-- Python
+	-- Svelte
+	{
+		'evanleck/vim-svelte'
+	}
 }, {})
 
 -- [[ Configure Telescope ]]
