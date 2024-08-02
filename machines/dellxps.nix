@@ -47,7 +47,6 @@
 
 	# necessary for sway
 	security.polkit.enable = true;
-	hardware.graphics.enable = true;
 
 	# necessary for sound
 	security.rtkit.enable = true;
@@ -56,8 +55,8 @@
 	hardware.bluetooth.enable = true;
 
 	# opengl
-	hardware.opengl.enable = true;
-	hardware.opengl.extraPackages = with pkgs; [ intel-media-driver ];
+	hardware.graphics.enable = true;
+	hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
 	# https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
 	boot.kernelModules = [ "v412loopback" ];

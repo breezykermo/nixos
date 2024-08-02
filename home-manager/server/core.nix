@@ -37,10 +37,10 @@
 		# fonts
 		fira-code
 		fira-code-symbols
-		font-awesome
-		noto-fonts
+		# font-awesome
+		# noto-fonts
 
-		# for colorschemes (see sessionVariables below)
+		# for colorschemes
 		vivid
 
 		just # better makefiles
@@ -78,7 +78,7 @@
 		zoxide.enable = true;
 
 		# ls but better
-		exa = {
+		eza = {
 			enable = true;
 			git = true;
 			icons = true;
