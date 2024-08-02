@@ -40,7 +40,7 @@
 		font-awesome
 		noto-fonts
 
-		# for colorschemes
+		# for colorschemes (see sessionVariables below)
 		vivid
 
 		just # better makefiles
@@ -67,7 +67,7 @@
 	};
 
 	home.sessionVariables = {
-		LS_COLORS = "${pkgs.bash}/bin/bash -c 'vivid generate gruvbox-dark-hard'";
+		LS_COLORS = "${pkgs.bash}/bin/bash -c 'vivid generate catppuccin-macchiato'";
 	};
 
 	programs = {
