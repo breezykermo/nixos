@@ -50,7 +50,10 @@
 		pdftk	# pdf manipulation
 		bartib	# time tracking
 		git-crypt # encrypted git repos
-		visidata # for csvs
+
+		# CSV management in terminal
+		csvkit
+		visidata 
 
 	];
 
