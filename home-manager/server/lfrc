@@ -1,0 +1,61 @@
+# ~/.config/nixpkgs/lfrc
+
+# Colorscheme: base16 gruvbox
+
+# Normal colors
+set color-normal  #d4be98 #1d2021
+
+# Directory colors
+set color-dir  #83a598
+
+# Symlink colors
+set color-symlink  #8ec07c
+
+# Executable colors
+set color-executable  #fabd2f
+
+# Block device colors
+set color-block  #d3869b
+
+# Character device colors
+set color-char  #d3869b
+
+# Pipe colors
+set color-pipe  #d3869b
+
+# Socket colors
+set color-socket  #d3869b
+
+# Special colors (setuid, setgid, sticky, other writable, etc.)
+set color-special  #fe8019
+
+# Broken symlink colors
+set color-broken  #fb4934
+
+# Cursor colors
+set color-cursor  #fe8019
+set color-cursorline  #3c3836
+
+# Selected file colors
+set color-selected  #282828 #fabd2f
+
+# Status bar colors
+set color-status-regular  #d4be98 #282828
+set color-status-info  #83a598 #282828
+set color-status-warn  #fabd2f #282828
+set color-status-err  #fb4934 #282828
+
+# Info bar colors
+set color-info  #d4be98 #282828
+
+# Prompt colors
+set color-prompt  #fabd2f #282828
+
+# Marker colors
+set color-marker  #fabd2f
+
+# Search colors
+set color-search  #282828 #fabd2f
+
+# Border colors
+set color-border  #3c3836
