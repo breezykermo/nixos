@@ -40,6 +40,9 @@
 		font-awesome
 		noto-fonts
 
+		# for colorschemes
+		vivid
+
 		just # better makefiles
 		lazygit	# git tui client
 		pandoc	# document processor
@@ -61,6 +64,10 @@
 		z = "zoxide";
 		b = "bartib -f ~/.bartib";
 		s = "sllm";
+	};
+
+	home.sessionVariables = {
+		LS_COLORS = "${pkgs.bash}/bin/bash -c 'vivid generate gruvbox-dark-hard'";
 	};
 
 	programs = {
@@ -97,7 +104,6 @@
 
 		lf = {
 			enable = true;
-			extraConfig = builtins.readFile ./lfrc;
 		};
 
 		git = {
