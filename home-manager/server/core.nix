@@ -97,7 +97,7 @@
 
 		lf = {
 			enable = true;
-			config = builtins.readFile ./lfrc
+			extraConfig = builtins.readFile ./lfrc;
 		};
 
 		git = {
