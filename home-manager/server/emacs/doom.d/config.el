@@ -9,7 +9,7 @@
        doom-variable-pitch-font (font-spec :family "Fira Code" :size 20))
 (set-frame-parameter (selected-frame) 'alpha '(100 50))
 
-(setq doom-theme 'doom-city-lights)
+(setq doom-theme 'doom-gruvbox)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 (set-face-attribute 'default nil :height 120)

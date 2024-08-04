@@ -31,7 +31,7 @@ in {
         #   prefix + Ctrl-r - restore
         #
         plugin = resurrect;
-        # Restore Neovim sessions
+        # Restore Neovim sessionstmux
         extraConfig = "set -g @resurrect-strategy-nvim 'session'";
       }
       {
