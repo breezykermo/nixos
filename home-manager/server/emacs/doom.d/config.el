@@ -1,8 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 (setq basep "/home/alice")
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
 (setq user-full-name "Lachlan Kermode"
       user-mail-address "lachiekermode@gmail.com")
 
@@ -11,7 +9,7 @@
        doom-variable-pitch-font (font-spec :family "Fira Code" :size 20))
 (set-frame-parameter (selected-frame) 'alpha '(100 50))
 
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-city-lights)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 (set-face-attribute 'default nil :height 120)
@@ -20,21 +18,8 @@
 ;; ORG
 ;; XXX https://so.nwalsh.com/2020/01/05-latex
 (after! org
-        ;; (setq org-latex-compiler "xelatex")
-        ;; (setq org-latex-default-packages-alist
-        ;;       ("" "graphicx" t)
-        ;;       ("" "longtable" nil)
-        ;;       ("" "wrapfig" nil)
-        ;;       ("" "rotating" nil)
-        ;;       ("normalem" "ulem" nil)
-        ;;       ("" "amsmath" t)
-        ;;       ("" "amssymb" t)
-        ;;       ("" "capt-of" nil)
-        ;;       ("colorlinks=true" "hyperref" nil)
-        ;;       ("" "fancyhdr" nil))
         (setq org-latex-pdf-process
-              ;; '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -shell-escape -pdf -bibtex -f %f"))
-              '("tectonic --keep-intermediates --reruns 0 %f"))
+              '("tectonic --keep-intermediates --reruns 0 %f")) ; use tectonic rather than latex
         (setq org-log-done 'time) ;; add timestamps to DONE
         (setq org-default-notes-file (format "%s/Dropbox (Brown)/lyt/org/notes.org" basep))
         (setq org-deadline-warning-days 3))
@@ -64,7 +49,5 @@
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "firefox")
-
-
 
 (load custom-file)
