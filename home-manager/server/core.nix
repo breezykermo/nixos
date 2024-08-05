@@ -134,15 +134,15 @@
 			};
 		};
 		
-		jujutsu = {
-			enable = true;
-			settings = {
-				user = {
-					name = "Lachlan Kermode";
-					email = "hi@ohrg.org";
-				};
-			};
-		};
+		# jujutsu = {
+		# 	enable = true;
+		# 	settings = {
+		# 		user = {
+		# 			name = "Lachlan Kermode";
+		# 			email = "hi@ohrg.org";
+		# 		};
+		# 	};
+		# };
 
 		# A command-line fuzzy finder
 		fzf = {
