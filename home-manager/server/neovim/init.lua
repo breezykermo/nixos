@@ -63,6 +63,11 @@ vim.opt.number = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+-- Always use spaces, always only 2 
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.expandtab = true -- Convert tabs to spaces
+
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
@@ -134,7 +139,7 @@ require('lazy').setup({
 	-- 'tpope/vim-rhubarb',
 
 	-- Detect tabstop and shiftwidth automatically
-	'tpope/vim-sleuth',
+	-- 'tpope/vim-sleuth',
 
 	-- Automatically manage Vim.session (for tmux restore)
 	'tpope/vim-obsession',
