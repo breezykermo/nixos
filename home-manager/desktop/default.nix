@@ -60,6 +60,7 @@
         size = 14;
       };
       window.decorations = "none";
+      window.opacity = 0.8;
       scrolling.history = 0;
       shell = {
         program = "${pkgs.fish}/bin/fish";

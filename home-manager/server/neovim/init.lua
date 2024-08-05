@@ -210,6 +210,7 @@ require('lazy').setup({
 			local lspconfig = require('lspconfig')
 
 			-- Rust
+			-- TODO: replaced with rustacean. Inlay hints don't work yet tho
 			-- lspconfig.rust_analyzer.setup {
 				-- Server-specific settings. See `:help lspconfig-setup`
 				-- settings = {
@@ -232,13 +233,16 @@ require('lazy').setup({
 			-- }
 			-- Enable inlay hints
 			-- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
-			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-			  vim.lsp.diagnostic.on_publish_diagnostics, {
-			    virtual_text = true,
-			    signs = true,
-			    update_in_insert = true,
-			  }
-			)
+			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+			--   vim.lsp.diagnostic.on_publish_diagnostics, {
+			--     virtual_text = true,
+			--     signs = true,
+			--     update_in_insert = true,
+			--   }
+			-- )
+
+			-- Svelte
+			-- lspconfig.svelte.setup()
 
 			-- Bash LSP
 			local configs = require 'lspconfig.configs'
@@ -397,19 +401,16 @@ require('lazy').setup({
 		priority = 1000, -- load first
 		config = function()
 			vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
-			vim.o.background = 'dark'
-			-- XXX: hi Normal ctermbg=NONE
+
+			-- Set the background transparen:
+			vim.cmd [[
+				highlight Normal guibg=NONE ctermbg=NONE
+				highlight NonText guibg=NONE ctermbg=NONE
+			]]
+
 			-- Make comments more prominent -- they are important.
 			local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
 			vim.api.nvim_set_hl(0, 'Comment', bools)
-			-- Make it clearly visible which argument we're at.
-			local marked = vim.api.nvim_get_hl(0, { name = 'PMenu' })
-			vim.api.nvim_set_hl(0, 'LspSignatureActiveParameter', { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true })
-			-- XXX
-			-- Would be nice to customize the highlighting of warnings and the like to make
-			-- them less glaring. But alas
-			-- https://github.com/nvim-lua/lsp_extensions.nvim/issues/21
-			-- call Base16hi("CocHintSign", g:base16_gui03, "", g:base16_cterm03, "", "", "")
 		end
 	},
 
@@ -423,6 +424,12 @@ require('lazy').setup({
 	-- Svelte
 	{
 		'evanleck/vim-svelte'
+	},
+	{
+		"sveltejs/language-tools",
+		config = function()
+			require'lspconfig'.svelte.setup{}
+		end,
 	}
 }, {})
 

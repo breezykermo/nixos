@@ -15,6 +15,13 @@
 (set-face-attribute 'default nil :height 120)
 (setq display-line-numbers-type t)
 
+;; Set background color to none to respect terminal transparency
+(custom-set-faces
+ '(default ((t (:background "unspecified-bg"))))
+ '(fringe ((t (:background "unspecified-bg"))))
+ '(line-number ((t (:background "unspecified-bg"))))
+ '(line-number-current-line ((t (:background "unspecified-bg")))))
+
 ;; ORG
 ;; XXX https://so.nwalsh.com/2020/01/05-latex
 (after! org
