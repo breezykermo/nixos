@@ -7,7 +7,7 @@
 	home.packages = with pkgs; [
 		# profiling
 		nix-tree
-		neofetch
+		# neofetch
 
 		# archives
 		zip
@@ -17,17 +17,16 @@
 		# mtr	# A network diagnostic tool
 		# dnsutils # `dig` + `nslookup`
 		# ldns	# replacement of `dig`, it provide the command `drill`
-		nmap	# A utility for network discovery and security auditing
+		# nmap			# A utility for network discovery and security auditing
 
-		# Text Processing
 		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		gawk	# GNU awk, a pattern scanning and processing language
-		ripgrep	# recursively searches directories for a regex pattern
-		sad	# CLI search and replace, with diff preview 
-		delta	# A viewer for git and diff output
-		ripgrep	# `rg` is a better grep
-		fd	# `fd` is a better find
-		jq	# A lightweight and flexible command-line JSON processor
+		gawk			# GNU awk, a pattern scanning and processing language
+		ripgrep		# recursively searches directories for a regex pattern
+		sad				# CLI search and replace, with diff preview 
+		delta			# A viewer for git and diff output
+		ripgrep		# `rg` is a better grep
+		fd				# `fd` is a better find
+		jq				# A lightweight and flexible command-line JSON processor
 
 		file
 		which
@@ -39,17 +38,16 @@
 		fira-code-symbols
 		# font-awesome
 		# noto-fonts
+		
+		vivid			# for colorschemes
 
-		# for colorschemes
-		vivid
-
-		just # better makefiles
-		lazygit	# git tui client
-		pandoc	# document processor
-		tectonic# LaTeX compilation
-		pdftk	# pdf manipulation
-		bartib	# time tracking
-		git-crypt # encrypted git repos
+		just			# better makefiles
+		lazygit		# git tui client
+		pandoc		# document processor
+		tectonic	# LaTeX compilation
+		pdftk			# pdf manipulation
+		bartib		# time tracking
+		git-crypt	# encrypted git repos
 
 		# CSV management in terminal
 		csvkit
@@ -148,8 +146,8 @@
 		fzf = {
 			enable = true;
 			colors = {
-				"bg+" = "#313244";
-				"bg" = "#1e1e2e";
+				# "bg+" = "#313244";
+				# "bg" = "#1e1e2e";
 				"spinner" = "#f5e0dc";
 				"hl" = "#f38ba8";
 				"fg" = "#cdd6f4";
@@ -163,9 +161,9 @@
 			};
 		};
 
-		dircolors = {
-			enable = true;
-		};
+		# dircolors = {
+		# 	enable = true;
+		# };
 
 		command-not-found.enable = false;
 
@@ -176,8 +174,8 @@
 			};
 		};
 
-		yt-dlp = {
-			enable = true;
-		};
+		# yt-dlp = {
+		# 	enable = true;
+		# };
 	};
 }
