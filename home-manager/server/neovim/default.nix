@@ -28,8 +28,8 @@
 		#--  language servers
 		nodePackages.bash-language-server
 		nodePackages.svelte-language-server
-		nodePackages.pyright # python language server
-		python311Packages.black # formatter
+		# nodePackages.pyright # python language server
+		# python311Packages.black # formatter
 		shellcheck
 
 		#-- misc

@@ -1,24 +1,22 @@
-{ config, pkgs, ... }:
+{ lib, buildPythonPackage, fetchPypi, python311Packages }:
 
-let
-  virtualenv = pkgs.python3Packages.virtualenv;
-  gptCliEnv = pkgs.writeShellScriptBin "gpt-cli-env" ''
-    export VIRTUAL_ENV=${config.home.homeDirectory}/.venvs/gpt-cli
-    export PATH="${config.home.homeDirectory}/.venvs/gpt-cli/bin:$PATH"
-    if [ ! -d "$VIRTUAL_ENV" ]; then
-      mkdir -p "$VIRTUAL_ENV"
-      ${virtualenv}/bin/virtualenv "$VIRTUAL_ENV"
-      $VIRTUAL_ENV/bin/pip install gpt-cli
-    fi
-  '';
-in {
-  home.sessionVariables = {
-    VIRTUAL_ENV = "${config.home.homeDirectory}/.venvs/gpt-cli";
-    PATH = "${config.home.homeDirectory}/.venvs/gpt-cli/bin:${config.home.sessionVariables.PATH}";
+buildPythonPackage rec {
+  pname = "gpt-cli";
+  version = "0.2.0"; 
+
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "0x67491ba"; # Replace with the actual sha256 hash
   };
 
-  home.packages = with pkgs; [
-    gptCliEnv
+  propagatedBuildInputs = with python311Packages; [
+    # Add any dependencies here, e.g., click, openai, etc.
   ];
-}
 
+  meta = with lib; {
+    description = "A CLI tool for interacting with GPT models";
+    homepage = "https://github.com/kharvd/gpt-cli";
+    license = licenses.mit;
+    maintainers = with maintainers; [ ];
+  };
+}

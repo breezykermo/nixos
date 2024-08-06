@@ -1,8 +1,13 @@
 { pkgs, lib, ...}:
+let 
+  gptCli = import ./gpt-cli.nix { 
+    inherit (pkgs) lib fetchPypi;
+    inherit (pkgs.python311Packages) buildPythonPackage;
+    inherit (pkgs) python311Packages;
+  }; 
+in
 {
-
-	# services.ollama = {
-	# 	enable = true;
-	# 	package = pkgs.unstable.ollama;
-	# };
+  home.packages = with pkgs; [
+    gptCli
+  ];
 }
