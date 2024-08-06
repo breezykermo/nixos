@@ -7,6 +7,9 @@
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+    };
 
 		# rycee-nurpkgs = {
 		# 	url = gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons;
@@ -19,7 +22,7 @@
 		# };
 	};
 
-	outputs = inputs@{ nixpkgs, home-manager, ... }:
+	outputs = inputs@{ nixpkgs, home-manager, poetry2nix, ... }:
 	let 
 		system = "x86_64-linux";
 	in
@@ -35,7 +38,7 @@
 					home-manager = {
 						useGlobalPkgs = true;
 						useUserPackages = true;
-						extraSpecialArgs = { inherit inputs system; };
+						extraSpecialArgs = { inherit inputs system poetry2nix; };
 
 						users.alice = import ./home-manager;
 					};

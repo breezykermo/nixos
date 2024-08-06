@@ -36,9 +36,8 @@
 		tree-sitter
 
 		#-- nix
-		# nil
-		# rnix-lsp
-		# statix
-		# deadnix
+		nil       # language server
+		statix    # lints
+		deadnix   # scan for dead code
 	];
 }

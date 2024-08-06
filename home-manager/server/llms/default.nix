@@ -1,13 +1,12 @@
-{ pkgs, lib, ...}:
+{ pkgs, poetry2nix, ...}:
 let 
   gptCli = import ./gpt-cli.nix { 
-    inherit (pkgs) lib fetchPypi;
-    inherit (pkgs.python311Packages) buildPythonPackage;
-    inherit (pkgs) python311Packages;
+    inherit (pkgs) lib fetchFromGitHub;
+    inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryApplication;
   }; 
 in
 {
-  home.packages = with pkgs; [
+  home.packages = [
     gptCli
   ];
 }

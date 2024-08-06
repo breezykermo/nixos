@@ -214,40 +214,8 @@ require('lazy').setup({
 			-- Setup language servers.
 			local lspconfig = require('lspconfig')
 
-			-- Rust
-			-- TODO: replaced with rustacean. Inlay hints don't work yet tho
-			-- lspconfig.rust_analyzer.setup {
-				-- Server-specific settings. See `:help lspconfig-setup`
-				-- settings = {
-				-- 	["rust-analyzer"] = {
-				-- 		cargo = {
-				-- 			allFeatures = true,
-				-- 		},
-				-- 		imports = {
-				-- 			group = {
-				-- 				enable = false,
-				-- 			},
-				-- 		},
-				-- 		completion = {
-				-- 			postfix = {
-				-- 				enable = false,
-				-- 			},
-				-- 		},
-				-- 	},
-				-- },
-			-- }
-			-- Enable inlay hints
-			-- See https://vinnymeller.com/posts/neovim_nightly_inlay_hints/
-			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-			--   vim.lsp.diagnostic.on_publish_diagnostics, {
-			--     virtual_text = true,
-			--     signs = true,
-			--     update_in_insert = true,
-			--   }
-			-- )
-
-			-- Svelte
-			-- lspconfig.svelte.setup()
+      -- Nix
+      require'lspconfig'.nil_ls.setup{}
 
 			-- Bash LSP
 			local configs = require 'lspconfig.configs'

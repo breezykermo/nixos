@@ -1,22 +1,36 @@
-{ lib, buildPythonPackage, fetchPypi, python311Packages }:
+{ 
+  lib, 
+  fetchFromGitHub,
+  mkPoetryApplication,
+}:
 
-buildPythonPackage rec {
+mkPoetryApplication {
   pname = "gpt-cli";
-  version = "0.2.0"; 
+  version = "0.2.0";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "0x67491ba"; # Replace with the actual sha256 hash
+  src = fetchFromGitHub {
+    owner = "kharvd";
+    repo = "gpt-cli";
+    # rev = "v${version}"; 
+    # Get this hash via:  nix-prefetch-url --unpack https://github.com/kharvd/gpt-cli/archive/refs/tags/v0.2.0.tar.gz
+    sha256 = "015796zbcvqvmp6qjpd9l1xchkm51gak6pv4npcwb3ikrcfjgrqy"; 
   };
 
-  propagatedBuildInputs = with python311Packages; [
-    # Add any dependencies here, e.g., click, openai, etc.
-  ];
+  # nativeBuildInputs = with python311Packages; [
+  #   setuptools
+  #   wheel
+  #   build
+  #   pip
+  # ];
+
+  # propagatedBuildInputs = with python311Packages; [
+    # Add any runtime dependencies here, e.g., click, openai, etc.
+  # ];
 
   meta = with lib; {
     description = "A CLI tool for interacting with GPT models";
     homepage = "https://github.com/kharvd/gpt-cli";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [];
   };
 }
