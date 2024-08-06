@@ -17,3 +17,10 @@ set -gx DOOMDIR "$HOME/.doom.d"
 
 # NPM packages go to home directory so as not to modify nix store
 fish_add_path ~/.npm-packages/bin
+
+# gpt-cli
+if test -d "${config.home.homeDirectory}/.venvs/gpt-cli"
+  set -x VIRTUAL_ENV ${config.home.homeDirectory}/.venvs/gpt-cli
+  set -x PATH ${config.home.homeDirectory}/.venvs/gpt-cli/bin $PATH
+  source ${config.home.homeDirectory}/.venvs/gpt-cli/bin/activate.fish
+end

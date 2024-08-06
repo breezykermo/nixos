@@ -22,25 +22,23 @@
 		llvmPackages.clang-unwrapped
 		gdb
 
-		#-- python
-		# nodePackages.pyright # python language server
-		# python311Packages.black # formatter
-
 		#-- rust
 		rustup
-		# rust-analyzer
+
+		#--  language servers
+		nodePackages.bash-language-server
+		nodePackages.svelte-language-server
+		nodePackages.pyright # python language server
+		python311Packages.black # formatter
+		shellcheck
+
+		#-- misc
+		tree-sitter
 
 		#-- nix
 		# nil
 		# rnix-lsp
 		# statix
 		# deadnix
-
-		#-- bash
-		nodePackages.bash-language-server
-		shellcheck
-
-		#-- misc
-		tree-sitter
 	];
 }
