@@ -1,6 +1,6 @@
 { config, pkgs, lib, ...}:
 {
-  home.file.".config/fish/config.fish" = ''
+  home.file.".config/fish/config.fish".text = ''
   set fish_greeting # disable greeting
 
   # Important to ensure switching to fish_vi_key_bindings hasn't removed
