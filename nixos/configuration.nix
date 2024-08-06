@@ -43,7 +43,7 @@ in
 	users.users.alice = {
 		isNormalUser = true;
 		description = "alice";
-		extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" ];
+		extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" ];
 	};
 
 	# Enable the flakes feature; requires `git` in systemPackages
@@ -62,7 +62,7 @@ in
 	};
 
 	# NB: not ideal to put it here, but fine for now.
-	programs.steam.enable = true;
+	# programs.steam.enable = true;
 
 	# Enable nix ld for running binaries: see https://github.com/Mic92/nix-ld
   # programs.nix-ld.enable = true;
@@ -73,7 +73,6 @@ in
   #   glib
   #   # ...
   # ];
-
 
 	# for flashing keyboards with Keymapp
 	services.udev.extraRules = ''
@@ -93,19 +92,23 @@ in
 	SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
 	'';
 
+  programs.virt-manager.enable = true;
+
+  # for a better setup, see https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
 	virtualisation = {
-		podman = {
-			enable = true;
-			dockerCompat = true;
-		};
-
-		oci-containers = {
-			backend = "podman";
-
-			containers = {
-				# open-webui = import ../home-manager/server/llms/openwebui.nix;
-			};
-		};
+    libvirtd.enable = true;
+		# podman = {
+		# 	enable = true;
+		# 	dockerCompat = true;
+		# };
+		#
+		# oci-containers = {
+		# 	backend = "podman";
+		#
+		# 	containers = {
+		# 		# open-webui = import ../home-manager/server/llms/openwebui.nix;
+		# 	};
+		# };
 	};
 
 	# Limit the number of generations to keep
