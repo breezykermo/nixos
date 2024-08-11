@@ -52,10 +52,6 @@
 		# CSV management in terminal
 		csvkit
 		visidata 
-
-    # development environments
-    devenv
-
 	];
 
 	home.shellAliases = {

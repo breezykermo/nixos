@@ -58,6 +58,8 @@ in
 			wget
 			curl
 			dict
+      # development environments
+      devenv
 		];
 	};
 
