@@ -221,20 +221,20 @@ require('lazy').setup({
   },
 
  	-- Inline function signatures
-	{
-		"ray-x/lsp_signature.nvim",
-		event = "VeryLazy",
-		opts = {},
-		config = function(_, opts)
-			-- Get signatures (and _only_ signatures) when in argument lists.
-			require "lsp_signature".setup({
-				doc_lines = 0,
-				handler_opts = {
-					border = "none"
-				},
-			})
-		end
-	},
+	-- {
+	-- 	"ray-x/lsp_signature.nvim",
+	-- 	event = "VeryLazy",
+	-- 	opts = {},
+	-- 	config = function(_, opts)
+	-- 		-- Get signatures (and _only_ signatures) when in argument lists.
+	-- 		require "lsp_signature".setup({
+	-- 			doc_lines = 0,
+	-- 			handler_opts = {
+	-- 				border = "none"
+	-- 			},
+	-- 		})
+	-- 	end
+	-- },
 
   -- Status line
   {
@@ -399,9 +399,9 @@ require('lazy').setup({
       cmp.setup {
         snippet = {
           -- REQUIRED by nvim-cmp. get rid of it once we can
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
-          end,
+          -- expand = function(args)
+          --   vim.fn["vsnip#anonymous"](args.body)
+          -- end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
 
