@@ -82,7 +82,7 @@
     # auto dev environments with nix flakes
     direnv = {
       enable = true;
-      enableFishIntegration = true; 
+      # enableFishIntegration = true; 
       nix-direnv.enable = true;
     };
 
