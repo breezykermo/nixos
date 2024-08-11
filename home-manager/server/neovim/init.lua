@@ -1,5 +1,3 @@
--- Set <,> as the leader key
--- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
@@ -48,6 +46,10 @@ vim.cmd([[
 -- Options 
 --
 -------------------------------------------------------------------------------
+-- General opts for remaps
+local opts = { noremap = true, silent = true }
+local map = vim.keymap.set
+
 -- Set highlight on search
 vim.o.hlsearch = true
 
@@ -111,6 +113,13 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- NERDTree
+map('n', '<leader>k', ':NERDTreeFind<cr>', opts)
+map('n', '<leader>m', ':NERDTreeToggle<cr>', opts)
+
+-- Tabs, see https://github.com/romgrk/barbar.nvim
+map('n', '<C-z>', '<Cmd>BufferPrevious<CR>', opts)
+map('n', '<C-x>', '<Cmd>BufferNext<CR>', opts)
 -------------------------------------------------------------------------------
 --
 -- Packages 
@@ -184,6 +193,47 @@ require('lazy').setup({
     },
   },
 
+  -- main color scheme
+  {
+	  "wincent/base16-nvim",
+	  lazy = false, -- load at start
+	  priority = 1000, -- load first
+	  config = function()
+		  vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
+
+		  -- Set the background transparen:
+		  vim.cmd [[
+        highlight Normal guibg=NONE ctermbg=NONE
+        highlight NonText guibg=NONE ctermbg=NONE
+		  ]]
+
+		  -- Make comments more prominent -- they are important.
+		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
+		  vim.api.nvim_set_hl(0, 'Comment', bools)
+	  end
+  },
+
+  -- Highlight todo, notes, etc in comments
+  { 'folke/todo-comments.nvim', 
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' }, 
+    opts = { signs = false }
+  },
+
+  -- Status line
+  {
+	  -- Set lualine as statusline
+	  'nvim-lualine/lualine.nvim',
+	  dependencies = { 'nvim-tree/nvim-web-devicons' },
+	  opts = {
+		  options = {
+			  icons_enabled = false,
+			  theme = 'onedark',
+			  component_separators = '|',
+			  section_separators = '',
+		  },
+	  },
+  },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -204,23 +254,10 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
-      -- Telescope is a fuzzy finder that comes with a lot of different things that
-      -- it can fuzzy find! It's more than just a "file finder", it can search
-      -- many different aspects of Neovim, your workspace, LSP, and more!
-      --
-      -- The easiest way to use Telescope, is to start by doing something like:
-      --  :Telescope help_tags
-      --
-      -- After running this command, a window will open up and you're able to
-      -- type in the prompt window. You'll see a list of `help_tags` options and
-      -- a corresponding preview of the help.
-      --
       -- Two important keymaps to use while in Telescope are:
       --  - Insert mode: <c-/>
       --  - Normal mode: ?
@@ -241,11 +278,7 @@ require('lazy').setup({
         --   },
         -- },
         -- pickers = {}
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
+        extensions = {},
       }
 
       -- Enable Telescope extensions if they are installed
@@ -256,17 +289,17 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>p', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>a', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>p', function()
+      vim.keymap.set('n', '<leader>f', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
           winblend = 10,
@@ -276,15 +309,7 @@ require('lazy').setup({
     end,
   },
 
-  -- LSP Plugins
-  {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {},
-  },
-  {
+  { -- LSP Plugins
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -300,10 +325,10 @@ require('lazy').setup({
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
+
+      { 'sveltejs/language-tools', opts = {} },
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -382,15 +407,23 @@ require('lazy').setup({
             })
           end
 
+          -- Inlay hints
+          if client.server_capabilities.inlayHintProvider then
+            keymap.set('n', '<leader>h', function()
+              local current_setting = vim.lsp.inlay_hint.is_enabled(bufnr)
+              vim.lsp.inlay_hint.enable(bufnr, not current_setting)
+            end, desc('[lsp] toggle inlay hints'))
+          end
+
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
-          end
+          -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          --   map('<leader>th', function()
+          --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+          --   end, '[T]oggle Inlay [H]ints')
+          -- end
         end,
       })
 
@@ -402,8 +435,6 @@ require('lazy').setup({
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
       --  Add any additional override configuration in the following tables. Available keys are:
       --  - cmd (table): Override the default command used to start the server
       --  - filetypes (table): Override the default list of associated filetypes for the server
@@ -414,7 +445,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        rust_analyzer = {},
+        -- svelte = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -423,54 +454,9 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-
-        lua_ls = {
-          -- cmd = {...},
-          -- filetypes = { ...},
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
       }
-
-      -- Ensure the servers and tools above are installed
-      --  To check the current status of installed tools and/or manually install
-      --  other tools, you can run
-      --    :Mason
-      --
-      --  You can press `g?` for help in this menu.
-      -- require('mason').setup()
-
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      -- local ensure_installed = vim.tbl_keys(servers or {})
-      -- vim.list_extend(ensure_installed, {
-      --   'stylua', -- Used to format Lua code
-      -- })
-      -- require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      -- require('mason-lspconfig').setup {
-      --   handlers = {
-      --     function(server_name)
-      --       local server = servers[server_name] or {}
-      --       -- This handles overriding only values explicitly passed
-      --       -- by the server configuration above. Useful when disabling
-      --       -- certain features of an LSP (for example, turning off formatting for tsserver)
-      --       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-      --       require('lspconfig')[server_name].setup(server)
-      --     end,
-      --   },
-      -- }
     end,
   },
-
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -508,7 +494,6 @@ require('lazy').setup({
       },
     },
   },
-
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -626,75 +611,48 @@ require('lazy').setup({
     end,
   },
 
-  -- Status line
-	{
-		-- Set lualine as statusline
-		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons' },
-		opts = {
-			options = {
-				icons_enabled = false,
-				theme = 'onedark',
-				component_separators = '|',
-				section_separators = '',
-			},
-		},
-	},
-
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', 
-    event = 'VimEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' }, 
-    opts = { signs = false }
+  -- TODO: work out how to get this into LSP config
+  -- Rust defaults
+  {
+	  'mrcjkb/rustaceanvim',
+	  version = '^4', -- Recommended
+	  ft = { 'rust' },
+    config = function() 
+      vim.g.rustaceanvim = {
+        -- Plugin configuration
+        tools = {},
+        -- LSP configuration
+        server = {
+          on_attach = function(client, bufnr)
+            -- you can also put keymaps in here
+          end,
+          default_settings = {
+            -- rust-analyzer language server configuration
+            ['rust-analyzer'] = {
+              diagnostics = {
+                enable = true;
+              }
+            },
+          },
+        },
+        -- DAP configuration
+        dap = {},
+      }
+    end
   },
 
- 	-- main color scheme
-	{
-		"wincent/base16-nvim",
-		lazy = false, -- load at start
-		priority = 1000, -- load first
-		config = function()
-			vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
+  -- TODO: work out how to get this into LSP config
+  -- Svelte
+  {
+	  'evanleck/vim-svelte'
+  },
+  -- {
+	 --  "sveltejs/language-tools",
+	 --  config = function()
+		--   require'lspconfig'.svelte.setup{}
+	 --  end,
+  -- },
+}}, {})
 
-			-- Set the background transparen:
-			vim.cmd [[
-				highlight Normal guibg=NONE ctermbg=NONE
-				highlight NonText guibg=NONE ctermbg=NONE
-			]]
 
-			-- Make comments more prominent -- they are important.
-			local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
-			vim.api.nvim_set_hl(0, 'Comment', bools)
-		end
-	},
 
-	-- Rust defaults
-	{
-		'mrcjkb/rustaceanvim',
-		version = '^4', -- Recommended
-		ft = { 'rust' },
-	},
-
-	-- Svelte
-	{
-		'evanleck/vim-svelte'
-	},
-	{
-		"sveltejs/language-tools",
-		config = function()
-			require'lspconfig'.svelte.setup{}
-		end,
-	}
-}, {})
-
--- General opts for remaps
-local opts = { noremap = true, silent = true }
-local map = vim.keymap.set
-
--- NERDTree
-map('n', '<leader>k', ':NERDTreeFind<cr>', opts)
-map('n', '<leader>m', ':NERDTreeToggle<cr>', opts)
-
--- Tabs, see https://github.com/romgrk/barbar.nvim
-map('n', '<C-z>', '<Cmd>BufferPrevious<CR>', opts)
-map('n', '<C-x>', '<Cmd>BufferNext<CR>', opts)
