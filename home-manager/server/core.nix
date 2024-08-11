@@ -53,6 +53,9 @@
 		csvkit
 		visidata 
 
+    # development environments
+    devenv
+
 	];
 
 	home.shellAliases = {

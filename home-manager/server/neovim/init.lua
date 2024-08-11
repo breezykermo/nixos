@@ -208,7 +208,7 @@ require('lazy').setup({
 		  vim.api.nvim_set_hl(0, 'Comment', bools)
 
       -- Inlay hints
-      vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#8999f4" })
+      vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
       vim.lsp.inlay_hint.enable()
 	  end
   },
