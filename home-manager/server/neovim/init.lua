@@ -143,17 +143,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  -- TODO
+  -- TODO: work out whether I need these
+  --
 	-- Automatically manage Vim.session (for tmux restore)
 	-- 'tpope/vim-obsession',
-  --
+ 
 	-- Highlight matching parens so easier to see
-	-- {
-	-- 	'andymass/vim-matchup',
-	-- 	config = function()
-	-- 		vim.g.matchup_matchparen_offscreen = { method = "popup" }
-	-- 	end
-	-- },
+  'luochen1990/rainbow',
 
 	-- Navigation straight out of Neovim into Tmux
 	'christoomey/vim-tmux-navigator',
@@ -220,6 +216,22 @@ require('lazy').setup({
     opts = { signs = false }
   },
 
+ 	-- Inline function signatures
+	{
+		"ray-x/lsp_signature.nvim",
+		event = "VeryLazy",
+		opts = {},
+		config = function(_, opts)
+			-- Get signatures (and _only_ signatures) when in argument lists.
+			require "lsp_signature".setup({
+				doc_lines = 0,
+				handler_opts = {
+					border = "none"
+				},
+			})
+		end
+	},
+
   -- Status line
   {
 	  -- Set lualine as statusline
@@ -234,6 +246,14 @@ require('lazy').setup({
 		  },
 	  },
   },
+
+	-- Quick navigation
+	{
+		'ggandor/leap.nvim',
+		config = function()
+			require('leap').create_default_mappings()
+		end
+	},
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -334,100 +354,45 @@ require('lazy').setup({
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-        callback = function(event)
-          -- Helper function to set the mode, buffer and description.
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
+				group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+				callback = function(ev)
+					-- Enable completion triggered by <c-x><c-o>
+					vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+					-- Buffer local mappings.
+					-- See `:help vim.lsp.*` for documentation on any of the below functions
+					local opts = { buffer = ev.buf }
+					vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+					vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+					vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+					vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+					vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+					vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+					vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+					vim.keymap.set('n', '<leader>wl', function()
+						print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+					end, opts)
+					--vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+					vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
+					vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, opts)
+					vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+					vim.keymap.set('n', '<leader>f', function()
+						vim.lsp.buf.format { async = true }
+					end, opts)
 
-          -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+					local client = vim.lsp.get_client_by_id(ev.data.client_id)
 
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+					-- When https://neovim.io/doc/user/lsp.html#lsp-inlay_hint stabilizes
+					-- *and* there's some way to make it only apply to the current line.
+					-- if client.server_capabilities.inlayHintProvider then
+					--     vim.lsp.inlay_hint(ev.buf, true)
+					-- end
 
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          -- The following two autocommands are used to highlight references of the
-          -- word under your cursor when your cursor rests there for a little while.
-          --    See `:help CursorHold` for information about when this is executed
-          --
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
-            })
-
-            vim.api.nvim_create_autocmd('LspDetach', {
-              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-              callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
-              end,
-            })
-          end
-
-          -- Inlay hints
-          -- NOTE: inlay hints don't work currently
-          --
-          -- if client.server_capabilities.inlayHintProvider then
-          --   keymap.set('n', '<leader>hh', function()
-          --     local current_setting = vim.lsp.inlay_hint.is_enabled(bufnr)
-          --     vim.lsp.inlay_hint.enable(bufnr, not current_setting)
-          --   end, desc('[lsp] toggle inlay hints'))
-          -- end
-
-          -- The following code creates a keymap to toggle inlay hints in your
-          -- code, if the language server you are using supports them
-          --
-          -- This may be unwanted, since they displace some of your code
-          -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-          --   map('<leader>th', function()
-          --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-          --   end, '[T]oggle Inlay [H]ints')
-          -- end
-        end,
-      })
+					-- None of this semantics tokens business.
+					-- https://www.reddit.com/r/neovim/comments/143efmd/is_it_possible_to_disable_treesitter_completely/
+					client.server_capabilities.semanticTokensProvider = nil
+				end,
+			})
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -436,34 +401,32 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      -- Enable the following language servers
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
-        rust_analyzer = {
-          ['rust-analyzer'] = {
+      local lspconfig = require('lspconfig')
+
+      lspconfig.rust_analyzer.setup({
+
+        settings = {
+          ["rust-analyzer"] = {
             diagnostics = {
               enable = true;
-            }
+            },
+
+            cargo = {
+              allFeatures = true,
+            },
+            imports = {
+              group = {
+                enable = false,
+              },
+            },
+            completion = {
+              postfix = {
+                enable = false,
+              },
+            },
           },
-        }
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- svelte = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
-      }
+        },
+      });
     end,
   },
 
@@ -532,11 +495,7 @@ require('lazy').setup({
           -- },
         },
       },
-      'saadparwaiz1/cmp_luasnip',
-
-      -- Adds other completion capabilities.
-      --  nvim-cmp does not ship with all sources by default. They are split
-      --  into multiple repos for maintenance purposes.
+      'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
     },
@@ -548,8 +507,9 @@ require('lazy').setup({
 
       cmp.setup {
         snippet = {
+          -- REQUIRED by nvim-cmp. get rid of it once we can
           expand = function(args)
-            luasnip.lsp_expand(args.body)
+            vim.fn["vsnip#anonymous"](args.body)
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
@@ -607,14 +567,11 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
-          {
-            name = 'lazydev',
-            -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
-            group_index = 0,
-          },
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
           { name = 'path' },
+        },
+        experimental = {
+          ghost_text = true,
         },
       }
     end,
@@ -646,33 +603,33 @@ require('lazy').setup({
 
   -- TODO: work out how to get this into LSP config
   -- Rust defaults
-  {
-	  'mrcjkb/rustaceanvim',
-	  version = '^4', -- Recommended
-	  ft = { 'rust' },
-    config = function() 
-      vim.g.rustaceanvim = {
-        -- Plugin configuration
-        tools = {},
-        -- LSP configuration
-        server = {
-          on_attach = function(client, bufnr)
-            -- you can also put keymaps in here
-          end,
-          default_settings = {
-            -- rust-analyzer language server configuration
-            ['rust-analyzer'] = {
-              diagnostics = {
-                enable = true;
-              }
-            },
-          },
-        },
-        -- DAP configuration
-        dap = {},
-      }
-    end
-  },
+  -- {
+	 --  'mrcjkb/rustaceanvim',
+	 --  version = '^4', -- Recommended
+	 --  ft = { 'rust' },
+  --   config = function() 
+  --     vim.g.rustaceanvim = {
+  --       -- Plugin configuration
+  --       tools = {},
+  --       -- LSP configuration
+  --       server = {
+  --         on_attach = function(client, bufnr)
+  --           -- you can also put keymaps in here
+  --         end,
+  --         default_settings = {
+  --           -- rust-analyzer language server configuration
+  --           ['rust-analyzer'] = {
+  --             diagnostics = {
+  --               enable = true;
+  --             }
+  --           },
+  --         },
+  --       },
+  --       -- DAP configuration
+  --       dap = {},
+  --     }
+  --   end
+  -- },
 
   -- TODO: work out how to get this into LSP config
   -- Svelte
