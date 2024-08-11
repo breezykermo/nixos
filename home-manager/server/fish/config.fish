@@ -24,3 +24,6 @@ if test -d "${config.home.homeDirectory}/.venvs/gpt-cli"
   set -x PATH ${config.home.homeDirectory}/.venvs/gpt-cli/bin $PATH
   source ${config.home.homeDirectory}/.venvs/gpt-cli/bin/activate.fish
 end
+
+# direnv
+direnv hook fish | source

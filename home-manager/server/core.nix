@@ -79,7 +79,13 @@
 		# cd but better
 		zoxide.enable = true;
 
-		# ls but better
+    # auto dev environments with nix flakes
+    direnv = {
+      enable = true;
+      enableFishIntegration = true; 
+      nix-direnv.enable = true;
+    };
+
 		eza = {
 			enable = true;
 			git = true;
