@@ -408,12 +408,14 @@ require('lazy').setup({
           end
 
           -- Inlay hints
-          if client.server_capabilities.inlayHintProvider then
-            keymap.set('n', '<leader>h', function()
-              local current_setting = vim.lsp.inlay_hint.is_enabled(bufnr)
-              vim.lsp.inlay_hint.enable(bufnr, not current_setting)
-            end, desc('[lsp] toggle inlay hints'))
-          end
+          -- NOTE: inlay hints don't work currently
+          --
+          -- if client.server_capabilities.inlayHintProvider then
+          --   keymap.set('n', '<leader>hh', function()
+          --     local current_setting = vim.lsp.inlay_hint.is_enabled(bufnr)
+          --     vim.lsp.inlay_hint.enable(bufnr, not current_setting)
+          --   end, desc('[lsp] toggle inlay hints'))
+          -- end
 
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
@@ -442,6 +444,13 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        rust_analyzer = {
+          ['rust-analyzer'] = {
+            diagnostics = {
+              enable = true;
+            }
+          },
+        }
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
@@ -611,6 +620,30 @@ require('lazy').setup({
     end,
   },
 
+  { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    opts = {
+      ensure_installed = { 'bash', 'c', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query', },
+      -- Autoinstall languages that are not installed
+      auto_install = true,
+      highlight = {
+        enable = true,
+        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+        --  If you are experiencing weird indenting issues, add the language to
+        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
+        additional_vim_regex_highlighting = { 'ruby' },
+      },
+      indent = { enable = true, disable = { 'ruby' } },
+    },
+    config = function(_, opts)
+      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+
+      ---@diagnostic disable-next-line: missing-fields
+      require('nvim-treesitter.configs').setup(opts)
+    end,
+  },
+
   -- TODO: work out how to get this into LSP config
   -- Rust defaults
   {
@@ -643,9 +676,9 @@ require('lazy').setup({
 
   -- TODO: work out how to get this into LSP config
   -- Svelte
-  {
-	  'evanleck/vim-svelte'
-  },
+  -- {
+	 --  'evanleck/vim-svelte'
+  -- },
   -- {
 	 --  "sveltejs/language-tools",
 	 --  config = function()
