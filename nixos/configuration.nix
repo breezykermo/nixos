@@ -59,7 +59,7 @@ in
 			curl
 			dict
       # development environments
-      devenv
+      # devenv
 		];
 	};
 
