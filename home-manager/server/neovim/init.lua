@@ -143,13 +143,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  -- TODO: work out whether I need these
-  --
 	-- Automatically manage Vim.session (for tmux restore)
 	-- 'tpope/vim-obsession',
+  -- TODO: vim-obsession not working with tmux-restore as expected
  
 	-- Highlight matching parens so easier to see
-  'luochen1990/rainbow',
+  -- 'luochen1990/rainbow',
 
 	-- Navigation straight out of Neovim into Tmux
 	'christoomey/vim-tmux-navigator',
@@ -161,6 +160,19 @@ require('lazy').setup({
 	'preservim/nerdtree',
 	-- 'ryanoasis/vim-devicons',
   'nvim-tree/nvim-web-devicons',
+  'lewis6991/gitsigns.nvim',
+
+  -- Rainbow delimiters
+  'hiphish/rainbow-delimiters.nvim',
+
+  -- Autopair
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equalent to setup({}) function
+  },
 
 	-- tabs at the top
 	{'romgrk/barbar.nvim',

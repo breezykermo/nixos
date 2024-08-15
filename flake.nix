@@ -2,27 +2,27 @@
 	description = "Lachie's NixOS Flake";
 
 	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-		home-manager = {
-			url = "github:nix-community/home-manager";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
-    poetry2nix = {
-      url = "github:nix-community/poetry2nix";
-    };
+    # TODO: do I need these?
+    # flake-utils.url = "github:numtide/flake-utils";
 
-		# rycee-nurpkgs = {
-		# 	url = gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons;
-		# 	inputs.nixpkgs.follows = "nixpkgs";
-		# };
+    # For building from Python projects
+    # poetry2nix.url = "github:nix-community/poetry2nix";
 
-		# nix-doom-emacs = {
-		# 	url = "github:nix-community/nix-doom-emacs";
-		# 	inputs.nixpkgs.follows = "nixpkgs";
-		# };
+    # For building from Rust projects
+    # naersk.url = "github:nix-community/naersk";
 	};
 
-	outputs = inputs@{ nixpkgs, home-manager, poetry2nix, ... }:
+	outputs = inputs@{
+    nixpkgs, 
+    home-manager, 
+    # poetry2nix, 
+    # naersk,
+    ... }:
 	let 
 		system = "x86_64-linux";
 	in
@@ -38,7 +38,7 @@
 					home-manager = {
 						useGlobalPkgs = true;
 						useUserPackages = true;
-						extraSpecialArgs = { inherit inputs system poetry2nix; };
+						extraSpecialArgs = { inherit inputs system; };
 
 						users.alice = import ./home-manager;
 					};
