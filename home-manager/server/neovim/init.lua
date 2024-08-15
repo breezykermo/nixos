@@ -353,10 +353,9 @@ require('lazy').setup({
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
-
-      -- { 'sveltejs/language-tools', opts = {} },
     },
     config = function()
+      require('lspconfig').svelte.setup({})
     end,
   },
 

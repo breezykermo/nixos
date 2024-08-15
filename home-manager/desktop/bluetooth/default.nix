@@ -1,3 +1,5 @@
+# For reference, see: https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ba/bat/package.nix
+# NOTE: need to develop this on an infinite internet connection...
 { lib, pkgs, ... }: 
 {
   home.packages = with pkgs; [
