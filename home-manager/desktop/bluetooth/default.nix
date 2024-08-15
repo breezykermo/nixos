@@ -13,9 +13,7 @@
         sha256 = "0czmmv28ys1y8m22y0qzv7cmgdqqkjmv0haw0qbqxf6akhhwzjzn"; 
       };
 
-      cargoLock = {
-        lockFile = ./Cargo.lock;
-      };
+      cargoHash = lib.fakeHash;
 
       nativeBuildInputs = [
       ];

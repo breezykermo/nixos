@@ -3,7 +3,7 @@
 {
   imports = [
     ./hypr
-    ./bluetooth
+    # ./bluetooth
     ./firefox
     ./zathura
     ./spotify
