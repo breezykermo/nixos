@@ -31,15 +31,22 @@ vim.api.nvim_create_autocmd(
 		end
 	}
 )
--- .nix - ts=2, sw=2
-vim.cmd([[
-	autocmd FileType nix setlocal ts=2 sw=2
-]])
--- .lua - ts=2, sw=2 
-vim.cmd([[
-	autocmd FileType lua setlocal ts=2 sw=2
-]])
 
+-- delete inactive buffers 
+vim.cmd [[command! -nargs=0 Ball lua delete_inactive_buffers()]]
+
+function delete_inactive_buffers()
+  local current_buffer = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
+
+  for _, buf in ipairs(buffers) do
+    if buf ~= current_buffer and not vim.bo[buf].modified then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+end
+
+vim.keymap.set('n', '<leader>b', ':Ball<CR>')
 
 -------------------------------------------------------------------------------
 --
