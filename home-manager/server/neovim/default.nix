@@ -21,9 +21,11 @@
 		gcc
 		llvmPackages.clang-unwrapped
 		gdb
+    ccls
 
 		#-- rust
 		rustup
+
 
 		#--  language servers
 		nodePackages.bash-language-server
