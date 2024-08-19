@@ -2,28 +2,16 @@
   config,
   pkgs,
   ...
-}: let plugins =
-    pkgs.tmuxPlugins;
+}: let
+  plugins = pkgs.tmuxPlugins;
+  resurrectDirPath = "$HOME/.config/tmux/resurrect";
 in {
   programs.tmux = {
     enable = true;
     sensibleOnTop = true;
-
-    extraConfig =  builtins.readFile ./tmux.conf;
     keyMode = "vi";
-
+    extraConfig =  builtins.readFile ./tmux.conf;
     plugins = with plugins; [
-      {
-        # https://github.com/tmux-plugins/tmux-continuum
-        # Continuous saving of tmux environment. Automatic restore when tmux is started.
-        plugin = continuum;
-        extraConfig = ''
-          set -g @continuum-save-interval '15'
-
-          # Option to display current status of tmux continuum in tmux status line.
-          set -g status-right 'Continuum status: #{continuum_status}'
-        '';
-      }
       {
         # https://github.com/tmux-plugins/tmux-resurrect
         # Manually persists tmux environment across system restarts.
@@ -32,7 +20,39 @@ in {
         #
         plugin = resurrect;
         # Restore Neovim sessionstmux
-        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        extraConfig = ''
+          # I have tested this strategy to work with neovim but it is not enough to have
+          # Session.vim at the root of the path from which the plugin is going to do the restore
+          # it is important that for neovim to be saved to be restored from the path where Session.vim
+          # exist for this flow to kick in. Which means that even if tmux-resurrect saved the path with
+          # Session.vim in it but vim was not open at the time of the save of the sessions then when
+          # tmux-resurrect restore the window with the path with Session.vim nothing will happen.
+
+          # Furthermore I currently using vim-startify which among other things is able to restore
+          # from Session.vim if neovim is opened from the path where Session.vim exist. So in a
+          # sense I don't really need tmux resurrect to restore the session as this already
+          # taken care of and this functionality becomes redundant. But as I am not sure if I keep
+          # using vim-startify or its auto restore feature and it do not conflict in any way that
+          # I know of with set -g @resurrect-strategy-* I decided to keep it enabled for the time being.
+          set -g @resurrect-strategy-nvim 'session'
+          set -g @resurrect-strategy-vim 'session'
+
+          set -g @resurrect-capture-pane-contents 'on'
+
+          # This three lines are specific to NixOS and they are intended
+          # to edit the tmux_resurrect_* files that are created when tmux
+          # session is saved using the tmux-resurrect plugin. Without going
+          # into too much details the strings that are saved for some applications
+          # such as nvim, vim, man... when using NixOS, appimage, asdf-vm into the
+          # tmux_resurrect_* files can't be parsed and restored. This addition
+          # makes sure to fix the tmux_resurrect_* files so they can be parsed by
+          # the tmux-resurrect plugin and successfully restored.
+          set -g @resurrect-dir ${resurrectDirPath}
+          set -g @resurrect-hook-post-save-all 'sed -i -E "s|(pane.*nvim\s*:)[^;]+;.*\s([^ ]+)$|\1nvim \2|" ${resurrectDirPath}/last'
+        '';
+      }
+      {
+        plugin = vim-tmux-navigator;
       }
       {
         # https://github.com/tmux-plugins/tmux-yank
@@ -44,6 +64,15 @@ in {
         plugin = cpu;
         extraConfig = ''
           set -g status-right '#{cpu_bg_color} CPU: #{cpu_icon} #{cpu_percentage} | %a %h-%d %H:%M '
+        '';
+      }
+      {
+        # https://github.com/tmux-plugins/tmux-continuum
+        # Continuous saving of tmux environment. Automatic restore when tmux is started.
+        plugin = continuum;
+        extraConfig = ''
+         set -g @continuum-restore 'on'
+         set -g @continuum-save-interval '15'
         '';
       }
     ];
