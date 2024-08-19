@@ -127,14 +127,14 @@
 			};
 
 			# A syntax-highlighting pager in Rust
-			delta = {
-				enable = true;
-				options = {
-					diff-so-fancy = true;
-					line-numbers = true;
-					true-color = "always";
-				};
-			};
+			# delta = {
+			# 	enable = true;
+			# 	options = {
+			# 		diff-so-fancy = true;
+			# 		line-numbers = true;
+			# 		true-color = "always";
+			# 	};
+			# };
 		};
 		
 		# jujutsu = {
