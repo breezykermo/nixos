@@ -9,6 +9,7 @@
     ./spotify
     ./obs
     ./blender
+    ./office
   ];
 
   home.packages = with pkgs; [
