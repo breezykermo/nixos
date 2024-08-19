@@ -46,6 +46,10 @@ in {
       }
       {
         plugin = vim-tmux-navigator;
+        extraConfig = ''
+          # Allow normal clear line
+          bind C-l send-keys 'C-l'
+        '';
       }
       {
         # https://github.com/tmux-plugins/tmux-yank
