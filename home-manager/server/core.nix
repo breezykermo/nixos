@@ -23,7 +23,7 @@
 		gawk			# GNU awk, a pattern scanning and processing language
 		ripgrep		# recursively searches directories for a regex pattern
 		sad				# CLI search and replace, with diff preview 
-		delta			# A viewer for git and diff output
+		# delta			# A viewer for git and diff output
 		ripgrep		# `rg` is a better grep
 		fd				# `fd` is a better find
 		jq				# A lightweight and flexible command-line JSON processor

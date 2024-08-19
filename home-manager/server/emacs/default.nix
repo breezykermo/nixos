@@ -13,11 +13,10 @@
     recursive = true;
   };
 
-# https://github.com/nix-community/nix-doom-emacs is broken ATM.
+# TODO: https://github.com/nix-community/nix-doom-emacs is broken ATM.
 # There is almost certainly a way to do this;
 # but currently I don't have a better way to automate this: so for each fresh install:
-# so just install doom manually.
-
+# I need to just install doom manually:
 
 #   git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 #   ~/.config/emacs/bin/doom install 

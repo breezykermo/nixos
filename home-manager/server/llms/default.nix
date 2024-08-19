@@ -1,3 +1,6 @@
+# NOTE: I am not using any LLM software natively at the moment, thus all here
+# is commented out. But I would ultimately like to have a TUI interface for
+# them, to stay within the terminal as much as possible.
 { pkgs,  ...}:
 let 
   # gptCli = import ./gpt-cli.nix { 
