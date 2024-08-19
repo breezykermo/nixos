@@ -64,7 +64,7 @@
 		t = "tmux";
 		z = "zoxide";
 		b = "bartib -f ~/.bartib";
-		s = "sllm";
+    c = "clear";
 	};
 
 	home.sessionVariables = {
