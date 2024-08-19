@@ -150,8 +150,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
 	-- Automatically manage Vim.session (for tmux restore)
-	-- 'tpope/vim-obsession',
-  -- TODO: vim-obsession not working with tmux-restore as expected
+	'tpope/vim-obsession',
  
 	-- Highlight matching parens so easier to see
   -- 'luochen1990/rainbow',
