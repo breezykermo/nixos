@@ -64,8 +64,8 @@
       window.opacity = 0.8;
       scrolling.history = 0;
       shell = {
-        program = "${pkgs.fish}/bin/fish";
-        args = [ "--interactive" ];
+        program = "${pkgs.tmux}/bin/tmux";
+        args = [ "new-session" ];
       };
       keyboard.bindings = [
         { key = "C";  mods = "Option";   action = "Copy"; } 

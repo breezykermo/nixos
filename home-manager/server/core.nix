@@ -166,10 +166,6 @@
 			};
 		};
 
-		# dircolors = {
-		# 	enable = true;
-		# };
-
 		command-not-found.enable = false;
 
 		btop = {
@@ -179,8 +175,5 @@
 			};
 		};
 
-		# yt-dlp = {
-		# 	enable = true;
-		# };
 	};
 }

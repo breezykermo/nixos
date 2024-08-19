@@ -26,7 +26,6 @@
 		#-- rust
 		rustup
 
-
 		#--  language servers
 		nodePackages.bash-language-server
 		nodePackages.svelte-language-server
