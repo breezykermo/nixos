@@ -47,6 +47,7 @@
 
     # for flashcards
     anki-bin
+
   ];
 
   programs.rofi = {

@@ -49,10 +49,20 @@
 		bartib		# time tracking
 		git-crypt	# encrypted git repos
 
-		# CSV management in terminal
-		csvkit
-		visidata 
-	];
+    # interactively fold JSON
+    # (rustPlatform.buildRustPackage rec {
+    #   pname = "jless";
+    #   version = "0.9.0";
+    #
+    #   src = fetchCrate {
+    #     inherit pname version;
+    #     hash = "sha256-YDZT7CBhQGIC4OSUDfOxbtT2tDgpJY0jYtG6EcjoW0Y=";
+    #   };
+    #
+    #   cargoHash = "sha256-sas94liAOSIirIJGdexdApXic2gWIBDT4uJFRM3qMw0=";
+    # })
+
+ 	];
 
 	home.shellAliases = {
 		diff = "diff --color=auto";
