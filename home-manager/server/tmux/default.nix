@@ -44,13 +44,9 @@ in {
           set -g @resurrect-hook-post-save-all 'sed -i -E "s|(pane.*nvim\s*:)[^;]+;.*\s([^ ]+)$|\1nvim \2|" ${resurrectDirPath}/last'
         '';
       }
-      {
-        plugin = vim-tmux-navigator;
-        extraConfig = ''
-          # Allow normal clear line
-          bind C-l send-keys 'C-l'
-        '';
-      }
+      # {
+      #   plugin = vim-tmux-navigator;
+      # }
       {
         # https://github.com/tmux-plugins/tmux-yank
         # Enables copying to system clipboard.
@@ -61,6 +57,9 @@ in {
         plugin = cpu;
         extraConfig = ''
           set -g status-right '#{cpu_bg_color} CPU: #{cpu_icon} #{cpu_percentage} | %a %h-%d %H:%M '
+
+          # Allow normal clear line, for tmux navigator but not working there
+          bind C-l send-keys 'C-l'
         '';
       }
       {
