@@ -7,6 +7,9 @@
 		csvkit
 		visidata 
 
+    # PDF
+    qpdf
+
     # slice and dice CSVs 
     # (rustPlatform.buildRustPackage rec {
     #   pname = "qsv";
