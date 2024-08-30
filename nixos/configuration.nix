@@ -30,7 +30,7 @@ in
 	networking.firewall.checkReversePath = false;
 
 	# Set your time zone.
-	time.timeZone = "Europe/Amsterdam";
+	time.timeZone = "America/New_York";
 
 	# Configure network proxy if necessary
 	# networking.proxy.default = "http://user:password@proxy:port/";
