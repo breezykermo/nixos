@@ -3,6 +3,7 @@
 {
   imports = [
     ./hypr
+    ./vscode
     # ./bluetooth
     ./firefox
     ./zathura

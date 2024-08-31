@@ -34,6 +34,9 @@
 (after! citar
   (setq! citar-bibliography '(format "%s/Dropbox (Brown)/lyt/references/master.bib" basep)))
 
+;; ;; Modify =emphasis= in PDFs
+;; (add-to-list 'org-emphasis-alist
+;;              '("=" (:foreground "blue")))
 ;; REMAPS
 (map! "C-}"             #'next-buffer)
 (map! "C-t"             #'previous-buffer)
