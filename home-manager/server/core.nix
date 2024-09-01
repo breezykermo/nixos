@@ -83,6 +83,7 @@
 
 	programs = {
 		# email in the terminal
+    # NOTE: app passwords are per device, generate new ones if using this config
 		aerc.enable = true;
 
 		# cd but better
