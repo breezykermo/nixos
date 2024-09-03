@@ -4,7 +4,7 @@
   imports = [
     ./hypr
     ./vscode
-    # ./bluetooth
+    ./bluetooth
     ./firefox
     ./zathura
     ./spotify

@@ -11,14 +11,12 @@
         owner = "pythops";
         repo = pname;
         rev = "v${version}"; 
-        # Get this hash via:  nix-prefetch-url --unpack https://github.com/{owner}/{repo}/archive/refs/tags/v{version}.tar.gz
         sha256 = "0czmmv28ys1y8m22y0qzv7cmgdqqkjmv0haw0qbqxf6akhhwzjzn"; 
       };
 
-      cargoHash = lib.fakeHash;
+      cargoHash = "sha256-w6rrZQNu5kLKEWSXFa/vSqwm76zWZug/ZqztMDY7buE=";
 
-      nativeBuildInputs = [
-      ];
+      nativeBuildInputs = [ pkg-config ];
     })
   ];
 }
