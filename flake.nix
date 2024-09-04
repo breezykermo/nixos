@@ -1,12 +1,17 @@
 {
 	description = "Lachie's NixOS Flake";
 
-	inputs = {
+  inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # browser-previews = {
+    #   url = "github:nix-community/browser-previews";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
     # TODO: do I need these?
     # flake-utils.url = "github:numtide/flake-utils";
 
@@ -20,6 +25,7 @@
 	outputs = inputs@{
     nixpkgs, 
     home-manager, 
+    # browser-previews,
     # poetry2nix, 
     # naersk,
     ... }:

@@ -1,5 +1,10 @@
 { pkgs, ... }:
 {
+
+  home.packages = with pkgs; [
+    brave
+  ];
+
   # user.sessionVariables.BROWSER = "firefox";
   programs.chromium.enable = true;
   programs.firefox = {
