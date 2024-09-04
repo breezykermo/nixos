@@ -13,6 +13,8 @@ in
 	# Allow unfree (Dropbox), and unstable (ollama)
 	nixpkgs.config = {
 		allowUnfree = true;
+    # TODO: remove this! I am not sure which package uses it.
+    permittedInsecurePackages = [ "olm-3.2.16" ];
 		packageOverrides = pkgs: {
 			unstable = import unstableTarball {
 				config = config.nixpkgs.config;
