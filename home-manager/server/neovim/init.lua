@@ -376,9 +376,7 @@ require('lazy').setup({
       },
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-      {
-        "nvim-telescope/telescope-frecency.nvim",
-      },
+      'mollerhoj/telescope-recent-files.nvim',
     },
     config = function()
       -- Two important keymaps to use while in Telescope are:
@@ -410,13 +408,20 @@ require('lazy').setup({
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
+      pcall(require('telescope').load_extension, 'recent-files')
       -- pcall(require('telescope').load_extension, 'ui-select')
-      pcall(require('telescope').load_extension, 'frecency')
+      -- pcall(require('telescope').load_extension, 'frecency')
+
+      -- Main search, all in directory with recent files first
+      -- See: https://github.com/mollerhoj/telescope-recent-files.nvi
+      vim.keymap.set('n', '<space>.', function()
+        require('telescope').extensions['recent-files'].recent_files({})
+      end, { noremap = true, silent = true })
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+
       vim.keymap.set('n', '<leader>sg', builtin.git_files, { desc = '[S]earch [G]it Files' })
-      vim.keymap.set('n', '<leader>ss', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
       vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sa', builtin.live_grep, { desc = '[S]earch [A]ll Files by Grep' })
