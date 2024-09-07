@@ -204,7 +204,7 @@ require('lazy').setup({
         org_todo_repeat_to_state = 'TODO',
         org_startup_indented = true,
         org_blank_before_new_entry = { heading = false, plain_list_item = false },
-       i-- select content in TODO item = vah 
+        -- select content in TODO item = vah 
         mappings = {
           global = {
             org_agenda = '<leader>aa',
