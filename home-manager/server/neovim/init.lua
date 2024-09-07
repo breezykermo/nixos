@@ -168,6 +168,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 require('lazy').setup({
 	-- Automatically manage Vim.session (for tmux restore)
+  -- TODO: not yet working on NixOS
 	'tpope/vim-obsession',
  
   -- Allow 'dot' to repeat custom keybindings in Orgmode
@@ -184,9 +185,6 @@ require('lazy').setup({
 
 	-- Nerd tree
 	'preservim/nerdtree',
-	-- 'ryanoasis/vim-devicons',
-  'nvim-tree/nvim-web-devicons',
-  'lewis6991/gitsigns.nvim',
 
   -- Rainbow delimiters
   'hiphish/rainbow-delimiters.nvim',
@@ -205,6 +203,7 @@ require('lazy').setup({
           '~/Brown Dropbox/Lachlan Kermode/lyt/wiki.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/freelance.*',
         },
+        org_deadline_warning_days = 4,
         org_default_notes_file = '~/Brown Dropbox/Lachlan Kermode/lyt/org/inbox.org',
         win_split_mode = 'vertical',
         -- 'SOON' items are TODOs that should be filtered out of main list, i.e. only upon returning to the file
@@ -286,7 +285,6 @@ require('lazy').setup({
 	-- tabs at the top
 	{'romgrk/barbar.nvim',
     dependencies = {
-      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
       'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
     },
     init = function() vim.g.barbar_auto_setup = false end,
@@ -296,19 +294,6 @@ require('lazy').setup({
 
 	-- "gc" to comment visual regions/lines
 	{ 'numToStr/Comment.nvim', opts = {} },
-
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
 
   -- main color scheme
   {
