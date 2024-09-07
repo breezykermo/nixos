@@ -152,6 +152,16 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.conceallevel = 2
 vim.opt.concealcursor = 'nc'
 
+-- override colorscheme for org agenda
+vim.api.nvim_create_autocmd('ColorScheme', {
+  pattern = '*',
+  callback = function()
+    -- Define own colors
+    vim.api.nvim_set_hl(0, '@org.agenda.scheduled', { fg = '#cecece' })
+    vim.api.nvim_set_hl(0, '@org.agenda.deadline', { fg = '#adfc1b' })
+  end
+})
+
 require('lazy').setup({
 	-- Automatically manage Vim.session (for tmux restore)
 	'tpope/vim-obsession',
@@ -192,6 +202,7 @@ require('lazy').setup({
           org = {
             org_export = '<leader>ae',
             org_insert_link = '<leader>al',
+            org_agenda_deadline = '<leader>ad',
           }
         }
       })
