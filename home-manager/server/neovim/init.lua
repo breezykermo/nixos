@@ -153,7 +153,7 @@ vim.opt.conceallevel = 2
 vim.opt.concealcursor = 'nc'
 
 -- Proper vertical splitting (unclear why this doesn't work)
-vim.keymap.set("n", "<C-w>c", vim.cmd.vsplit)
+vim.keymap.set("n", "<C-w>c", vim.cmd.split)
 
 -- override colorscheme for org agenda
 vim.api.nvim_create_autocmd('ColorScheme', {
