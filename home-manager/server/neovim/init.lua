@@ -148,9 +148,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Conceal links
-vim.opt.conceallevel = 2
-vim.opt.concealcursor = 'nc'
+-- Don't Conceal links
+-- vim.opt.conceallevel = 2
+-- vim.opt.concealcursor = 'nc'
 
 -- Proper vertical splitting (unclear why this doesn't work)
 vim.keymap.set("n", "<C-w>c", vim.cmd.split)
@@ -162,6 +162,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     -- Define own colors
     vim.api.nvim_set_hl(0, '@org.agenda.scheduled', { fg = '#cecece' })
     vim.api.nvim_set_hl(0, '@org.agenda.deadline', { fg = '#adfc1b' })
+    vim.api.nvim_set_hl(0, '@org.keyword.done', { fg = '#ffffff' })
   end
 })
 
@@ -198,12 +199,29 @@ require('lazy').setup({
     config = function()
       -- Setup orgmode
       require('orgmode').setup({
-        org_agenda_files = '~/Brown Dropbox/Lachlan Kermode/lyt/org/**/*',
+        org_agenda_files = {
+          '~/Brown Dropbox/Lachlan Kermode/lyt/org/**/*',
+          '~/Brown Dropbox/Lachlan Kermode/lyt/course.*',
+          '~/Brown Dropbox/Lachlan Kermode/lyt/wiki.*',
+          '~/Brown Dropbox/Lachlan Kermode/lyt/freelance.*',
+        },
         org_default_notes_file = '~/Brown Dropbox/Lachlan Kermode/lyt/org/inbox.org',
         win_split_mode = 'vertical',
+        -- 'SOON' items are TODOs that should be filtered out of main list, i.e. only upon returning to the file
+        -- 'PROJ' is deprecated. 
+        -- All tags are considered non-active so that the filter for TODOs is clean.
+        org_todo_keywords = {'TODO', '|', 'SOON', 'PROJ', 'STRT', 'IDEA', 'KILL', 'DONE'},
+        org_todo_keyword_faces = {
+          -- purple = ':foreground #a660f7',
+          IDEA = ':foreground #23b4ed',
+          STRT = ':foreground #adfc1b :weight bold',
+          SOON = ':foreground #009333',
+          TODO = ':foreground #009333 :underline on', -- overrides builtin color for `TODO` keyword
+        },
         org_todo_repeat_to_state = 'TODO',
         org_startup_indented = true,
         org_blank_before_new_entry = { heading = false, plain_list_item = false },
+        org_hide_leading_stars = true,
         -- select content in TODO item = vah 
         mappings = {
           global = {
@@ -246,6 +264,11 @@ require('lazy').setup({
               end
               return exporter(command , target, on_success, on_error)
             end
+          }
+        },
+        ui = {
+          folds = {
+            colored = true
           }
         }
       })
