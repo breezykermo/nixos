@@ -153,6 +153,18 @@ vim.opt.rtp:prepend(lazypath)
 -- vim.opt.conceallevel = 2
 -- vim.opt.concealcursor = 'nc'
 
+-- Hack to surround links with double square brackets 
+vim.keymap.set('n', '<leader>lf', function()
+  local keys = vim.api.nvim_replace_termcodes("diW", true, false, true)
+  vim.api.nvim_feedkeys(keys, 'n', false)
+  local keys_two = vim.api.nvim_replace_termcodes("i[[<Esc>", true, false, true)
+  vim.api.nvim_feedkeys(keys_two, 'n', false)
+  local keys_three = vim.api.nvim_replace_termcodes("p", true, false, true)
+  vim.api.nvim_feedkeys(keys_three, 'n', false)
+  local keys_four = vim.api.nvim_replace_termcodes("a]]<Esc>", true, false, true)
+  vim.api.nvim_feedkeys(keys_four, 'n', false)
+end)
+
 -- Proper vertical splitting (unclear why this doesn't work)
 vim.keymap.set("n", "<C-w>c", vim.cmd.split)
 
