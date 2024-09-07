@@ -152,6 +152,9 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.conceallevel = 2
 vim.opt.concealcursor = 'nc'
 
+-- Proper vertical splitting (unclear why this doesn't work)
+vim.keymap.set("n", "<C-w>c", vim.cmd.vsplit)
+
 -- override colorscheme for org agenda
 vim.api.nvim_create_autocmd('ColorScheme', {
   pattern = '*',
@@ -166,8 +169,11 @@ require('lazy').setup({
 	-- Automatically manage Vim.session (for tmux restore)
 	'tpope/vim-obsession',
  
+  -- Allow 'dot' to repeat custom keybindings in Orgmode
+  'tpope/vim-repeat',
+
 	-- Highlight matching parens so easier to see
-  -- 'luochen1990/rainbow',
+  'luochen1990/rainbow',
 
 	-- Navigation straight out of Neovim into Tmux
 	'christoomey/vim-tmux-navigator',
@@ -194,6 +200,11 @@ require('lazy').setup({
       require('orgmode').setup({
         org_agenda_files = '~/Brown Dropbox/Lachlan Kermode/lyt/org/**/*',
         org_default_notes_file = '~/Brown Dropbox/Lachlan Kermode/lyt/org/inbox.org',
+        win_split_mode = 'vertical',
+        org_todo_repeat_to_state = 'TODO',
+        org_startup_indented = true,
+        org_blank_before_new_entry = { heading = false, plain_list_item = false },
+       i-- select content in TODO item = vah 
         mappings = {
           global = {
             org_agenda = '<leader>aa',
@@ -202,6 +213,14 @@ require('lazy').setup({
           org = {
             org_export = '<leader>ae',
             org_insert_link = '<leader>al',
+            org_open_at_point = '<leader>ao',
+            org_add_note = '<leader>an',
+            org_meta_return = false,
+            org_insert_heading_respect_content = '<leader><CR>',
+            org_deadline = '<leader>ad',
+            org_schedule = '<leader>as',
+          },
+          agenda = {
             org_agenda_deadline = '<leader>ad',
             org_agenda_schedule = '<leader>as',
           },
@@ -336,7 +355,6 @@ require('lazy').setup({
 			-- require('leap').create_default_mappings()
 		end
 	},
-
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -358,6 +376,9 @@ require('lazy').setup({
       },
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      {
+        "nvim-telescope/telescope-frecency.nvim",
+      },
     },
     config = function()
       -- Two important keymaps to use while in Telescope are:
@@ -373,19 +394,24 @@ require('lazy').setup({
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {}
+        pickers = {
+          -- order with most recent first
+          buffers = {
+            ignore_current_buffer = true,
+            sort_lastused = true,
+          },
+          oldfiles = {
+            only_cwd = true,
+          },
+        },
+
         extensions = {},
       }
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
+      -- pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'frecency')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -394,6 +420,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S] Find existing [B]uffers' })
       vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>st', builtin.treesitter, { desc = '[S]earch by [T]reesitter' })
 
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
@@ -517,6 +544,7 @@ require('lazy').setup({
 
         },
         sources = {
+          { name = 'orgmode' },
           { name = 'nvim_lsp' },
           { name = 'path' },
         },
