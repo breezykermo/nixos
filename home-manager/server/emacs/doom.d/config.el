@@ -29,7 +29,20 @@
               '("tectonic --keep-intermediates --reruns 0 %f")) ; use tectonic rather than latex
         (setq org-log-done 'time) ;; add timestamps to DONE
         (setq org-default-notes-file (format "%s/Dropbox (Brown)/lyt/org/notes.org" basep))
-        (setq org-deadline-warning-days 3))
+        ;; LaTeX export classes
+        (add-to-list 'org-latex-classes
+             '("acmart"
+               "letter"
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")       
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+             )
+          ;; Default LaTeX export packages
+          ;; (add-to-list 'org-export-latex-packages-alist '("" ))
+          (setq org-deadline-warning-days 3))
 
 (after! citar
   (setq! citar-bibliography '(format "%s/Dropbox (Brown)/lyt/references/master.bib" basep)))

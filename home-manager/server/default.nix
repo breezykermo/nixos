@@ -5,7 +5,7 @@
     ./fish
     ./tmux
     ./neovim
-    ./emacs
+    # ./emacs
     ./node
     ./dropbox
     ./llms
