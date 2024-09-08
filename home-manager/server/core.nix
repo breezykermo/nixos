@@ -4,7 +4,33 @@
 		kbfs.enable = true;
 	};
 
+  # Create /etc/fonts/fonts.conf file
+  fonts.fontconfig.enable = true;
+
 	home.packages = with pkgs; [
+		# fonts
+    fira-code
+    fira-code-symbols
+    # cascadia-code
+    # corefonts
+    # dejavu_fonts
+    # font-awesome-ttf
+    # freefont_ttf
+    # hack-font
+    # inconsolata
+    # nerdfonts
+    # noto-fonts
+    # noto-fonts-cjk
+    # noto-fonts-emoji
+    # powerline-fonts
+    # roboto
+    # roboto-mono
+    # roboto-slab
+    # ttf_bitstream_vera
+    # ubuntu_font_family
+    # unifont
+
+
 		# profiling
 		nix-tree
 		# neofetch
@@ -33,13 +59,7 @@
 		tree
 		gnupg
 
-		# fonts
-		fira-code
-		fira-code-symbols
-		# font-awesome
-		# noto-fonts
-		
-		vivid			# for colorschemes
+    vivid			# for colorschemes
 
 		just			# better makefiles
 		lazygit		# git tui client

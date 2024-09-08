@@ -231,7 +231,7 @@ require('lazy').setup({
           TODO = ':foreground #009333 :underline on', -- overrides builtin color for `TODO` keyword
         },
         org_todo_repeat_to_state = 'TODO',
-        org_startup_indented = true,
+        org_startup_indented = false,
         org_blank_before_new_entry = { heading = false, plain_list_item = false },
         org_hide_leading_stars = true,
         -- select content in TODO item = vah 
@@ -276,7 +276,43 @@ require('lazy').setup({
               end
               return exporter(command , target, on_success, on_error)
             end
+          },
+          e = {
+            label = 'Export to PDF (with citations)',
+            action = function(exporter)
+              local current_file = vim.api.nvim_buf_get_name(0)
+              local target = vim.fn.fnamemodify(current_file, ':p:r')..'.pdf'
+              local current_dir = vim.fn.getcwd()
+              local reference_path = current_dir .. "/references/a.csl"
+              -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/ieee.csl --pdf-engine tectonic -o $FNAME.pdf $FNAME.org
+              local command = {
+                'pandoc', 
+                '-s',
+                '--bibliography',
+                current_dir .. '/references/master.bib',
+                '--citeproc',
+                '--csl',
+                current_dir .. '/references/chicago-fullnote-bibliography.csl',
+                '--pdf-engine',
+                'tectonic',
+                '-o', 
+                target,
+                current_file 
+              }
+              local on_success = function(output)
+                vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
+                vim.fn.system("open", target)
+              end
+              local on_error = function(err)
+                vim.api.nvim_echo(target, true, {})
+                vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
+                vim.api.nvim_echo(target, true, {})
+                vim.fn.system("open", target)
+              end
+              return exporter(command , target, on_success, on_error)
+            end
           }
+
         },
         ui = {
           folds = {
