@@ -128,6 +128,37 @@ vim.keymap.set('n', '<leader>b', ':Ball<CR>')
 
 -------------------------------------------------------------------------------
 --
+-- Helper functions 
+--
+-------------------------------------------------------------------------------
+local function open_file_in_default_app(target)
+  local cmd
+  if vim.fn.has("win32") == 1 then
+    -- Windows
+    cmd = string.format('start "" "%s"', target)
+  elseif vim.fn.has("macunix") == 1 then
+    -- macOS
+    cmd = string.format('open "%s"', target)
+  else
+    -- Linux and other Unix-like systems
+    cmd = string.format('xdg-open "%s"', target)
+  end
+
+  local result = vim.fn.system(cmd)
+
+  if vim.v.shell_error ~= 0 then
+    print("Error opening file: " .. result)
+  else
+    print("File opened successfully")
+  end
+end
+
+local function copy_to_clipboard(str)
+  vim.fn.setreg('+', str)
+end
+
+-------------------------------------------------------------------------------
+--
 -- Packages 
 --
 -------------------------------------------------------------------------------
@@ -261,24 +292,7 @@ require('lazy').setup({
           },
         },
         org_custom_exports = {
-          -- 'f' is the shortcut prompt 
-          f = {
-            label = 'Export to RTF format',
-            action = function(exporter)
-              local current_file = vim.api.nvim_buf_get_name(0)
-              local target = vim.fn.fnamemodify(current_file, ':p:r')..'.rtf'
-              local command = {'pandoc', current_file, '-o', target}
-              local on_success = function(output)
-                print('Success!')
-                vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
-              end
-              local on_error = function(err)
-                print('Error!')
-                vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
-              end
-              return exporter(command , target, on_success, on_error)
-            end
-          },
+          -- 'e' is the shortcut prompt 
           e = {
             label = 'Export to PDF (with citations)',
             action = function(exporter)
@@ -294,7 +308,9 @@ require('lazy').setup({
                 current_dir .. '/references/master.bib',
                 '--citeproc',
                 '--csl',
-                current_dir .. '/references/chicago-fullnote-bibliography.csl',
+                -- current_dir .. '/references/chicago-fullnote-bibliography.csl',
+                current_dir .. '/references/syllabus.csl',
+                -- current_dir .. '/references/chicago-syllabus.csl',
                 '--pdf-engine',
                 'tectonic',
                 '-o', 
@@ -303,13 +319,11 @@ require('lazy').setup({
               }
               local on_success = function(output)
                 vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
-                vim.fn.system("open", target)
+                copy_to_clipboard(target)
               end
               local on_error = function(err)
-                -- vim.api.nvim_echo(target, true, {})
                 vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
                 vim.api.nvim_echo(target, true, {})
-                vim.fn.system("open", target)
               end
               return exporter(command , target, on_success, on_error)
             end
