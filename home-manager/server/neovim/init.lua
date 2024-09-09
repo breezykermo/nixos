@@ -150,7 +150,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Conceal links
 -- NOTE: this seems to be buggy in Orgmode
--- vim.opt.conceallevel = 2
+vim.opt.conceallevel = 2
 -- vim.opt.concealcursor = 'nc'
 
 -- Hack to surround links with double square brackets 
@@ -306,7 +306,7 @@ require('lazy').setup({
                 vim.fn.system("open", target)
               end
               local on_error = function(err)
-                vim.api.nvim_echo(target, true, {})
+                -- vim.api.nvim_echo(target, true, {})
                 vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
                 vim.api.nvim_echo(target, true, {})
                 vim.fn.system("open", target)

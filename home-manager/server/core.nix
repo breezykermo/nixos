@@ -69,6 +69,10 @@
 		bartib		# time tracking
 		git-crypt	# encrypted git repos
 
+    # NOTE: in general, I don't want this.
+    # but due to tectonic sometimes not being able to do what I need, it is nice to have.
+    texlive.combined.scheme-medium 
+
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
     #   pname = "jless";
