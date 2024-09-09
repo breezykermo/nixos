@@ -265,6 +265,7 @@ require('lazy').setup({
         },
         org_todo_repeat_to_state = 'TODO',
         org_startup_indented = false,
+        org_adapt_indentation = false,
         org_blank_before_new_entry = { heading = false, plain_list_item = false },
         org_hide_leading_stars = true,
         -- select content in TODO item = vah 
@@ -277,6 +278,7 @@ require('lazy').setup({
             org_export = '<leader>ae',
             org_insert_link = '<leader>al',
             org_open_at_point = '<leader>ao',
+            org_edit_special = '<leader>a\'',
             org_add_note = '<leader>an',
             org_meta_return = false,
             org_insert_heading_respect_content = '<leader><CR>',
