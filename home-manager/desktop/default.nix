@@ -61,14 +61,14 @@
     settings = {
       font = {
         normal.family = "Fira Code";
-        size = 14;
+        size = 9;
       };
       window.decorations = "none";
       window.opacity = 0.8;
       scrolling.history = 0;
       shell = {
         program = "${pkgs.tmux}/bin/tmux";
-        args = [ "new-session" ];
+        args = [ "attach-session" "-t" "." "-c" "/home/alice/Brown Dropbox/Lachlan Kermode/lyt" ];
       };
       keyboard.bindings = [
         { key = "C";  mods = "Option";   action = "Copy"; } 
