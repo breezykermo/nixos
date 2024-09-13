@@ -45,6 +45,10 @@
 		};
 	};
 
+  ## LLMs
+  # TODO: work out how to get this via home-manager
+  services.ollama.enable = true;
+
   # bluetooth management
   services.blueman.enable = true;
   services.dbus.packages = with pkgs; [blueman]; 

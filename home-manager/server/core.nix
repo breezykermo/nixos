@@ -30,6 +30,7 @@
     # ubuntu_font_family
     # unifont
 
+    openssl
 
 		# profiling
 		nix-tree

@@ -10,5 +10,6 @@
     ./dropbox
     ./llms
     ./mail
+    ./irc
   ];
 }
