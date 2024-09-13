@@ -530,7 +530,7 @@ require('lazy').setup({
     },
     config = function()
       require('lspconfig').svelte.setup({})
-      require('lspconfig').ccls.setup({})
+      require('lspconfig').clangd.setup({})
       
     end,
   },
