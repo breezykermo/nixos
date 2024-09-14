@@ -17,6 +17,9 @@
 
       # NPM packages go to home directory so as not to modify nix store
       fish_add_path ~/.npm-packages/bin
+
+      # Rust binaries built by me 
+      fish_add_path /home/alice/.cargo-target/release
     '';
 
     plugins = [
