@@ -244,6 +244,7 @@ require('lazy').setup({
         org_agenda_files = {
           '~/Brown Dropbox/Lachlan Kermode/lyt/org/**/*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/course.*',
+          '~/Brown Dropbox/Lachlan Kermode/lyt/research.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/teach.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/index.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/wiki.*',
