@@ -240,6 +240,7 @@ require('lazy').setup({
     ft = { 'org' },
     config = function()
       -- Setup orgmode
+      -- https://github.com/nvim-orgmode/orgmode/blob/master/DOCS.md
       require('orgmode').setup({
         org_agenda_files = {
           '~/Brown Dropbox/Lachlan Kermode/lyt/org/**/*',
