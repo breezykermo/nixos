@@ -37,6 +37,7 @@
 		# neofetch
 
 		# archives
+    unzip
 		zip
 		xz
 
