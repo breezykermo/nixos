@@ -285,6 +285,7 @@ require('lazy').setup({
             org_insert_heading_respect_content = '<leader><CR>',
             org_deadline = '<leader>ad',
             org_schedule = '<leader>as',
+            org_priority = '<leader>ap',
           },
           agenda = {
             org_agenda_deadline = '<leader>ad',
