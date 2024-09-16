@@ -343,6 +343,28 @@ require('lazy').setup({
       })
     end,
   },
+  -- {
+  --   'akinsho/org-bullets.nvim',
+  --   config = function()
+  --     require('org-bullets').setup({
+  --       concealcursor = false,
+  --     })
+  --   end,
+  -- },
+  {
+    'dhruvasagar/vim-table-mode'
+  },
+  {
+    "lukas-reineke/headlines.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = function() 
+      require("headlines").setup {
+        org = {
+          fat_headlines = false,
+        }
+      }
+    end 
+  },
   -- Autopair
   {
     'windwp/nvim-autopairs',
@@ -499,8 +521,8 @@ require('lazy').setup({
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
 
+      vim.keymap.set('n', '<space>,', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
       vim.keymap.set('n', '<leader>sg', builtin.git_files, { desc = '[S]earch [G]it Files' })
-      vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
       vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sa', builtin.live_grep, { desc = '[S]earch [A]ll Files by Grep' })
 
