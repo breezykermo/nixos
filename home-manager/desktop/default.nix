@@ -64,7 +64,7 @@
         size = 9;
       };
       window.decorations = "none";
-      window.opacity = 0.8;
+      window.opacity = 0.9;
       scrolling.history = 0;
       shell = {
         program = "${pkgs.tmux}/bin/tmux";
