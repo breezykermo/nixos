@@ -84,8 +84,20 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
 -- folds
-vim.opt.foldmethod = "indent"
+vim.wo.foldmethod = "indent"
+vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldlevel = 20 
+
+-- email
+-- see https://brianbuccola.com/line-breaks-in-mutt-and-vim/
+vim.api.nvim_create_augroup("mail_trailing_whitespace", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = "mail_trailing_whitespace",
+  pattern = "mail",
+  callback = function()
+    vim.opt_local.formatoptions:append('w')
+  end
+})
 
 
 -- Set completeopt to have a better completion experience
@@ -106,7 +118,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- NERDTree
 map('n', '<leader>k', ':NERDTreeFind<cr>', opts)
-map('n', '<leader>m', ':NERDTreeToggle<cr>', opts)
+-- map('n', '<leader>m', ':NERDTreeToggle<cr>', opts)
 
 -- Tabs, see https://github.com/romgrk/barbar.nvim
 map('n', '<C-z>', '<Cmd>BufferPrevious<CR>', opts)
@@ -272,25 +284,26 @@ require('lazy').setup({
         org_hide_leading_stars = true,
         -- select content in TODO item = vah 
         mappings = {
+          prefix = "<leader>a",
           global = {
-            org_agenda = '<leader>aa',
-            org_capture = '<leader>ac',
+            org_agenda = '<prefix>a',
+            org_capture = '<prefix>c',
           },
           org = {
-            org_export = '<leader>ae',
-            org_insert_link = '<leader>al',
-            org_open_at_point = '<leader>ao',
-            org_edit_special = '<leader>a\'',
-            org_add_note = '<leader>an',
+            -- org_export = '<prefix>e',
+            org_insert_link = '<prefix>l',
+            org_open_at_point = '<prefix>o',
+            org_edit_special = '<prefix>\'',
+            org_add_note = '<prefix>n',
             org_meta_return = false,
             org_insert_heading_respect_content = '<leader><CR>',
-            org_deadline = '<leader>ad',
-            org_schedule = '<leader>as',
-            org_priority = '<leader>ap',
+            org_deadline = '<prefix>d',
+            org_schedule = '<prefix>s',
+            org_priority = '<prefix>p',
           },
           agenda = {
-            org_agenda_deadline = '<leader>ad',
-            org_agenda_schedule = '<leader>as',
+            org_agenda_deadline = '<prefix>d',
+            org_agenda_schedule = '<prefix>s',
           },
           capture = {
             org_capture_kill = '<leader>k',
