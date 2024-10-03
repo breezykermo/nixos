@@ -200,7 +200,7 @@ vim.opt.conceallevel = 2
 vim.keymap.set('n', '<leader>lf', function()
   local keys = vim.api.nvim_replace_termcodes("diW", true, false, true)
   vim.api.nvim_feedkeys(keys, 'n', false)
-  local keys_two = vim.api.nvim_replace_termcodes("i[[<Esc>", true, false, true)
+  local keys_two = vim.api.nvim_replace_termcodes("a[[<Esc>", true, false, true)
   vim.api.nvim_feedkeys(keys_two, 'n', false)
   local keys_three = vim.api.nvim_replace_termcodes("p", true, false, true)
   vim.api.nvim_feedkeys(keys_three, 'n', false)
@@ -326,9 +326,8 @@ require('lazy').setup({
                 current_dir .. '/references/master.bib',
                 '--citeproc',
                 '--csl',
-                -- current_dir .. '/references/chicago-fullnote-bibliography.csl',
+                -- current_dir .. '/references/chicago-name-date.csl',
                 current_dir .. '/references/syllabus.csl',
-                -- current_dir .. '/references/chicago-syllabus.csl',
                 '--pdf-engine',
                 'tectonic',
                 '-o', 
