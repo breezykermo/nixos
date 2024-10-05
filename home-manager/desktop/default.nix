@@ -11,6 +11,7 @@
     ./obs
     ./blender
     ./office
+    ./youtube
   ];
 
   home.packages = with pkgs; [
