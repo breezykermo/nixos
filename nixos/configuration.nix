@@ -61,6 +61,7 @@ in
 			curl
       dict
       dropbox-cli
+      maestral-gui
       # development environments
       # devenv
 		];
@@ -73,6 +74,8 @@ in
     allowedUDPPorts = [ 17500 ];
   };
 
+
+  # NOTE: this doesn't seem to work any longer
   systemd.user.services.dropbox = {
     description = "Dropbox";
     wantedBy = [ "graphical-session.target" ];
