@@ -61,6 +61,7 @@ in
 			curl
       dict
       dropbox-cli
+      maestral
       maestral-gui
       # development environments
       # devenv
