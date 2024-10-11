@@ -45,7 +45,7 @@ in
 	users.users.alice = {
 		isNormalUser = true;
 		description = "alice";
-		extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" ];
+		extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" ];
 	};
 
 	# Enable the flakes feature; requires `git` in systemPackages
