@@ -131,7 +131,7 @@ in
   # for a better setup, see https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
 	virtualisation = {
     # libvirtd.enable = true;
-    # docker.enable = true;
+    docker.enable = true;
 		# podman = {
 		# 	enable = true;
 		# 	dockerCompat = true;
