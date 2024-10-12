@@ -63,10 +63,7 @@ in
       dropbox-cli
       maestral
       maestral-gui
-      fira-code
-      fira-code-symbols
-
-
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
       # development environments
       # devenv
 		];
@@ -74,10 +71,16 @@ in
 
   fonts = {
     packages = with pkgs; [
-      fira-code
-      fira-code-symbols
-
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
     ];
+    
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "FiraCode Nerd Font Mono" ];
+        sansSerif = [ "FiraCode Nerd Font Mono" ];
+        monospace = [ "FiraCode Nerd Font Mono" ];
+      };
+    };
   };
 
   # Dropbox
