@@ -11,6 +11,5 @@
     ./llms
     ./mail
     ./irc
-    ./fonts
   ];
 }

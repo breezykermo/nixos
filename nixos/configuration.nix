@@ -63,10 +63,22 @@ in
       dropbox-cli
       maestral
       maestral-gui
+      fira-code
+      fira-code-symbols
+
+
       # development environments
       # devenv
 		];
 	};
+
+  fonts = {
+    packages = with pkgs; [
+      fira-code
+      fira-code-symbols
+
+    ];
+  };
 
   # Dropbox
   # TODO: work out how to get this in home-manager
