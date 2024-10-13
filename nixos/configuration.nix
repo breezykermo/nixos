@@ -73,6 +73,7 @@ in
     packages = with pkgs; [
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
       inter-typeface
+      # TODO: https://yildiz.dev/posts/packing-custom-fonts-for-nixos/
       # berkeley-mono-typeface
     ];
 
