@@ -61,7 +61,7 @@
     enable = true;
     settings = {
       window.decorations = "none";
-      window.opacity = 1;
+      window.opacity = 0.9;
       scrolling.history = 0;
       shell = {
         program = "${pkgs.tmux}/bin/tmux";

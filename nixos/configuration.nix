@@ -4,6 +4,8 @@ let
   unstableTarball =
     fetchTarball
     https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  inter-typeface = pkgs.callPackage ./fonts/inter.nix { inherit lib; }; 
+  # berkeley-mono-typeface = pkgs.callPackage ./fonts/berkeley-mono.nix { inherit lib; }; 
 in
   {
   imports = [ 
@@ -60,25 +62,25 @@ in
       wget
       curl
       dict
-      dropbox-cli
+      # Dropbox
       maestral
       maestral-gui
-      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
-      # development environments
-      # devenv
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }
     ];
   };
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }
+      inter-typeface
+      # berkeley-mono-typeface
     ];
 
     fontconfig = {
       defaultFonts = {
-        serif = [ "FiraCode Nerd Font Mono" ];
-        sansSerif = [ "FiraCode Nerd Font Mono" ];
-        monospace = [ "FiraCode Nerd Font Mono" ];
+        serif = [ "Inter Variable" ];
+        sansSerif = [ "Inter Variable" ];
+        monospace = [ "Fira Code" "Droid Sans" ];
       };
     };
   };
