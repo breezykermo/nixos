@@ -65,13 +65,13 @@ in
       # Dropbox
       maestral
       maestral-gui
-      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
     ];
   };
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
       inter-typeface
       # berkeley-mono-typeface
     ];
@@ -80,7 +80,7 @@ in
       defaultFonts = {
         serif = [ "Inter Variable" ];
         sansSerif = [ "Inter Variable" ];
-        monospace = [ "Fira Code" "Droid Sans" ];
+        monospace = [ "DroidSansM Nerd Font Mono" "FiraCode Nerd Font Mono" ];
       };
     };
   };
