@@ -568,7 +568,40 @@ require('lazy').setup({
     config = function()
       require('lspconfig').svelte.setup({})
       require('lspconfig').clangd.setup({})
-      
+      require('lspconfig').rust_analyzer.setup({
+        capabilities = {
+          textDocument = {
+            publishDiagnostics = {
+              dynamicRegistration = true,
+              relatedInformation = true,
+            },
+          },
+        },
+        settings = {
+          ["rust-analyzer"] = {
+            cargo = {
+              allFeatures = true,
+            },
+            imports = {
+              group = {
+                enable = false,
+              },
+            },
+            completion = {
+              postfix = {
+                enable = false,
+              },
+            },
+            checkOnSave = {
+              command = "clippy", 
+            },
+            diagnostics = {
+              enable = true, 
+              enableExperimental = true,  
+            },
+          },
+        },
+      })
     end,
   },
 
@@ -691,31 +724,10 @@ require('lazy').setup({
 
   -- TODO: work out how to get this into LSP config
   -- Rust defaults
-  {
-	  'mrcjkb/rustaceanvim',
-	  version = '^5', -- Recommended
-	  ft = { 'rust' }
-  },
+  -- {
+	 --  'mrcjkb/rustaceanvim',
+	 --  version = '^5', -- Recommended
+	 --  ft = { 'rust' }
+  -- },
 }, {})
-
-vim.g.rustaceanvim = {
-  -- Plugin configuration
-  tools = {},
-  -- LSP configuration
-  server = {
-    on_attach = function(client, bufnr)
-      -- Keymaps for Rust
-      local bufnr = vim.api.nvim_get_current_buf()
-      vim.keymap.set(
-        "n", 
-        "<leader>ad", 
-        function()
-          vim.cmd.RustLsp('openDocs')
-        end,
-        { silent = true, buffer = bufnr }
-      )
-    end,
-  },
-}
-
 
