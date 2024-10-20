@@ -129,7 +129,7 @@
 		git = {
 			enable = true;
 			userName = "Lachlan Kermode";
-			userEmail = "lachlankermode@live.com";
+			userEmail = "lachiekermode@gmail.com";
 
 			lfs.enable = true;
 			extraConfig = {
