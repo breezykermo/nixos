@@ -11,7 +11,7 @@ let
   remouse = import ./remouse.nix {
     inherit (pkgs) lib fetchFromGitHub python311Packages fetchPypi;
     inherit (pkgs.python311Packages) buildPythonPackage;
-  }
+  };
 in
 {
   home.packages = [
