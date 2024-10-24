@@ -24,20 +24,5 @@
     #
     #   nativeBuildInputs = [];
     # })
-
-    (rustPlatform.buildRustPackage rec {
-      pname = "oculante";
-      version = "0.9.1";
-
-      src = fetchCrate {
-        inherit pname version;
-        hash = ""; 
-      };
-
-      cargoHash = lib.fakeHash;
-
-      nativeBuildInputs = [];
-    })
-
   ];
 }
