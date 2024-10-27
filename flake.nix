@@ -7,29 +7,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # browser-previews = {
-    #   url = "github:nix-community/browser-previews";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
-    # TODO: do I need these?
-    # flake-utils.url = "github:numtide/flake-utils";
-
-    # For building from Python projects
-    # poetry2nix.url = "github:nix-community/poetry2nix";
-
-    # For building from Rust projects
-    # naersk.url = "github:nix-community/naersk";
 	};
 
-	outputs = inputs@{
+  outputs = inputs@{
     nixpkgs, 
     home-manager, 
-    # browser-previews,
-    # poetry2nix, 
-    # naersk,
     ... }:
-	let 
+  let 
 		system = "x86_64-linux";
 	in
 	{

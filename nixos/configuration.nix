@@ -15,8 +15,6 @@ in
   # Allow unfree (Dropbox), and unstable (ollama)
   nixpkgs.config = {
     allowUnfree = true;
-    # TODO: remove this! I am not sure which package uses it.
-    permittedInsecurePackages = [ "olm-3.2.16" ];
     packageOverrides = pkgs: {
       unstable = import unstableTarball {
         config = config.nixpkgs.config;
@@ -30,15 +28,12 @@ in
 
   networking.hostName = "loxnix";
   networking.networkmanager.enable = true;
+
   # necessary for routing traffic through wireguard
   networking.firewall.checkReversePath = false;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
