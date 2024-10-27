@@ -49,7 +49,7 @@
 	};
 
 	home.sessionVariables = {
-		LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate lava')";
+		LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate catpuccin-macchiato')";
 	};
 
 	programs = {
