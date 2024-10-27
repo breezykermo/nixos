@@ -1,5 +1,10 @@
 { config, pkgs, lib, ...}:
 {
+
+  imports = [
+    ./remouse
+  ];
+
   home.packages = with pkgs; [
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
