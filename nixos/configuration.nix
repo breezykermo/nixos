@@ -82,7 +82,7 @@ in
   };
 
   # Dropbox
-  # TODO: work out how to get this in home-manager
+  # TODO: is this still necessary for Maestral? 
   networking.firewall = {
     allowedTCPPorts = [ 17500 ];
     allowedUDPPorts = [ 17500 ];
