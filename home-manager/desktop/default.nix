@@ -5,7 +5,7 @@
     ./hypr
     ./vscode
     ./bluetooth
-    ./firefox
+    ./browsers
     ./zathura
     ./spotify
     ./obs
