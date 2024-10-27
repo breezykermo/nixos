@@ -12,6 +12,7 @@
     ./blender
     ./office
     ./youtube
+    ./_inprogress
   ];
 
   home.packages = with pkgs; [
