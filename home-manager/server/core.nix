@@ -5,8 +5,6 @@
 	};
 
 	home.packages = with pkgs; [
-    openssl
-
 		# profiling
 		nix-tree
 
@@ -15,14 +13,7 @@
 		zip
 		xz
 
-		# networking tools
-		# mtr	# A network diagnostic tool
-		# dnsutils # `dig` + `nslookup`
-		# ldns	# replacement of `dig`, it provide the command `drill`
-		# nmap			# A utility for network discovery and security auditing
-
 		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		# delta			# A viewer for git and diff output
 		gawk			# GNU awk, a pattern scanning and processing language
 		ripgrep		# recursively searches directories for a regex pattern
 		sad				# CLI search and replace, with diff preview 
@@ -45,23 +36,9 @@
 		bartib		# time tracking
 		git-crypt	# encrypted git repos
 
-    # NOTE: in general, I don't want this.
-    # but due to tectonic sometimes not being able to do what I need, it is nice to have.
+    # NOTE: in general, I don't want this. but due to tectonic sometimes not
+    # being able to do what I need, it is nice to have.
     texlive.combined.scheme-medium 
-
-    # interactively fold JSON
-    # (rustPlatform.buildRustPackage rec {
-    #   pname = "jless";
-    #   version = "0.9.0";
-    #
-    #   src = fetchCrate {
-    #     inherit pname version;
-    #     hash = "sha256-YDZT7CBhQGIC4OSUDfOxbtT2tDgpJY0jYtG6EcjoW0Y=";
-    #   };
-    #
-    #   cargoHash = "sha256-sas94liAOSIirIJGdexdApXic2gWIBDT4uJFRM3qMw0=";
-    # })
-
  	];
 
 	home.shellAliases = {
@@ -78,7 +55,7 @@
 	};
 
 	home.sessionVariables = {
-		LS_COLORS = "${pkgs.bash}/bin/bash -c 'vivid generate catppuccin-macchiato'";
+		LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate lava')";
 	};
 
 	programs = {
@@ -94,8 +71,8 @@
     # auto dev environments with nix flakes
     direnv = {
       enable = true;
-      # enableFishIntegration = true; 
       nix-direnv.enable = true;
+      # enableFishIntegration = true; 
     };
 
 		eza = {
@@ -113,7 +90,7 @@
 			};
 		};
 
-		# file directory navigation
+		# file directory navigation, option 1
 		broot = {
 			enable = true;
 			enableFishIntegration = true;
@@ -122,9 +99,8 @@
 			};
 		};
 
-		lf = {
-			enable = true;
-		};
+		# file directory navigation, option 2
+		lf.enable = true;
 
 		git = {
 			enable = true;
@@ -140,32 +116,20 @@
 			};
 
 			# A syntax-highlighting pager in Rust
-			# delta = {
-			# 	enable = true;
-			# 	options = {
-			# 		diff-so-fancy = true;
-			# 		line-numbers = true;
-			# 		true-color = "always";
-			# 	};
-			# };
+			delta = {
+				enable = true;
+				options = {
+					diff-so-fancy = true;
+					line-numbers = true;
+					true-color = "always";
+				};
+			};
 		};
 		
-		# jujutsu = {
-		# 	enable = true;
-		# 	settings = {
-		# 		user = {
-		# 			name = "Lachlan Kermode";
-		# 			email = "hi@ohrg.org";
-		# 		};
-		# 	};
-		# };
-
 		# A command-line fuzzy finder
 		fzf = {
 			enable = true;
 			colors = {
-				# "bg+" = "#313244";
-				# "bg" = "#1e1e2e";
 				"spinner" = "#f5e0dc";
 				"hl" = "#f38ba8";
 				"fg" = "#cdd6f4";
@@ -179,14 +143,11 @@
 			};
 		};
 
-		command-not-found.enable = false;
-
 		btop = {
 			enable = true;
 			settings = {
 				vim_keys = true;
 			};
 		};
-
 	};
 }

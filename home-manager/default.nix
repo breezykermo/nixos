@@ -7,14 +7,6 @@
 		./desktop
 	];
 
-  # virtualisation: see https://nixos.wiki/wiki/Virt-manager
-  dconf.settings = {
-    "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
-    };
-  };
-
 	home.username = "alice";
 	home.homeDirectory = "/home/alice";
 	home.stateVersion = "23.11";

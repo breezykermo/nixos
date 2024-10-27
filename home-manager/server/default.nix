@@ -5,11 +5,10 @@
     ./fish
     ./tmux
     ./neovim
-    # ./emacs
     ./node
-    ./dropbox
     ./llms
     ./mail
     ./irc
+    ./_inprogress
   ];
 }

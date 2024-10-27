@@ -89,37 +89,8 @@ in
   };
 
 
-  # NOTE: this doesn't seem to work any longer
-  systemd.user.services.dropbox = {
-    description = "Dropbox";
-    wantedBy = [ "graphical-session.target" ];
-    environment = {
-      QT_PLUGIN_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtPluginPrefix;
-      QML2_IMPORT_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtQmlPrefix;
-    };
-    serviceConfig = {
-      ExecStart = "${lib.getBin pkgs.dropbox}/bin/dropbox";
-      ExecReload = "${lib.getBin pkgs.coreutils}/bin/kill -HUP $MAINPID";
-      KillMode = "control-group"; # upstream recommends process
-      Restart = "on-failure";
-      PrivateTmp = true;
-      ProtectSystem = "full";
-      Nice = 10;
-    };
-  };
-  #
-  # NB: not ideal to put it here, but fine for now.
-  # programs.steam.enable = true;
-
   # Enable nix ld for running binaries: see https://github.com/Mic92/nix-ld
   # programs.nix-ld.enable = true;
-
-  # Sets up all the libraries to load
-  # programs.nix-ld.libraries = with pkgs; [
-  #   stdenv.cc.cc
-  #   glib
-  #   # ...
-  # ];
 
   # for flashing keyboards with Keymapp
   services.udev.extraRules = ''
@@ -161,7 +132,6 @@ in
 
   # Limit the number of generations to keep
   boot.loader.systemd-boot.configurationLimit = 10;
-  # boot.loader.grub.configurationLimit = 10;
 
   # Perform garbage collection weekly to maintain low disk usage
   nix.gc = {
