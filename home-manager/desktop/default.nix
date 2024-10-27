@@ -60,7 +60,7 @@
       window.decorations = "none";
       window.opacity = 0.9;
       scrolling.history = 0;
-      shell = {
+      terminal.shell = {
         program = "${pkgs.tmux}/bin/tmux";
         args = [ "attach-session" "-t" "." "-c" "/home/alice/Brown Dropbox/Lachlan Kermode/lyt" ];
       };

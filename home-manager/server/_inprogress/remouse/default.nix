@@ -6,7 +6,7 @@ let
   remouse = pkgs.python311Packages.buildPythonPackage rec {
     pname = "remarkable-mouse";
     version = "7.1.1";
-    src = fetchPypi {
+    src = pkgs.fetchPypi {
       inherit pname version;
       sha256 = "sha256-82P9tE3jiUlKBGZCiWDoL+9VJ06Bc+If+aMfcEEU90U=";
     };
@@ -15,7 +15,7 @@ let
       (pkgs.python311Packages.buildPythonPackage rec {
         pname = "paramiko";
         version = "3.5.0"; 
-        src = lib.fetchPypi {
+        src = pkgs.fetchPypi {
           pname = pname;
           version = version;
           sha256 = "sha256-rRHlQNpPVc7dpSkx8aP4Eqgjinr39ipg3lOM2AuygSQ="; 
