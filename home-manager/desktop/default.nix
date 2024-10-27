@@ -3,7 +3,6 @@
 {
   imports = [
     ./hypr
-    ./vscode
     ./bluetooth
     ./browsers
     ./zathura
@@ -13,6 +12,7 @@
     ./office
     ./youtube
     ./_inprogress
+    # ./vscode
   ];
 
   home.packages = with pkgs; [
