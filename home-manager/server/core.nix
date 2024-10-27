@@ -5,36 +5,30 @@
 	};
 
 	home.packages = with pkgs; [
-		# profiling
-		nix-tree
-
-		# archives
-    unzip
+		nix-tree    # profiling
+    unzip       # archives
 		zip
 		xz
-
-		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		gawk			# GNU awk, a pattern scanning and processing language
-		ripgrep		# recursively searches directories for a regex pattern
-		sad				# CLI search and replace, with diff preview 
-		ripgrep		# `rg` is a better grep
-		fd				# `fd` is a better find
-		jq				# A lightweight and flexible command-line JSON processor
-
-		file
+		file        # general file utils
 		which
 		tree
-		gnupg
-
-    vivid			# for colorschemes
-
-		just			# better makefiles
-		lazygit		# git tui client
-		pandoc		# document processor
-		tectonic	# LaTeX compilation
-		pdftk			# pdf manipulation
-		bartib		# time tracking
-		git-crypt	# encrypted git repos
+		# gnupg
+		# Docs: https://github.com/learnbyexample/Command-line-text-processing
+		gawk			  # GNU awk, a pattern scanning and processing language
+		ripgrep		  # recursively searches directories for a regex pattern
+		sad				  # CLI search and replace, with diff preview 
+		ripgrep		  # `rg` is a better grep
+		fd				  # `fd` is a better find
+		jq				  # A lightweight and flexible command-line JSON processor
+    vivid			  # for colorschemes
+		just			  # better makefiles
+		lazygit		  # git tui client
+		pandoc		  # document processor
+		tectonic	  # LaTeX compilation
+		pdftk			  # pdf manipulation
+		bartib		  # time tracking
+		git-crypt	  # encrypted git repos
+    imagemagick # manipulate images from the command-line
 
     # NOTE: in general, I don't want this. but due to tectonic sometimes not
     # being able to do what I need, it is nice to have.

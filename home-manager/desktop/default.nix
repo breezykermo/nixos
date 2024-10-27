@@ -26,13 +26,11 @@
     wl-clipboard-rs # required for tmux-yank to copy to clipboard
 
     # citation management
-    zotero
-
     # 1. Log into account for zotero.org (lachlankermode@live.com). Wait for sync...
     # 2. Install Better BibTex: https://retorque.re/zotero-better-bibtex/installation/
     # 3. Export "My Library" (with "Keep updated") to lyt/references/master.bib
     # 4. Install 'Zotero Connector' for Firefox.
-    imagemagick
+    zotero
 
     # 'secure' messaging
     # NB: services.keybase is already enabled in server/core.nix, required for this.
@@ -49,7 +47,6 @@
 
     # for flashcards
     anki-bin
-
   ];
 
   programs.rofi = {
@@ -75,5 +72,4 @@
       ];
     };
   };
-
 }

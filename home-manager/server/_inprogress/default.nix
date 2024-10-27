@@ -1,6 +1,6 @@
 { config, pkgs, lib, ...}:
 {
-  home.packages = with pkgs: [
+  home.packages = with pkgs; [
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
     #   pname = "jless";
