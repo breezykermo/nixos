@@ -60,7 +60,10 @@ in
       # Dropbox
       maestral
       maestral-gui
+      # Fonts
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      # Virtualization
+      docker-compose
     ];
   };
 

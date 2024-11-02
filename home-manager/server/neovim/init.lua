@@ -278,8 +278,8 @@ require('lazy').setup({
           TODO = ':foreground #009333 :underline on', -- overrides builtin color for `TODO` keyword
         },
         org_todo_repeat_to_state = 'TODO',
-        org_startup_indented = false,
-        org_adapt_indentation = false,
+        org_startup_indented = true,
+        org_adapt_indentation = true,
         org_blank_before_new_entry = { heading = false, plain_list_item = false },
         org_hide_leading_stars = true,
         -- select content in TODO item = vah 

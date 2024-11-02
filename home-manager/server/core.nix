@@ -9,6 +9,7 @@
     unzip       # archives
 		zip
 		xz
+    lz4
 		file        # general file utils
 		which
 		tree
@@ -29,6 +30,7 @@
 		bartib		  # time tracking
 		git-crypt	  # encrypted git repos
     imagemagick # manipulate images from the command-line
+    ffmpeg-full # utility for sound, image, video
 
     # NOTE: in general, I don't want this. but due to tectonic sometimes not
     # being able to do what I need, it is nice to have.
