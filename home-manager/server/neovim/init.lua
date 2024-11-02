@@ -279,7 +279,7 @@ require('lazy').setup({
         },
         org_todo_repeat_to_state = 'TODO',
         org_startup_indented = true,
-        org_adapt_indentation = true,
+        org_adapt_indentation = false,
         org_blank_before_new_entry = { heading = false, plain_list_item = false },
         org_hide_leading_stars = true,
         -- select content in TODO item = vah 

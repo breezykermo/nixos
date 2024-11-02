@@ -9,5 +9,10 @@
 
     # PDF
     qpdf
+
+    # Video editing 
+    shotcut
   ];
+
+
 }
