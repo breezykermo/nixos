@@ -14,8 +14,6 @@
     file        # general file utils
     which
     tree
-    # gnupg
-    # Docs: https://github.com/learnbyexample/Command-line-text-processing
     gawk			  # GNU awk, a pattern scanning and processing language
     ripgrep		  # recursively searches directories for a regex pattern
     sad				  # CLI search and replace, with diff preview 
@@ -36,7 +34,7 @@
 
     # NOTE: in general, I don't want this. but due to tectonic sometimes not
     # being able to do what I need, it is nice to have.
-    texlive.combined.scheme-medium 
+    # texlive.combined.scheme-medium 
  	];
 
 	home.shellAliases = {
@@ -73,6 +71,7 @@
       # enableFishIntegration = true; 
     };
 
+    # ls but better
 		eza = {
 			enable = true;
 			git = true;
@@ -141,6 +140,7 @@
 			};
 		};
 
+    # top but better
 		btop = {
 			enable = true;
 			settings = {
