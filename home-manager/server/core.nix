@@ -26,7 +26,6 @@
     lazydocker  # docker tui client
 		pandoc		  # document processor
 		tectonic	  # LaTeX compilation
-		pdftk			  # pdf manipulation
 		bartib		  # time tracking
 		git-crypt	  # encrypted git repos
     imagemagick # manipulate images from the command-line

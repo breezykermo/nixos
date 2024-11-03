@@ -1,17 +1,12 @@
 { pkgs, ... }:
 {
 	home.packages = with pkgs; [
-    libreoffice
-
-		# CSV management in terminal
-		csvkit
+    libreoffice   # docs
+		csvkit        # csv management
 		visidata 
-
-    # PDF
+		pdftk         # pdf
     qpdf
-
-    # Video editing 
-    shotcut
+    shotcut       # video editing
   ];
 
 
