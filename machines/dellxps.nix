@@ -53,7 +53,7 @@
   services.blueman.enable = true;
   services.dbus.packages = with pkgs; [blueman]; 
 
-	# necessary for sway
+	# necessary for sway and OBS virtual camera
 	security.polkit.enable = true;
 
 	# necessary for sound
@@ -68,12 +68,12 @@
 	hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
 	# https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
-	boot.kernelModules = [ "v412loopback" ];
 	boot.extraModulePackages = with config.boot.kernelPackages; [
 		v4l2loopback
 	];
+	boot.kernelModules = [ "v412loopback" ];
 	boot.extraModprobeConfig = ''
-		options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+    options v4l2loopback devices=2 video_nr=1,2 card_label="OBS Cam, Virt Cam" exclusive_caps=1
 	'';
 	environment.systemPackages = [ pkgs.v4l-utils ];
 	# NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4

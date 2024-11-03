@@ -8,6 +8,4 @@
     qpdf
     shotcut       # video editing
   ];
-
-
 }

@@ -2,6 +2,7 @@
 	description = "Lachie's NixOS Flake";
 
   inputs = {
+    # NOTE: Determinate seems nice. But I'm not yet sure why/how I would use it.
     # determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
