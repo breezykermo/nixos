@@ -9,7 +9,7 @@
     enable = true;
     # see https://mynixos.com/packages/obs-studio-plugins
     plugins = with pkgs.obs-studio-plugins; [
-      wlrobs-unstable
+      wlrobs
       droidcam-obs
       obs-composite-blur
       obs-move-transition

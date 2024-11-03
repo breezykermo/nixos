@@ -65,7 +65,7 @@
 
 	# opengl
 	hardware.graphics.enable = true;
-	hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
+	hardware.graphics.extraPackages = with pkgs; [ intel-media-driver intel-media-sdk ];
 
 	# https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
 	boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -76,7 +76,7 @@
     options v4l2loopback devices=2 video_nr=1,2 card_label="OBS Cam, Virt Cam" exclusive_caps=1
 	'';
 	environment.systemPackages = [ pkgs.v4l-utils ];
-	# NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4
+	# NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4shell
 	environment.shells = with pkgs; [ bashInteractive ];
 
   # XDG enables wayland to communicate with XDG programs.
