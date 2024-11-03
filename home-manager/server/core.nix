@@ -5,25 +5,27 @@
 	};
 
 	home.packages = with pkgs; [
-		nix-tree    # profiling
+    nix-tree    # profiling
+    nix-index   # local index of nixpkgs for search
     unzip       # archives
-		zip
-		xz
+    zip
+    xz
     lz4
-		file        # general file utils
-		which
-		tree
-		# gnupg
-		# Docs: https://github.com/learnbyexample/Command-line-text-processing
-		gawk			  # GNU awk, a pattern scanning and processing language
-		ripgrep		  # recursively searches directories for a regex pattern
-		sad				  # CLI search and replace, with diff preview 
+    file        # general file utils
+    which
+    tree
+    # gnupg
+    # Docs: https://github.com/learnbyexample/Command-line-text-processing
+    gawk			  # GNU awk, a pattern scanning and processing language
+    ripgrep		  # recursively searches directories for a regex pattern
+    sad				  # CLI search and replace, with diff preview 
 		ripgrep		  # `rg` is a better grep
 		fd				  # `fd` is a better find
 		jq				  # A lightweight and flexible command-line JSON processor
     vivid			  # for colorschemes
 		just			  # better makefiles
 		lazygit		  # git tui client
+    lazydocker  # docker tui client
 		pandoc		  # document processor
 		tectonic	  # LaTeX compilation
 		pdftk			  # pdf manipulation
