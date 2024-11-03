@@ -2,8 +2,9 @@
 	description = "Lachie's NixOS Flake";
 
   inputs = {
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0";
+    # determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
+    # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,7 +14,7 @@
   outputs = inputs@{
     nixpkgs, 
     home-manager, 
-    determinate,
+    # determinate,
     ... }:
   let 
 		system = "x86_64-linux";
@@ -25,7 +26,7 @@
 				# hardware, NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
 				./nixos/configuration.nix
 
-        determinate.nixosModules.default
+        # determinate.nixosModules.default
 
 				# Use home-manager to configure different users
 				home-manager.nixosModules.home-manager {
