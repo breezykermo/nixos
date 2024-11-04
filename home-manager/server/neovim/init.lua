@@ -222,6 +222,10 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   end
 })
 
+-- Git blame
+vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle window<CR>", { noremap = true, silent = true })
+
+
 require('lazy').setup({
 	-- Automatically manage Vim.session (for tmux restore)
   -- TODO: not yet working on NixOS
@@ -244,6 +248,32 @@ require('lazy').setup({
 
   -- Rainbow delimiters
   'hiphish/rainbow-delimiters.nvim',
+
+  -- Git blame
+  {
+    'FabijanZulj/blame.nvim',
+    lazy = false,
+    config = function()
+      require('blame').setup {}
+    end,
+    opts = {
+      date_format = "%d.%m.%Y",
+      virtual_style = "right_align",
+      focus_blame = true,
+      merge_consecutive = false,
+      max_summary_width = 30,
+      colors = nil,
+      blame_options = nil,
+      commit_detail_view = "vsplit",
+      mappings = {
+        commit_info = "i",
+        stack_push = "<TAB>",
+        stack_pop = "<BS>",
+        show_commit = "<CR>",
+        close = { "<esc>", "q" },
+      }
+    },
+  },
 
   -- Org mode
   {
