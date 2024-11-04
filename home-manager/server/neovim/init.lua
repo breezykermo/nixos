@@ -223,7 +223,8 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 -- Git blame
-vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle window<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>gB", ":BlameToggle window<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle virtual<CR>", { noremap = true, silent = true })
 
 
 require('lazy').setup({
