@@ -99,6 +99,8 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
+-- Rename a variable using LSP
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {})
 
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt = 'menuone,noselect'
@@ -754,13 +756,5 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup(opts)
     end,
   },
-
-  -- TODO: work out how to get this into LSP config
-  -- Rust defaults
-  -- {
-	 --  'mrcjkb/rustaceanvim',
-	 --  version = '^5', -- Recommended
-	 --  ft = { 'rust' }
-  -- },
 }, {})
 
