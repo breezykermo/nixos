@@ -223,7 +223,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 -- Git blame
-vim.api.nvim_set_keymap("n", "<leader>gB", ":BlameToggle window<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle window<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle virtual<CR>", { noremap = true, silent = true })
 
 
@@ -611,7 +611,9 @@ require('lazy').setup({
         settings = {
           ["rust-analyzer"] = {
             cargo = {
-              allFeatures = true,
+              -- see https://www.reddit.com/r/neovim/comments/18i6qu6/configure_rustanalyzer_feature_configuration/?rdt=33707 for more durable solution
+              -- allFeatures = true,
+              features = {},
             },
             imports = {
               group = {

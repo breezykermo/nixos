@@ -42,7 +42,7 @@ in
   users.users.alice = {
     isNormalUser = true;
     description = "alice";
-    extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" ];
   };
 
   # Enable the flakes feature; requires `git` in systemPackages
@@ -114,6 +114,8 @@ in
   '';
 
   programs.virt-manager.enable = true;
+
+  programs.adb.enable = true;
 
   # for a better setup, see https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
   virtualisation = {
