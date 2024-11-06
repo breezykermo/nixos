@@ -171,6 +171,27 @@ local function copy_to_clipboard(str)
   vim.fn.setreg('+', str)
 end
 
+local function update_hrefs_from_org_to_html(file_path)
+  -- Read the file contents
+  local file = io.open(file_path, "r")
+  if not file then
+    print("File not found!")
+    return
+  end
+  local content = file:read("*all")
+  file:close()
+
+  -- Perform the replacement: change .org to .htlm in hrefs
+  content = content:gsub('href="([^"]+)%.org"', 'href="%1.html"')
+
+  -- Write the modified content back to the file
+  file = io.open(file_path, "w")
+  file:write(content)
+  file:close()
+
+  print("All .org hrefs changed to .html in " .. file_path)
+end
+
 -------------------------------------------------------------------------------
 --
 -- Packages 
@@ -350,7 +371,6 @@ require('lazy').setup({
               local current_file = vim.api.nvim_buf_get_name(0)
               local target = vim.fn.fnamemodify(current_file, ':p:r')..'.pdf'
               local current_dir = vim.fn.getcwd()
-              local reference_path = current_dir .. "/references/a.csl"
               -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/ieee.csl --pdf-engine tectonic -o $FNAME.pdf $FNAME.org
               local command = {
                 'pandoc', 
@@ -368,6 +388,37 @@ require('lazy').setup({
                 current_file 
               }
               local on_success = function(output)
+                vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
+                copy_to_clipboard(target)
+              end
+              local on_error = function(err)
+                vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
+                vim.api.nvim_echo(target, true, {})
+              end
+              return exporter(command , target, on_success, on_error)
+            end
+          },
+
+          H = {
+            label = 'Export to HTML (with prefix)',
+            action = function(exporter)
+              local current_file = vim.api.nvim_buf_get_name(0)
+              local target = vim.fn.fnamemodify(current_file, ':p:r')..'.html'
+              local current_dir = vim.fn.getcwd()
+              local command = {
+                'pandoc', 
+                '-s',
+                '--bibliography',
+                current_dir .. '/../../references/master.bib',
+                '--citeproc',
+                '--csl',
+                current_dir .. '/../../references/chicago-name-date.csl',
+                '-o', 
+                target,
+                current_file 
+              }
+              local on_success = function(output)
+                update_hrefs_from_org_to_html(target)
                 vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
                 copy_to_clipboard(target)
               end
