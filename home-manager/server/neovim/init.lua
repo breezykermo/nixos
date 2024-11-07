@@ -249,6 +249,8 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle window<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle virtual<CR>", { noremap = true, silent = true })
 
+-- Word count shortcut
+vim.api.nvim_set_keymap('v', '<leader>wc', ":'<,'>w !wc -w<CR>", { noremap = true, silent = true })
 
 require('lazy').setup({
 	-- Automatically manage Vim.session (for tmux restore)
@@ -514,22 +516,6 @@ require('lazy').setup({
     opts = { signs = false }
   },
 
- 	-- Inline function signatures
-	-- {
-	-- 	"ray-x/lsp_signature.nvim",
-	-- 	event = "VeryLazy",
-	-- 	opts = {},
-	-- 	config = function(_, opts)
-	-- 		-- Get signatures (and _only_ signatures) when in argument lists.
-	-- 		require "lsp_signature".setup({
-	-- 			doc_lines = 0,
-	-- 			handler_opts = {
-	-- 				border = "none"
-	-- 			},
-	-- 		})
-	-- 	end
-	-- },
-
   -- Status line
   {
 	  'nvim-lualine/lualine.nvim',
@@ -551,7 +537,7 @@ require('lazy').setup({
 			-- require('leap').create_default_mappings()
 		end
 	},
-  { -- Fuzzy Finder (files, lsp, etc)
+  { -- Fuzzy Finder (files, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
     branch = '0.1.x',
@@ -651,7 +637,11 @@ require('lazy').setup({
     },
     config = function()
       require('lspconfig').svelte.setup({})
-      require('lspconfig').clangd.setup({})
+      require('lspconfig').clangd.setup{
+        cmd = { "clangd" },
+        filetypes = { "c", "cpp", "objc", "objcpp" },
+        root_dir = require('lspconfig.util').root_pattern("compile_commands.json", ".git"),
+      }
       require('lspconfig').rust_analyzer.setup({
         capabilities = {
           textDocument = {
