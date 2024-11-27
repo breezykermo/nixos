@@ -1,7 +1,11 @@
 { pkgs, ... }:
+let 
+  windsurf = pkgs.callPackage ./windsurf.nix {};
+in 
 {
 
-	home.packages = with pkgs; [
+	home.packages = [
+    windsurf
     # slice and dice CSVs 
     # (rustPlatform.buildRustPackage rec {
     #   pname = "qsv";

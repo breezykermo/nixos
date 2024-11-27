@@ -318,6 +318,7 @@ require('lazy').setup({
           '~/Brown Dropbox/Lachlan Kermode/lyt/index.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/wiki.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/freelance.*',
+          '~/Brown Dropbox/Lachlan Kermode/lyt/study.*',
         },
         org_deadline_warning_days = 4,
         org_default_notes_file = '~/Brown Dropbox/Lachlan Kermode/lyt/org/inbox.org',
@@ -383,6 +384,10 @@ require('lazy').setup({
                 '--csl',
                 current_dir .. '/references/chicago-name-date.csl',
                 -- current_dir .. '/references/syllabus.csl',
+                '-V',
+                'colorlinks=true',
+                '-V',
+                'linkcolor=blue',
                 '--pdf-engine',
                 'tectonic',
                 '-o', 
@@ -441,17 +446,35 @@ require('lazy').setup({
       })
     end,
   },
-  -- {
-  --   'akinsho/org-bullets.nvim',
-  --   config = function()
-  --     require('org-bullets').setup({
-  --       concealcursor = false,
-  --     })
-  --   end,
-  -- },
+
   {
     'dhruvasagar/vim-table-mode'
   },
+
+  -- LLM autocomplete
+  -- {
+  --   'Exafunction/codeium.vim',
+  --   config = function()
+  --     vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+  --     vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+  --     vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+  --     vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+  --   end
+  -- },
+
+  -- TODO: nvim-dap for a better experience with GDB debugging.
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   config = function()
+  --     local dap = require("dap")
+  --     dap.adapters.gdb = {
+  --       type = "executable",
+  --       command = "gdb",
+  --       args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+  --     }
+  --   end
+  -- },
+
   {
     "lukas-reineke/headlines.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
