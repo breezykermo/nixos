@@ -33,7 +33,7 @@ in
   networking.firewall.checkReversePath = false;
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  time.timeZone = "Europe/Rome";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -61,7 +61,7 @@ in
       maestral
       maestral-gui
       # Fonts
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      nerd-fonts.fira-code
       # Virtualization
       docker-compose
     ];
@@ -69,7 +69,7 @@ in
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      nerd-fonts.fira-code
       inter-typeface
       # TODO: https://yildiz.dev/posts/packing-custom-fonts-for-nixos/
       # berkeley-mono-typeface

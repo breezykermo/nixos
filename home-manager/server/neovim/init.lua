@@ -416,10 +416,10 @@ require('lazy').setup({
                 'pandoc', 
                 '-s',
                 '--bibliography',
-                current_dir .. '/../../references/master.bib',
+                '/home/alice/Brown Dropbox/Lachlan Kermode/lyt/references/master.bib',
                 '--citeproc',
                 '--csl',
-                current_dir .. '/../../references/chicago-name-date.csl',
+                '/home/alice/Brown Dropbox/Lachlan Kermode/lyt/references/chicago-name-date.csl',
                 '-o', 
                 target,
                 current_file 
