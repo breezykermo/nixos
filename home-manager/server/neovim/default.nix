@@ -27,6 +27,7 @@
 		rustup
 
 		#--  language servers
+    nodejs # needed for copilot
 		nodePackages.bash-language-server
 		nodePackages.svelte-language-server
 		# nodePackages.pyright # python language server

@@ -275,6 +275,187 @@ require('lazy').setup({
   -- Rainbow delimiters
   'hiphish/rainbow-delimiters.nvim',
 
+  -- LLMS
+  -- {
+  --   'milanglacier/minuet-ai.nvim',
+  --   config = function()
+  --     require('minuet').setup {
+  --       -- Your configuration options here
+  --     }
+  --   end,
+  -- },
+  -- {
+  --   "robitx/gp.nvim",
+  --   config = function()
+  --     local conf = {
+  --       providers = {
+  --         copilot = {
+  --           disable = false,
+  --           endpoint = "https://api.githubcopilot.com/chat/completions",
+  --           secret = {
+  --             "bash",
+  --             "-c",
+  --             "cat ~/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
+  --           },
+  --         },
+  --       }
+  --       -- For customization, refer to Install > Configuration in the Documentation/Readme
+  --     }
+  --     require("gp").setup(conf)
+  --
+  --     -- Setup shortcuts here (see Usage > Shortcuts in the Documentation/Readme)
+  --   end,
+  -- },
+  {
+    'zbirenbaum/copilot.lua',
+    config = function() 
+      require('copilot').setup({
+        panel = {
+          enabled = false,
+          auto_refresh = false,
+          keymap = {
+            jump_prev = "[[",
+            jump_next = "]]",
+            accept = "<CR>",
+            refresh = "gr",
+            open = "<M-CR>"
+          },
+          layout = {
+            position = "bottom", -- | top | left | right | horizontal | vertical
+            ratio = 0.4
+          },
+        },
+        suggestion = {
+          enabled = false,
+          auto_trigger = false,
+          hide_during_completion = true,
+          debounce = 75,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["."] = false,
+        },
+        copilot_node_command = 'node', -- Node.js version must be > 18.x
+        server_opts_overrides = {},
+      })
+    end 
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function ()
+      require("copilot_cmp").setup()
+    end
+  },
+  'ibhagwan/fzf-lua',
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    build = "make tiktoken",
+    config = function()
+      local chat = require('CopilotChat')
+      local actions = require('CopilotChat.actions')
+      local select = require('CopilotChat.select')
+      local integration = require('CopilotChat.integrations.fzflua')
+      local icons = {
+        ui = {
+          User = ' ',
+          Bot = ' ',
+          Wiki = '󰈙',
+          Hunk = '󰏚',
+        },
+        diagnostics = {
+          Error = ' ',
+          Warn = ' ',
+          Hint = ' ',
+          Info = ' ',
+        },
+      }
+      
+      chat.setup({
+        model = 'claude-3.5-sonnet',
+        question_header = ' ' .. icons.ui.User .. ' ',
+        answer_header = ' ' .. icons.ui.Bot .. ' ',
+        error_header = '> ' .. icons.diagnostics.Warn .. ' ',
+        selection = select.visual,
+        mappings = {
+          reset = {
+            normal = '',
+            insert = '',
+          },
+        },
+        prompts = {
+          Explain = {
+            mapping = '<leader>qe',
+            description = 'AI Explain',
+          },
+          Review = {
+            mapping = '<leader>qr',
+            description = 'AI Review',
+          },
+          Tests = {
+            mapping = '<leader>qt',
+            description = 'AI Tests',
+          },
+          Fix = {
+            mapping = '<leader>qf',
+            description = 'AI Fix',
+          },
+          Optimize = {
+            mapping = '<leader>qo',
+            description = 'AI Optimize',
+          },
+          Docs = {
+            mapping = '<leader>qd',
+            description = 'AI Documentation',
+          },
+          Commit = {
+            mapping = '<leader>qc',
+            description = 'AI Generate Commit',
+          },
+        },
+      })
+
+      vim.keymap.set({ 'n' }, '<leader>qa', chat.toggle, { desc = 'AI Toggle' })
+      vim.keymap.set({ 'v' }, '<leader>qa', chat.open, { desc = 'AI Open' })
+      vim.keymap.set({ 'n' }, '<leader>qx', chat.reset, { desc = 'AI Reset' })
+      vim.keymap.set({ 'n' }, '<leader>qs', chat.stop, { desc = 'AI Stop' })
+      vim.keymap.set({ 'n' }, '<leader>qm', chat.select_model, { desc = 'AI Model' })
+      vim.keymap.set({ 'n', 'v' }, '<leader>qp', function()
+        integration.pick(actions.prompt_actions(), {
+          fzf_tmux_opts = {
+            ['-d'] = '45%',
+          },
+        })
+      end, { desc = 'AI Prompts' })
+      vim.keymap.set({ 'n', 'v' }, '<leader>qq', function()
+        vim.ui.input({
+          prompt = 'AI Question> ',
+        }, function(input)
+            if input and input ~= '' then
+              chat.ask(input)
+            end
+          end)
+      end, { desc = 'AI Question' })
+    end
+  },
   -- Git blame
   {
     'FabijanZulj/blame.nvim',
@@ -435,9 +616,42 @@ require('lazy').setup({
               end
               return exporter(command , target, on_success, on_error)
             end
-          }
+          },
 
+          T = {
+            label = 'Export to HTML (with ./template.html)',
+            action = function(exporter)
+              local current_file = vim.api.nvim_buf_get_name(0)
+              local target = vim.fn.fnamemodify(current_file, ':p:r')..'.html'
+              local current_dir = vim.fn.getcwd()
+              local command = {
+                'pandoc', 
+                '-s',
+                '--bibliography',
+                '/home/alice/Brown Dropbox/Lachlan Kermode/lyt/references/master.bib',
+                '--template',
+                'template.html',
+                '--citeproc',
+                '--csl',
+                '/home/alice/Brown Dropbox/Lachlan Kermode/lyt/references/chicago-name-date.csl',
+                '-o', 
+                target,
+                current_file 
+              }
+              local on_success = function(output)
+                update_hrefs_from_org_to_html(target)
+                vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
+                copy_to_clipboard(target)
+              end
+              local on_error = function(err)
+                vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
+                vim.api.nvim_echo(target, true, {})
+              end
+              return exporter(command , target, on_success, on_error)
+            end
+          },
         },
+
         ui = {
           folds = {
             colored = true
@@ -747,6 +961,7 @@ require('lazy').setup({
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      -- 'milanglacier/minuet-ai.nvim',
     },
     config = function()
       -- See `:help cmp`
@@ -789,6 +1004,7 @@ require('lazy').setup({
           { name = 'orgmode' },
           { name = 'nvim_lsp' },
           { name = 'path' },
+          -- { name = 'minuet' },
         },
         experimental = {
           ghost_text = true,

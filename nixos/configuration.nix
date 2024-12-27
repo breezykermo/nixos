@@ -64,6 +64,8 @@ in
       nerd-fonts.fira-code
       # Virtualization
       docker-compose
+      # Development
+      devenv
     ];
   };
 
