@@ -11,15 +11,13 @@
 
       zoxide init fish | source
 
-      # Necessary hack for environment variables
-      # See: https://github.com/nix-community/home-manager/issues/1011
-      set -gx DOOMDIR "${config.home.homeDirectory}/.doom.d"
-
       # NPM packages go to home directory so as not to modify nix store
       fish_add_path ~/.npm-packages/bin
 
       # Rust binaries built by me 
       fish_add_path /home/alice/.cargo-target/release
+      # Rust binaries installed 
+      fish_add_path /home/alice/.cargo/bin
     '';
 
     plugins = [

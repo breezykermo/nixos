@@ -276,36 +276,6 @@ require('lazy').setup({
   'hiphish/rainbow-delimiters.nvim',
 
   -- LLMS
-  -- {
-  --   'milanglacier/minuet-ai.nvim',
-  --   config = function()
-  --     require('minuet').setup {
-  --       -- Your configuration options here
-  --     }
-  --   end,
-  -- },
-  -- {
-  --   "robitx/gp.nvim",
-  --   config = function()
-  --     local conf = {
-  --       providers = {
-  --         copilot = {
-  --           disable = false,
-  --           endpoint = "https://api.githubcopilot.com/chat/completions",
-  --           secret = {
-  --             "bash",
-  --             "-c",
-  --             "cat ~/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
-  --           },
-  --         },
-  --       }
-  --       -- For customization, refer to Install > Configuration in the Documentation/Readme
-  --     }
-  --     require("gp").setup(conf)
-  --
-  --     -- Setup shortcuts here (see Usage > Shortcuts in the Documentation/Readme)
-  --   end,
-  -- },
   {
     'zbirenbaum/copilot.lua',
     config = function() 
@@ -361,7 +331,6 @@ require('lazy').setup({
       require("copilot_cmp").setup()
     end
   },
-  'ibhagwan/fzf-lua',
   {
     'CopilotC-Nvim/CopilotChat.nvim',
     dependencies = {
@@ -373,7 +342,7 @@ require('lazy').setup({
       local chat = require('CopilotChat')
       local actions = require('CopilotChat.actions')
       local select = require('CopilotChat.select')
-      local integration = require('CopilotChat.integrations.fzflua')
+      local integration = require('CopilotChat.integrations.telescope')
       local icons = {
         ui = {
           User = ' ',

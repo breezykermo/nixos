@@ -22,14 +22,14 @@
   ];
 
   programs = {
-		# jujutsu = {
-		# 	enable = true;
-		# 	settings = {
-		# 		user = {
-		# 			name = "Lachlan Kermode";
-		# 			email = "hi@ohrg.org";
-		# 		};
-		# 	};
-		# };
+		jujutsu = {
+			enable = true;
+			settings = {
+				user = {
+					name = "Lachlan Kermode";
+					email = "lachie@ohrg.org";
+				};
+			};
+		};
   };
 }
