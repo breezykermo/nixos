@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -48,6 +48,9 @@
 
     # for flashcards
     anki-bin
+
+    # modern terminal
+    inputs.ghostty.packages.x86_64-linux.default
   ];
 
   programs.rofi = {
