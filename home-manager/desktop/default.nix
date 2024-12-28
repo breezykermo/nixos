@@ -53,27 +53,29 @@
     inputs.ghostty.packages.x86_64-linux.default
   ];
 
+  xdg.configFile."ghostty/config".source = ./ghostty-config;
+
   programs.rofi = {
     enable = true;
     theme = "gruvbox-dark";
   };
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      window.decorations = "none";
-      window.opacity = 0.9;
-      scrolling.history = 0;
-      terminal.shell = {
-        program = "${pkgs.tmux}/bin/tmux";
-        args = [ "attach-session" "-t" "." "-c" "/home/alice/Brown Dropbox/Lachlan Kermode/lyt" ];
-      };
-      keyboard.bindings = [
-        { key = "C";  mods = "Option";   action = "Copy"; } 
-        { key = "V";  mods = "Control";   action = "Paste"; } 
-        { key = "J";  mods = "Shift|Alt"; action = "DecreaseFontSize"; } 
-        { key = "K";  mods = "Shift|Alt"; action = "IncreaseFontSize"; } 
-      ];
-    };
-  };
+  # programs.alacritty = {
+  #   enable = true;
+  #   settings = {
+  #     window.decorations = "none";
+  #     window.opacity = 0.9;
+  #     scrolling.history = 0;
+  #     terminal.shell = {
+  #       program = "${pkgs.tmux}/bin/tmux";
+  #       args = [ "attach-session" "-t" "." "-c" "/home/alice/Brown Dropbox/Lachlan Kermode/lyt" ];
+  #     };
+  #     keyboard.bindings = [
+  #       { key = "C";  mods = "Option";   action = "Copy"; } 
+  #       { key = "V";  mods = "Control";   action = "Paste"; } 
+  #       { key = "J";  mods = "Shift|Alt"; action = "DecreaseFontSize"; } 
+  #       { key = "K";  mods = "Shift|Alt"; action = "IncreaseFontSize"; } 
+  #     ];
+  #   };
+  # };
 }
