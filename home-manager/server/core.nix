@@ -51,7 +51,7 @@
 	};
 
 	home.sessionVariables = {
-		LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate gruvbox-dark')";
+		LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate molokai')";
 	};
 
 	programs = {
