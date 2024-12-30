@@ -66,7 +66,12 @@ in
       docker-compose
       # Development
       devenv
+      aider-chat
     ];
+
+    sessionVariables = {
+      LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+    };
   };
 
   fonts = {

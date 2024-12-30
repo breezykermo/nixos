@@ -46,8 +46,7 @@
 	};
 
   ## LLMs
-  # TODO: work out how to get this in stable / with my own nixpkg 
-  # services.ollama.enable = true;
+  services.ollama.enable = true;
 
   # bluetooth management
   services.blueman.enable = true;
