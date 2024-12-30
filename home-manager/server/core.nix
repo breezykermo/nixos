@@ -43,9 +43,10 @@
 		ip = "ip -color=auto";
 		l = "exa --long --all --group --git --group-directories-first";
 		e = "$EDITOR";
-		g = "lazygit";
+		gt = "lazygit";
+    jt = "lazyjj";
+    dt = "lazydocker";
 		t = "tmux";
-		z = "zoxide";
 		b = "bartib -f ~/.bartib";
     c = "clear";
 	};
