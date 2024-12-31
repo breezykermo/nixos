@@ -28,11 +28,11 @@
 
 		#--  language servers
     nodejs # needed for copilot
-		nodePackages.bash-language-server
-		nodePackages.svelte-language-server
-		# nodePackages.pyright # python language server
-		# python311Packages.black # formatter
-		shellcheck
+    nodePackages.bash-language-server
+    nodePackages.svelte-language-server
+    emmet-language-server
+    typescript-language-server
+    shellcheck
 
 		#-- misc
 		tree-sitter

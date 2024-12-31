@@ -634,17 +634,6 @@ require('lazy').setup({
     'dhruvasagar/vim-table-mode'
   },
 
-  -- LLM autocomplete
-  -- {
-  --   'Exafunction/codeium.vim',
-  --   config = function()
-  --     vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-  --     vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-  --     vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
-  --     vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-  --   end
-  -- },
-
   -- TODO: nvim-dap for a better experience with GDB debugging.
   -- {
   --   'mfussenegger/nvim-dap',
@@ -692,6 +681,7 @@ require('lazy').setup({
 	{ 'numToStr/Comment.nvim', opts = {} },
 
   -- main color scheme
+  -- TODO: is this still what I want?
   {
 	  "wincent/base16-nvim",
 	  lazy = false, -- load at start
@@ -842,6 +832,32 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
+      require'lspconfig'.ts_ls.setup({})
+      require'lspconfig'.emmet_language_server.setup({
+        filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
+        -- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
+        -- **Note:** only the options listed in the table are supported.
+        init_options = {
+          ---@type table<string, string>
+          includeLanguages = {},
+          --- @type string[]
+          excludeLanguages = {},
+          --- @type string[]
+          extensionsPath = {},
+          --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
+          preferences = {},
+          --- @type boolean Defaults to `true`
+          showAbbreviationSuggestions = true,
+          --- @type "always" | "never" Defaults to `"always"`
+          showExpandedAbbreviation = "always",
+          --- @type boolean Defaults to `false`
+          showSuggestionsAsSnippets = false,
+          --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
+          syntaxProfiles = {},
+          --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
+          variables = {},
+        },
+      })
       require('lspconfig').svelte.setup({})
       require('lspconfig').clangd.setup{
         cmd = { "clangd" },
@@ -884,6 +900,9 @@ require('lazy').setup({
           },
         },
       })
+
+      -- Show full compile error message (in a floating window)
+      vim.api.nvim_set_keymap('n', '<leader>e', ":lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
     end,
   },
 
