@@ -50,13 +50,11 @@ in
 
   # Default packages
   environment = {
-    etc."dict.conf".text = "server dict.org";
     systemPackages = with pkgs; [
       git
       vim
       wget
       curl
-      dict
       # Dropbox
       maestral
       maestral-gui
