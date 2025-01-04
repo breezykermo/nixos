@@ -23,6 +23,9 @@
     slurp
     grim
 
+    # android control via USB
+    scrcpy
+
     # clipboard
     wl-clipboard-rs # required for tmux-yank to copy to clipboard
 
