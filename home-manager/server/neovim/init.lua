@@ -858,6 +858,7 @@ require('lazy').setup({
           variables = {},
         },
       })
+      require('lspconfig').pylsp.setup({})
       require('lspconfig').svelte.setup({})
       require('lspconfig').clangd.setup{
         cmd = { "clangd" },
@@ -903,6 +904,7 @@ require('lazy').setup({
 
       -- Show full compile error message (in a floating window)
       vim.api.nvim_set_keymap('n', '<leader>e', ":lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
+
     end,
   },
 
@@ -1005,7 +1007,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query', },
+      ensure_installed = { 'bash', 'c', 'python', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query', },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

@@ -69,7 +69,6 @@
     direnv = {
       enable = true;
       nix-direnv.enable = true;
-      enableFishIntegration = true; 
     };
 
     # ls but better

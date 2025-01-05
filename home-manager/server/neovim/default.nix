@@ -33,6 +33,8 @@
     emmet-language-server
     typescript-language-server
     shellcheck
+    
+    python312Packages.python-lsp-server
 
 		#-- misc
 		tree-sitter
