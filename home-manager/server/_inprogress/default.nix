@@ -6,6 +6,8 @@
   ];
 
   home.packages = with pkgs; [
+    minikube
+    kubernetes
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
     #   pname = "jless";
@@ -22,6 +24,7 @@
   ];
 
   programs = {
+    k9s.enable = true;
 		jujutsu = {
 			enable = true;
 			settings = {
