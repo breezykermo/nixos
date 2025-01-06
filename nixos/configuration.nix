@@ -92,6 +92,10 @@ in
     allowedUDPPorts = [ 17500 ];
   };
 
+  # usb automounting
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
 
   # Enable nix ld for running binaries: see https://github.com/Mic92/nix-ld
   # programs.nix-ld.enable = true;
