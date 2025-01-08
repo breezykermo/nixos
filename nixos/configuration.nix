@@ -65,6 +65,8 @@ in
       # Development
       devenv
       aider-chat
+      # Files
+      pcmanfm
     ];
   };
 

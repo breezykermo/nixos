@@ -791,7 +791,7 @@ require('lazy').setup({
       -- pcall(require('telescope').load_extension, 'frecency')
 
       -- Main search, all in directory with recent files first
-      -- See: https://github.com/mollerhoj/telescope-recent-files.nvi
+      -- See: https://github.com/mollerhoj/telescope-recent-files.nvim
       vim.keymap.set('n', '<space>.', function()
         require('telescope').extensions['recent-files'].recent_files({})
       end, { noremap = true, silent = true })
@@ -860,11 +860,12 @@ require('lazy').setup({
       })
       require('lspconfig').pylsp.setup({})
       require('lspconfig').svelte.setup({})
-      require('lspconfig').clangd.setup{
-        cmd = { "clangd" },
-        filetypes = { "c", "cpp", "objc", "objcpp" },
-        root_dir = require('lspconfig.util').root_pattern("compile_commands.json", ".git"),
-      }
+      -- NOTE: haven't got this to compile effectively, would rather not see the errors when reading
+      -- require('lspconfig').clangd.setup{
+      --   cmd = { "clangd" },
+      --   filetypes = { "c", "cpp", "objc", "objcpp" },
+      --   root_dir = require('lspconfig.util').root_pattern("compile_commands.json", ".git"),
+      -- }
       require('lspconfig').rust_analyzer.setup({
         capabilities = {
           textDocument = {

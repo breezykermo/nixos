@@ -21,7 +21,6 @@
 		gcc
 		llvmPackages.clang-unwrapped
 		gdb
-    ccls
 
 		#-- rust
 		rustup
