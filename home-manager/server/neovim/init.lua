@@ -469,6 +469,7 @@ require('lazy').setup({
           '~/Brown Dropbox/Lachlan Kermode/lyt/wiki.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/freelance.*',
           '~/Brown Dropbox/Lachlan Kermode/lyt/study.*',
+          '~/Brown Dropbox/Lachlan Kermode/lyt/jobs.*',
         },
         org_deadline_warning_days = 4,
         org_default_notes_file = '~/Brown Dropbox/Lachlan Kermode/lyt/org/inbox.org',
