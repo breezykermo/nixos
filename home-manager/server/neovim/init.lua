@@ -634,19 +634,6 @@ require('lazy').setup({
     'dhruvasagar/vim-table-mode'
   },
 
-  -- TODO: nvim-dap for a better experience with GDB debugging.
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   config = function()
-  --     local dap = require("dap")
-  --     dap.adapters.gdb = {
-  --       type = "executable",
-  --       command = "gdb",
-  --       args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
-  --     }
-  --   end
-  -- },
-
   {
     "lukas-reineke/headlines.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
@@ -681,27 +668,27 @@ require('lazy').setup({
 	{ 'numToStr/Comment.nvim', opts = {} },
 
   -- main color scheme
-  -- TODO: is this still what I want?
   {
 	  "wincent/base16-nvim",
 	  lazy = false, -- load at start
 	  priority = 1000, -- load first
 	  config = function()
-		  vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
+		  -- vim.cmd([[colorscheme gruvbox-dark-hard]])
+		  vim.cmd([[colorscheme monokai]])
 
-		  -- Set the background transparen:
+		  -- Set the background transparent
 		  vim.cmd [[
-        highlight Normal guibg=NONE ctermbg=NONE
-        highlight NonText guibg=NONE ctermbg=NONE
+		  highlight Normal guibg=NONE ctermbg=NONE
+		  highlight NonText guibg=NONE ctermbg=NONE
 		  ]]
 
 		  -- Make comments more prominent -- they are important.
 		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
 		  vim.api.nvim_set_hl(0, 'Comment', bools)
 
-      -- Inlay hints
-      vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
-      vim.lsp.inlay_hint.enable()
+		  -- Inlay hints
+		  vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
+		  vim.lsp.inlay_hint.enable()
 	  end
   },
 
