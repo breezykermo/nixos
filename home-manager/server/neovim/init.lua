@@ -675,7 +675,7 @@ require('lazy').setup({
 	  priority = 1000, -- load first
 	  config = function()
 		  -- vim.cmd([[colorscheme gruvbox-dark-hard]])
-		  vim.cmd([[colorscheme monokai]])
+		  vim.cmd([[colorscheme gruvbox-dark-soft]])
 
 		  -- Set the background transparent
 		  vim.cmd [[
@@ -996,9 +996,10 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'python', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query', },
+      ensure_installed = { 'bash', 'c', 'python', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query' },
       -- Autoinstall languages that are not installed
       auto_install = true,
+      disable = { 'dockerfile' },
       highlight = {
         enable = true,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
