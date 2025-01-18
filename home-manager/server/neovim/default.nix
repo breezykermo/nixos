@@ -12,6 +12,7 @@
 		extraPackages = [];
 		extraConfig = ":luafile /home/alice/nixos-config/home-manager/server/neovim/init.lua";
 		plugins = [];
+    # extraLuaPackages = ["luarocks"];
  	};
 
 	home.packages = with pkgs; [
