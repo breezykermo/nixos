@@ -25,6 +25,8 @@
 
 		#-- rust
 		rustup
+    # NOTE: delegates cargo components such as rust-analyzer to rustup
+    # Run `rustup update` to get new versions.
 
 		#--  language servers
     nodejs # needed for copilot
