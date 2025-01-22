@@ -18,7 +18,8 @@
     ... }:
   let 
     system = "x86_64-linux";
-    userName = "lox";
+    # userName = "lox";
+    userName = "alice";
   in
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
