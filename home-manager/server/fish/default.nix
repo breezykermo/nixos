@@ -15,9 +15,9 @@
       fish_add_path ~/.npm-packages/bin
 
       # Rust binaries built by me 
-      fish_add_path /home/alice/.cargo-target/release
+      fish_add_path $HOME/.cargo-target/release
       # Rust binaries installed 
-      fish_add_path /home/alice/.cargo/bin
+      fish_add_path $HOME/.cargo/bin
     '';
 
     plugins = [
