@@ -69,6 +69,50 @@
 
   programs.adb.enable = true;
 
+	services = {
+		upower = {
+			enable = true;
+			percentageLow = 30;
+			percentageCritical = 15;
+			percentageAction = 10;
+			criticalPowerAction = "Hibernate";
+		};
+
+		physlock = {
+			enable = true;
+			lockMessage = "<lox>";
+			allowAnyUser = true;
+			lockOn = {
+				suspend = true;	
+				hibernate = true;
+			};
+		};
+
+		# enable sound
+		pipewire = {
+			enable = true;
+			alsa = {
+				enable = true;
+				support32Bit = true;
+			};
+			pulse.enable = true;
+		};
+
+	  system76-scheduler.settings.cfsProfiles.enable = true;
+    thermald.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        CPU_BOOST_ON_AC = 1;
+        CPU_BOOST_ON_BAT = 0;
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      };
+    };
+	};
+
+
+
   # for a better setup, see https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
   virtualisation = {
     # libvirtd.enable = true;
