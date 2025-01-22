@@ -1,4 +1,4 @@
-{ ... }:
+{ userName, ... }:
 
 {
 	# secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json");
@@ -7,8 +7,8 @@
 		./desktop
 	];
 
-	home.username = "alice";
-	home.homeDirectory = "/home/alice";
+	home.username = userName;
+	home.homeDirectory = "/home/${userName}";
 	home.stateVersion = "23.11";
 	programs.home-manager.enable = true;
 }

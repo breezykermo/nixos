@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, userName, ... }:
 let
   # add unstable channel declaratively
   unstableTarball =
@@ -39,9 +39,9 @@ in
   i18n.defaultLocale = "en_US.UTF-8";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.alice = {
+  users.users.${userName} = {
     isNormalUser = true;
-    description = "alice";
+    description = "${userName}";
     extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" ];
   };
 
@@ -160,7 +160,7 @@ in
   nix.settings.auto-optimise-store = true;
 
   nix.extraOptions = ''
-    trusted-users = root alice
+    trusted-users = root ${userName} 
   '';
 
   # This value determines the NixOS release from which the default

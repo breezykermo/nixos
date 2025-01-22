@@ -1,4 +1,4 @@
-{ pkgs, lib, ...}:
+{ pkgs, lib, userName, ...}:
 {
 	programs.neovim = {
 		enable = true;
@@ -10,7 +10,7 @@
 		withNodeJs = true;
 
 		extraPackages = [];
-		extraConfig = ":luafile /home/alice/nixos-config/home-manager/server/neovim/init.lua";
+		extraConfig = ":luafile /etc/nixos/home-manager/server/neovim/init.lua";
 		plugins = [];
     # extraLuaPackages = ["luarocks"];
  	};

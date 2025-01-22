@@ -18,27 +18,25 @@
     ... }:
   let 
 		system = "x86_64-linux";
+    userName = "alice";
 	in
 	{
 		nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
 			inherit system; 
-      specialArgs = { userName ? "alice" }: { inherit userName; };
+      specialArgs = { inherit userName; };
 			modules = [
-				# hardware, NetworkManager, time zone, i18n, X11, pulseaudio, user accounts, SSH
 				./nixos/configuration.nix
 
 				# Use home-manager to configure different users
-        ({ userName, ... }: {
-          home-manager.nixosModules.home-manager = {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit inputs system; };
+				home-manager.nixosModules.home-manager {
+					home-manager = {
+						useGlobalPkgs = true;
+						useUserPackages = true;
+						extraSpecialArgs = { inherit inputs system userName; };
 
-              users."${userName}" = import ./home-manager;
-            };
-          };
-        })
+						users."${userName}" = import ./home-manager;
+					};
+				}
 
 				./machines/dellxps.nix
 			];
