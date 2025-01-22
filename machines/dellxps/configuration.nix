@@ -26,7 +26,7 @@
       # Virtualization
       docker-compose
       # Development
-      devenv
+      # devenv
       # Files
       pcmanfm
     ];
