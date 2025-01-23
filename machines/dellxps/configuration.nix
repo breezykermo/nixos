@@ -1,90 +1,35 @@
 { config, lib, pkgs, userName, ... }:
-let
-  # add unstable channel declaratively
-  unstableTarball =
-    fetchTarball
-    https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-  inter-typeface = pkgs.callPackage ./fonts/inter.nix { inherit lib; }; 
-  # berkeley-mono-typeface = pkgs.callPackage ./fonts/berkeley-mono.nix { inherit lib; }; 
-in
   {
   imports = [ 
     ./hardware-configuration.nix
   ];
 
-  # Allow unfree (Dropbox), and unstable (ollama)
-  nixpkgs.config = {
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      unstable = import unstableTarball {
-        config = config.nixpkgs.config;
-      };
-    };
-  };
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "loxnix";
-  networking.networkmanager.enable = true;
-
   # necessary for routing traffic through wireguard
   networking.firewall.checkReversePath = false;
 
-  # Set your time zone.
-  time.timeZone = "Europe/Rome";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${userName} = {
     isNormalUser = true;
     description = "${userName}";
     extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" ];
   };
 
-  # Enable the flakes feature; requires `git` in systemPackages
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   # Default packages
   environment = {
     systemPackages = with pkgs; [
-      git
-      vim
-      wget
-      curl
       # Dropbox
       maestral
       maestral-gui
-      # Fonts
-      nerd-fonts.fira-code
       # Virtualization
       docker-compose
       # Development
-      devenv
-      aider-chat
+      # devenv
       # Files
       pcmanfm
     ];
-  };
-
-  fonts = {
-    packages = with pkgs; [
-      nerd-fonts.fira-code
-      inter-typeface
-      # TODO: https://yildiz.dev/posts/packing-custom-fonts-for-nixos/
-      # berkeley-mono-typeface
-    ];
-
-    fontconfig = {
-      defaultFonts = {
-        serif = [ "Inter Variable" ];
-        sansSerif = [ "Inter Variable" ];
-        monospace = [ "FiraCode Nerd Font Mono" ];
-      };
-    };
   };
 
   # Dropbox
@@ -124,6 +69,50 @@ in
 
   programs.adb.enable = true;
 
+	services = {
+		upower = {
+			enable = true;
+			percentageLow = 30;
+			percentageCritical = 15;
+			percentageAction = 10;
+			criticalPowerAction = "Hibernate";
+		};
+
+		physlock = {
+			enable = true;
+			lockMessage = "<lox>";
+			allowAnyUser = true;
+			lockOn = {
+				suspend = true;	
+				hibernate = true;
+			};
+		};
+
+		# enable sound
+		pipewire = {
+			enable = true;
+			alsa = {
+				enable = true;
+				support32Bit = true;
+			};
+			pulse.enable = true;
+		};
+
+	  system76-scheduler.settings.cfsProfiles.enable = true;
+    thermald.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        CPU_BOOST_ON_AC = 1;
+        CPU_BOOST_ON_BAT = 0;
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      };
+    };
+	};
+
+
+
   # for a better setup, see https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
   virtualisation = {
     # libvirtd.enable = true;
@@ -144,24 +133,6 @@ in
 
   # Limit the number of generations to keep
   boot.loader.systemd-boot.configurationLimit = 10;
-
-  # Perform garbage collection weekly to maintain low disk usage
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
-  };
-
-  # Optimize storage
-  # You can also manually optimize the store via:
-  #    nix-store --optimise
-  # Refer to the following link for more details:
-  # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
-  nix.settings.auto-optimise-store = true;
-
-  nix.extraOptions = ''
-    trusted-users = root ${userName} 
-  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
