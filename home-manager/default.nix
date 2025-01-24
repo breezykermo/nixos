@@ -2,6 +2,7 @@
 
 {
 	# secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json");
+  # TODO: add maestral.ini with excluded files etc
 	imports = [
 		./server
 		./desktop
