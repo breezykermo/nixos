@@ -17,21 +17,6 @@
     extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" ];
   };
 
-  # Default packages
-  environment = {
-    systemPackages = with pkgs; [
-      # Dropbox
-      maestral
-      maestral-gui
-      # Virtualization
-      docker-compose
-      # Development
-      # devenv
-      # Files
-      pcmanfm
-    ];
-  };
-
   # Dropbox
   # TODO: is this still necessary for Maestral? 
   networking.firewall = {

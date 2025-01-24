@@ -23,6 +23,9 @@ in
     curl
     # Fonts
     nerd-fonts.fira-code
+    docker-compose
+    maestral
+    pcmanfm
   ];
 
   # for a potentially better setup, see 
