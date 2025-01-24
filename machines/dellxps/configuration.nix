@@ -111,26 +111,6 @@
     };
 	};
 
-
-
-  # for a better setup, see https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
-  virtualisation = {
-    # libvirtd.enable = true;
-    docker.enable = true;
-    # podman = {
-    # 	enable = true;
-    # 	dockerCompat = true;
-    # };
-    #
-    # oci-containers = {
-    # 	backend = "podman";
-    #
-    # 	containers = {
-    # 		# open-webui = import ../home-manager/server/llms/openwebui.nix;
-    # 	};
-    # };
-  };
-
   # Limit the number of generations to keep
   boot.loader.systemd-boot.configurationLimit = 10;
 

@@ -25,6 +25,12 @@ in
     nerd-fonts.fira-code
   ];
 
+  # for a potentially better setup, see 
+  # https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
+  virtualisation = {
+    docker.enable = true;
+  };
+
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     inter-typeface
