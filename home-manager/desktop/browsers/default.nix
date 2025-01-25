@@ -191,18 +191,22 @@ in
         "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi";
           installation_mode = "force_installed";
-
         };
       };
 
       /* ---- PREFERENCES ---- */
       # Check about:config for options.
       Preferences = { 
+        "layout.css.light-dark.enabled" = lock-true;
         "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
         "extensions.pocket.enabled" = lock-false;
         "extensions.screenshots.disabled" = lock-true;
         "browser.topsites.contile.enabled" = lock-false;
         "browser.formfill.enable" = lock-false;
+        "browser.urlbar.suggest.history" = lock-false;
+        "browser.urlbar.shortcuts.history" = lock-false;
+        "browser.download.clearHistoryOnDelete" = lock-true;
+        "browser.search.openintab" = lock-true;
         "browser.search.suggest.enabled" = lock-false;
         "browser.search.suggest.enabled.private" = lock-false;
         "browser.urlbar.suggest.searches" = lock-false;
