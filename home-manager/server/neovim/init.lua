@@ -457,22 +457,23 @@ require('lazy').setup({
     event = 'VeryLazy',
     ft = { 'org' },
     config = function()
+      local dropbox_directory = "/home/lox/Dropbox/Lachlan Kermode"
       -- Setup orgmode
       -- https://github.com/nvim-orgmode/orgmode/blob/master/DOCS.md
       require('orgmode').setup({
         org_agenda_files = {
-          '~/Brown Dropbox/Lachlan Kermode/lyt/org/**/*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/course.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/research.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/teach.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/index.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/wiki.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/freelance.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/study.*',
-          '~/Brown Dropbox/Lachlan Kermode/lyt/jobs.*',
+          dropbox_directory .. '/lyt/org/**/*',
+          dropbox_directory .. '/lyt/course.*',
+          dropbox_directory .. '/lyt/research.*',
+          dropbox_directory .. '/lyt/teach.*',
+          dropbox_directory .. '/lyt/index.*',
+          dropbox_directory .. '/lyt/wiki.*',
+          dropbox_directory .. '/lyt/freelance.*',
+          dropbox_directory .. '/lyt/study.*',
+          dropbox_directory .. '/lyt/jobs.*',
         },
         org_deadline_warning_days = 4,
-        org_default_notes_file = '~/Brown Dropbox/Lachlan Kermode/lyt/org/inbox.org',
+        org_default_notes_file = dropbox_directory .. '/lyt/org/inbox.org',
         win_split_mode = 'vertical',
         -- 'SOON' items are TODOs that should be filtered out of main list, i.e. only upon returning to the file
         -- 'PROJ' is deprecated. 
@@ -524,17 +525,16 @@ require('lazy').setup({
             action = function(exporter)
               local current_file = vim.api.nvim_buf_get_name(0)
               local target = vim.fn.fnamemodify(current_file, ':p:r')..'.pdf'
-              local current_dir = vim.fn.getcwd()
+              
               -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/ieee.csl --pdf-engine tectonic -o $FNAME.pdf $FNAME.org
               local command = {
                 'pandoc', 
                 '-s',
                 '--bibliography',
-                current_dir .. '/references/master.bib',
+                dropbox_directory .. '/lyt/references/master.bib',
                 '--citeproc',
                 '--csl',
-                current_dir .. '/references/chicago-name-date.csl',
-                -- current_dir .. '/references/syllabus.csl',
+                dropbox_directory .. "/lyt/references/chicago-name-date.csl",
                 '-V',
                 'colorlinks=true',
                 '-V',
@@ -562,15 +562,14 @@ require('lazy').setup({
             action = function(exporter)
               local current_file = vim.api.nvim_buf_get_name(0)
               local target = vim.fn.fnamemodify(current_file, ':p:r')..'.html'
-              local current_dir = vim.fn.getcwd()
               local command = {
                 'pandoc', 
                 '-s',
                 '--bibliography',
-                '~/Brown Dropbox/Lachlan Kermode/lyt/references/master.bib',
+                dropbox_directory .. '/lyt/references/master.bib',
                 '--citeproc',
                 '--csl',
-                '~/Brown Dropbox/Lachlan Kermode/lyt/references/chicago-name-date.csl',
+                dropbox_directory .. '/lyt/references/chicago-name-date.csl',
                 '-o', 
                 target,
                 current_file 
@@ -598,12 +597,12 @@ require('lazy').setup({
                 'pandoc', 
                 '-s',
                 '--bibliography',
-                '~/Brown Dropbox/Lachlan Kermode/lyt/references/master.bib',
+                dropbox_directory .. '/lyt/references/master.bib',
                 '--template',
-                'template.html',
+                current_dir .. '/template.html',
                 '--citeproc',
                 '--csl',
-                '~/Brown Dropbox/Lachlan Kermode/lyt/references/chicago-name-date.csl',
+                dropbox_directory .. '/lyt/references/chicago-name-date.csl',
                 '-o', 
                 target,
                 current_file 
