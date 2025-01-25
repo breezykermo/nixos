@@ -115,7 +115,7 @@ in
           {
             name = "[c]alendar [o]hrg";
             tags = [];
-            keyword = "mo";
+            keyword = "co";
             url = "https://calendar.proton.me/u/0/";
           }
           # Hotmail 
