@@ -78,60 +78,60 @@ in
             tags = [ "wiki" ];
             keyword = "wiki";
             url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-          },
+          }
           # Brown
           {
             name = "[m]ail [b]rown";
             tags = [];
             keyword = "mb";
             url = "https://mail.google.com/mail/u/0/#inbox";
-          },
+          }
           {
             name = "[c]alendar [b]rown";
             tags = [];
             keyword = "cb";
             url = "https://calendar.google.com/calendar/u/0/r";
-          },
+          }
           # Personal 
           {
             name = "[m]ail [p]ersonal";
             tags = [];
             keyword = "mp";
             url = "https://mail.google.com/mail/u/1/#inbox";
-          },
+          }
           {
             name = "[c]alendar [p]ersonal";
             tags = [];
             keyword = "cb";
             url = "https://calendar.google.com/calendar/u/1/r";
-          },
+          }
           # Ohrg 
           {
             name = "[m]ail [o]hrg";
             tags = [];
             keyword = "mo";
             url = "https://mail.proton.me/u/0/inbox";
-          },
+          }
           {
             name = "[c]alendar [o]hrg";
             tags = [];
             keyword = "mo";
             url = "https://calendar.proton.me/u/0/";
-          },
+          }
           # Hotmail 
           {
             name = "[m]ail [h]otmail";
             tags = [];
             keyword = "mh";
             url = "https://outlook.live.com/mail/0/";
-          },
+          }
           # Other 
           {
             name = "[g]it[h]ub";
             tags = [];
             keyword = "gh";
             url = "https://github.com";
-          },
+          }
         ];
       };
     };
