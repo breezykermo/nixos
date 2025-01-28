@@ -92,6 +92,13 @@ in
             keyword = "cb";
             url = "https://calendar.google.com/calendar/u/0/r";
           }
+          {
+            name = "[d]rive [b]rown";
+            tags = [];
+            keyword = "db";
+            url = "https://drive.google.com/drive/u/0/my-drive";
+          }
+
           # Personal 
           {
             name = "[m]ail [p]ersonal";
@@ -102,9 +109,16 @@ in
           {
             name = "[c]alendar [p]ersonal";
             tags = [];
-            keyword = "cb";
+            keyword = "cp";
             url = "https://calendar.google.com/calendar/u/1/r";
           }
+          {
+            name = "[d]rive [p]ersonal";
+            tags = [];
+            keyword = "dp";
+            url = "https://drive.google.com/drive/u/1/my-drive";
+          }
+
           # Ohrg 
           {
             name = "[m]ail [o]hrg";
