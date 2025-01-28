@@ -139,6 +139,14 @@ in
             keyword = "mh";
             url = "https://outlook.live.com/mail/0/";
           }
+          # LLMs
+          {
+            name = "chat[gp]t";
+            tags = [];
+            keyword = "gp";
+            url = "https://chatgpt.com/";
+          }
+
           # Other 
           {
             name = "[g]it[h]ub";

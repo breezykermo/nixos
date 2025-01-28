@@ -71,6 +71,14 @@ in
     };
   };
 
+  # Ollama
+  services.ollama = {
+    enable = true;
+    loadModels = [
+      "deepseek-coder"
+      "deepseek-r1"
+    ];
+  };
 
   # Perform garbage collection weekly to maintain low disk usage
   nix.gc = {

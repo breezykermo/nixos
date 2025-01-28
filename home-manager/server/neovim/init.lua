@@ -99,24 +99,13 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
--- Rename a variable using LSP
-vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {})
-
--- Set completeopt to have a better completion experience
--- vim.o.completeopt = 'menuone,noselect'
-
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
--- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
--- Remap for dealing with word wrap
--- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
--- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- NERDTree
 map('n', '<leader>k', ':NERDTreeFind<cr>', opts)
@@ -139,6 +128,9 @@ function delete_inactive_buffers()
   end
 end
 vim.keymap.set('n', '<leader>b', ':Ball<CR>')
+
+-- Rename a variable using LSP
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {})
 
 -------------------------------------------------------------------------------
 --
@@ -425,6 +417,7 @@ require('lazy').setup({
       end, { desc = 'AI Question' })
     end
   },
+
   -- Git blame
   {
     'FabijanZulj/blame.nvim',
@@ -680,7 +673,7 @@ require('lazy').setup({
 	  priority = 1000, -- load first
 	  config = function()
 		  -- vim.cmd([[colorscheme gruvbox-dark-hard]])
-		  vim.cmd([[colorscheme gruvbox-dark-soft]])
+		  vim.cmd([[colorscheme gruvbox-dark-hard]])
 
 		  -- Set the background transparent
 		  vim.cmd [[
