@@ -52,8 +52,6 @@
 
   programs.virt-manager.enable = true;
 
-  programs.adb.enable = true;
-
 	services = {
 		upower = {
 			enable = true;

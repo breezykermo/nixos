@@ -41,12 +41,6 @@ in
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
             };
-            "NixOS Wiki" = {
-              urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
-              iconUpdateURL = "https://nixos.wiki/favicon.png";
-              updateInterval = 24 * 60 * 60 * 1000;
-              definedAliases = [ "@nw" ];
-            };
             "Wikipedia (en)".metaData.alias = "@wiki";
             "Google".metaData.hidden = true;
             "Amazon.com".metaData.hidden = true;
@@ -154,6 +148,13 @@ in
             keyword = "gh";
             url = "https://github.com";
           }
+          {
+            name = "[d]i[s]cord";
+            tags = [];
+            keyword = "ds";
+            url = "https://discord.com/channels/@me";
+          }
+
         ];
       };
     };
