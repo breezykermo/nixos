@@ -26,7 +26,7 @@ in
         name = "default";
         search = {
           force = true;
-          default = "DuckDuckGo";
+          default = "Kagi";
           # NOTE: many of these are unnecessary, as it is more straightforward to just use DuckDuckGo bangs:
           # https://duckduckgo.com/bangs
           engines = {
@@ -40,6 +40,13 @@ in
               }];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
+            };
+            "Kagi" = {
+              urls = [{
+                template = "https://kagi.com/search?";
+                params = [{ name = "q"; value = "{searchTerms}"; }];
+              }];
+              definedAliases = [ "@kg" ];
             };
             "Wikipedia (en)".metaData.alias = "@wiki";
             "Google".metaData.hidden = true;
