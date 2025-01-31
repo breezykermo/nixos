@@ -161,7 +161,12 @@ in
             keyword = "ds";
             url = "https://discord.com/channels/@me";
           }
-
+          {
+            name = "[w]hatsap[p]";
+            tags = [];
+            keyword = "wp";
+            url = "https://web.whatsapp.com/";
+          }
         ];
       };
     };
