@@ -4,9 +4,6 @@ let
 in
 {
   home.packages = with pkgs; [
-    # Bluetooth protocol stack for Linux
-    # bluez
-    
     # TUI to easily manage bluetooth
     (naersk'.buildPackage rec {
       name = "bluetui";
