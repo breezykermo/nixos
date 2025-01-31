@@ -27,20 +27,7 @@ in
         search = {
           force = true;
           default = "Kagi";
-          # NOTE: many of these are unnecessary, as it is more straightforward to just use DuckDuckGo bangs:
-          # https://duckduckgo.com/bangs
           engines = {
-            "Nix Packages" = {
-              urls = [{
-                template = "https://search.nixos.org/packages";
-                params = [
-                { name = "type"; value = "packages"; }
-                { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
-              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
-            };
             "Kagi" = {
               urls = [{
                 template = "https://kagi.com/search?";
