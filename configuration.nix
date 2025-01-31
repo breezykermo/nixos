@@ -60,6 +60,8 @@ in
 
   # Necessary for Hyprland, otherwise we won't have any of the drivers
   hardware.graphics.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   # XDG enables wayland to communicate with XDG programs.
   # Most critically, it allows browsers to screenshare wayland screens.

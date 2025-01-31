@@ -1,33 +1,36 @@
-{ lib, pkgs, ... }: 
+{ lib, pkgs, naersk, ... }: 
+let
+  naersk' = pkgs.callPackage naersk {};
+in
 {
-  # NOTE: need to develop this on an infinite internet connection...
-  # For reference, see: https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ba/bat/package.nix
+  home.packages = with pkgs; [
+    # Bluetooth protocol stack for Linux
+    # bluez
+    
+    # TUI to easily manage bluetooth
+    (naersk'.buildPackage rec {
+      name = "bluetui";
+      version = "0.6.0";
 
-  # home.packages = with pkgs; [
-  #   (rustPlatform.buildRustPackage rec {
-  #     pname = "bluetui";
-  #     version = "0.5.1";
-  #
-  #     src = fetchFromGitHub {
-  #       owner = "pythops";
-  #       repo = pname;
-  #       rev = "v${version}"; 
-  #       sha256 = "0czmmv28ys1y8m22y0qzv7cmgdqqkjmv0haw0qbqxf6akhhwzjzn"; 
-  #     };
-  #
-  #     cargoHash = "sha256-w6rrZQNu5kLKEWSXFa/vSqwm76zWZug/ZqztMDY7buE=";
-  #
-  #     nativeBuildInputs = [
-  #       dbus 
-  #     ];
-  #
-  #     buildInputs = [
-  #       pkg-config 
-  #       openssl
-  #       openssl.dev
-  #     ];
-  #   })
-  # ];
+      # Needed at compile time
+      nativeBuildInputs = [
+        pkg-config
+      ];
+
+      # Needed at run time 
+      buildInputs = [
+        dbus
+        dbus.dev 
+      ];
+
+      src = fetchFromGitHub {
+        owner = "pythops";
+        repo = name;
+        rev = "v${version}"; 
+        sha256 = "0czmmv28ys1y8m22y0qzv7cmgdqqkjmv0haw0qbqxf6akhhwzjzn"; 
+      };
+    })
+  ];
 }
 
 
