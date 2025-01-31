@@ -167,6 +167,12 @@ in
             keyword = "wp";
             url = "https://web.whatsapp.com/";
           }
+          {
+            name = "[ne]tlify";
+            tags = [];
+            keyword = "ne";
+            url = "https://app.netlify.com/teams/breezykermo/sites/";
+          }
         ];
       };
     };
