@@ -30,6 +30,7 @@
 
 		#--  language servers
     nodejs # needed for copilot
+    bun # JS bundler for dev
     nodePackages.bash-language-server
     nodePackages.svelte-language-server
     emmet-language-server

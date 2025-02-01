@@ -74,6 +74,12 @@ in
         xdg-desktop-portal-gtk
       ];
     };
+    mime.defaultApplications = {
+      "application/pdf" = [
+        "org.pwmt.zathura.desktop"
+        "brave-browser.desktop"
+      ];
+    };
   };
 
   # Ollama
