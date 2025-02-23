@@ -673,7 +673,7 @@ require('lazy').setup({
 	  priority = 1000, -- load first
 	  config = function()
 		  -- vim.cmd([[colorscheme gruvbox-dark-hard]])
-		  vim.cmd([[colorscheme gruvbox-dark-hard]])
+		  vim.cmd([[colorscheme gruvbox-dark-pale]])
 
 		  -- Set the background transparent
 		  vim.cmd [[

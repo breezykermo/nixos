@@ -8,9 +8,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # necessary for routing traffic through wireguard
-  networking.firewall.checkReversePath = false;
-
   users.users.${userName} = {
     isNormalUser = true;
     description = "${userName}";
@@ -19,10 +16,10 @@
 
   # Dropbox
   # TODO: is this still necessary for Maestral? 
-  networking.firewall = {
-    allowedTCPPorts = [ 17500 ];
-    allowedUDPPorts = [ 17500 ];
-  };
+  # networking.firewall = {
+  #   allowedTCPPorts = [ 17500 ];
+  #   allowedUDPPorts = [ 17500 ];
+  # };
 
   # usb automounting
   services.devmon.enable = true;
