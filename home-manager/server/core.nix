@@ -44,11 +44,11 @@
 		l = "exa --long --all --group --git --group-directories-first";
 		e = "$EDITOR";
 		gt = "lazygit";
-    jt = "lazyjj";
-    dt = "lazydocker";
+		jt = "lazyjj";
+		dt = "lazydocker";
 		t = "tmux";
 		b = "bartib -f ~/.bartib";
-    c = "clear";
+		c = "clear";
 	};
 
 	home.sessionVariables = {
@@ -57,21 +57,21 @@
 
 	programs = {
 		# email in the terminal
-    # NOTE: app passwords are per device, generate new ones if using this config
-    # TODO: [compose] format-flowed=true
-    # as currently this is just in my local config.
+		# NOTE: app passwords are per device, generate new ones if using this config
+		# TODO: [compose] format-flowed=true
+		# as currently this is just in my local config.
 		aerc.enable = true;
 
 		# cd but better
 		zoxide.enable = true;
 
-    # auto dev environments with nix flakes
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
+		# auto dev environments with nix flakes
+		direnv = {
+			enable = true;
+			nix-direnv.enable = true;
+		};
 
-    # ls but better
+		# ls but better
 		eza = {
 			enable = true;
 			git = true;
