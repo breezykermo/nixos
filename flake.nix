@@ -36,6 +36,9 @@
         ./machines/dellxps/configuration.nix
 
         home-manager.nixosModules.home-manager {
+          # system wide
+          programs.fish.enable = true;
+
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;

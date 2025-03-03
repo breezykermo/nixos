@@ -3,7 +3,7 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-      set fish_greeting # disable greeting
+      set fish_greeting # disable greetingfish
 
       # Important to ensure switching to fish_vi_key_bindings hasn't removed
       # anything important
