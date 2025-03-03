@@ -28,6 +28,7 @@ in
     docker-compose
     maestral
     pcmanfm
+    v4l-utils
   ];
 
   # For scrcpy
@@ -66,11 +67,10 @@ in
   hardware.bluetooth.powerOnBoot = true;
 
   # https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
-  boot.kernelModules = [ "v412loopback" ];
+  boot.kernelModules = [ "v4l2loopback" ];
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=2 video_nr=1,2 card_label="OBS Cam, Virt Cam" exclusive_caps=1
   '';
-  environment.systemPackages = [ pkgs.v4l-utils ];
   # NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4shell
   environment.shells = with pkgs; [ bashInteractive ];
 
