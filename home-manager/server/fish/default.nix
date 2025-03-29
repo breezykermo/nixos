@@ -18,6 +18,8 @@
       fish_add_path $HOME/.cargo-target/release
       # Rust binaries installed 
       fish_add_path $HOME/.cargo/bin
+
+			fish_add_path $HOME/.npm-global/bin
     '';
 
     plugins = [

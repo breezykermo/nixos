@@ -23,8 +23,8 @@
     ... }:
   let 
     system = "x86_64-linux";
-    # userName = "lox";
-    userName = "alice";
+    userName = "lox";
+    # userName = "alice";
   in
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
@@ -32,8 +32,8 @@
       specialArgs = { inherit userName; };
       modules = [
         ./configuration.nix
-        # ./machines/framework/configuration.nix
-        ./machines/dellxps/configuration.nix
+        ./machines/framework/configuration.nix
+        # ./machines/dellxps/configuration.nix
 
         home-manager.nixosModules.home-manager {
           # system wide
