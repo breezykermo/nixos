@@ -35,11 +35,11 @@ in
               }];
               definedAliases = [ "@kg" ];
             };
-            "Wikipedia (en)".metaData.alias = "@wiki";
-            "Google".metaData.hidden = true;
-            "Amazon.com".metaData.hidden = true;
-            "Bing".metaData.hidden = true;
-            "eBay".metaData.hidden = true;
+            "wikipedia".metaData.alias = "@wiki";
+            "google".metaData.hidden = true;
+            "amazondotcom-us".metaData.hidden = true;
+            "bing".metaData.hidden = true;
+            "ebay".metaData.hidden = true;
           };
         };
         settings = {
@@ -60,107 +60,110 @@ in
 
         userChrome = builtins.readFile ./userChrome.css;
         
-        bookmarks = [
-          {
-            name = "Wikipedia";
-            tags = [ "wiki" ];
-            keyword = "wiki";
-            url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-          }
-          # Brown
-          {
-            name = "[m]ail [b]rown";
-            tags = [];
-            keyword = "mb";
-            url = "https://mail.google.com/mail/u/0/#inbox";
-          }
-          {
-            name = "[c]alendar [b]rown";
-            tags = [];
-            keyword = "cb";
-            url = "https://calendar.google.com/calendar/u/0/r";
-          }
-          {
-            name = "[d]rive [b]rown";
-            tags = [];
-            keyword = "db";
-            url = "https://drive.google.com/drive/u/0/my-drive";
-          }
+        bookmarks = {
+		force = true;
+		settings = [
+		  {
+		    name = "Wikipedia";
+		    tags = [ "wiki" ];
+		    keyword = "wiki";
+		    url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+		  }
+		  # Brown
+		  {
+		    name = "[m]ail [b]rown";
+		    tags = [];
+		    keyword = "mb";
+		    url = "https://mail.google.com/mail/u/0/#inbox";
+		  }
+		  {
+		    name = "[c]alendar [b]rown";
+		    tags = [];
+		    keyword = "cb";
+		    url = "https://calendar.google.com/calendar/u/0/r";
+		  }
+		  {
+		    name = "[d]rive [b]rown";
+		    tags = [];
+		    keyword = "db";
+		    url = "https://drive.google.com/drive/u/0/my-drive";
+		  }
 
-          # Personal 
-          {
-            name = "[m]ail [p]ersonal";
-            tags = [];
-            keyword = "mp";
-            url = "https://mail.google.com/mail/u/1/#inbox";
-          }
-          {
-            name = "[c]alendar [p]ersonal";
-            tags = [];
-            keyword = "cp";
-            url = "https://calendar.google.com/calendar/u/1/r";
-          }
-          {
-            name = "[d]rive [p]ersonal";
-            tags = [];
-            keyword = "dp";
-            url = "https://drive.google.com/drive/u/1/my-drive";
-          }
+		  # Personal 
+		  {
+		    name = "[m]ail [p]ersonal";
+		    tags = [];
+		    keyword = "mp";
+		    url = "https://mail.google.com/mail/u/1/#inbox";
+		  }
+		  {
+		    name = "[c]alendar [p]ersonal";
+		    tags = [];
+		    keyword = "cp";
+		    url = "https://calendar.google.com/calendar/u/1/r";
+		  }
+		  {
+		    name = "[d]rive [p]ersonal";
+		    tags = [];
+		    keyword = "dp";
+		    url = "https://drive.google.com/drive/u/1/my-drive";
+		  }
 
-          # Ohrg 
-          {
-            name = "[m]ail [o]hrg";
-            tags = [];
-            keyword = "mo";
-            url = "https://mail.proton.me/u/0/inbox";
-          }
-          {
-            name = "[c]alendar [o]hrg";
-            tags = [];
-            keyword = "co";
-            url = "https://calendar.proton.me/u/0/";
-          }
-          # Hotmail 
-          {
-            name = "[m]ail [h]otmail";
-            tags = [];
-            keyword = "mh";
-            url = "https://outlook.live.com/mail/0/";
-          }
-          # LLMs
-          {
-            name = "chat[gp]t";
-            tags = [];
-            keyword = "gp";
-            url = "https://chatgpt.com/";
-          }
+		  # Ohrg 
+		  {
+		    name = "[m]ail [o]hrg";
+		    tags = [];
+		    keyword = "mo";
+		    url = "https://mail.proton.me/u/0/inbox";
+		  }
+		  {
+		    name = "[c]alendar [o]hrg";
+		    tags = [];
+		    keyword = "co";
+		    url = "https://calendar.proton.me/u/0/";
+		  }
+		  # Hotmail 
+		  {
+		    name = "[m]ail [h]otmail";
+		    tags = [];
+		    keyword = "mh";
+		    url = "https://outlook.live.com/mail/0/";
+		  }
+		  # LLMs
+		  {
+		    name = "chat[gp]t";
+		    tags = [];
+		    keyword = "gp";
+		    url = "https://chatgpt.com/";
+		  }
 
-          # Other 
-          {
-            name = "[g]it[h]ub";
-            tags = [];
-            keyword = "gh";
-            url = "https://github.com";
-          }
-          {
-            name = "[d]i[s]cord";
-            tags = [];
-            keyword = "ds";
-            url = "https://discord.com/channels/@me";
-          }
-          {
-            name = "[w]hatsap[p]";
-            tags = [];
-            keyword = "wp";
-            url = "https://web.whatsapp.com/";
-          }
-          {
-            name = "[ne]tlify";
-            tags = [];
-            keyword = "ne";
-            url = "https://app.netlify.com/teams/breezykermo/sites/";
-          }
-        ];
+		  # Other 
+		  {
+		    name = "[g]it[h]ub";
+		    tags = [];
+		    keyword = "gh";
+		    url = "https://github.com";
+		  }
+		  {
+		    name = "[d]i[s]cord";
+		    tags = [];
+		    keyword = "ds";
+		    url = "https://discord.com/channels/@me";
+		  }
+		  {
+		    name = "[w]hatsap[p]";
+		    tags = [];
+		    keyword = "wp";
+		    url = "https://web.whatsapp.com/";
+		  }
+		  {
+		    name = "[ne]tlify";
+		    tags = [];
+		    keyword = "ne";
+		    url = "https://app.netlify.com/teams/breezykermo/sites/";
+		  }
+		];
+	};
       };
     };
 

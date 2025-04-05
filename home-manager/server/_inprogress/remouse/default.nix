@@ -1,31 +1,38 @@
-# TODO: work out how to get this functional
-# https://github.com/Evidlo/remarkable_mouse
-# (The binary/command exists, but the dependencies do not.)
 { config, pkgs, lib, ...}:
 let 
   remouse = pkgs.python311Packages.buildPythonPackage rec {
-    pname = "remarkable-mouse";
-    version = "7.1.1";
-    src = pkgs.fetchPypi {
-      inherit pname version;
-      sha256 = "sha256-82P9tE3jiUlKBGZCiWDoL+9VJ06Bc+If+aMfcEEU90U=";
-    };
+  pname = "remarkable-mouse";
+  version = "7.1.1";
 
-    propagatedBuildInputs = [
-      (pkgs.python311Packages.buildPythonPackage rec {
-        pname = "paramiko";
-        version = "3.5.0"; 
-        src = pkgs.fetchPypi {
-          pname = pname;
-          version = version;
-          sha256 = "sha256-rRHlQNpPVc7dpSkx8aP4Eqgjinr39ipg3lOM2AuygSQ="; 
-        };
-      })
-    ];
+  src = pkgs.fetchFromGitHub {
+    owner = "Evidlo";
+    repo = "remarkable_mouse";
+    rev = "master";
+    sha256 = "sha256-0X/7SIfSnlEL98fxJBAYrHAkRmdtymqA7xBmVoa5VIw=";
   };
+
+  propagatedBuildInputs = with pkgs.python311Packages; [
+    libevdev
+    paramiko
+    pynput
+    screeninfo
+    evdev
+  ];
+
+  nativeBuildInputs = [
+    pkgs.linuxHeaders
+  ];
+
+  meta = with lib; {
+    description = "Use your reMarkable as a graphics tablet";
+    homepage = "https://github.com/Evidlo/remarkable_mouse";
+    license = licenses.gpl3;
+    platforms = platforms.linux;
+  };
+};
 in
 {
   home.packages = [
-    # remouse
+    remouse
   ];
 }

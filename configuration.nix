@@ -24,6 +24,7 @@ in
     wget
     curl
     # Fonts
+    corefonts
     nerd-fonts.fira-code
     docker-compose
     maestral
@@ -43,6 +44,7 @@ in
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     inter-typeface
+    corefonts
   ];
   fonts.fontconfig = {
     defaultFonts = {

@@ -15,6 +15,7 @@
       obs-move-transition
       obs-backgroundremoval
       obs-pipewire-audio-capture
+      obs-vertical-canvas
     ];
   };
 }

@@ -8,7 +8,8 @@
   home.packages = with pkgs; [
     minikube
     kubernetes
-	evince
+    evince
+    aider-chat
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
     #   pname = "jless";

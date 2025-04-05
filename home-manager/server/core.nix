@@ -44,7 +44,6 @@
 		l = "exa --long --all --group --git --group-directories-first";
 		e = "$EDITOR";
 		gt = "lazygit";
-		jt = "lazyjj";
 		dt = "lazydocker";
 		t = "tmux";
 		b = "bartib -f ~/.bartib";
