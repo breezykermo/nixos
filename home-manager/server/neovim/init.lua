@@ -519,6 +519,9 @@ require('lazy').setup({
               local current_file = vim.api.nvim_buf_get_name(0)
               local target = vim.fn.fnamemodify(current_file, ':p:r')..'.pdf'
               
+              -- For docx export with in-page footnotes:
+              -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/chicago-fullnote-bibliography.csl --pdf-engine tectonic -o conference.docx conference.unive2025.paper.org
+              --
               -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/ieee.csl --pdf-engine tectonic -o $FNAME.pdf $FNAME.org
               local command = {
                 'pandoc', 

@@ -4,10 +4,11 @@ let
     configure = { availablePlugins, ... }: {
       scripts = with pkgs.weechatScripts; [
         wee-slack  
+        # weechat-matrix
       ];
     };
   };
 in
 {
-  home.packages = [ myWeechat ];
+  # home.packages = [ myWeechat ];
 }
