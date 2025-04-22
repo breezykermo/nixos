@@ -6,6 +6,7 @@
   ];
 
   home.packages = with pkgs; [
+    devenv
     minikube
     kubernetes
     evince
