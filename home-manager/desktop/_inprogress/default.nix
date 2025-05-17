@@ -12,6 +12,7 @@ in
       llm
       llm-ollama
       datasette
+      beautifulsoup4
       # numpy
       # pandas
       # jupyterlab
