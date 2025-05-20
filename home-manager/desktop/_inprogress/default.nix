@@ -17,5 +17,6 @@ in
       # pandas
       # jupyterlab
     ]))
+    nodePackages.pnpm
   ];
 }

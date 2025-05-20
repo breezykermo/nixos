@@ -11,6 +11,7 @@
     kubernetes
     evince
     aider-chat
+    typst
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
     #   pname = "jless";
