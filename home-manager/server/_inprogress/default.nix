@@ -7,8 +7,8 @@
 
   home.packages = with pkgs; [
     devenv
-    minikube
-    kubernetes
+    # minikube
+    # kubernetes
     evince
     aider-chat
     typst
@@ -28,7 +28,7 @@
   ];
 
   programs = {
-    k9s.enable = true;
+    # k9s.enable = true;
 		jujutsu = {
 			enable = true;
 			settings = {
