@@ -27,6 +27,7 @@
 		rustup
     # NOTE: delegates cargo components such as rust-analyzer to rustup
     # Run `rustup update` to get new versions.
+    # Run `rustup component add rust-analyzer` for each branch.
 
 		#--  language servers
     nodejs # needed for copilot
@@ -36,7 +37,7 @@
     emmet-language-server
     typescript-language-server
     shellcheck
-    
+    tinymist # Typst
     python312Packages.python-lsp-server
 
 		#-- misc

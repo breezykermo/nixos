@@ -688,9 +688,6 @@ require('lazy').setup({
 		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
 		  vim.api.nvim_set_hl(0, 'Comment', bools)
 
-		  -- Inlay hints
-		  vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
-		  vim.lsp.inlay_hint.enable()
 	  end
   },
 
@@ -814,15 +811,21 @@ require('lazy').setup({
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      require'lspconfig'.ts_ls.setup({})
-      require'lspconfig'.emmet_language_server.setup({
+      -- vim.lsp.enable('ts_ls')     -- Typescript
+      require'lspconfig'.ts_ls.setup{}
+      -- vim.lsp.enable('pylsp')     -- Python
+      require'lspconfig'.pylsp.setup{}
+      -- vim.lsp.enable('tinymist')  -- Typst
+      require'lspconfig'.tinymist.setup{}
+
+      vim.lsp.enable('emmet_language_server')
+      vim.lsp.config('emmet_language_server', {
         filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
         -- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
         -- **Note:** only the options listed in the table are supported.
@@ -847,15 +850,10 @@ require('lazy').setup({
           variables = {},
         },
       })
-      require('lspconfig').pylsp.setup({})
-      require('lspconfig').svelte.setup({})
-      -- NOTE: haven't got this to compile effectively, would rather not see the errors when reading
-      -- require('lspconfig').clangd.setup{
-      --   cmd = { "clangd" },
-      --   filetypes = { "c", "cpp", "objc", "objcpp" },
-      --   root_dir = require('lspconfig.util').root_pattern("compile_commands.json", ".git"),
-      -- }
-      require('lspconfig').rust_analyzer.setup({
+
+      -- vim.lsp.enable('rust_analyzer')
+      -- vim.lsp.config('rust_analyzer', ...)
+      require'lspconfig'.rust_analyzer.setup{
         capabilities = {
           textDocument = {
             publishDiagnostics = {
@@ -881,20 +879,21 @@ require('lazy').setup({
                 enable = false,
               },
             },
-            checkOnSave = {
-              command = "clippy", 
-            },
+            checkOnSave = false,
             diagnostics = {
               enable = true, 
-              enableExperimental = true,  
+              -- enableExperimental = true,  
             },
           },
         },
-      })
+      }
 
       -- Show full compile error message (in a floating window)
       vim.api.nvim_set_keymap('n', '<leader>e', ":lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
 
+		  -- Inlay hints
+		  vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
+		  vim.lsp.inlay_hint.enable()
     end,
   },
 
