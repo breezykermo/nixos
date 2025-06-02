@@ -18,5 +18,6 @@ in
       # jupyterlab
     ]))
     nodePackages.pnpm
+    pdfpc
   ];
 }

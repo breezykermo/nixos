@@ -48,6 +48,7 @@
 		t = "tmux";
 		b = "bartib -f ~/.bartib";
 		c = "clear";
+    pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
 	};
 
 	home.sessionVariables = {
