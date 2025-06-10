@@ -129,6 +129,13 @@ in
 		    keyword = "mh";
 		    url = "https://outlook.live.com/mail/0/";
 		  }
+      # Inferstudo
+      {
+        name = "[m]ail [i]nferstudo";
+        tags = [];
+        keyword = "mi";
+        url = "https://mail.zoho.eu/zm/#mail/folder/inbox";
+      }
 		  # LLMs
 		  {
 		    name = "chat[gp]t";
