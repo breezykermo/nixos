@@ -5,7 +5,7 @@ let
   version = "7.1.1";
 
   src = pkgs.fetchFromGitHub {
-    owner = "Evidlo";
+    owner = "breezykermo";
     repo = "remarkable_mouse";
     rev = "master";
     sha256 = "sha256-0X/7SIfSnlEL98fxJBAYrHAkRmdtymqA7xBmVoa5VIw=";
