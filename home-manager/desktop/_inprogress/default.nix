@@ -13,6 +13,13 @@ in
       llm-ollama
       datasette
       beautifulsoup4
+
+      libevdev
+      paramiko
+      pynput
+      screeninfo
+      evdev
+
       # numpy
       # pandas
       # jupyterlab

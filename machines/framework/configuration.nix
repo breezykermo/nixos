@@ -12,7 +12,7 @@
   users.users.${userName} = {
     isNormalUser = true;
     description = "${userName}";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "input" ];
   };
 
 	services = {

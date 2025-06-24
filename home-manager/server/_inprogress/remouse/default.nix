@@ -8,7 +8,7 @@ let
     owner = "breezykermo";
     repo = "remarkable_mouse";
     rev = "master";
-    sha256 = "sha256-0X/7SIfSnlEL98fxJBAYrHAkRmdtymqA7xBmVoa5VIw=";
+    sha256 = "sha256-5JBOJUTb+Jdvat59Hypp8LVfAt83rteRKOwtJGzwvgM=";
   };
 
   propagatedBuildInputs = with pkgs.python311Packages; [
