@@ -29,15 +29,15 @@
 
   programs = {
     # k9s.enable = true;
-		jujutsu = {
-			enable = true;
+    jujutsu = {
+      enable = true;
       settings = {
         user = {
           name = "Lachlan Kermode";
           email = "lachie@ohrg.org";
-          ui.default.command = "log";
+          ui.default-command = "log";
         };
       };
-		};
+    };
   };
 }
