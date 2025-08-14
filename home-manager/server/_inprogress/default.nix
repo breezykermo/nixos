@@ -6,6 +6,8 @@
   ];
 
   home.packages = with pkgs; [
+    nvimpager
+
     devenv
     # minikube
     # kubernetes
@@ -35,8 +37,8 @@
         user = {
           name = "Lachlan Kermode";
           email = "lachie@ohrg.org";
-          ui.default-command = "log";
         };
+        ui.default-command = "log";
       };
     };
   };
