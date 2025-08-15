@@ -11,6 +11,7 @@
     # The best terminal emulator
     ghostty = {
       url = "github:ghostty-org/ghostty";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # For building Rust packages
     naersk.url = "github:nix-community/naersk";
