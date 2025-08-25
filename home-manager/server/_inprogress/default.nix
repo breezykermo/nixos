@@ -2,7 +2,7 @@
 {
 
   imports = [
-    ./remouse
+    # ./remouse
   ];
 
   home.packages = with pkgs; [

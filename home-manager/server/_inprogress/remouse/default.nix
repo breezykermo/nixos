@@ -33,6 +33,6 @@ let
 in
 {
   home.packages = [
-    # remouse
+    remouse
   ];
 }
