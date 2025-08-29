@@ -40,6 +40,8 @@
           email = "lachie@ohrg.org";
         };
         ui.default-command = "log";
+        ui.pager = "delta";
+        ui.diff.format = "git";
       };
     };
   };
