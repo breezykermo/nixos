@@ -14,6 +14,7 @@
     evince
     aider-chat
     typst
+    delta
     # interactively fold JSON
     # (rustPlatform.buildRustPackage rec {
     #   pname = "jless";

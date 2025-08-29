@@ -245,6 +245,9 @@ vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle virtual<CR>", { noremap
 vim.api.nvim_set_keymap('v', '<leader>wc', ":'<,'>w !wc -w<CR>", { noremap = true, silent = true })
 
 require('lazy').setup({
+  -- Git diff
+  'sindrets/diffview.nvim',
+
 	-- Automatically manage Vim.session (for tmux restore)
   -- TODO: not yet working on NixOS
 	'tpope/vim-obsession',
