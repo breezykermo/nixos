@@ -39,9 +39,10 @@
           name = "Lachlan Kermode";
           email = "lachie@ohrg.org";
         };
-        ui.default-command = "log";
+        ui.default-command = "diff";
         ui.pager = "delta";
-        ui.diff.format = "git";
+        # ui.diff.format = "git";
+        ui.diff-formatter = ":git";
       };
     };
   };
