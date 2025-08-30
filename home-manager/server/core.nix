@@ -31,6 +31,9 @@
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video
 
+    typst       # for better typesetting
+    delta       # syntax-highlighting in git and jj diffs
+
     # NOTE: in general, I don't want this. but due to tectonic sometimes not
     # being able to do what I need, it is nice to have.
     # texlive.combined.scheme-medium 
@@ -107,6 +110,19 @@
 
     # file directory navigation, option 2
     lf.enable = true;
+
+    jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          name = "Lachlan Kermode";
+          email = "lachie@ohrg.org";
+        };
+        ui.default-command = "diff";
+        ui.pager = "delta";
+        ui.diff-formatter = ":git";
+      };
+    };
 
     git = {
       enable = true;
