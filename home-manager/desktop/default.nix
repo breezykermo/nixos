@@ -13,6 +13,7 @@
     ./youtube
     ./_inprogress
     # ./vscode
+    ./gaming
   ];
 
   home.packages = with pkgs; [
