@@ -267,6 +267,32 @@ require('lazy').setup({
   -- Rainbow delimiters
   'hiphish/rainbow-delimiters.nvim',
 
+  -- Lean
+  {
+    'Julian/lean.nvim',
+    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'nvim-lua/plenary.nvim',
+
+      -- optional dependencies:
+
+      -- a completion engine
+      --    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
+
+      -- 'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
+      -- 'andymass/vim-matchup',          -- for enhanced % motion behavior
+      -- 'andrewradev/switch.vim',        -- for switch support
+      -- 'tomtom/tcomment_vim',           -- for commenting
+    },
+
+    ---@type lean.Config
+    opts = { -- see below for full configuration options
+      mappings = true,
+    }
+  },
+
   -- LLMS
   {
     'zbirenbaum/copilot.lua',
@@ -823,6 +849,8 @@ require('lazy').setup({
       require'lspconfig'.pylsp.setup{}
       -- vim.lsp.enable('tinymist')  -- Typst
       require'lspconfig'.tinymist.setup{}
+      -- Lean 
+      require'lean'.setup{ mappings = true }
 
       vim.lsp.enable('emmet_language_server')
       vim.lsp.config('emmet_language_server', {
