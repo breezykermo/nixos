@@ -199,12 +199,12 @@ in
       # To get new values:
       # - Disable blocked installation mode by uncommenting below
       # - install https://github.com/mkaply/queryamoid/releases/tag/v0.1
-      # - go to https://addons.mozilla.org and click the addon
+      # - go to https://addons.mozilla.org and click the addon to get ID and install_url
 
       # Valid strings for installation_mode are "allowed", "blocked",
       # "force_installed" and "normal_installed".
       ExtensionSettings = {
-        # "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
+        "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
         # uBlock Origin:
         "uBlock0@raymondhill.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
@@ -228,6 +228,11 @@ in
         # Vimium:
         "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        # ProtonVPN
+        "vpn@proton.ch" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/proton-vpn-firefox-extension/latest.xpi";
           installation_mode = "force_installed";
         };
       };
