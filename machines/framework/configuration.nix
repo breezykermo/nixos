@@ -15,38 +15,39 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "input"];
   };
 
-	services = {
+  services = {
     # printing.enable = true;
+    protonmail-bridge.enable = true;
 
-		upower = {
-			enable = true;
-			percentageLow = 30;
-			percentageCritical = 15;
-			percentageAction = 10;
-			criticalPowerAction = "Hibernate";
-		};
+    upower = {
+      enable = true;
+      percentageLow = 30;
+      percentageCritical = 15;
+      percentageAction = 10;
+      criticalPowerAction = "Hibernate";
+    };
 
-		physlock = {
-			enable = true;
-			lockMessage = "<lox>";
-			allowAnyUser = true;
-			lockOn = {
-				suspend = true;	
-				hibernate = true;
-			};
-		};
+    physlock = {
+      enable = true;
+      lockMessage = "<lox>";
+      allowAnyUser = true;
+      lockOn = {
+        suspend = true; 
+        hibernate = true;
+      };
+    };
 
-		# enable sound
-		pipewire = {
-			enable = true;
-			alsa = {
-				enable = true;
-				support32Bit = true;
-			};
-			pulse.enable = true;
-		};
+    # enable sound
+    pipewire = {
+      enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+      pulse.enable = true;
+    };
 
-	  system76-scheduler.settings.cfsProfiles.enable = true;
+    system76-scheduler.settings.cfsProfiles.enable = true;
     thermald.enable = true;
     tlp = {
       enable = true;
@@ -79,7 +80,7 @@
     # SUBSYSTEM=="input", ATTR{name}=="reMarkable pen", MODE="0664", GROUP="input"
     # SUBSYSTEM=="input", ATTRS{name}=="reMarkable pen", ENV{LIBINPUT_CALIBRATION_MATRIX}="1 0 0 0 1 0"
     '';
-	};
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

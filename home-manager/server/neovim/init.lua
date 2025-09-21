@@ -490,6 +490,7 @@ require('lazy').setup({
           dropbox_directory .. '/lyt/freelance.*',
           dropbox_directory .. '/lyt/study.*',
           dropbox_directory .. '/lyt/jobs.*',
+          dropbox_directory .. '/lyt/liminal.*',
         },
         org_deadline_warning_days = 4,
         org_default_notes_file = dropbox_directory .. '/lyt/org/inbox.org',
@@ -502,6 +503,7 @@ require('lazy').setup({
           -- purple = ':foreground #a660f7',
           IDEA = ':foreground #23b4ed',
           STRT = ':foreground #adfc1b :weight bold',
+          NEXT = ':foreground #fc74f9 :weight bold',
           SOON = ':foreground #009333',
           TODO = ':foreground #009333 :underline on', -- overrides builtin color for `TODO` keyword
         },
@@ -578,6 +580,49 @@ require('lazy').setup({
               return exporter(command , target, on_success, on_error)
             end
           },
+
+          b = {
+            label = 'Export to PDF as book (with citations and TOC)',
+            action = function(exporter)
+              local current_file = vim.api.nvim_buf_get_name(0)
+              local target = vim.fn.fnamemodify(current_file, ':p:r')..'.pdf'
+              
+              -- For docx export with in-page footnotes:
+              -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/chicago-fullnote-bibliography.csl --pdf-engine tectonic -o conference.docx conference.unive2025.paper.org
+              --
+              -- pandoc -s --bibliography="./references/master.bib" --citeproc --csl ./references/ieee.csl --pdf-engine tectonic -o $FNAME.pdf $FNAME.org
+              local command = {
+                'pandoc', 
+                '-s',
+                '--bibliography',
+                dropbox_directory .. '/lyt/references/master.bib',
+                '--citeproc',
+                '--csl',
+                dropbox_directory .. "/lyt/references/chicago-name-date.csl",
+                '-V',
+                'colorlinks=true',
+                '-V',
+                'linkcolor=blue',
+                '--pdf-engine',
+                'tectonic',
+                '--toc',
+                '--toc-depth=2',
+                '-o', 
+                target,
+                current_file 
+              }
+              local on_success = function(output)
+                vim.api.nvim_echo({{ table.concat(output, '\n') }}, true, {})
+                copy_to_clipboard(target)
+              end
+              local on_error = function(err)
+                vim.api.nvim_echo({{ table.concat(err, '\n'), 'ErrorMsg' }}, true, {})
+                vim.api.nvim_echo(target, true, {})
+              end
+              return exporter(command , target, on_success, on_error)
+            end
+          },
+
 
           H = {
             label = 'Export to HTML (with prefix)',
