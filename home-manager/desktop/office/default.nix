@@ -7,5 +7,6 @@
 		pdftk         # pdf
     qpdf
     shotcut       # video editing
+    pdfpc         # present PDFs as slideshows
   ];
 }

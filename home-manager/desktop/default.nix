@@ -55,6 +55,9 @@
 
     # modern terminal
     inputs.ghostty.packages.x86_64-linux.default
+
+    # useful little database
+    sqlite
   ];
 
   xdg.configFile."ghostty/config".source = ./ghostty-config;
