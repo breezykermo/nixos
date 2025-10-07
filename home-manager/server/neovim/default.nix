@@ -18,7 +18,6 @@
 	home.packages = with pkgs; [
 		#-- c/c++
 		cmake
-		cmake-language-server
 		gcc
 		llvmPackages.clang-unwrapped
 		gdb

@@ -238,7 +238,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 -- Git blame
-vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle window<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Gb", ":BlameToggle window<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle virtual<CR>", { noremap = true, silent = true })
 
 -- Word count shortcut
@@ -266,32 +266,6 @@ require('lazy').setup({
 
   -- Rainbow delimiters
   'hiphish/rainbow-delimiters.nvim',
-
-  -- Lean
-  {
-    'Julian/lean.nvim',
-    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
-
-    dependencies = {
-      'neovim/nvim-lspconfig',
-      'nvim-lua/plenary.nvim',
-
-      -- optional dependencies:
-
-      -- a completion engine
-      --    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
-
-      -- 'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
-      -- 'andymass/vim-matchup',          -- for enhanced % motion behavior
-      -- 'andrewradev/switch.vim',        -- for switch support
-      -- 'tomtom/tcomment_vim',           -- for commenting
-    },
-
-    ---@type lean.Config
-    opts = { -- see below for full configuration options
-      mappings = true,
-    }
-  },
 
   -- Git blame
   {
@@ -736,87 +710,6 @@ require('lazy').setup({
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
     },
-    config = function()
-      -- vim.lsp.enable('ts_ls')     -- Typescript
-      require'lspconfig'.ts_ls.setup{}
-      -- vim.lsp.enable('pylsp')     -- Python
-      require'lspconfig'.pylsp.setup{}
-      -- vim.lsp.enable('tinymist')  -- Typst
-      require'lspconfig'.tinymist.setup{}
-      -- Lean 
-      require'lean'.setup{ mappings = true }
-
-      vim.lsp.enable('emmet_language_server')
-      vim.lsp.config('emmet_language_server', {
-        filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
-        -- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
-        -- **Note:** only the options listed in the table are supported.
-        init_options = {
-          ---@type table<string, string>
-          includeLanguages = {},
-          --- @type string[]
-          excludeLanguages = {},
-          --- @type string[]
-          extensionsPath = {},
-          --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
-          preferences = {},
-          --- @type boolean Defaults to `true`
-          showAbbreviationSuggestions = true,
-          --- @type "always" | "never" Defaults to `"always"`
-          showExpandedAbbreviation = "always",
-          --- @type boolean Defaults to `false`
-          showSuggestionsAsSnippets = false,
-          --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
-          syntaxProfiles = {},
-          --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
-          variables = {},
-        },
-      })
-
-      -- vim.lsp.enable('rust_analyzer')
-      -- vim.lsp.config('rust_analyzer', ...)
-      require'lspconfig'.rust_analyzer.setup{
-        capabilities = {
-          textDocument = {
-            publishDiagnostics = {
-              dynamicRegistration = true,
-              relatedInformation = true,
-            },
-          },
-        },
-        settings = {
-          ["rust-analyzer"] = {
-            cargo = {
-              -- see https://www.reddit.com/r/neovim/comments/18i6qu6/configure_rustanalyzer_feature_configuration/?rdt=33707 for more durable solution
-              -- allFeatures = true,
-              features = {},
-            },
-            imports = {
-              group = {
-                enable = false,
-              },
-            },
-            completion = {
-              postfix = {
-                enable = false,
-              },
-            },
-            checkOnSave = false,
-            diagnostics = {
-              enable = true, 
-              -- enableExperimental = true,  
-            },
-          },
-        },
-      }
-
-      -- Show full compile error message (in a floating window)
-      vim.api.nvim_set_keymap('n', '<leader>e', ":lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
-
-		  -- Inlay hints
-		  vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
-		  vim.lsp.inlay_hint.enable()
-    end,
   },
 
   { -- Autoformat
@@ -939,4 +832,92 @@ require('lazy').setup({
     end,
   },
 }, {})
+
+local lsp = vim.lsp
+
+-- Typescript
+lsp.config('ts_ls', {})
+lsp.enable('ts_ls')
+
+-- Python
+lsp.config('pylsp', {})
+lsp.enable('pylsp')
+
+-- Typst
+lsp.config('tinymist', {})
+lsp.enable('tinymist')
+
+lsp.enable('emmet_language_server')
+lsp.config('emmet_language_server', {
+  filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
+  -- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
+  -- **Note:** only the options listed in the table are supported.
+  init_options = {
+    ---@type table<string, string>
+    includeLanguages = {},
+    --- @type string[]
+    excludeLanguages = {},
+    --- @type string[]
+    extensionsPath = {},
+    --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
+    preferences = {},
+    --- @type boolean Defaults to `true`
+    showAbbreviationSuggestions = true,
+    --- @type "always" | "never" Defaults to `"always"`
+    showExpandedAbbreviation = "always",
+    --- @type boolean Defaults to `false`
+    showSuggestionsAsSnippets = false,
+    --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
+    syntaxProfiles = {},
+    --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
+    variables = {},
+  },
+})
+
+-- vim.lsp.enable('rust_analyzer')
+-- vim.lsp.config('rust_analyzer', ...)
+lsp.config('rust_analyzer', {
+  capabilities = {
+    textDocument = {
+      publishDiagnostics = {
+        dynamicRegistration = true,
+        relatedInformation = true,
+      },
+    },
+  },
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        -- see https://www.reddit.com/r/neovim/comments/18i6qu6/configure_rustanalyzer_feature_configuration/?rdt=33707 for more durable solution
+        -- allFeatures = true,
+        features = {},
+      },
+      imports = {
+        group = {
+          enable = false,
+        },
+      },
+      completion = {
+        postfix = {
+          enable = false,
+        },
+      },
+      checkOnSave = false,
+      diagnostics = {
+        enable = true, 
+        -- enableExperimental = true,  
+      },
+    },
+  },
+})
+lsp.enable('rust_analyzer')
+
+-- Show full compile error message (in a floating window)
+vim.api.nvim_set_keymap('n', '<leader>e', ":lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
+
+-- Inlay hints
+vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#677aea" })
+if vim.fn.has('nvim-0.10') == 1 then
+  vim.lsp.inlay_hint.enable()
+end
 
