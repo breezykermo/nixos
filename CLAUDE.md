@@ -76,6 +76,14 @@ git-crypt unlock ./secret-key
 
 Reference: https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/
 
+### Neovim Configuration
+
+The Neovim configuration is split between two files:
+- `home-manager/server/neovim/default.nix` - Package definitions and plugin list
+- `home-manager/server/neovim/init.lua` - Neovim configuration (loaded directly via `:luafile`)
+
+**IMPORTANT**: When editing `init.lua`, you do NOT need to run `just deploy`. The file is loaded directly by Neovim at startup (see `extraConfig` in `default.nix`), so changes take effect immediately when you restart Neovim. Only run `just deploy` when modifying `default.nix` (packages, plugins, etc.).
+
 ### Manual Setup Steps
 
 After initial deployment:
