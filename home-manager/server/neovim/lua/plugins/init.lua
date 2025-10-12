@@ -78,8 +78,8 @@ require('lazy').setup({
     event = 'VeryLazy',
     ft = { 'org' },
     config = function()
-      local dropbox_directory = "/home/lox/Dropbox/Lachlan Kermode"
-      -- local dropbox_directory = "/home/alice/Brown Dropbox/Lachlan Kermode"
+      -- Dropbox path is set from Nix configuration via machines/{framework,dellxps}/vars.nix
+      local dropbox_directory = vim.g.dropbox_path
 
       -- Setup orgmode
       -- https://github.com/nvim-orgmode/orgmode/blob/master/DOCS.md

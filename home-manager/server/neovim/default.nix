@@ -1,4 +1,4 @@
-{ pkgs, lib, userName, ...}:
+{ pkgs, lib, userName, machineVars, ...}:
 {
 	programs.neovim = {
 		enable = true;
@@ -10,7 +10,10 @@
 		withNodeJs = true;
 
 		extraPackages = [];
-		extraConfig = ":luafile /etc/nixos/home-manager/server/neovim/init.lua";
+		extraConfig = ''
+			:lua vim.g.dropbox_path = "${machineVars.dropboxPath}"
+			:luafile /etc/nixos/home-manager/server/neovim/init.lua
+		'';
 		plugins = [];
     # extraLuaPackages = ["luarocks"];
  	};

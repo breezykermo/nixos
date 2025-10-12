@@ -23,32 +23,37 @@
   };
 
   outputs = inputs@{
-    nixpkgs, 
-    home-manager, 
+    nixpkgs,
+    home-manager,
     naersk,
     ... }:
-  let 
+  let
     system = "x86_64-linux";
-    userName = "lox";
-    # userName = "alice";
+
+    # Switch machines by changing this ONE line!
+    selectedMachine = "framework";  # or "dellxps"
+
+    # Import machine-specific variables
+    machineVars = import ./machines/${selectedMachine}/vars.nix;
+    userName = machineVars.userName;
   in
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
-      inherit system; 
-      specialArgs = { inherit userName; };
+      inherit system;
+      specialArgs = { inherit userName machineVars; };
       modules = [
         ./configuration.nix
-        ./machines/framework/configuration.nix
-        # ./machines/dellxps/configuration.nix
+        ./machines/base.nix
+        ./machines/${selectedMachine}/configuration.nix
 
         home-manager.nixosModules.home-manager {
           # system wide
           programs.fish.enable = true;
-          
+
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit inputs system userName naersk; };
+            extraSpecialArgs = { inherit inputs system userName naersk machineVars; };
 
             users."${userName}" = import ./home-manager;
           };
