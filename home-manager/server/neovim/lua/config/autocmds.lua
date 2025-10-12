@@ -51,3 +51,11 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, '@org.keyword.done', { fg = '#ffffff' })
   end
 })
+
+-- typst filetype detection
+vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
+  pattern = '*.typ',
+  callback = function()
+    vim.bo.filetype = 'typst'
+  end
+})

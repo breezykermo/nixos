@@ -15,7 +15,12 @@ lsp.config('pylsp', {})
 lsp.enable('pylsp')
 
 -- Typst
-lsp.config('tinymist', {})
+lsp.config('tinymist', {
+  cmd = { 'tinymist' },
+  filetypes = { 'typst' },
+  root_markers = { '.git' },
+  single_file_support = true,
+})
 lsp.enable('tinymist')
 
 lsp.enable('emmet_language_server')
