@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 
 local text_utils = require('utils.text')
+local link_utils = require('utils.links')
 
 -- Create wrapper functions for Typst syntax
 local wrap_emphasis = text_utils.create_wrapper('_', '_')
@@ -34,18 +35,35 @@ local wrap_heading = text_utils.wrap_with_callback(function(text)
   return prefix .. text
 end)
 
--- Link - wraps text and prompts for URL
-local wrap_link = text_utils.wrap_with_callback(function(text)
-  if text == "" then
-    -- No text: insert link template with cursor in URL position
-    local link_template = '#link("")[text]'
-    return { text = link_template, cursor_offset = 8 }  -- Position cursor inside quotes
+-- Link - creates Typst link with file/URL picker
+local function create_typst_link()
+  local text, start_pos, end_pos = text_utils.get_text_range()
+  local has_text = text ~= nil
+
+  -- If no text, use empty and get cursor position
+  if not has_text then
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    start_pos = {cursor[1] - 1, cursor[2]}
+    end_pos = start_pos
+    text = ""
   end
 
-  local url = vim.fn.input('URL: ')
-  if url == "" then return nil end  -- Cancel if empty
-  return string.format('#link("%s")[%s]', url, text)
-end)
+  -- Use shared link picker
+  link_utils.create_link_picker(function(url)
+    -- Create Typst link: #link("url")[label]
+    local typst_link = string.format('#link("%s")[%s]', url, text)
+
+    -- Replace the selection (or insert at cursor)
+    vim.api.nvim_buf_set_text(0, start_pos[1], start_pos[2], end_pos[1], end_pos[2], {typst_link})
+
+    -- Position cursor between the square brackets (in the label part)
+    local link_start = start_pos[2]
+    local url_section_length = #('#link("' .. url .. '")')
+    local cursor_col = link_start + url_section_length + 1  -- +1 to be inside the brackets
+    vim.api.nvim_win_set_cursor(0, {start_pos[1] + 1, cursor_col})
+    vim.cmd('startinsert')
+  end, 'Typst Link')
+end
 
 -- Insert bibliography reference
 local function insert_bibliography()
@@ -82,7 +100,7 @@ vim.keymap.set({'n', 'v'}, '<leader>aM', wrap_math_block,
   vim.tbl_extend('force', opts, { desc = 'Typst: $ math $' }))
 
 -- Link: <leader>al
-vim.keymap.set({'n', 'v'}, '<leader>al', wrap_link,
+vim.keymap.set({'n', 'v'}, '<leader>al', create_typst_link,
   vim.tbl_extend('force', opts, { desc = 'Typst: #link()[]' }))
 
 -- Heading: <leader>ah
