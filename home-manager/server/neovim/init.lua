@@ -31,3 +31,4 @@ require('orgmode.links')
 
 -- Load typst extensions
 require('typst.syntax')
+require('typst.citations')

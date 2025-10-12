@@ -14,6 +14,10 @@ local wrap_math = text_utils.create_wrapper('$', '$')
 
 -- Math block needs spaces around the content
 local wrap_math_block = text_utils.wrap_with_callback(function(text)
+  if text == "" then
+    -- No text: insert $ $ with cursor between spaces
+    return { text = '$  $', cursor_offset = 2 }
+  end
   return '$ ' .. text .. ' $'
 end)
 
@@ -21,15 +25,38 @@ end)
 local wrap_heading = text_utils.wrap_with_callback(function(text)
   local level = tonumber(vim.fn.input('Heading level (1-6): ')) or 1
   level = math.max(1, math.min(6, level))
-  return string.rep('=', level) .. ' ' .. text
+  local prefix = string.rep('=', level) .. ' '
+
+  if text == "" then
+    -- No text: insert heading prefix with cursor at end
+    return { text = prefix, cursor_offset = #prefix }
+  end
+  return prefix .. text
 end)
 
 -- Link - wraps text and prompts for URL
 local wrap_link = text_utils.wrap_with_callback(function(text)
+  if text == "" then
+    -- No text: insert link template with cursor in URL position
+    local link_template = '#link("")[text]'
+    return { text = link_template, cursor_offset = 8 }  -- Position cursor inside quotes
+  end
+
   local url = vim.fn.input('URL: ')
   if url == "" then return nil end  -- Cancel if empty
   return string.format('#link("%s")[%s]', url, text)
 end)
+
+-- Insert bibliography reference
+local function insert_bibliography()
+  local bib_text = '#bibliography("./references/master.bib")'
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local row = cursor[1] - 1
+  local col = cursor[2]
+  vim.api.nvim_buf_set_text(0, row, col, row, col, {bib_text})
+  -- Move cursor after the inserted text
+  vim.api.nvim_win_set_cursor(0, {row + 1, col + #bib_text})
+end
 
 -- Set up keymaps (using <leader>a prefix as specified)
 local opts = { noremap = true, silent = true }
@@ -43,7 +70,7 @@ vim.keymap.set({'n', 'v'}, '<leader>ab', wrap_strong,
   vim.tbl_extend('force', opts, { desc = 'Typst: *strong*' }))
 
 -- Code: <leader>ac
-vim.keymap.set({'n', 'v'}, '<leader>ac', wrap_code,
+vim.keymap.set({'n', 'v'}, '<leader>as', wrap_code,
   vim.tbl_extend('force', opts, { desc = 'Typst: `code`' }))
 
 -- Math inline: <leader>am
@@ -61,3 +88,7 @@ vim.keymap.set({'n', 'v'}, '<leader>al', wrap_link,
 -- Heading: <leader>ah
 vim.keymap.set({'n', 'v'}, '<leader>ah', wrap_heading,
   vim.tbl_extend('force', opts, { desc = 'Typst: = heading' }))
+
+-- Bibliography: <leader>ar
+vim.keymap.set({'n', 'i'}, '<leader>ar', insert_bibliography,
+  vim.tbl_extend('force', opts, { desc = 'Typst: #bibliography()' }))

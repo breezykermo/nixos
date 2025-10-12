@@ -1,20 +1,23 @@
 -------------------------------------------------------------------------------
 --
--- Orgmode BibTeX Citation Picker
+-- Typst BibTeX Citation Picker
 --
 -------------------------------------------------------------------------------
 
 local bibtex = require('utils.bibtex')
 
--- Get bibliography file path from current buffer or use default
+-- Get bibliography file path from current Typst buffer or use default
 local function get_bibliography_path()
   local dropbox_directory = "/home/lox/Dropbox/Lachlan Kermode"
   local default_bib = dropbox_directory .. '/lyt/references/master.bib'
 
-  -- Search for #+bibliography: in current buffer
+  -- Search for #bibliography("path") in current buffer
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
   for _, line in ipairs(lines) do
-    local bib_path = line:match("^#%+bibliography:%s*(.+)$")
+    -- Match #bibliography("path") or #bibliography('path')
+    local bib_path = line:match('#bibliography%s*%(%s*"([^"]+)"')
+                  or line:match("#bibliography%s*%(%s*'([^']+)'")
+
     if bib_path then
       -- Expand ~ and make path absolute if needed
       bib_path = bib_path:gsub("^~", os.getenv("HOME"))
@@ -32,8 +35,8 @@ local function get_bibliography_path()
   return default_bib
 end
 
--- Create Orgmode citation picker
-local function create_org_citation()
+-- Create Typst citation picker
+local function create_typst_citation()
   local bib_path = get_bibliography_path()
   local entries = bibtex.parse_bibtex_file(bib_path)
 
@@ -42,9 +45,9 @@ local function create_org_citation()
     return
   end
 
-  -- Insert function for Orgmode citation format
+  -- Insert function for Typst citation format
   local insert_citation = function(key)
-    local citation = string.format("[cite:@%s]", key)
+    local citation = '@' .. key
     -- Insert at cursor position
     local cursor = vim.api.nvim_win_get_cursor(0)
     local row = cursor[1] - 1
@@ -54,11 +57,11 @@ local function create_org_citation()
     vim.api.nvim_win_set_cursor(0, {row + 1, col + #citation})
   end
 
-  bibtex.create_citation_picker(entries, insert_citation, 'Orgmode Citations')
+  bibtex.create_citation_picker(entries, insert_citation, 'Typst Citations')
 end
 
-vim.keymap.set({'n', 'i'}, '<leader>ac', create_org_citation, {
+vim.keymap.set({'n', 'i'}, '<leader>ac', create_typst_citation, {
   noremap = true,
   silent = true,
-  desc = 'Insert Orgmode citation from BibTeX'
+  desc = 'Insert Typst citation from BibTeX'
 })

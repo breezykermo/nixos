@@ -75,11 +75,23 @@ end
 
 -- Wrap selected text with prefix and suffix
 -- If keep_selection is true, maintains visual selection after wrapping
+-- If no text is selected, inserts prefix+suffix and positions cursor in between (insert mode)
 function M.wrap_text(prefix, suffix, keep_selection)
   local text, start_pos, end_pos = M.get_text_range()
 
   if not text then
-    print("No text selected")
+    -- No text selected - insert wrapper and position cursor in the middle
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1
+    local col = cursor[2]
+    local wrapper = prefix .. suffix
+
+    vim.api.nvim_buf_set_text(0, row, col, row, col, {wrapper})
+
+    -- Position cursor between prefix and suffix in insert mode
+    local cursor_col = col + #prefix
+    vim.api.nvim_win_set_cursor(0, {row + 1, cursor_col})
+    vim.cmd('startinsert')
     return
   end
 
@@ -106,29 +118,55 @@ function M.create_wrapper(prefix, suffix)
 end
 
 -- Wrap text using a callback function
--- callback_fn receives the selected text and should return:
+-- callback_fn receives the selected text (or "" if none) and should return:
 --   - wrapped text string to replace the selection
+--   - OR a table { text = "...", cursor_offset = N } for custom cursor positioning
 --   - nil to cancel the operation
+-- If no text is selected and callback returns a string, cursor is positioned at the end in insert mode
 function M.wrap_with_callback(callback_fn)
   return function()
     local text, start_pos, end_pos = M.get_text_range()
+    local has_text = text ~= nil
 
-    if not text then
-      print("No text selected")
-      return
+    -- If no text, use empty string and get cursor position
+    if not has_text then
+      local cursor = vim.api.nvim_win_get_cursor(0)
+      start_pos = {cursor[1] - 1, cursor[2]}
+      end_pos = start_pos
+      text = ""
     end
 
     -- Call the callback to get the wrapped text
-    local wrapped = callback_fn(text)
+    local result = callback_fn(text)
 
     -- If callback returns nil, operation is cancelled
-    if not wrapped then
-      print("Cancelled")
+    if not result then
+      if not has_text then
+        -- Only print cancellation if there was actual user interaction (e.g., input prompt)
+        -- For simple wrappers with no text, we shouldn't reach here
+      end
       return
     end
 
-    -- Replace the selection with wrapped text
+    -- Handle result - can be string or table with cursor_offset
+    local wrapped, cursor_offset
+    if type(result) == "table" then
+      wrapped = result.text
+      cursor_offset = result.cursor_offset or #wrapped
+    else
+      wrapped = result
+      cursor_offset = #wrapped
+    end
+
+    -- Replace the selection (or insert at cursor) with wrapped text
     vim.api.nvim_buf_set_text(0, start_pos[1], start_pos[2], end_pos[1], end_pos[2], {wrapped})
+
+    -- If no text was selected, position cursor and enter insert mode
+    if not has_text then
+      local cursor_col = start_pos[2] + cursor_offset
+      vim.api.nvim_win_set_cursor(0, {start_pos[1] + 1, cursor_col})
+      vim.cmd('startinsert')
+    end
   end
 end
 
