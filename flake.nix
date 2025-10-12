@@ -36,7 +36,8 @@
     system = "x86_64-linux";
 
     # Switch machines by changing this ONE line!
-    selectedMachine = "framework";  # or "dellxps"
+    selectedMachine = "framework";
+    # selectedMachine = "dellxps";
 
     # Import machine-specific variables
     machineVars = import ./machines/${selectedMachine}/vars.nix;

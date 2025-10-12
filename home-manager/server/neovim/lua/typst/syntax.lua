@@ -12,6 +12,7 @@ local wrap_emphasis = text_utils.create_wrapper('_', '_')
 local wrap_strong = text_utils.create_wrapper('*', '*')
 local wrap_code = text_utils.create_wrapper('`', '`')
 local wrap_math = text_utils.create_wrapper('$', '$')
+local wrap_footnote = text_utils.create_wrapper('#footnote[', ']')
 
 -- Math block needs spaces around the content
 local wrap_math_block = text_utils.wrap_with_callback(function(text)
@@ -113,5 +114,10 @@ vim.api.nvim_create_autocmd('FileType', {
     -- Bibliography: <leader>ar
     vim.keymap.set({'n', 'i'}, '<leader>ar', insert_bibliography,
       vim.tbl_extend('force', opts, { desc = 'Typst: #bibliography()' }))
+
+    -- Footnote: <leader>af
+    vim.keymap.set({'n', 'v'}, '<leader>af', wrap_footnote,
+      vim.tbl_extend('force', opts, { desc = 'Typst: #footnote[]' }))
   end
 })
+
