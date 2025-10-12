@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, inputs, system, ...}: {
   services = {
     keybase.enable = true;
     kbfs.enable = true;
@@ -31,7 +31,7 @@
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video
 
-    typst       # for better typesetting
+    inputs.typst.packages.${system}.default  # for better typesetting (from upstream main)
     delta       # syntax-highlighting in git and jj diffs
 
     # NOTE: in general, I don't want this. but due to tectonic sometimes not

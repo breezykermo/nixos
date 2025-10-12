@@ -13,6 +13,11 @@
       url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Typst from upstream main branch
+    typst = {
+      url = "github:typst/typst";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # For building Rust packages
     naersk.url = "github:nix-community/naersk";
   };
