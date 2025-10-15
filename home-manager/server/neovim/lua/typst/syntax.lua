@@ -76,37 +76,42 @@ local function insert_bibliography()
   vim.api.nvim_win_set_cursor(0, {row + 1, col + #bib_text})
 end
 
--- Set up keymaps (using <leader>a prefix as specified)
-local opts = { noremap = true, silent = true }
+-- Set up keymaps only for typst files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'typst',
+  callback = function()
+    local opts = { noremap = true, silent = true, buffer = true }
 
--- Emphasis/Italic: <leader>ai
-vim.keymap.set({'n', 'v'}, '<leader>ai', wrap_emphasis,
-  vim.tbl_extend('force', opts, { desc = 'Typst: _emphasis_' }))
+    -- Emphasis/Italic: <leader>ai
+    vim.keymap.set({'n', 'v'}, '<leader>ai', wrap_emphasis,
+      vim.tbl_extend('force', opts, { desc = 'Typst: _emphasis_' }))
 
--- Bold/Strong: <leader>ab
-vim.keymap.set({'n', 'v'}, '<leader>ab', wrap_strong,
-  vim.tbl_extend('force', opts, { desc = 'Typst: *strong*' }))
+    -- Bold/Strong: <leader>ab
+    vim.keymap.set({'n', 'v'}, '<leader>ab', wrap_strong,
+      vim.tbl_extend('force', opts, { desc = 'Typst: *strong*' }))
 
--- Code: <leader>ac
-vim.keymap.set({'n', 'v'}, '<leader>as', wrap_code,
-  vim.tbl_extend('force', opts, { desc = 'Typst: `code`' }))
+    -- Code: <leader>as
+    vim.keymap.set({'n', 'v'}, '<leader>as', wrap_code,
+      vim.tbl_extend('force', opts, { desc = 'Typst: `code`' }))
 
--- Math inline: <leader>am
-vim.keymap.set({'n', 'v'}, '<leader>am', wrap_math,
-  vim.tbl_extend('force', opts, { desc = 'Typst: $math$' }))
+    -- Math inline: <leader>am
+    vim.keymap.set({'n', 'v'}, '<leader>am', wrap_math,
+      vim.tbl_extend('force', opts, { desc = 'Typst: $math$' }))
 
--- Math block: <leader>aM
-vim.keymap.set({'n', 'v'}, '<leader>aM', wrap_math_block,
-  vim.tbl_extend('force', opts, { desc = 'Typst: $ math $' }))
+    -- Math block: <leader>aM
+    vim.keymap.set({'n', 'v'}, '<leader>aM', wrap_math_block,
+      vim.tbl_extend('force', opts, { desc = 'Typst: $ math $' }))
 
--- Link: <leader>al
-vim.keymap.set({'n', 'v'}, '<leader>al', create_typst_link,
-  vim.tbl_extend('force', opts, { desc = 'Typst: #link()[]' }))
+    -- Link: <leader>al
+    vim.keymap.set({'n', 'v'}, '<leader>al', create_typst_link,
+      vim.tbl_extend('force', opts, { desc = 'Typst: #link()[]' }))
 
--- Heading: <leader>ah
-vim.keymap.set({'n', 'v'}, '<leader>ah', wrap_heading,
-  vim.tbl_extend('force', opts, { desc = 'Typst: = heading' }))
+    -- Heading: <leader>ah
+    vim.keymap.set({'n', 'v'}, '<leader>ah', wrap_heading,
+      vim.tbl_extend('force', opts, { desc = 'Typst: = heading' }))
 
--- Bibliography: <leader>ar
-vim.keymap.set({'n', 'i'}, '<leader>ar', insert_bibliography,
-  vim.tbl_extend('force', opts, { desc = 'Typst: #bibliography()' }))
+    -- Bibliography: <leader>ar
+    vim.keymap.set({'n', 'i'}, '<leader>ar', insert_bibliography,
+      vim.tbl_extend('force', opts, { desc = 'Typst: #bibliography()' }))
+  end
+})

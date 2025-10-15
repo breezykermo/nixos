@@ -60,8 +60,15 @@ local function create_typst_citation()
   bibtex.create_citation_picker(entries, insert_citation, 'Typst Citations')
 end
 
-vim.keymap.set({'n', 'i'}, '<leader>ac', create_typst_citation, {
-  noremap = true,
-  silent = true,
-  desc = 'Insert Typst citation from BibTeX'
+-- Set up keymaps only for typst files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'typst',
+  callback = function()
+    vim.keymap.set({'n', 'i'}, '<leader>ac', create_typst_citation, {
+      noremap = true,
+      silent = true,
+      buffer = true,
+      desc = 'Insert Typst citation from BibTeX'
+    })
+  end
 })

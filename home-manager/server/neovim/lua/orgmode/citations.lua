@@ -57,8 +57,15 @@ local function create_org_citation()
   bibtex.create_citation_picker(entries, insert_citation, 'Orgmode Citations')
 end
 
-vim.keymap.set({'n', 'i'}, '<leader>ac', create_org_citation, {
-  noremap = true,
-  silent = true,
-  desc = 'Insert Orgmode citation from BibTeX'
+-- Set up keymaps only for org files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'org',
+  callback = function()
+    vim.keymap.set({'n', 'i'}, '<leader>ac', create_org_citation, {
+      noremap = true,
+      silent = true,
+      buffer = true,
+      desc = 'Insert Orgmode citation from BibTeX'
+    })
+  end
 })

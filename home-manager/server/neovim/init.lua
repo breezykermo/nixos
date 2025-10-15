@@ -28,6 +28,7 @@ require('plugins.lsp')
 -- Load orgmode extensions
 require('orgmode.citations')
 require('orgmode.links')
+require('orgmode.syntax')
 
 -- Load typst extensions
 require('typst.syntax')
