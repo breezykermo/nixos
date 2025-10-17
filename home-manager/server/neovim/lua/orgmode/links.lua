@@ -42,11 +42,18 @@ local function create_org_link()
   end, 'Orgmode Link')
 end
 
+-- Wrap URL under cursor or selection in Orgmode brackets
+local function wrap_url_in_brackets()
+  text_utils.wrap_text('[[', ']]')
+end
+
 -- Set up keymaps only for org files
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'org',
   callback = function()
     vim.keymap.set('v', '<leader>al', create_org_link, { noremap = true, silent = true, buffer = true, desc = 'Create Orgmode link from selection' })
     vim.keymap.set('n', '<leader>al', create_org_link, { noremap = true, silent = true, buffer = true, desc = 'Create Orgmode link from word under cursor' })
+    vim.keymap.set('v', '<leader>lf', wrap_url_in_brackets, { noremap = true, silent = true, buffer = true, desc = 'Wrap selection in Orgmode brackets' })
+    vim.keymap.set('n', '<leader>lf', wrap_url_in_brackets, { noremap = true, silent = true, buffer = true, desc = 'Wrap URL under cursor in Orgmode brackets' })
   end
 })

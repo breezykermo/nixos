@@ -42,17 +42,20 @@ function M.get_text_range()
     local start_pos = vim.fn.getpos('v')
     local end_pos = vim.fn.getpos('.')
 
-    -- Convert to 0-indexed for nvim API
+    -- Convert to 0-indexed inclusive for both (before normalizing)
     start_row = start_pos[2] - 1
     start_col = start_pos[3] - 1
     end_row = end_pos[2] - 1
-    end_col = end_pos[3]
+    end_col = end_pos[3] - 1
 
     -- Normalize positions (ensure start is before end)
     if start_row > end_row or (start_row == end_row and start_col > end_col) then
       start_row, end_row = end_row, start_row
       start_col, end_col = end_col, start_col
     end
+
+    -- Convert end to exclusive (after normalizing)
+    end_col = end_col + 1
   end
 
   -- Ensure we have valid positions
