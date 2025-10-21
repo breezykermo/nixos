@@ -122,6 +122,7 @@ in
 		    keyword = "co";
 		    url = "https://calendar.proton.me/u/0/";
 		  }
+
 		  # Hotmail 
 		  {
 		    name = "[m]ail [h]otmail";
@@ -129,6 +130,7 @@ in
 		    keyword = "mh";
 		    url = "https://outlook.live.com/mail/0/";
 		  }
+
       # Inferstudo
       {
         name = "[m]ail [i]nferstudo";
@@ -136,11 +138,39 @@ in
         keyword = "mi";
         url = "https://mail.zoho.eu/zm/#mail/folder/inbox";
       }
+
+      # Unibo
+            # https://outlook.office.com/mail/0/?culture=en-us&country=us
+      {
+        name = "[m]ail [u]nibo";
+        tags = [];
+        keyword = "mu";
+        url = "https://outlook.office.com/mail/0/?culture=en-us&country=us";
+      }
+      {
+        name = "[c]alendar [u]nibo";
+        tags = [];
+        keyword = "cu";
+        url = "https://outlook.office.com/calendar/0/view/month?culture=en-us&country=us";
+      }
+
 		  # LLMs
 		  {
-		    name = "chat[gp]t";
+		    name = "[ai] [c]laude";
 		    tags = [];
-		    keyword = "gp";
+		    keyword = "aic";
+		    url = "https://claude.ai/new";
+		  }
+		  {
+		    name = "[ai] [k]agi";
+		    tags = [];
+		    keyword = "aik";
+		    url = "https://kagi.com/assistant";
+		  }
+		  {
+		    name = "[ai] chat [g]pt";
+		    tags = [];
+		    keyword = "aig";
 		    url = "https://chatgpt.com/";
 		  }
 
