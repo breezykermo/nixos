@@ -6,6 +6,7 @@
     ./tmux
     ./neovim
     ./irc
+    ./llms
     ./_inprogress
   ];
 }

@@ -20,6 +20,11 @@
     };
     # For building Rust packages
     naersk.url = "github:nix-community/naersk";
+    # Beads - AI coding agent issue tracker
+    beads = {
+      url = "github:steveyegge/beads";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
