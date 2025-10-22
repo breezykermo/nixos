@@ -1,4 +1,8 @@
-{pkgs, inputs, system, ...}: {
+{pkgs, inputs, system, naersk, ...}:
+let
+  naersk' = pkgs.callPackage naersk {};
+in
+{
   services = {
     keybase.enable = true;
     kbfs.enable = true;
@@ -34,6 +38,19 @@
     inputs.typst.packages.${system}.default  # for better typesetting (from upstream main)
     delta       # syntax-highlighting in git and jj diffs
 
+    # Terminal-based diff viewer with interactive file tree navigation
+    (naersk'.buildPackage rec {
+      pname = "ftdv";
+      version = "0.1.2";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "wtnqk";
+        repo = pname;
+        rev = "v${version}";
+        sha256 = "sha256-J1lWrfZeH/V1hckLGWDoeU6aKFoLimddzaTKMQ8sDs8=";
+      };
+    })
+
     gh          # Github CLI
 
     # NOTE: in general, I don't want this. but due to tectonic sometimes not
@@ -54,6 +71,7 @@
     b = "bartib -f ~/.bartib";
     c = "clear";
     pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
+    python = "nvim-python3"; # so we don't have multiple Python installations for scripts
   };
 
   home.sessionVariables = {
@@ -174,4 +192,32 @@
       };
     };
   };
+
+  # ftdv configuration
+  xdg.configFile."ftdv/config.yaml".text = ''
+    git:
+      paging:
+        pager: "delta --dark --paging=never --line-numbers --side-by-side -w={{diffAreaWidth}}"
+        colorArg: "always"
+    theme:
+      name: dark
+      colors:
+        tree_line: dark_gray
+        tree_selected_bg: '#323246'
+        tree_selected_fg: yellow
+        tree_directory: blue
+        tree_file: white
+        status_added: green
+        status_removed: red
+        status_modified: yellow
+        border: dark_gray
+        border_focused: cyan
+        title: cyan
+        status_bar_bg: dark_gray
+        status_bar_fg: white
+        text_primary: white
+        text_secondary: gray
+        text_dim: dark_gray
+        background: black
+  '';
 }

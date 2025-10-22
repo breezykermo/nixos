@@ -173,6 +173,13 @@ in
 		    keyword = "aig";
 		    url = "https://chatgpt.com/";
 		  }
+		  {
+		    name = "[ai] co[p]ilot";
+		    tags = [];
+		    keyword = "aip";
+		    url = "https://m365.cloud.microsoft/chat/?auth=2&home=1&from=NoAccountOnStart";
+		  }
+
 
 		  # Other 
 		  {

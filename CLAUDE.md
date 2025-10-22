@@ -18,6 +18,8 @@ All commands are managed via the `Justfile`:
 - `just clean` - Remove generations older than 1 day
 - `just gc` - Garbage collect unused nix store entries
 
+**IMPORTANT**: The user will ALWAYS deploy manually. Do NOT attempt to run `just deploy` or any deployment commands. Only make the necessary configuration file changes and let the user handle deployment.
+
 ## Architecture
 
 ### Flake Structure
