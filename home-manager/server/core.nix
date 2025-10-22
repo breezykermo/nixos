@@ -1,8 +1,4 @@
-{pkgs, inputs, system, naersk, ...}:
-let
-  naersk' = pkgs.callPackage naersk {};
-in
-{
+{pkgs, inputs, system, ...}: {
   services = {
     keybase.enable = true;
     kbfs.enable = true;
@@ -26,30 +22,14 @@ in
     jq          # A lightweight and flexible command-line JSON processor
     vivid       # for colorschemes
     just        # better makefiles
-    lazygit     # git tui client
     lazydocker  # docker tui client
     pandoc      # document processor
     tectonic    # LaTeX compilation
     bartib      # time tracking
-    git-crypt   # encrypted git repos
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video
 
     inputs.typst.packages.${system}.default  # for better typesetting (from upstream main)
-    delta       # syntax-highlighting in git and jj diffs
-
-    # Terminal-based diff viewer with interactive file tree navigation
-    (naersk'.buildPackage rec {
-      pname = "ftdv";
-      version = "0.1.2";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "wtnqk";
-        repo = pname;
-        rev = "v${version}";
-        sha256 = "sha256-J1lWrfZeH/V1hckLGWDoeU6aKFoLimddzaTKMQ8sDs8=";
-      };
-    })
 
     gh          # Github CLI
 
@@ -65,7 +45,6 @@ in
     ip = "ip -color=auto";
     l = "exa --long --all --group --git --group-directories-first";
     e = "$EDITOR";
-    gt = "lazygit";
     dt = "lazydocker";
     t = "tmux";
     b = "bartib -f ~/.bartib";
@@ -134,39 +113,6 @@ in
     # file directory navigation, option 2
     lf.enable = true;
 
-    jujutsu = {
-      enable = true;
-      settings = {
-        user = {
-          name = "Lachlan Kermode";
-          email = "lachie@ohrg.org";
-        };
-        ui.default-command = "log";
-        ui.pager = "delta";
-        ui.diff-formatter = ":git";
-      };
-    };
-
-    git = {
-      enable = true;
-      userName = "Lachlan Kermode";
-      userEmail = "lachiekermode@gmail.com";
-
-      lfs.enable = true;
-      extraConfig = {
-        init.defaultBranch = "main";
-        push.autoSetupRemote = true;
-        pull.rebase = true;
-        core.editor = "$EDITOR";
-
-        core.pager = "delta";
-        interactive.diffFilter = "delta --color-only";
-        delta.navigate = true;
-        delta.dark = true;
-        merge.conflictStyle = "zdiff3";
-      };
-    };
-    
     # A command-line fuzzy finder
     fzf = {
       enable = true;
@@ -192,32 +138,4 @@ in
       };
     };
   };
-
-  # ftdv configuration
-  xdg.configFile."ftdv/config.yaml".text = ''
-    git:
-      paging:
-        pager: "delta --dark --paging=never --line-numbers --side-by-side -w={{diffAreaWidth}}"
-        colorArg: "always"
-    theme:
-      name: dark
-      colors:
-        tree_line: dark_gray
-        tree_selected_bg: '#323246'
-        tree_selected_fg: yellow
-        tree_directory: blue
-        tree_file: white
-        status_added: green
-        status_removed: red
-        status_modified: yellow
-        border: dark_gray
-        border_focused: cyan
-        title: cyan
-        status_bar_bg: dark_gray
-        status_bar_fg: white
-        text_primary: white
-        text_secondary: gray
-        text_dim: dark_gray
-        background: black
-  '';
 }

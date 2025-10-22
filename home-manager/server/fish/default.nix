@@ -25,17 +25,6 @@
     plugins = [
       { name = "bass"; src = pkgs.fishPlugins.bass.src; }
     ];
-
-    functions = {
-      jjdone = {
-        description = "Create new jj change, set main bookmark to parent, and push to git";
-        body = ''
-          jj new
-          jj b set main -r '@-'
-          jj git push
-        '';
-      };
-    };
   };
 }
 
