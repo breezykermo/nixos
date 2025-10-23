@@ -6,6 +6,7 @@
     ./fish
     ./tmux
     ./neovim
+    ./email
     ./irc
     ./llms
     ./_inprogress

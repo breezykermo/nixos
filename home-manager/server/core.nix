@@ -63,15 +63,6 @@
   };
 
   programs = {
-    # email in the terminal
-    # NOTE: app passwords are per device, generate new ones if using this config
-    # TODO: [compose] format-flowed=true
-    # as currently this is just in my local config.
-    aerc = {
-      enable = true;
-      extraConfig = { ui = { sort = "-r date"; }; };
-    };
-
     # cd but better
     zoxide.enable = true;
 
