@@ -32,6 +32,7 @@
     inputs.typst.packages.${system}.default  # for better typesetting (from upstream main)
 
     gh          # Github CLI
+    uv          # Python package installer and resolver
 
     # NOTE: in general, I don't want this. but due to tectonic sometimes not
     # being able to do what I need, it is nice to have.
