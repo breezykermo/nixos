@@ -25,6 +25,11 @@
       url = "github:steveyegge/beads";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Terminal-based diff viewer with file tree navigation
+    ftdv = {
+      url = "github:breezykermo/ftdv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{

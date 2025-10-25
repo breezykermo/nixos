@@ -1,7 +1,4 @@
-{pkgs, inputs, system, naersk, ...}:
-let
-  naersk' = pkgs.callPackage naersk {};
-in
+{pkgs, inputs, system, ...}:
 {
   home.packages = with pkgs; [
     delta       # syntax-highlighting in git and jj diffs
@@ -9,17 +6,7 @@ in
     git-crypt   # encrypted git repos
 
     # Terminal-based diff viewer with interactive file tree navigation
-    (naersk'.buildPackage rec {
-      pname = "ftdv";
-      version = "0.1.2";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "breezykermo";
-        repo = pname;
-        rev = "v${version}";
-        sha256 = "sha256-J1lWrfZeH/V1hckLGWDoeU6aKFoLimddzaTKMQ8sDs8=";
-      };
-    })
+    inputs.ftdv.packages.${system}.default
   ];
 
   home.shellAliases = {

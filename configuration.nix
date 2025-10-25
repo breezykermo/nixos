@@ -18,17 +18,6 @@ in
   # Enable flakes
   nix.settings.experimental-features = ["nix-command" "flakes" ];
 
-  # NOTE: temporary workaround to solve maestral Python 3.13 error
-  nixpkgs.overlays = [
-    (self: super: {
-      maestral = super.maestral.overrideAttrs (old: {
-        # doCheck = false;
-        # Optional: Add Python version pinning for extra safety
-        python = pkgs.python312;
-      });
-    })
-  ];
-
   environment.systemPackages = with pkgs; [
     vim 
     git
@@ -38,7 +27,8 @@ in
     corefonts
     nerd-fonts.fira-code
     docker-compose
-    maestral
+    # TODO: this doesn't build due to Python 3.13 error
+    # maestral
     pcmanfm
     v4l-utils
   ];
