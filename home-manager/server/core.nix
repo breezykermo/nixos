@@ -50,7 +50,7 @@
     b = "bartib -f ~/.bartib";
     c = "clear";
     pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
-    python = "nvim-python3"; # so we don't have multiple Python installations for scripts
+    python = "nvim-python3"; 
   };
 
   home.sessionVariables = {

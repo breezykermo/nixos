@@ -27,8 +27,7 @@ in
     corefonts
     nerd-fonts.fira-code
     docker-compose
-    # TODO: this doesn't build due to Python 3.13 error
-    # maestral
+    maestral
     pcmanfm
     v4l-utils
   ];
@@ -61,6 +60,11 @@ in
       unstable = import unstableTarball {
         config = config.nixpkgs.config;
       };
+
+      # Skip tests so that we don't get the 3.13 python issue 
+      maestral = pkgs.maestral.overridePythonAttrs (oldAttrs: {
+        doCheck = false;
+      });
     };
   };
 
