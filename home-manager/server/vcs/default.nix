@@ -14,7 +14,7 @@ in
       version = "0.1.2";
 
       src = pkgs.fetchFromGitHub {
-        owner = "wtnqk";
+        owner = "breezykermo";
         repo = pname;
         rev = "v${version}";
         sha256 = "sha256-J1lWrfZeH/V1hckLGWDoeU6aKFoLimddzaTKMQ8sDs8=";

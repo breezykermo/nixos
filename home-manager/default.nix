@@ -1,4 +1,4 @@
-{ userName, ... }:
+{ userName, pkgs, ... }:
 
 {
 	# secrets = builtins.fromJSON (builtins.readFile "${self}/secrets/secrets.json");

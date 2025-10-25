@@ -56,11 +56,6 @@
   home.sessionVariables = {
     LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate molokai')";
 
-    # Claude code
-    DISABLE_TELEMETRY = 1;
-    DISABLE_ERROR_REPORTING = 1;
-    DISABLE_NON_ESSENTIAL_MODEL_CALLS = 1;
-
     # PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
     # pnpm config set global-bin-dir ~/.local/bin
     # pnpm config set store-dir ~/.local/share/pnpm/store
