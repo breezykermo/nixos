@@ -60,7 +60,7 @@
   xdg.configFile."ftdv/config.yaml".text = ''
     git:
       paging:
-        pager: "delta --dark --paging=never --line-numbers --side-by-side -w={{diffAreaWidth}}"
+        pager: "delta --dark --paging=never --line-numbers --side-by-side -w=${"{{"}diffAreaWidth}}"
         colorArg: "always"
     theme:
       name: dark
