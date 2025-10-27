@@ -85,16 +85,7 @@ require('lazy').setup({
       -- https://github.com/nvim-orgmode/orgmode/blob/master/DOCS.md
       require('orgmode').setup({
         org_agenda_files = {
-          dropbox_directory .. '/lyt/org/**/*',
-          dropbox_directory .. '/lyt/course.*',
-          dropbox_directory .. '/lyt/research.*',
-          dropbox_directory .. '/lyt/teach.*',
-          dropbox_directory .. '/lyt/index.*',
-          dropbox_directory .. '/lyt/wiki.*',
-          dropbox_directory .. '/lyt/freelance.*',
-          dropbox_directory .. '/lyt/study.*',
-          dropbox_directory .. '/lyt/jobs.*',
-          dropbox_directory .. '/lyt/liminal.*',
+          dropbox_directory .. '/lyt/*',
         },
         org_deadline_warning_days = 4,
         org_default_notes_file = dropbox_directory .. '/lyt/org/inbox.org',
