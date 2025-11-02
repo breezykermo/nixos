@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Note**: This project uses [bd (beads)](https://github.com/steveyegge/beads) for issue tracking. Use `bd` commands instead of markdown TODOs. See AGENTS.md for workflow details.
+
 ## Overview
 
 This is a personal NixOS configuration using flakes and home-manager. The configuration is designed for the user "lox" on a Framework laptop (hostname: "loxnix"), with support for both desktop (Wayland/Hyprland) and server environments.
