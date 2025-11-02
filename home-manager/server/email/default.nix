@@ -98,7 +98,7 @@ in {
   home.packages = with pkgs; [
     w3m           # text-based web browser for rendering HTML emails with color support
     chafa         # terminal graphics, for displaying images inline
-    poppler_utils # provides pdftotext for PDF conversion
+    poppler-utils # provides pdftotext for PDF conversion
     gnupg         # GPG for encryption (required by pass)
     pinentry-curses  # Terminal-based passphrase entry for GPG
     pass          # password manager for secure credential storage
