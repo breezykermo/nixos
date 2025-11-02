@@ -296,15 +296,13 @@ in {
         "compose::review" = {
           "y" = ":send<Enter>";
           "n" = ":abort<Enter>";
-          "s" = ":sign<Enter>";
-          "x" = ":encrypt<Enter>";
           "v" = ":preview<Enter>";
-          "p" = ":postpone<Enter>";
-          "q" = ":choose -o d discard abort -o p postpone postpone<Enter>";
+          "p" = ":postpone<Enter>";  # Save as draft
+          "q" = ":abort<Enter>";
           "e" = ":edit<Enter>";
           "a" = ":attach<space>";
           "d" = ":detach<space>";
-          "h" = ":multipart text/html<Enter>";  # Convert to HTML (multipart: Typst plain + HTML)
+          "h" = ":multipart text/html<Enter>";  # Convert from Typst
         };
         terminal = {
           "$noinherit" = "true";
