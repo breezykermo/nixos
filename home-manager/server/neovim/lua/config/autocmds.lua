@@ -30,14 +30,17 @@ vim.api.nvim_create_autocmd(
 	}
 )
 
--- email
--- see https://brianbuccola.com/line-breaks-in-mutt-and-vim/
-vim.api.nvim_create_augroup("mail_trailing_whitespace", { clear = true })
+-- email - disable all auto-wrapping for aerc
+-- Let email clients handle text wrapping themselves
+vim.api.nvim_create_augroup("mail_no_wrap", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "mail_trailing_whitespace",
+  group = "mail_no_wrap",
   pattern = "mail",
   callback = function()
-    vim.opt_local.formatoptions:append('w')
+    vim.opt_local.textwidth = 0
+    vim.opt_local.wrapmargin = 0
+    vim.opt_local.wrap = false
+    vim.opt_local.formatoptions = "qj"  -- Only keep 'q' (gq formatting) and 'j' (remove comment leader)
   end
 })
 
