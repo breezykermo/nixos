@@ -4,7 +4,10 @@ let
   typst-editor = pkgs.writeShellScriptBin "typst-editor" (builtins.readFile ./typst-editor.sh);
 
   # Create typst2html wrapper script for multipart conversion
-  typst2html = pkgs.writeShellScriptBin "typst2html" (builtins.readFile ./typst2html.sh);
+  typst2html = pkgs.writeShellScriptBin "typst2html" ''
+    export PATH="${pkgs.typst}/bin:$PATH"
+    ${builtins.readFile ./typst2html.sh}
+  '';
 in {
   # ============================================================================
   # Email Configuration for Aerc
@@ -142,8 +145,9 @@ in {
         };
         filters = {
           # Render HTML to readable text with color support and numbered links
-          # Network-isolated with unshare for security (prevents tracking pixels)
-          "text/html" = "unshare -n w3m -I UTF-8 -T text/html -cols 100 -dump -o display_link_number=1 | colorize";
+          # Uses aerc's built-in html filter (network-safe by default)
+          # Passes -o display_link_number=1 to w3m for visible link numbers
+          "text/html" = "html -o display_link_number=1 | colorize";
 
           # Plain text with wrapping and colorization
           "text/plain" = "wrap -w 90 | colorize";
