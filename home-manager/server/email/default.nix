@@ -2,6 +2,9 @@
 let
   # Create typst-editor script and add to PATH
   typst-editor = pkgs.writeShellScriptBin "typst-editor" (builtins.readFile ./typst-editor.sh);
+
+  # Create typst2html wrapper script for multipart conversion
+  typst2html = pkgs.writeShellScriptBin "typst2html" (builtins.readFile ./typst2html.sh);
 in {
   # ============================================================================
   # Email Configuration for Aerc
@@ -89,7 +92,7 @@ in {
   #
   # TECHNICAL DETAILS:
   # - typst-editor.sh: Wrapper that copies temp file to .typ for syntax highlighting
-  # - Multipart converter uses pandoc to convert Typst → HTML5
+  # - Multipart converter uses Typst → HTML5
   # - When sending with HTML, message contains both Typst (as text/plain) and HTML
   # - Recipients with HTML clients see formatted version, plain text clients see Typst
   #
@@ -103,6 +106,7 @@ in {
     pinentry-curses  # Terminal-based passphrase entry for GPG
     pass          # password manager for secure credential storage
     typst-editor  # Wrapper script for editing aerc compose files with Typst syntax highlighting
+    typst2html    # Wrapper script for converting Typst to HTML via stdin/stdout
   ];
 
   programs = {
@@ -130,10 +134,10 @@ in {
         };
         compose = {
           format-flowed = true;  # Enable RFC 3676 format=flowed for proper text reflow
-          editor = "typst-editor";  # Wrapper script that enables Typst syntax highlighting
+          editor = "typst-editor";
         };
         "multipart-converters" = {
-          "text/html" = "${pkgs.pandoc}/bin/pandoc -f typst -t html5 --standalone";
+          "text/html" = "${typst2html}/bin/typst2html";
         };
         filters = {
           # Render HTML to readable text with color support and numbered links
@@ -434,41 +438,6 @@ in {
   xdg.configFile."aerc/gmail-foldermap".text = ''
     * = [Gmail]/*
   '';
-
-  # Typst to HTML conversion script for composing formatted emails
-  xdg.configFile."aerc/typst2html.sh" = {
-    executable = true;
-    text = ''
-      #!/usr/bin/env bash
-      # Convert Typst document to HTML email
-      # Usage: typst2html.sh input.typ
-
-      set -euo pipefail
-
-      INPUT="$1"
-
-      # Convert Typst directly to HTML using pandoc
-      ${pkgs.pandoc}/bin/pandoc "$INPUT" -f typst -t html5 -s -o -
-    '';
-  };
-
-  # Typst to plain text conversion script
-  xdg.configFile."aerc/typst2txt.sh" = {
-    executable = true;
-    text = ''
-      #!/usr/bin/env bash
-      # Convert Typst document to plain text email
-      # Usage: typst2txt.sh input.typ
-
-      set -euo pipefail
-
-      INPUT="$1"
-
-      # Convert Typst to plain text using pandoc
-      ${pkgs.pandoc}/bin/pandoc "$INPUT" -f typst -t plain -o -
-    '';
-  };
-
 
   # GPG Agent configuration for pinentry
   services.gpg-agent = {
