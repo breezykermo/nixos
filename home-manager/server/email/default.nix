@@ -100,7 +100,8 @@ in {
 
   home.packages = with pkgs; [
     w3m           # text-based web browser for rendering HTML emails with color support
-    chafa         # terminal graphics, for displaying images inline
+    libsixel      # provides img2sixel for high-quality sixel image rendering
+    urlscan       # extract and open URLs from emails
     poppler-utils # provides pdftotext for PDF conversion
     gnupg         # GPG for encryption (required by pass)
     pinentry-curses  # Terminal-based passphrase entry for GPG
@@ -141,13 +142,14 @@ in {
         };
         filters = {
           # Render HTML to readable text with color support and numbered links
-          "text/html" = "w3m -I UTF-8 -T text/html -cols 100 -dump -num | colorize";
+          # Network-isolated with unshare for security (prevents tracking pixels)
+          "text/html" = "unshare -n w3m -I UTF-8 -T text/html -cols 100 -dump -o display_link_number=1 | colorize";
 
           # Plain text with wrapping and colorization
           "text/plain" = "wrap -w 90 | colorize";
 
-          # Show images inline as ANSI
-          "image/*" = "chafa -";
+          # Show images inline using sixel protocol (high quality)
+          "image/*" = "img2sixel -w $(tput cols)";
 
           # Convert PDFs to text
           "application/pdf" = "pdftotext - -";
@@ -260,6 +262,10 @@ in {
           "<C-Right>" = ":next<Enter>";
           "K" = ":prev<Enter>";
           "<C-Left>" = ":prev<Enter>";
+          # Extract and open URLs with urlscan
+          "u" = ":pipe urlscan<Enter>";
+          # Open email in interactive w3m for rich HTML rendering
+          "W" = ":pipe ! w3m -I UTF-8 -T text/html<Enter>";
         };
         "view::passthrough" = {
           "$noinherit" = "true";
