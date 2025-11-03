@@ -126,6 +126,7 @@ in {
       extraConfig = {
         general = {
           unsafe-accounts-conf = true;  # Required for passwordCommand in accounts.email
+          default-save-path = "~/Downloads";
         };
         ui = {
           sort = "-r date";
