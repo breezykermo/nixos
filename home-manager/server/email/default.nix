@@ -140,6 +140,9 @@ in {
           format-flowed = true;  # Enable RFC 3676 format=flowed for proper text reflow
           editor = "typst-editor";
         };
+        templates = {
+          quoted-reply = "quoted_reply_typst";
+        };
         "multipart-converters" = {
           "text/html" = "${typst2html}/bin/typst2html";
         };
@@ -220,6 +223,8 @@ in {
           "rq" = ":reply -aq<Enter>";
           "Rr" = ":reply<Enter>";
           "Rq" = ":reply -q<Enter>";
+          "rp" = ":reply -aq -T quoted_reply<Enter>";
+          "Rp" = ":reply -q -T quoted_reply<Enter>";
           "c" = ":cf<space>";
           "$" = ":term<space>";
           "!" = ":term<space>";
@@ -257,6 +262,8 @@ in {
           "rq" = ":reply -aq<Enter>";
           "Rr" = ":reply<Enter>";
           "Rq" = ":reply -q<Enter>";
+          "rp" = ":reply -aq -T quoted_reply<Enter>";
+          "Rp" = ":reply -q -T quoted_reply<Enter>";
           "H" = ":toggle-headers<Enter>";
           "<C-k>" = ":prev-part<Enter>";
           "<C-Up>" = ":prev-part<Enter>";
@@ -448,6 +455,9 @@ in {
   xdg.configFile."aerc/gmail-foldermap".text = ''
     * = [Gmail]/*
   '';
+
+  # Custom Typst-formatted reply template
+  xdg.configFile."aerc/templates/quoted_reply_typst".text = builtins.readFile ./quoted_reply_typst.template;
 
   # GPG Agent configuration for pinentry
   services.gpg-agent = {

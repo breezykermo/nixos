@@ -1,0 +1,14 @@
+X-Mailer: aerc {{version}}
+
+On {{dateFormat (.OriginalDate | toLocal) "Mon Jan 2, 2006 at 3:04 PM MST"}}, {{.OriginalFrom | names | join ", "}} \<{{- .OriginalFrom | emails | join ", " | replace `@` `\@` -}}\> wrote:
+#quote(block: true)[
+{{ if eq .OriginalMIMEType "text/html" -}}
+{{ exec `html` .OriginalText | trimSignature | replace `@` `\@` | replace `<` `\<` | replace `>` `\>` | replace `#` `\#` }}
+{{- else -}}
+{{ trimSignature .OriginalText | replace `@` `\@` | replace `<` `\<` | replace `>` `\>` | replace `#` `\#` }}
+{{- end -}}
+]
+{{- with .Signature }}
+
+{{.}}
+{{- end }}
