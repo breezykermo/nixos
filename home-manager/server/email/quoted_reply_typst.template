@@ -5,7 +5,7 @@ On {{dateFormat (.OriginalDate | toLocal) "Mon Jan 2, 2006 at 3:04 PM MST"}}, {{
 {{ if eq .OriginalMIMEType "text/html" -}}
 {{ exec `html` .OriginalText | trimSignature | replace `@` `\@` | replace `<` `\<` | replace `>` `\>` | replace `#` `\#` }}
 {{- else -}}
-{{ trimSignature .OriginalText | replace `@` `\@` | replace `<` `\<` | replace `>` `\>` | replace `#` `\#` }}
+{{ trimSignature .OriginalText | replace `@` `\@` | replace `<` `\<` | replace `>` `\>` | replace `#` `\#` | replace "\n" "\\\n" }}
 {{- end -}}
 ]
 {{- with .Signature }}
