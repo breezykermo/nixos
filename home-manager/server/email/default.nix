@@ -140,6 +140,7 @@ in {
         compose = {
           format-flowed = true;  # Enable RFC 3676 format=flowed for proper text reflow
           editor = "typst-editor";
+          reply-to-self = false;  # Exclude own email address from To/Cc when replying
         };
         templates = {
           quoted-reply = "quoted_reply_typst";
