@@ -49,7 +49,7 @@
     t = "tmux";
     b = "bartib -f ~/.bartib";
     c = "clear";
-    m = "maestral",
+    m = "maestral";
     pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
     python = "nvim-python3"; 
   };
