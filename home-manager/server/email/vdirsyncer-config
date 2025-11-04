@@ -1,0 +1,36 @@
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+# Google Contacts for brown account
+[pair brown_contacts]
+a = "brown_contacts_local"
+b = "brown_contacts_remote"
+collections = ["from a", "from b"]
+
+[storage brown_contacts_local]
+type = "filesystem"
+path = "~/.contacts/brown"
+fileext = ".vcf"
+
+[storage brown_contacts_remote]
+type = "carddav"
+url = "https://www.googleapis.com/carddav/v1/principals/lachlan_kermode@brown.edu/lists/default/"
+username = "lachlan_kermode@brown.edu"
+password.fetch = ["command", "pass", "show", "email/brown"]
+
+# Google Contacts for gmail account
+[pair gmail_contacts]
+a = "gmail_contacts_local"
+b = "gmail_contacts_remote"
+collections = ["from a", "from b"]
+
+[storage gmail_contacts_local]
+type = "filesystem"
+path = "~/.contacts/gmail"
+fileext = ".vcf"
+
+[storage gmail_contacts_remote]
+type = "carddav"
+url = "https://www.googleapis.com/carddav/v1/principals/lachiekermode@gmail.com/lists/default/"
+username = "lachiekermode@gmail.com"
+password.fetch = ["command", "pass", "show", "email/gmail"]

@@ -111,6 +111,8 @@ in {
     pass          # password manager for secure credential storage
     typst-editor  # Wrapper script for editing aerc compose files with Typst syntax highlighting
     typst2html    # Wrapper script for converting Typst to HTML via stdin/stdout
+    khard         # CardDAV contact manager for email autocomplete
+    vdirsyncer    # CardDAV synchronization tool
   ];
 
   programs = {
@@ -141,6 +143,7 @@ in {
           format-flowed = true;  # Enable RFC 3676 format=flowed for proper text reflow
           editor = "typst-editor";
           reply-to-self = false;  # Exclude own email address from To/Cc when replying
+          address-book-cmd = "khard email --remove-first-line --parsable '%s'";
         };
         templates = {
           quoted-reply = "quoted_reply_typst";
@@ -461,9 +464,39 @@ in {
   # Custom Typst-formatted reply template
   xdg.configFile."aerc/templates/quoted_reply_typst".text = builtins.readFile ./quoted_reply_typst.template;
 
+  # vdirsyncer configuration for CardDAV contact sync
+  xdg.configFile."vdirsyncer/config".source = ./vdirsyncer-config;
+
+  # khard configuration for contact management and aerc autocomplete
+  xdg.configFile."khard/khard.conf".source = ./khard-config;
+
   # GPG Agent configuration for pinentry
   services.gpg-agent = {
     enable = true;
     pinentry.package = pkgs.pinentry-curses;
+  };
+
+  # vdirsyncer systemd service and timer for automatic contact sync
+  systemd.user.services.vdirsyncer = {
+    Unit = {
+      Description = "Synchronize CardDAV contacts for aerc";
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.vdirsyncer}/bin/vdirsyncer sync";
+    };
+  };
+
+  systemd.user.timers.vdirsyncer = {
+    Unit = {
+      Description = "Synchronize CardDAV contacts hourly";
+    };
+    Timer = {
+      OnCalendar = "hourly";
+      Persistent = true;
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
   };
 }
