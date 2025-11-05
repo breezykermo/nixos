@@ -16,7 +16,7 @@
     tree
     gawk        # GNU awk, a pattern scanning and processing language
     ripgrep     # recursively searches directories for a regex pattern
-    sad         # CLI search and replace, with diff preview 
+    sad         # CLI search and replace, with diff preview
     ripgrep     # `rg` is a better grep
     fd          # `fd` is a better find
     jq          # A lightweight and flexible command-line JSON processor
@@ -29,7 +29,16 @@
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video
 
-    inputs.typst.packages.${system}.default  # for better typesetting (from upstream main)
+    # Wrap typst with required libraries (OpenSSL 3)
+    (pkgs.symlinkJoin {
+      name = "typst-wrapped";
+      paths = [ inputs.typst.packages.${system}.default ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/typst \
+          --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [ pkgs.openssl ]}"
+      '';
+    })
 
     gh          # Github CLI
     uv          # Python package installer and resolver
