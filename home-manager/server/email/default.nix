@@ -473,7 +473,12 @@ in {
   # GPG Agent configuration for pinentry
   services.gpg-agent = {
     enable = true;
-    pinentry.package = pkgs.pinentry-curses;
+    pinentry.package = pkgs.pinentry-tty;
+    # Cache passphrases for the duration of aerc sessions
+    defaultCacheTtl = 3600;      # 1 hour (default: 600s)
+    maxCacheTtl = 14400;          # 4 hours (default: 7200s)
+    defaultCacheTtlSsh = 3600;
+    maxCacheTtlSsh = 14400;
   };
 
   # vdirsyncer systemd service and timer for automatic contact sync
