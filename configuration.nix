@@ -43,6 +43,7 @@ in
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
     inter-typeface
     corefonts
   ];
@@ -50,7 +51,7 @@ in
     defaultFonts = {
       serif = [ "Inter Variable" ];
       sansSerif = [ "Inter Variable" ];
-      monospace = [ "FiraCode Nerd Font Mono" ];
+      monospace = [ "JetBrainsMono Nerd Font Mono" ];
     };
   };
 
