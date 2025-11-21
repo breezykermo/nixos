@@ -8,7 +8,7 @@ window-padding-y = 0
 cursor-style = underline
 cursor-style-blink = true
 
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = "Berkeley Mono Nerd Font Mono"
 font-size = 12
 
 copy-on-select = true

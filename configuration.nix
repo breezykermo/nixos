@@ -2,6 +2,7 @@
 let
   unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
   inter-typeface = pkgs.callPackage ./fonts/inter.nix { inherit lib; };
+  berkeley-mono-nerd = pkgs.callPackage ./fonts/berkeley-mono-nerd.nix { };
 in
 {
   # nmtui and nmcli
@@ -45,13 +46,14 @@ in
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
     inter-typeface
+    berkeley-mono-nerd
     corefonts
   ];
   fonts.fontconfig = {
     defaultFonts = {
       serif = [ "Inter Variable" ];
       sansSerif = [ "Inter Variable" ];
-      monospace = [ "JetBrainsMono Nerd Font Mono" ];
+      monospace = [ "Berkeley Mono Nerd Font Mono" ];
     };
   };
 
