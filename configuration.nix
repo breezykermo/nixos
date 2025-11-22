@@ -82,7 +82,7 @@ in
   '';
   security.polkit.enable = true;
   # NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4shell
-  environment.shells = with pkgs; [ bashInteractive ];
+  environment.shells = with pkgs; [ bashInteractive fish ];
 
   # XDG enables wayland to communicate with XDG programs.
   # Most critically, it allows browsers to screenshare wayland screens.
