@@ -9,8 +9,14 @@ stdenvNoCC.mkDerivation {
   pname = "berkeley-mono-nerd-font";
   version = "1.4.83";
 
-  # Use absolute path to access fonts outside flake source
-  src = /etc/nixos/fonts/berkeley-mono;
+  # Use builtins.path to include directory with filter for TTF files only
+  src = builtins.path {
+    path = /etc/nixos/fonts/berkeley-mono;
+    name = "berkeley-mono-source";
+    filter = path: type:
+      (type == "directory") ||
+      (lib.hasSuffix ".ttf" path);
+  };
 
   nativeBuildInputs = [
     nerd-font-patcher

@@ -5,7 +5,7 @@
 ############################################################################
 #
 deploy:
-  nixos-rebuild switch --flake . --sudo
+  nixos-rebuild switch --flake . --sudo --impure
 
 debug:
   nixos-rebuild switch --flake . --sudo --show-trace --verbose
