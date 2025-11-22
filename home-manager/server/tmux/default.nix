@@ -19,8 +19,12 @@
     set-option -g status-style bg=default
     set -g window-status-style fg=${theme.foreground},bg=default
     set -g window-status-current-style fg=${theme.colors.purple},bg=default
-    set -g pane-border-style fg=${theme.foreground}
-    set -g pane-active-border-style fg=${theme.activeBorder}
+
+    # Pane borders with thin lines
+    set -g pane-border-style fg=${theme.colors.bg3}
+    set -g pane-active-border-style fg=${theme.colors.yellow}
+    set -g pane-border-lines single
+
     set -g message-style fg=${theme.foreground},bg=default,bold
   '';
 in {

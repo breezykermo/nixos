@@ -4,8 +4,9 @@ let
   theme = import ../../../themes/default.nix { inherit lib; };
 
   # Convert hex colors to Hyprland rgba format
-  activeBorderColor = theme.helpers.toHyprRgba theme.activeBorder "dd";
-  inactiveBorderColor = theme.helpers.toHyprRgba theme.inactiveBorder "aa";
+  # Using yellow for active border to match tmux, subtle gray for inactive
+  activeBorderColor = theme.helpers.toHyprRgba theme.colors.yellow "ff";
+  inactiveBorderColor = theme.helpers.toHyprRgba theme.colors.bg3 "aa";
 in
 {
 	# imports = [

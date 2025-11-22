@@ -88,6 +88,6 @@ in
 
   programs.rofi = {
     enable = true;
-    theme = "${theme.fullName}";
+    theme = "${theme.rofiTheme}";
   };
 }

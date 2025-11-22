@@ -35,6 +35,25 @@ let
 
   selectedPalette = themePalettes.${activeTheme}.${activeVariant};
 
+  # Rofi theme name mapping (Rofi has specific theme file names)
+  rofiThemeName =
+    if activeTheme == "gruvbox" then
+      if activeVariant == "dark-hard" then "gruvbox-dark-hard"
+      else if activeVariant == "dark-medium" then "gruvbox-dark"
+      else if activeVariant == "dark-soft" then "gruvbox-dark-soft"
+      else if activeVariant == "dark-pale" then "gruvbox-dark"
+      else "gruvbox-dark"
+    else if activeTheme == "catppuccin" then
+      "arthur"  # Use a default rofi theme for catppuccin
+    else if activeTheme == "nord" then
+      "nord"  # Nord has its own rofi theme if installed
+    else if activeTheme == "onedark" then
+      "Arc-Dark"  # Fallback to similar theme
+    else if activeTheme == "molokai" then
+      "purple"  # Fallback to similar theme
+    else
+      "gruvbox-dark";  # Safe fallback
+
 in
 {
   inherit themeLib;
@@ -43,6 +62,7 @@ in
   name = activeTheme;
   variant = activeVariant;
   fullName = selectedPalette.name;
+  rofiTheme = rofiThemeName;
 
   # Transparency settings
   transparency = {

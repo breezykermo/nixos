@@ -1,7 +1,9 @@
-# Adapted from 
+# Adapted from
 # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
+  theme = import ../../../themes/default.nix { inherit lib; };
+
   lock-false = {
     Value = false;
     Status = "locked";
@@ -56,9 +58,125 @@ in
         user_pref("full-screen-api.ignore-widgets", true);
         user_pref("media.ffmpeg.vaapi.enabled", true);
         user_pref("media.rdd-vpx.enabled", true);
+
+        // Dark Reader - configure manually with these Gruvbox colors:
+        // Background: ${theme.background}
+        // Text: ${theme.foreground}
+        // Selection Background: ${theme.colors.bg2}
+        // Selection Text: ${theme.colors.yellow}
+        // Link: ${theme.colors.blue}
+        // Visited Link: ${theme.colors.purple}
         '';
 
-        userChrome = builtins.readFile ./userChrome.css;
+
+        userChrome = ''
+          ${builtins.readFile ./userChrome.css}
+
+          /* Gruvbox Theme Colors */
+          :root {
+            --gruvbox-bg0: ${theme.background};
+            --gruvbox-bg1: ${theme.backgroundAlt};
+            --gruvbox-bg2: ${theme.colors.bg2};
+            --gruvbox-bg3: ${theme.colors.bg3};
+            --gruvbox-fg0: ${theme.foreground};
+            --gruvbox-fg1: ${theme.foregroundAlt};
+            --gruvbox-yellow: ${theme.colors.yellow};
+            --gruvbox-orange: ${theme.colors.orange};
+            --gruvbox-red: ${theme.colors.red};
+            --gruvbox-green: ${theme.colors.green};
+            --gruvbox-blue: ${theme.colors.blue};
+            --gruvbox-purple: ${theme.colors.purple};
+            --gruvbox-aqua: ${theme.colors.aqua};
+            --gruvbox-gray: ${theme.colors.gray};
+          }
+
+          /* Apply Gruvbox colors to Firefox UI */
+          :root {
+            --toolbar-bgcolor: var(--gruvbox-bg0) !important;
+            --toolbar-color: var(--gruvbox-fg0) !important;
+            --lwt-accent-color: var(--gruvbox-bg1) !important;
+            --lwt-text-color: var(--gruvbox-fg0) !important;
+            --arrowpanel-background: var(--gruvbox-bg1) !important;
+            --arrowpanel-color: var(--gruvbox-fg0) !important;
+            --arrowpanel-border-color: var(--gruvbox-bg3) !important;
+          }
+
+          /* Tabs - multiple selectors for compatibility */
+          .tabbrowser-tab[selected="true"] .tab-background {
+            background-color: var(--gruvbox-bg2) !important;
+            border-bottom: 3px solid var(--gruvbox-yellow) !important;
+            box-shadow: inset 0 0 0 1px var(--gruvbox-yellow) !important;
+          }
+
+          .tabbrowser-tab:not([selected="true"]) .tab-background {
+            background-color: var(--gruvbox-bg0) !important;
+            border-bottom: 3px solid transparent !important;
+          }
+
+          .tabbrowser-tab:not([selected="true"]):hover .tab-background {
+            background-color: var(--gruvbox-bg1) !important;
+            border-bottom: 3px solid var(--gruvbox-bg3) !important;
+          }
+
+          /* Tab text colors */
+          .tabbrowser-tab .tab-text,
+          .tabbrowser-tab .tab-label {
+            color: var(--gruvbox-fg0) !important;
+          }
+
+          .tabbrowser-tab[selected="true"] .tab-text,
+          .tabbrowser-tab[selected="true"] .tab-label {
+            color: var(--gruvbox-yellow) !important;
+            font-weight: bold !important;
+          }
+
+          /* Tab line (the line at the top/bottom of tabs) */
+          .tabbrowser-tab[selected="true"] .tab-line {
+            background-color: var(--gruvbox-yellow) !important;
+          }
+
+          /* URL bar */
+          #urlbar {
+            background-color: var(--gruvbox-bg1) !important;
+            color: var(--gruvbox-fg0) !important;
+            border-color: var(--gruvbox-bg3) !important;
+          }
+
+          #urlbar:focus-within {
+            border-color: var(--gruvbox-yellow) !important;
+          }
+
+          /* Sidebar */
+          #sidebar-box {
+            background-color: var(--gruvbox-bg0) !important;
+            color: var(--gruvbox-fg0) !important;
+          }
+
+          /* Context menus */
+          menupopup {
+            background-color: var(--gruvbox-bg1) !important;
+            color: var(--gruvbox-fg0) !important;
+            border: 1px solid var(--gruvbox-bg3) !important;
+          }
+
+          menuitem:hover {
+            background-color: var(--gruvbox-bg2) !important;
+            color: var(--gruvbox-yellow) !important;
+          }
+
+          /* Scrollbars */
+          scrollbar {
+            background-color: var(--gruvbox-bg0) !important;
+          }
+
+          thumb {
+            background-color: var(--gruvbox-bg3) !important;
+          }
+
+          thumb:hover {
+            background-color: var(--gruvbox-gray) !important;
+          }
+        '';
         
         bookmarks = {
 		force = true;
