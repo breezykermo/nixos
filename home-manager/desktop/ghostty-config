@@ -1,6 +1,6 @@
-theme = Monokai Remastered 
 shell-integration = fish
 
+background = #1d2021
 background-opacity = 1.0 
 window-theme = ghostty
 window-decoration = false

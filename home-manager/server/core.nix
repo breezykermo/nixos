@@ -91,7 +91,7 @@
   };
 
   home.sessionVariables = {
-    LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate molokai')";
+    LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate gruvbox-dark')";
 
     # PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
     # pnpm config set global-bin-dir ~/.local/bin

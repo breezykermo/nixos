@@ -92,12 +92,6 @@ The Neovim configuration is split between two files:
 
 After initial deployment:
 1. Run `Hyprland` to start the desktop environment
-2. Install Doom Emacs (see `home-manager/server/emacs/default.nix`):
-   ```bash
-   git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
-   ~/.config/emacs/bin/doom install
-   ~/.config/emacs/bin/doom sync
-   ```
 
 ## Important Files
 
