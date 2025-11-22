@@ -1,5 +1,8 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, lib, ... }:
 
+let
+  theme = import ../../themes/default.nix { inherit lib; };
+in
 {
   imports = [
     ./hypr
@@ -60,10 +63,31 @@
     sqlite
   ];
 
-  xdg.configFile."ghostty/config".source = ./ghostty-config;
+  xdg.configFile."ghostty/config".text = ''
+    shell-integration = fish
+
+    background = ${theme.background}
+    background-opacity = ${theme.transparency.opacity}
+    window-theme = ghostty
+    window-decoration = false
+    window-padding-y = 0
+    cursor-style = underline
+    cursor-style-blink = true
+
+    font-family = "Berkeley Mono Nerd Font Mono"
+    font-size = 12
+
+    copy-on-select = true
+
+    command = tmux attach-session -t .
+
+    keybind = ctrl+v=paste_from_clipboard
+    keybind = shift+alt+j=increase_font_size:1
+    keybind = shift+alt+k=decrease_font_size:1
+  '';
 
   programs.rofi = {
     enable = true;
-    theme = "gruvbox-dark";
+    theme = "${theme.fullName}";
   };
 }

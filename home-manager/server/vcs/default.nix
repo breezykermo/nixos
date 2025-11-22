@@ -1,4 +1,7 @@
-{pkgs, inputs, system, ...}:
+{pkgs, inputs, system, lib, ...}:
+let
+  theme = import ../../../themes/default.nix { inherit lib; };
+in
 {
   home.packages = with pkgs; [
     delta       # syntax-highlighting in git and jj diffs
@@ -63,24 +66,24 @@
         pager: "delta --dark --paging=never --line-numbers --side-by-side -w=${"{{"}diffAreaWidth}}"
         colorArg: "always"
     theme:
-      name: dark
+      name: gruvbox-dark
       colors:
-        tree_line: dark_gray
-        tree_selected_bg: '#323246'
-        tree_selected_fg: yellow
-        tree_directory: blue
-        tree_file: white
-        status_added: green
-        status_removed: red
-        status_modified: yellow
-        border: dark_gray
-        border_focused: cyan
-        title: cyan
-        status_bar_bg: dark_gray
-        status_bar_fg: white
-        text_primary: white
-        text_secondary: gray
-        text_dim: dark_gray
-        background: black
+        tree_line: '${theme.colors.gray}'
+        tree_selected_bg: '${theme.colors.bg2}'
+        tree_selected_fg: '${theme.colors.yellow}'
+        tree_directory: '${theme.colors.blue}'
+        tree_file: '${theme.foreground}'
+        status_added: '${theme.colors.green}'
+        status_removed: '${theme.colors.red}'
+        status_modified: '${theme.colors.yellow}'
+        border: '${theme.colors.gray}'
+        border_focused: '${theme.colors.aqua}'
+        title: '${theme.colors.aqua}'
+        status_bar_bg: '${theme.colors.bg1}'
+        status_bar_fg: '${theme.foreground}'
+        text_primary: '${theme.foreground}'
+        text_secondary: '${theme.colors.fg2}'
+        text_dim: '${theme.colors.gray}'
+        background: '${theme.background}'
   '';
 }

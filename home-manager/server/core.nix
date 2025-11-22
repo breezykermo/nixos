@@ -1,4 +1,8 @@
-{pkgs, inputs, system, ...}: {
+{pkgs, inputs, system, lib, ...}:
+let
+  theme = import ../../themes/default.nix { inherit lib; };
+in
+{
   services = {
     keybase.enable = true;
     kbfs.enable = true;
@@ -91,7 +95,7 @@
   };
 
   home.sessionVariables = {
-    LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate gruvbox-dark')";
+    LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate ${theme.fullName}')";
 
     # PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
     # pnpm config set global-bin-dir ~/.local/bin
@@ -119,7 +123,7 @@
     bat = {
       enable = true;
       config = {
-        theme = "gruvbox-dark";
+        theme = "${theme.fullName}";
         pager = "less -FR";
       };
     };
@@ -140,16 +144,16 @@
     fzf = {
       enable = true;
       colors = {
-        "spinner" = "#f5e0dc";
-        "hl" = "#f38ba8";
-        "fg" = "#cdd6f4";
-        "header" = "#f38ba8";
-        "info" = "#cba6f7";
-        "pointer" = "#f5e0dc";
-        "marker" = "#f5e0dc";
-        "fg+" = "#cdd6f4";
-        "prompt" = "#cba6f7";
-        "hl+" = "#f38ba8";
+        "spinner" = theme.colors.fg1;
+        "hl" = theme.colors.red;
+        "fg" = theme.foreground;
+        "header" = theme.colors.red;
+        "info" = theme.colors.purple;
+        "pointer" = theme.colors.fg1;
+        "marker" = theme.colors.fg1;
+        "fg+" = theme.foreground;
+        "prompt" = theme.colors.purple;
+        "hl+" = theme.colors.red;
       };
     };
 

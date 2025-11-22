@@ -1,16 +1,34 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
   plugins = pkgs.tmuxPlugins;
   resurrectDirPath = "$HOME/.config/tmux/resurrect";
+  theme = import ../../../themes/default.nix { inherit lib; };
+
+  # Tmux config with theme colors injected
+  tmuxConfig = builtins.readFile ./tmux.conf;
+  themedConfig = ''
+    ${tmuxConfig}
+
+    # Theme color overrides
+    set -wg mode-style bg=${theme.colors.purple},fg=${theme.foreground}
+    setw -g clock-mode-colour ${theme.colors.purple}
+    set-option -g status-style bg=default
+    set -g window-status-style fg=${theme.foreground},bg=default
+    set -g window-status-current-style fg=${theme.colors.purple},bg=default
+    set -g pane-border-style fg=${theme.foreground}
+    set -g pane-active-border-style fg=${theme.activeBorder}
+    set -g message-style fg=${theme.foreground},bg=default,bold
+  '';
 in {
   programs.tmux = {
     enable = true;
     sensibleOnTop = true;
     keyMode = "vi";
-    extraConfig =  builtins.readFile ./tmux.conf;
+    extraConfig = themedConfig;
     plugins = with plugins; [
       {
         # https://github.com/tmux-plugins/tmux-resurrect

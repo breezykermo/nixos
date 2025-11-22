@@ -341,8 +341,8 @@ require('lazy').setup({
 	  lazy = false, -- load at start
 	  priority = 1000, -- load first
 	  config = function()
-		  -- vim.cmd([[colorscheme gruvbox-dark-hard]])
-		  vim.cmd([[colorscheme gruvbox-dark-pale]])
+		  -- Use gruvbox-dark-hard colorscheme (configured via theme system)
+		  vim.cmd([[colorscheme gruvbox-dark-hard]])
 
 		  -- Set the background transparent
 		  vim.cmd [[
@@ -371,7 +371,7 @@ require('lazy').setup({
 	  opts = {
 		  options = {
 			  icons_enabled = false,
-			  theme = 'onedark',
+			  theme = 'gruvbox',
 			  component_separators = '|',
 			  section_separators = '',
 		  },

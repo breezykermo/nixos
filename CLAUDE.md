@@ -100,7 +100,9 @@ After initial deployment:
 - `machines/{framework,dellxps}/configuration.nix` - Machine-specific settings
 - `home-manager/default.nix` - User configuration entry point
 - `home-manager/server/core.nix` - Core CLI tools and shell configuration
+- `themes/default.nix` - Centralized theme configuration (see THEMING.md)
 - `Justfile` - Build and maintenance commands
+- `THEMING.md` - Complete guide to the theme system
 
 ## Conventions
 
