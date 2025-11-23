@@ -10,6 +10,7 @@
     ./irc
     ./llms
     ./writing
+    ./machine-report
     ./_inprogress
   ];
 }
