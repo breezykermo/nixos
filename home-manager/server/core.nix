@@ -27,23 +27,9 @@ in
     vivid       # for colorschemes
     just        # better makefiles
     lazydocker  # docker tui client
-    pandoc      # document processor
-    tectonic    # LaTeX compilation
     bartib      # time tracking
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video
-
-    # Wrap typst with required libraries (OpenSSL 3)
-    (pkgs.symlinkJoin {
-      name = "typst-wrapped";
-      paths = [ inputs.typst.packages.${system}.default ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/typst \
-          --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [ pkgs.openssl ]}"
-      '';
-    })
-
     gh          # Github CLI
     uv          # Python package installer and resolver
 
@@ -73,11 +59,6 @@ in
         license = licenses.bsd3;
       };
     })
-
-    # NOTE: in general, I don't want this. but due to tectonic sometimes not
-    # being able to do what I need, it is nice to have.
-    # texlive.combined.scheme-medium
-
   ];
 
   home.shellAliases = {
@@ -90,7 +71,6 @@ in
     b = "bartib -f ~/.bartib";
     c = "clear";
     m = "maestral";
-    pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
     python = "nvim-python3"; 
   };
 

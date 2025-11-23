@@ -9,6 +9,7 @@
     ./email
     ./irc
     ./llms
+    ./writing
     ./_inprogress
   ];
 }
