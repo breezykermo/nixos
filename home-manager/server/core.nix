@@ -32,6 +32,9 @@ in
     ffmpeg-full # utility for sound, image, video
     gh          # Github CLI
     uv          # Python package installer and resolver
+
+    # Rheo (from flake input)
+    inputs.rheo.packages.${system}.default
   ];
 
   home.shellAliases = {

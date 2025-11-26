@@ -30,6 +30,11 @@
       url = "github:breezykermo/ftdv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Rheo
+    rheo = {
+      url = "git+ssh://git@github.com/breezykermo/rheo.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
