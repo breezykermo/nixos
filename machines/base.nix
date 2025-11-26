@@ -10,7 +10,11 @@
     extraGroups = lib.mkDefault [ "networkmanager" "wheel" "docker" "input" ];
   };
 
+  # This is necessary to use SSH to get flakes from private GH repos
+  programs.ssh.startAgent = lib.mkDefault true;
+
   services = {
+
     # printing.enable = true;
     protonmail-bridge.enable = lib.mkDefault true;
 

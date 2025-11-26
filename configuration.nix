@@ -43,8 +43,8 @@ in
   };
 
   fonts.packages = with pkgs; [
-    nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
+    # nerd-fonts.fira-code
+    # nerd-fonts.jetbrains-mono
     inter-typeface
     berkeley-mono-nerd
     corefonts

@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # For more easily installing and configuring software
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # The best terminal emulator
@@ -30,9 +30,9 @@
       url = "github:breezykermo/ftdv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Rheo
+    # Flow typst documents into HTML, PDF, and EPUB
     rheo = {
-      url = "git+ssh://git@github.com/breezykermo/rheo.git";
+      url = "path:/home/lox/code/rheo";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

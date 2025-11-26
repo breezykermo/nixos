@@ -59,8 +59,9 @@ in
     # modern terminal
     inputs.ghostty.packages.x86_64-linux.default
 
-    # useful little database
-    sqlite
+    # GTK/GSettings support (needed for GTK file chooser dialogs)
+    gsettings-desktop-schemas
+    glib
   ];
 
   xdg.configFile."ghostty/config".text = ''
