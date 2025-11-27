@@ -309,15 +309,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1764182832,
-        "narHash": "sha256-ahMNAEknEnSW+WLZsgTnw2e12YcltJDi6J2MsWtPvs0=",
+        "lastModified": 1764194569,
+        "narHash": "sha256-iUM9ktarEzThkayyZrzQ7oycPshAY2XRQqVKz0xX/L0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8220473f952571691b05037dbd18659d1f5f83a1",
+        "rev": "9651819d75f6c7ffaf8a9227490ac704f29659f0",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
+        "ref": "master",
         "repo": "home-manager",
         "type": "github"
       }
@@ -459,14 +460,16 @@
         "typst": "typst"
       },
       "locked": {
-        "lastModified": 1764188253,
-        "narHash": "sha256-P+A+03TTIcq10jbbt/+VXn35+tsrcI3NWlPLUyMFXEI=",
-        "path": "/home/lox/code/rheo",
-        "type": "path"
+        "lastModified": 1764286535,
+        "narHash": "sha256-okVSZSqfcNn8mh6XoVTt7jmbFruU/JWF17q7rp4nxIY=",
+        "rev": "73f7c68b909b4b1f26bebb067d1b982df39be203",
+        "revCount": 98,
+        "type": "git",
+        "url": "file:///home/lox/code/rheo"
       },
       "original": {
-        "path": "/home/lox/code/rheo",
-        "type": "path"
+        "type": "git",
+        "url": "file:///home/lox/code/rheo"
       }
     },
     "root": {
