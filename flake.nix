@@ -32,7 +32,7 @@
     };
     # Flow typst documents into HTML, PDF, and EPUB
     rheo = {
-      url = "git+file:///home/lox/code/rheo";
+      url = "path:/home/lox/code/rheo";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -460,16 +460,14 @@
         "typst": "typst"
       },
       "locked": {
-        "lastModified": 1764286535,
-        "narHash": "sha256-okVSZSqfcNn8mh6XoVTt7jmbFruU/JWF17q7rp4nxIY=",
-        "rev": "73f7c68b909b4b1f26bebb067d1b982df39be203",
-        "revCount": 98,
-        "type": "git",
-        "url": "file:///home/lox/code/rheo"
+        "lastModified": 1764316082,
+        "narHash": "sha256-OYFvRQ+x6kt0lYCCbIR8DhlNevwkJWRwgVObrPD0XRE=",
+        "path": "/home/lox/code/rheo",
+        "type": "path"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/lox/code/rheo"
+        "path": "/home/lox/code/rheo",
+        "type": "path"
       }
     },
     "root": {
