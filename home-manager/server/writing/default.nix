@@ -6,9 +6,6 @@
     pdfpc       # PDF presentation console
     evince      # PDF viewer
 
-    # Flow typst documents into HTML, PDF, and EPUB
-    inputs.rheo.packages.${system}.default
-
     # Wrap typst with required libraries (OpenSSL 3)
     (pkgs.symlinkJoin {
       name = "typst-wrapped";
