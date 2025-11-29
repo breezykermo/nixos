@@ -95,7 +95,7 @@ require('lazy').setup({
         -- 'PROJ' is deprecated.
         -- Active states (before |): TODO, NEXT, STRT, IDEA - all searchable in agenda views
         -- Done states (after |): SOON, PROJ, KILL, DONE
-        org_todo_keywords = {'TODO', 'NEXT', 'STRT', 'IDEA', '|', 'SOON', 'PROJ', 'KILL', 'DONE'},
+        org_todo_keywords = {'TODO', 'NEXT', 'STRT', 'IDEA', 'SOON', '|', 'PROJ', 'KILL', 'DONE'},
         org_todo_keyword_faces = {
           -- purple = ':foreground #a660f7',
           IDEA = ':foreground #23b4ed',
@@ -110,7 +110,7 @@ require('lazy').setup({
             types = {
               {
                 type = 'tags_todo',
-                match = '/TODO|STRT|NEXT|IDEA',
+                match = '/TODO|SOON|NEXT|IDEA',
                 org_agenda_overriding_header = '=== Active TODO Items ===',
               }
             }
@@ -139,7 +139,18 @@ require('lazy').setup({
           },
 
           s = {
-            description = 'STRT items only',
+            description = 'SOON items only',
+            types = {
+              {
+                type = 'tags_todo',
+                match = '/SOON',
+                org_agenda_overriding_header = '=== Started Items (SOON) ===',
+              }
+            }
+          },
+
+          c = {
+            description = 'STRT (current) items only',
             types = {
               {
                 type = 'tags_todo',
