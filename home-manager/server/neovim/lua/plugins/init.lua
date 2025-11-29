@@ -149,8 +149,8 @@ require('lazy').setup({
             }
           },
 
-          c = {
-            description = 'STRT (current) items only',
+          r = {
+            description = 'STRT items only',
             types = {
               {
                 type = 'tags_todo',
