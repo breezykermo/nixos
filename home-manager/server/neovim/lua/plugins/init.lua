@@ -103,6 +103,73 @@ require('lazy').setup({
           SOON = ':foreground #009333',
           TODO = ':foreground #009333 :underline on', -- overrides builtin color for `TODO` keyword
         },
+        org_agenda_custom_commands = {
+          a = {
+            description = 'Active TODOs (TODO|STRT|NEXT|IDEA)',
+            types = {
+              {
+                type = 'tags_todo',
+                match = '/TODO|STRT|NEXT|IDEA',
+                org_agenda_overriding_header = '=== Active TODO Items ===',
+              }
+            }
+          },
+
+          c = {
+            description = 'Calendar for current week',
+            types = {
+              {
+                type = 'agenda',
+                org_agenda_span = 'week',
+                org_agenda_overriding_header = '=== Weekly Agenda ===',
+              }
+            }
+          },
+
+          t = {
+            description = 'TODO items only',
+            types = {
+              {
+                type = 'tags_todo',
+                match = '/TODO',
+                org_agenda_overriding_header = '=== TODO Items ===',
+              }
+            }
+          },
+
+          s = {
+            description = 'STRT items only',
+            types = {
+              {
+                type = 'tags_todo',
+                match = '/STRT',
+                org_agenda_overriding_header = '=== Started Items (STRT) ===',
+              }
+            }
+          },
+
+          n = {
+            description = 'NEXT items only',
+            types = {
+              {
+                type = 'tags_todo',
+                match = '/NEXT',
+                org_agenda_overriding_header = '=== Next Actions ===',
+              }
+            }
+          },
+
+          i = {
+            description = 'IDEA items only',
+            types = {
+              {
+                type = 'tags_todo',
+                match = '/IDEA',
+                org_agenda_overriding_header = '=== Ideas ===',
+              }
+            }
+          },
+        },
         org_todo_repeat_to_state = 'TODO',
         org_startup_indented = true,
         org_adapt_indentation = false,
