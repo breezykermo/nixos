@@ -114,3 +114,172 @@ After initial deployment:
 - Default editor: Set via `$EDITOR` environment variable
 - Git default branch: `main`
 - Version control: Both `git` and `jujutsu` (jj) are configured
+
+## Issue Tracking with Beads
+
+**IMPORTANT**: This project uses **bd (beads)** for ALL issue tracking. Do NOT use markdown TODOs, task lists, or other tracking methods.
+
+### Why bd?
+
+- Dependency-aware: Track blockers and relationships between issues
+- Git-friendly: Auto-syncs to JSONL for version control
+- Agent-optimized: JSON output, ready work detection, discovered-from links
+- Prevents duplicate tracking systems and confusion
+
+### Quick Start
+
+**Check for ready work:**
+```bash
+bd ready --json
+```
+
+**Create new issues:**
+```bash
+bd create "Issue title" -t bug|feature|task -p 0-4 --json
+bd create "Issue title" -p 1 --deps discovered-from:bd-123 --json
+```
+
+**Claim and update:**
+```bash
+bd update bd-42 --status in_progress --json
+bd update bd-42 --priority 1 --json
+```
+
+**Complete work:**
+```bash
+bd close bd-42 --reason "Completed" --json
+```
+
+### Issue Types
+
+- `bug` - Something broken
+- `feature` - New functionality
+- `task` - Work item (tests, docs, refactoring)
+- `epic` - Large feature with subtasks
+- `chore` - Maintenance (dependencies, tooling)
+
+### Priorities
+
+- `0` - Critical (security, data loss, broken builds)
+- `1` - High (major features, important bugs)
+- `2` - Medium (default, nice-to-have)
+- `3` - Low (polish, optimization)
+- `4` - Backlog (future ideas)
+
+### Workflow for AI Agents
+
+1. **Check ready work**: `bd ready` shows unblocked issues
+2. **Claim your task**: `bd update <id> --status in_progress`
+3. **Work on it**: Implement, test, document
+4. **Discover new work?** Create linked issue:
+   - `bd create "Found bug" -p 1 --deps discovered-from:<parent-id>`
+5. **Complete**: `bd close <id> --reason "Done"`
+
+### Auto-Sync
+
+bd automatically syncs with git:
+- Exports to `.beads/issues.jsonl` after changes (5s debounce)
+- Imports from JSONL when newer (e.g., after `git pull`)
+- No manual export/import needed!
+
+### MCP Server (Recommended)
+
+If using Claude or MCP-compatible clients, install the beads MCP server:
+
+```bash
+pip install beads-mcp
+```
+
+Add to MCP config (e.g., `~/.config/claude/config.json`):
+```json
+{
+  "beads": {
+    "command": "beads-mcp",
+    "args": []
+  }
+}
+```
+
+Then use `mcp__beads__*` functions instead of CLI commands.
+
+### Important Rules
+
+- ✅ Use bd for ALL task tracking
+- ✅ Always use `--json` flag for programmatic use
+- ✅ Link discovered work with `discovered-from` dependencies
+- ✅ Check `bd ready` before asking "what should I work on?"
+- ❌ Do NOT create markdown TODO lists
+- ❌ Do NOT use external issue trackers
+- ❌ Do NOT duplicate tracking systems
+
+---
+
+## The bd/jj workflow 
+
+**IMPORTANT**: ALWAYS use the jj squash workflow when working on bd tasks, even if you're only implementing a single task. This workflow should be your default approach.
+
+When working through bd (beads) tasks, use the jj squash workflow. This creates a clean commit history where related work is grouped together.
+
+### The Squash Pattern
+
+The workflow maintains two commits:
+- **Named commit** (bottom): Empty at first, receives work via squash. Has a descriptive message.
+- **Working commit** (top): Unnamed and empty. All changes happen here, then get squashed down.
+
+After squashing, the working commit becomes empty again, and the pattern repeats.
+
+### Per-Task Workflow
+
+For each bd task, follow this sequence:
+
+1. **Name the commit**: Run `jj describe -m "Present tense description"`
+   - Message describes what the app does after this change
+   - Completes the phrase: "when this commit is applied, the app..."
+   - Examples:
+     - "Renders timeline using real-world data"
+     - "Improves coloration of navbar"
+     - "Adds date-based scroll mapping to timeline"
+   - Use present tense, NOT past tense or imperative mood
+   - Focus on user-visible changes, not implementation details
+
+2. **Create working commit**: Run `jj new`
+   - This creates a new empty commit on top where you'll do the work
+   - All file changes will go into this commit
+
+3. **Complete the bd task**:
+   - Implement the changes
+   - Test that it works
+   - Close the issue: `bd update <id> --status closed`
+
+4. **Squash the work**: Run `jj squash`
+   - Moves all changes from the working commit (top) into the named commit (below)
+   - Working commit becomes empty again, ready for next task
+
+5. **Repeat**: Go to step 1 for the next task
+
+### Commit Message Examples
+
+✅ Good (present tense, user-focused):
+- "Displays flight hours in timeline visualization"
+- "Renders year markers in timeline sidebar"
+- "Synchronizes timeline scroll with table position"
+- "Shows data gaps as empty bars in timeline"
+
+❌ Bad (wrong tense or too technical):
+- "Added TimelineBar component" (past tense)
+- "Add timeline visualization" (imperative, not present)
+- "Refactors VerticalTimeline.jsx to use new components" (implementation detail)
+- "Created data utilities module" (past tense, not user-visible)
+
+### When to Use This Workflow
+
+**ALWAYS use this workflow** when working on bd tasks. This is the standard approach for this project.
+
+The workflow works for:
+- Single bd tasks (one task = one commit)
+- Multiple related bd tasks (multiple tasks = one commit)
+- Any feature or bug fix tracked in bd
+
+Only skip this workflow when:
+- User explicitly requests a different approach
+- Working on unrelated changes that must be separate commits

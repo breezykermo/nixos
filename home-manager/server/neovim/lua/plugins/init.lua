@@ -94,7 +94,7 @@ require('lazy').setup({
         -- 'SOON' items are TODOs that should be filtered out of main list, i.e. only upon returning to the file
         -- 'PROJ' is deprecated.
         -- All tags are considered non-active so that the filter for TODOs is clean.
-        org_todo_keywords = {'TODO', '|', 'SOON', 'PROJ', 'STRT', 'IDEA', 'KILL', 'DONE'},
+        org_todo_keywords = {'TODO', 'NEXT', '|', 'SOON', 'PROJ', 'STRT', 'IDEA', 'KILL', 'DONE'},
         org_todo_keyword_faces = {
           -- purple = ':foreground #a660f7',
           IDEA = ':foreground #23b4ed',

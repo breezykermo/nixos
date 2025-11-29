@@ -1,1 +1,7 @@
-38627
+{
+  "pid": 20491,
+  "parent_pid": 20474,
+  "database": "/etc/nixos/.beads/beads.db",
+  "version": "0.25.1",
+  "started_at": "2025-11-29T03:43:00.267707969Z"
+}
