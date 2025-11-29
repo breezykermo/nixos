@@ -93,8 +93,9 @@ require('lazy').setup({
         win_split_mode = 'vertical',
         -- 'SOON' items are TODOs that should be filtered out of main list, i.e. only upon returning to the file
         -- 'PROJ' is deprecated.
-        -- All tags are considered non-active so that the filter for TODOs is clean.
-        org_todo_keywords = {'TODO', 'NEXT', '|', 'SOON', 'PROJ', 'STRT', 'IDEA', 'KILL', 'DONE'},
+        -- Active states (before |): TODO, NEXT, STRT, IDEA - all searchable in agenda views
+        -- Done states (after |): SOON, PROJ, KILL, DONE
+        org_todo_keywords = {'TODO', 'NEXT', 'STRT', 'IDEA', '|', 'SOON', 'PROJ', 'KILL', 'DONE'},
         org_todo_keyword_faces = {
           -- purple = ':foreground #a660f7',
           IDEA = ':foreground #23b4ed',
