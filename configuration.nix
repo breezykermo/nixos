@@ -95,12 +95,6 @@ in
         xdg-desktop-portal-gtk
       ];
     };
-    mime.defaultApplications = {
-      "application/pdf" = [
-        "org.pwmt.zathura.desktop"
-        "brave-browser.desktop"
-      ];
-    };
   };
 
   # Perform garbage collection weekly to maintain low disk usage

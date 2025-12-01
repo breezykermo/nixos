@@ -17,11 +17,26 @@
       '';
     })
 
+    # Bene - EPUB viewer 
+    inputs.bene.packages.${system}.default
+
     # Optional: full LaTeX distribution (fallback for tectonic limitations)
     # texlive.combined.scheme-medium
   ];
 
   home.shellAliases = {
     pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/epub+zip" = "bene.desktop";
+      "application/pdf" = [
+        "org.pwmt.zathura.desktop"
+        "brave-browser.desktop"
+      ];
+
+    };
   };
 }

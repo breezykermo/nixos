@@ -30,6 +30,11 @@
       url = "github:breezykermo/ftdv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Bene - writing tools
+    bene = {
+      url = "github:breezykermo/bene/feat/adds-nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
