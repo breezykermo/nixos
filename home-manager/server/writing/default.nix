@@ -28,15 +28,22 @@
     pdfpc = "pdfpc -Z 1000:1000"; # necessary due to using tiling window manager
   };
 
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "application/epub+zip" = "bene.desktop";
-      "application/pdf" = [
-        "org.pwmt.zathura.desktop"
-        "brave-browser.desktop"
-      ];
+  xdg = {
+    terminal-exec = {
+      enable = true;
+      settings.default = ["ghostty.desktop"];
+    };
 
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "application/epub+zip" = "bene.desktop";
+        "application/pdf" = [
+          "org.pwmt.zathura.desktop"
+          "brave-browser.desktop"
+        ];
+
+      };
     };
   };
 }
