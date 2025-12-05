@@ -16,7 +16,6 @@
     # Theme color overrides
     set -wg mode-style bg=${theme.colors.yellow},fg=${theme.foreground}
     setw -g clock-mode-colour ${theme.colors.yellow}
-    set-option -g status-style bg=default
     set -g window-status-style fg=${theme.foreground},bg=default
     set -g window-status-current-style fg=${theme.colors.purple},bg=default
 
