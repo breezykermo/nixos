@@ -100,5 +100,8 @@ in
 
     # Get color with theme opacity applied
     withOpacity = color: themeLib.withOpacity color opacity;
+
+    # Convert hex color to 256-color terminal code
+    to256Color = color: themeLib.hexTo256Color color;
   };
 }

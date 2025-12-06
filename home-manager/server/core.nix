@@ -119,5 +119,90 @@ in
         vim_keys = true;
       };
     };
+
+    # RSS/Atom feed reader
+    newsboat = {
+      enable = true;
+      urls = [
+        {
+          url = "https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss";
+          tags = [ "jobs" "~I-School Feed" ];
+        }
+        {
+          url = ''"query:I-School 2025-2026:tags # \"jobs\" and link =~ \"I-School_2025-2026\"'';
+          tags = [ "jobs" ];
+        }
+        {
+          url = "https://joblist.mla.org/jobsrss/?Positiontype=20752178&Organizationtype=20752199&Languages=20752056&countrycode=US";
+          tags = [ "jobs" "~MLA TT" ];
+        }
+        {
+          url = "https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB";
+          tags = [ "jobs" "~THA Britain" ];
+        }
+        {
+          url = "https://oxide.computer/careers/feed";
+          tags = [ "jobs" "~Oxide" ];
+        }
+        {
+          url = "https://www.h-net.org/jobs/rss.xml";
+          tags = [ "jobs" "~H-NET All" ];
+        }
+        {
+          url = "https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss";
+          tags = [ "jobs" "~jobs.ac.uk" ];
+        }
+      ];
+      extraConfig = ''
+        # Vim-style keybindings
+        bind-key j down
+        bind-key k up
+        bind-key J next-feed
+        bind-key K prev-feed
+        bind-key G end
+        bind-key g home
+        bind-key d pagedown
+        bind-key u pageup
+        bind-key l open
+        bind-key h quit
+        bind-key a toggle-article-read
+        bind-key n next-unread
+        bind-key N prev-unread
+        bind-key D pb-download
+        bind-key U show-urls
+        bind-key x pb-delete
+
+        # General settings
+        auto-reload yes
+        reload-time 120
+        reload-threads 4
+        download-retries 4
+        download-timeout 30
+        prepopulate-query-feeds yes
+
+        # HTML rendering with w3m (same as aerc)
+        html-renderer "${pkgs.w3m}/bin/w3m -dump -T text/html -cols 100 -o display_link_number=1"
+
+        # Gruvbox theme colors
+        color background         default   default
+        color listnormal         ${theme.helpers.to256Color theme.colors.fg1}  default
+        color listnormal_unread  ${theme.helpers.to256Color theme.colors.yellow}  default  bold
+        color listfocus          ${theme.helpers.to256Color theme.colors.fg0}  ${theme.helpers.to256Color theme.colors.bg2}  bold
+        color listfocus_unread   ${theme.helpers.to256Color theme.colors.orange}  ${theme.helpers.to256Color theme.colors.bg2}  bold
+        color info               ${theme.helpers.to256Color theme.colors.aqua}  ${theme.helpers.to256Color theme.colors.bg1}  bold
+        color article            ${theme.helpers.to256Color theme.colors.fg1}  default
+
+        # Highlights for article content
+        highlight article "^(Feed|Title|Author|Link|Date|Podcast Download URL):.*$" ${theme.helpers.to256Color theme.colors.aqua} default bold
+        highlight article "https?://[^ ]+" ${theme.helpers.to256Color theme.colors.blue} default underline
+        highlight article "\\[[0-9]+\\]" ${theme.helpers.to256Color theme.colors.orange} default bold
+        highlight article "\\[image\\ [0-9]+\\]" ${theme.helpers.to256Color theme.colors.purple} default bold
+
+        # Quote highlighting (similar to aerc colorize)
+        highlight article "^>.*$" ${theme.helpers.to256Color theme.colors.green} default
+        highlight article "^>>.*$" ${theme.helpers.to256Color theme.colors.aqua} default
+        highlight article "^>>>.*$" ${theme.helpers.to256Color theme.colors.blue} default
+      '';
+    };
   };
 }
