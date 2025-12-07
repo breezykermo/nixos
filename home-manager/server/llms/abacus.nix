@@ -11,10 +11,10 @@ buildGoModule rec {
     owner = "ChrisEdwards";
     repo = "abacus";
     rev = "main";
-    hash = "sha256-awIZuD3FxuepQ57hlg6pXvfEZWs8Z5iHvS3d8PfbtEQ=";
+    hash = "sha256-w5OWWGRa8IL9+G8XX071N4RTn7laYCOfLYquJn4+Gkw=";
   };
 
-  vendorHash = "sha256-+9pRagTsWNaB+wx1loWW1EdSzuvfljttdzHCDCnTGOQ=";
+  vendorHash = "sha256-FnOq3c/wY1Kad9MbV3eV6yoiLu2L5Poe4AxF5nhzxlA=";
 
   ldflags = [
     "-s"
