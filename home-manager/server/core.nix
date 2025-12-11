@@ -129,11 +129,11 @@ in
           tags = [ "jobs" "~I-School Feed" ];
         }
         {
-          url = ''"query:I-School 2025-2026:tags # \"jobs\" and link =~ \"I-School_2025-2026\"'';
+          url = "https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history";
           tags = [ "jobs" ];
         }
         {
-          url = "https://joblist.mla.org/jobsrss/?Positiontype=20752178&Organizationtype=20752199&Languages=20752056&countrycode=US";
+          url = "https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US";
           tags = [ "jobs" "~MLA TT" ];
         }
         {
@@ -141,17 +141,14 @@ in
           tags = [ "jobs" "~THA Britain" ];
         }
         {
-          url = "https://oxide.computer/careers/feed";
-          tags = [ "jobs" "~Oxide" ];
-        }
-        {
-          url = "https://www.h-net.org/jobs/rss.xml";
-          tags = [ "jobs" "~H-NET All" ];
-        }
-        {
           url = "https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss";
           tags = [ "jobs" "~jobs.ac.uk" ];
         }
+        {
+          url = "https://oxide.computer/careers/feed";
+          tags = [ "jobs" "~Oxide" ];
+        }
+
       ];
       extraConfig = ''
         # Vim-style keybindings

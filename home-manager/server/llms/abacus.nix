@@ -11,7 +11,7 @@ buildGoModule rec {
     owner = "ChrisEdwards";
     repo = "abacus";
     rev = "main";
-    hash = "sha256-w5OWWGRa8IL9+G8XX071N4RTn7laYCOfLYquJn4+Gkw=";
+    hash = "sha256-tNoDt3RZoJBsIT6b1tuApAI4mjhuP+0IOLGYANsF01A=";
   };
 
   vendorHash = "sha256-FnOq3c/wY1Kad9MbV3eV6yoiLu2L5Poe4AxF5nhzxlA=";
