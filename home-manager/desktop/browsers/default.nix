@@ -390,6 +390,10 @@ in
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/proton-vpn-firefox-extension/latest.xpi";
           installation_mode = "force_installed";
         };
+        "remarkable@schutter.xyz" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/unofficial-remarkable/latest.xpi";
+          installation_mode = "force_installed";
+        };
         # Zotero
       };
 

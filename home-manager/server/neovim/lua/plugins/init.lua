@@ -94,7 +94,7 @@ require('lazy').setup({
         -- 'SOON' items are TODOs that should be filtered out of main list, i.e. only upon returning to the file
         -- 'PROJ' is deprecated.
         -- Active states (before |): TODO, NEXT, STRT, IDEA - all searchable in agenda views
-        -- Done states (after |): SOON, PROJ, KILL, DONE
+        -- Done states (after |): PROJ, KILL, DONE
         org_todo_keywords = {'TODO', 'NEXT', 'STRT', 'IDEA', 'SOON', '|', 'PROJ', 'KILL', 'DONE'},
         org_todo_keyword_faces = {
           -- purple = ':foreground #a660f7',
