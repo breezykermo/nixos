@@ -31,11 +31,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1766143587,
-        "narHash": "sha256-ZuGeIze43s4Yk2OWct1Lhnwq77MYyZkS5Y77LYGuY5Q=",
+        "lastModified": 1766147231,
+        "narHash": "sha256-j1QrXrMBxozca35YmUBBzyMBE0RtO/wvcSIgJ8b5RGg=",
         "owner": "breezykermo",
         "repo": "bene",
-        "rev": "d4f4c3861f0f4b21db29bcfde204a26f9f48ec32",
+        "rev": "ebbb07d1184531c340c38077023109a14e37c06f",
         "type": "github"
       },
       "original": {

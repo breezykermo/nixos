@@ -40,6 +40,9 @@ vim.keymap.set('n', '<leader>b', ':Ball<CR>')
 -- Rename a variable using LSP
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {})
 
+-- Find all references to symbol under cursor using LSP
+vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+
 -- Proper vertical splitting (unclear why this doesn't work)
 vim.keymap.set("n", "<C-w>c", vim.cmd.split)
 
