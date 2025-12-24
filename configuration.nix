@@ -64,7 +64,7 @@ in
         config = config.nixpkgs.config;
       };
 
-      # Skip tests so that we don't get the 3.13 python issue 
+      # Skip tests so that we don't get the 3.13 python issue
       maestral = pkgs.maestral.overridePythonAttrs (oldAttrs: {
         doCheck = false;
       });

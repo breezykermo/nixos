@@ -1,4 +1,8 @@
 { pkgs, lib, userName, machineVars, ...}:
+
+let
+  theme = import ../../../themes/default.nix { inherit lib; };
+in
 {
 	programs.neovim = {
 		enable = true;
@@ -12,9 +16,14 @@
 		extraPackages = [];
 		extraConfig = ''
 			:lua vim.g.dropbox_path = "${machineVars.dropboxPath}"
+			:lua vim.g.theme_name = "${theme.name}"
+			:lua vim.g.theme_variant = "${theme.variant}"
 			:luafile /etc/nixos/home-manager/server/neovim/init.lua
 		'';
-		plugins = [];
+		plugins = with pkgs.vimPlugins; [
+			catppuccin-nvim
+			rose-pine
+		];
     # extraLuaPackages = ["luarocks"];
  	};
 

@@ -7,17 +7,19 @@ let
   nord = import ./nord.nix { inherit lib; };
   onedark = import ./onedark.nix { inherit lib; };
   molokai = import ./molokai.nix { inherit lib; };
+  rosepine = import ./rosepine.nix { inherit lib; };
 
   # ============================================================================
   # THEME CONFIGURATION - Change these values to switch themes
   # ============================================================================
 
-  activeTheme = "gruvbox";           # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai"
-  activeVariant = "dark-hard";       # Gruvbox: "dark-hard", "dark-medium", "dark-soft", "dark-pale"
+  activeTheme = "catppuccin";        # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine"
+  activeVariant = "mocha";           # Gruvbox: "dark-hard", "dark-medium", "dark-soft", "dark-pale"
                                      # Catppuccin: "mocha", "macchiato", "frappe", "latte"
                                      # Nord: "polar-night", "snow-storm", "frost", "aurora"
                                      # OneDark: "dark", "darker", "vivid", "light"
                                      # Molokai: "classic", "phoenix", "vivid", "dark"
+                                     # Rose Pine: "main", "moon", "dawn"
 
   enableTransparency = true;         # Global transparency setting
   opacity = "0.95";                  # Default opacity for transparent backgrounds
@@ -31,6 +33,7 @@ let
     nord = nord.variants;
     onedark = onedark.variants;
     molokai = molokai.variants;
+    rosepine = rosepine.variants;
   };
 
   selectedPalette = themePalettes.${activeTheme}.${activeVariant};
@@ -51,6 +54,8 @@ let
       "Arc-Dark"  # Fallback to similar theme
     else if activeTheme == "molokai" then
       "purple"  # Fallback to similar theme
+    else if activeTheme == "rosepine" then
+      "purple"  # Fallback to similar purple/pink theme
     else
       "gruvbox-dark";  # Safe fallback
 

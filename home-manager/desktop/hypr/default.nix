@@ -2,6 +2,7 @@
 
 let
   theme = import ../../../themes/default.nix { inherit lib; };
+  wallpapers = import ../../../wallpapers { inherit pkgs; };
 
   # Convert hex colors to Hyprland rgba format
   # Using yellow for active border to match tmux, subtle gray for inactive
@@ -18,6 +19,11 @@ in
 		wdisplays
 		way-displays
 	];
+
+	# Copy FCL wallpaper to home directory
+	home.file.".local/share/wallpapers/fcl-widescreen.png" = {
+		source = "${wallpapers.fcl-widescreen}/wallpaper.png";
+	};
 
 	wayland.windowManager.hyprland = {
 		enable = true;

@@ -415,25 +415,103 @@ require('lazy').setup({
 	-- "gc" to comment visual regions/lines
 	{ 'numToStr/Comment.nvim', opts = {} },
 
-  -- main color scheme
+  -- catppuccin color scheme
   {
-	  "wincent/base16-nvim",
-	  lazy = false, -- load at start
-	  priority = 1000, -- load first
+	  "catppuccin/nvim",
+	  name = "catppuccin",
+	  lazy = false,
+	  priority = 1000,
+	  cond = function()
+		  -- Only load if catppuccin is the active theme
+		  return vim.g.theme_name == "catppuccin"
+	  end,
 	  config = function()
-		  -- Use gruvbox-dark-hard colorscheme (configured via theme system)
-		  vim.cmd([[colorscheme gruvbox-dark]])
+		  local theme_variant = vim.g.theme_variant or "mocha"
+		  require("catppuccin").setup({
+			  flavour = theme_variant, -- mocha, macchiato, frappe, latte
+			  transparent_background = true,
+			  show_end_of_buffer = false,
+			  term_colors = true,
+			  dim_inactive = {
+				  enabled = false,
+				  shade = "dark",
+				  percentage = 0.15,
+			  },
+			  integrations = {
+				  treesitter = true,
+				  native_lsp = {
+					  enabled = true,
+				  },
+				  telescope = true,
+				  barbar = true,
+				  cmp = true,
+				  gitsigns = true,
+			  },
+		  })
 
-		  -- Set the background transparent
-		  vim.cmd [[
-		  highlight Normal guibg=NONE ctermbg=NONE
-		  highlight NonText guibg=NONE ctermbg=NONE
-		  ]]
+		  -- Apply the colorscheme
+		  vim.cmd.colorscheme "catppuccin"
 
 		  -- Make comments more prominent -- they are important.
 		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
 		  vim.api.nvim_set_hl(0, 'Comment', bools)
+	  end
+  },
 
+  -- rose-pine color scheme
+  {
+	  "rose-pine/neovim",
+	  name = "rose-pine",
+	  lazy = false,
+	  priority = 1000,
+	  cond = function()
+		  -- Only load if rosepine is the active theme
+		  return vim.g.theme_name == "rosepine"
+	  end,
+	  config = function()
+		  local theme_variant = vim.g.theme_variant or "main"
+		  require("rose-pine").setup({
+			  variant = theme_variant, -- main, moon, dawn
+			  dark_variant = "main",
+			  disable_background = true, -- transparent background
+			  disable_float_background = false,
+			  disable_italics = false,
+			  highlight_groups = {
+				  -- Make telescope borders more visible
+				  TelescopeBorder = { fg = "highlight_high", bg = "none" },
+				  TelescopeNormal = { bg = "none" },
+				  TelescopePromptNormal = { bg = "none" },
+				  TelescopeResultsNormal = { bg = "none" },
+				  TelescopeSelection = { fg = "text", bg = "highlight_med" },
+			  },
+		  })
+
+		  -- Apply the colorscheme
+		  vim.cmd.colorscheme "rose-pine"
+
+		  -- Make comments more prominent -- they are important.
+		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
+		  vim.api.nvim_set_hl(0, 'Comment', bools)
+	  end
+  },
+
+  -- Gruvbox/base16 fallback color scheme (for other themes)
+  {
+	  "wincent/base16-nvim",
+	  lazy = false,
+	  priority = 1000,
+	  cond = function()
+		  -- Load for any theme that isn't catppuccin or rosepine
+		  local theme = vim.g.theme_name or "gruvbox"
+		  return theme ~= "catppuccin" and theme ~= "rosepine"
+	  end,
+	  config = function()
+		  -- Fallback to gruvbox for other themes
+		  vim.cmd.colorscheme "gruvbox-dark"
+
+		  -- Make comments more prominent -- they are important.
+		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
+		  vim.api.nvim_set_hl(0, 'Comment', bools)
 	  end
   },
 
@@ -448,14 +526,30 @@ require('lazy').setup({
   {
 	  'nvim-lualine/lualine.nvim',
 	  dependencies = { 'nvim-tree/nvim-web-devicons' },
-	  opts = {
-		  options = {
-			  icons_enabled = false,
-			  theme = 'gruvbox',
-			  component_separators = '|',
-			  section_separators = '',
-		  },
-	  },
+	  config = function()
+		  local theme_name = vim.g.theme_name or "catppuccin"
+		  local lualine_theme = "auto"
+
+		  -- Map theme names to lualine themes
+		  if theme_name == "catppuccin" then
+			  lualine_theme = "catppuccin"
+		  elseif theme_name == "rosepine" then
+			  lualine_theme = "rose-pine"
+		  elseif theme_name == "gruvbox" then
+			  lualine_theme = "gruvbox"
+		  elseif theme_name == "nord" then
+			  lualine_theme = "nord"
+		  end
+
+		  require('lualine').setup({
+			  options = {
+				  icons_enabled = false,
+				  theme = lualine_theme,
+				  component_separators = '|',
+				  section_separators = '',
+			  },
+		  })
+	  end,
   },
 
 	-- Quick navigation
