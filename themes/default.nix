@@ -22,7 +22,7 @@ let
                                      # Rose Pine: "main", "moon", "dawn"
 
   enableTransparency = true;         # Global transparency setting
-  opacity = "0.95";                  # Default opacity for transparent backgrounds
+  opacity = "0.98";                  # Default opacity for transparent backgrounds
 
   # ============================================================================
 

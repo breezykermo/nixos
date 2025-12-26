@@ -48,10 +48,11 @@ in
     inter-typeface
     berkeley-mono-nerd
     corefonts
+    libertinus
   ];
   fonts.fontconfig = {
     defaultFonts = {
-      serif = [ "Inter Variable" ];
+      serif = [ "Libertinus Serif" ];
       sansSerif = [ "Inter Variable" ];
       monospace = [ "Berkeley Mono Nerd Font Mono" ];
     };
