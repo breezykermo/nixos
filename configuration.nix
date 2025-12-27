@@ -34,7 +34,7 @@ in
   ];
 
   # For scrcpy
-  programs.adb.enable = true;
+  # programs.adb.enable = true;
 
   # for a potentially better setup, see 
   # https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 

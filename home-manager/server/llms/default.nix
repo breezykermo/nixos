@@ -6,12 +6,11 @@ in
   #   - Upstream flake.nix has an outdated vendorHash
   #   - Tests require filesystem access not available in Nix sandbox
   home.packages = [
-    inputs.beads.packages.${system}.default
+    (inputs.beads.packages.${system}.default.overrideAttrs (oldAttrs: {
+      vendorHash = "sha256-l3ctY2hGXskM8U1wLupyvFDWfJu8nCX5tWAH1Macavw=";
+      doCheck = false;
+    }))
     abacus
-    # (inputs.beads.packages.${system}.default.overrideAttrs (oldAttrs: {
-    #   vendorHash = "sha256-oXPlcLVLoB3odBZzvS5FN8uL2Z9h8UMIbBKs/vZq03I=";
-    #   doCheck = false;
-    # }))
   ];
 
   home.sessionVariables = {
