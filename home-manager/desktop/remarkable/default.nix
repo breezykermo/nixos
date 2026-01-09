@@ -1,5 +1,5 @@
-# ReMarkable related software 
-{ ... }:
+# ReMarkable related software
+{ pkgs, ... }:
 {
   imports = [
     # ./remouse

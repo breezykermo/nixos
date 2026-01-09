@@ -1,7 +1,7 @@
 {
-  "pid": 53137,
-  "parent_pid": 53120,
+  "pid": 7897,
+  "parent_pid": 7880,
   "database": "/etc/nixos/.beads/beads.db",
-  "version": "0.29.0",
-  "started_at": "2025-12-11T19:48:59.738915683Z"
+  "version": "0.46.0",
+  "started_at": "2026-01-09T20:15:45.00904907Z"
 }

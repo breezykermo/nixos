@@ -3,9 +3,8 @@
 	home.packages = with pkgs; [
     libreoffice   # docs
 		csvkit        # csv management
-		visidata 
+		visidata
 		pdftk         # pdf
     qpdf
-    pdfpc         # present PDFs as slideshows
   ];
 }
