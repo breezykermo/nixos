@@ -2,11 +2,11 @@
   config,
   pkgs,
   lib,
+  theme,
   ...
 }: let
   plugins = pkgs.tmuxPlugins;
   resurrectDirPath = "$HOME/.config/tmux/resurrect";
-  theme = import ../../../themes/default.nix { inherit lib; };
 
   # Tmux config with theme colors injected
   tmuxConfig = builtins.readFile ./tmux.conf;

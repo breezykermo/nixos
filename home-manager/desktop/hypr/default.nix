@@ -1,7 +1,6 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, theme, ... }:
 
 let
-  theme = import ../../../themes/default.nix { inherit lib; };
   wallpapers = import ../../../wallpapers { inherit pkgs; };
 
   # Convert hex colors to Hyprland rgba format

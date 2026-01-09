@@ -1,7 +1,4 @@
-{pkgs, inputs, system, lib, ...}:
-let
-  theme = import ../../themes/default.nix { inherit lib; };
-in
+{pkgs, inputs, system, lib, theme, ...}:
 {
   services = {
     keybase.enable = true;

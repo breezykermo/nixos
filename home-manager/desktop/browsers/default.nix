@@ -1,8 +1,7 @@
 # Adapted from
 # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265
-{ pkgs, lib, ... }:
+{ pkgs, lib, theme, ... }:
 let
-  theme = import ../../../themes/default.nix { inherit lib; };
 
   lock-false = {
     Value = false;

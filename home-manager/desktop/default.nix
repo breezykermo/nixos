@@ -1,8 +1,4 @@
-{ pkgs, inputs, lib, ... }:
-
-let
-  theme = import ../../themes/default.nix { inherit lib; };
-in
+{ pkgs, inputs, lib, theme, ... }:
 {
   imports = [
     ./hypr

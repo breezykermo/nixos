@@ -47,6 +47,9 @@
     # Import machine-specific variables
     machineVars = import ./machines/${selectedMachine}/vars.nix;
     userName = machineVars.userName;
+
+    # Import theme once and pass to all modules
+    theme = import ./themes/default.nix { inherit (nixpkgs) lib; };
   in
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
@@ -64,7 +67,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit inputs system userName naersk machineVars; };
+            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme; };
 
             users."${userName}" = import ./home-manager;
           };

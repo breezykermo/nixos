@@ -1,7 +1,4 @@
-{pkgs, inputs, system, lib, machineVars, ...}:
-let
-  theme = import ../../../themes/default.nix { inherit lib; };
-in
+{pkgs, inputs, system, lib, machineVars, theme, ...}:
 {
   home.packages = with pkgs; [
     delta       # syntax-highlighting in git and jj diffs

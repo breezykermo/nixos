@@ -1,8 +1,4 @@
-{ pkgs, lib, userName, machineVars, ...}:
-
-let
-  theme = import ../../../themes/default.nix { inherit lib; };
-in
+{ pkgs, lib, userName, machineVars, theme, ...}:
 {
 	programs.neovim = {
 		enable = true;
