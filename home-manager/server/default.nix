@@ -7,7 +7,6 @@
     ./tmux
     ./neovim
     ./email
-    ./irc
     ./llms
     ./writing
     ./machine-report

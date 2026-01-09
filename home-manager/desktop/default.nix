@@ -15,13 +15,10 @@ in
     ./office
     ./youtube
     ./_inprogress
-    # ./vscode
-    # ./gaming
   ];
 
   home.packages = with pkgs; [
     xdg-utils
-    # handlr
 
     # screenshots 
     slurp

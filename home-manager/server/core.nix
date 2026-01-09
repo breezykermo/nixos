@@ -50,10 +50,6 @@ in
 
   home.sessionVariables = {
     LS_COLORS = "$(${pkgs.bash}/bin/bash -c 'vivid generate ${theme.fullName}')";
-
-    # PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
-    # pnpm config set global-bin-dir ~/.local/bin
-    # pnpm config set store-dir ~/.local/share/pnpm/store
   };
 
   programs = {
