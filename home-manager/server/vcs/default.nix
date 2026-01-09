@@ -1,4 +1,4 @@
-{pkgs, inputs, system, lib, ...}:
+{pkgs, inputs, system, lib, machineVars, ...}:
 let
   theme = import ../../../themes/default.nix { inherit lib; };
 in
@@ -21,8 +21,8 @@ in
       enable = true;
       settings = {
         user = {
-          name = "Lachlan Kermode";
-          email = "lachie@ohrg.org";
+          name = machineVars.userFullName;
+          email = machineVars.jjEmail;
         };
         ui.default-command = "log";
         ui.pager = "delta";
@@ -34,8 +34,8 @@ in
       enable = true;
       lfs.enable = true;
       settings = {
-        user.name = "Lachlan Kermode";
-        user.email = "lachiekermode@gmail.com";
+        user.name = machineVars.userFullName;
+        user.email = machineVars.userEmail;
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
         pull.rebase = true;

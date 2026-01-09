@@ -1,4 +1,4 @@
-{ config, lib, pkgs, userName, ... }:
+{ config, lib, pkgs, userName, machineVars, ... }:
 let
   unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
   inter-typeface = pkgs.callPackage ./fonts/inter.nix { inherit lib; };
@@ -6,13 +6,13 @@ let
 in
 {
   # nmtui and nmcli
-  networking.hostName = "loxnix";
+  networking.hostName = machineVars.hostname;
   networking.networkmanager.enable = true;
   # necessary for routing traffic through wireguard
   networking.firewall.checkReversePath = false;
 
-  time.timeZone = "Europe/Amsterdam";
-  i18n.defaultLocale = "en_US.UTF-8";
+  time.timeZone = machineVars.timezone;
+  i18n.defaultLocale = machineVars.locale;
 
   services.xserver.xkb.layout = "us";
 

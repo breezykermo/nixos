@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs, machineVars, ...}:
 let
   # Create typst-editor script and add to PATH
   typst-editor = pkgs.writeShellScriptBin "typst-editor" (builtins.readFile ./typst-editor.sh);
@@ -348,7 +348,7 @@ in {
       primary = true;
       address = "lachlan_kermode@brown.edu";
       userName = "lachlan_kermode@brown.edu";
-      realName = "Lachlan Kermode";
+      realName = machineVars.userFullName;
 
       passwordCommand = "pass show email/brown";
 
@@ -420,7 +420,7 @@ in {
     "inferstudio" = {
       address = "lachlan@inferstudio.com";
       userName = "lachlan@inferstudio.com";
-      realName = "Lachlan Kermode";
+      realName = machineVars.userFullName;
 
       passwordCommand = "pass show email/inferstudio";
 
