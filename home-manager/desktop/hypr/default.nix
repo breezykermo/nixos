@@ -28,6 +28,7 @@ in
 	wayland.windowManager.hyprland = {
 		enable = true;
 		xwayland.enable = true;
+		systemd.variables = ["-all"];
 		extraConfig = ''
 			${builtins.readFile ./hypr.conf}
 
