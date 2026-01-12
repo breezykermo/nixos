@@ -16,6 +16,17 @@ in
 
   services.xserver.xkb.layout = "us";
 
+  # Display manager - greetd with tuigreet
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        user = "greeter";
+      };
+    };
+  };
+
   # Enable flakes
   nix.settings.experimental-features = ["nix-command" "flakes" ];
 
