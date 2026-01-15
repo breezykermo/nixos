@@ -9,14 +9,16 @@ let
   inactiveBorderColor = theme.helpers.toHyprRgba theme.colors.bg3 "aa";
 in
 {
-	# imports = [
-	# 	inputs.hyprland.homeManagerModules.default
-	# ];
+	imports = [
+		./hyprlock.nix
+		./hypridle.nix
+	];
 
 	home.packages = with pkgs; [
 		swaybg
 		wdisplays
 		way-displays
+		brightnessctl
 	];
 
 	# Copy FCL wallpaper to home directory

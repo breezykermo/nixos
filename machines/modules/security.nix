@@ -1,15 +1,8 @@
 { lib, ... }:
 {
-  # Screen locking on suspend/hibernate
-  services.physlock = {
-    enable = lib.mkDefault true;
-    lockMessage = lib.mkDefault "<lox>";
-    allowAnyUser = lib.mkDefault true;
-    lockOn = {
-      suspend = lib.mkDefault true;
-      hibernate = lib.mkDefault true;
-    };
-  };
+  # Hyprlock screen locker (Wayland-native, replaces physlock)
+  programs.hyprlock.enable = lib.mkDefault true;
+  security.pam.services.hyprlock = {};
 
   # SSH agent for git access to private repos
   programs.ssh.startAgent = lib.mkDefault true;
