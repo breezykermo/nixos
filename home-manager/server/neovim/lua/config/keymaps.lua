@@ -52,3 +52,67 @@ vim.api.nvim_set_keymap("n", "<leader>gb", ":BlameToggle virtual<CR>", { noremap
 
 -- Word count shortcut
 vim.api.nvim_set_keymap('v', '<leader>wc', ":'<,'>w !wc -w<CR>", { noremap = true, silent = true })
+
+-- GitHub URL for current file
+function get_github_url()
+  -- Get the file path
+  local file_path = vim.fn.expand('%:p')
+  if file_path == '' then
+    print('No file in buffer')
+    return
+  end
+
+  -- Get the git root directory
+  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(vim.fn.expand('%:p:h')) .. ' rev-parse --show-toplevel')[1]
+  if vim.v.shell_error ~= 0 then
+    print('Not in a git repository')
+    return
+  end
+
+  -- Get the remote URL
+  local remote_url = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(git_root) .. ' remote get-url origin')[1]
+  if vim.v.shell_error ~= 0 then
+    print('No git remote found')
+    return
+  end
+
+  -- Get the current branch/bookmark (try jj first, then git)
+  local branch = nil
+
+  -- Try jj bookmark first
+  local jj_bookmark = vim.fn.systemlist('jj log -r @ --no-graph -T "local_bookmarks.join(\\" \\")" 2>/dev/null')[1]
+  if vim.v.shell_error == 0 and jj_bookmark and jj_bookmark ~= '' then
+    -- Take the first bookmark if multiple exist
+    branch = jj_bookmark:match('%S+')
+  end
+
+  -- Fall back to git branch
+  if not branch or branch == '' then
+    branch = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(git_root) .. ' rev-parse --abbrev-ref HEAD')[1]
+    if vim.v.shell_error ~= 0 then
+      branch = 'main'
+    end
+  end
+
+  -- Convert remote URL to GitHub web URL
+  local github_url = remote_url
+  -- Handle SSH format: git@github.com:user/repo.git
+  github_url = github_url:gsub('git@github%.com:', 'https://github.com/')
+  -- Handle HTTPS format: https://github.com/user/repo.git
+  github_url = github_url:gsub('%.git$', '')
+
+  -- Get relative file path from git root
+  local relative_path = file_path:sub(#git_root + 2) -- +2 to skip the trailing slash
+
+  -- Get current line number
+  local line_num = vim.fn.line('.')
+
+  -- Construct final URL
+  local final_url = github_url .. '/blob/' .. branch .. '/' .. relative_path .. '#L' .. line_num
+
+  -- Copy to clipboard
+  vim.fn.setreg('+', final_url)
+  print('Copied: ' .. final_url)
+end
+
+vim.keymap.set('n', '<leader>gh', get_github_url, { noremap = true, silent = true, desc = 'Copy GitHub URL for current file' })
