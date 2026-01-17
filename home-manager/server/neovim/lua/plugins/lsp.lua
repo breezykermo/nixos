@@ -20,6 +20,9 @@ lsp.config('tinymist', {
   filetypes = { 'typst' },
   root_markers = { '.git' },
   single_file_support = true,
+  settings = {
+    exportTarget = "html",
+  },
 })
 lsp.enable('tinymist')
 
