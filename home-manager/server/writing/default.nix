@@ -7,7 +7,7 @@
     evince      # PDF viewer
 
     # Bene - EPUB viewer 
-    # inputs.bene.packages.${system}.default
+    inputs.bene.packages.${system}.default
 
     # Optional: full LaTeX distribution (fallback for tectonic limitations)
     # texlive.combined.scheme-medium
