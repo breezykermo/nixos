@@ -10,6 +10,7 @@
     ./blender
     ./office
     ./youtube
+    ./remarkable
     ./_inprogress
   ];
 

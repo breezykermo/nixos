@@ -1,5 +1,8 @@
 { lib, ... }:
 {
+  # Load uinput module for rmTabletDriver
+  boot.kernelModules = [ "uinput" ];
+
   # Udev rules for flashing keyboards with Keymapp
   services.udev.extraRules = ''
     # Rules for Oryx web flashing and live training
@@ -17,8 +20,8 @@
     # Keymapp Flashing rules for the Voyager
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
 
-    # remarkable-mouse
-    # SUBSYSTEM=="input", ATTR{name}=="reMarkable pen", MODE="0664", GROUP="input"
-    # SUBSYSTEM=="input", ATTRS{name}=="reMarkable pen", ENV{LIBINPUT_CALIBRATION_MATRIX}="1 0 0 0 1 0"
+    # remarkable-mouse / rmTabletDriver
+    # Grant input group access to uinput for rmTabletDriver
+    KERNEL=="uinput", MODE="0660", GROUP="input"
   '';
 }

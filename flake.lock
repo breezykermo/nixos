@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768655231,
-        "narHash": "sha256-hVFYu10m/V3KKesKYLO0pZ7O453DUqzjweiK8nLj5UQ=",
+        "lastModified": 1768687367,
+        "narHash": "sha256-F3XTMI/j85kBtM9foEBI0WJQhHdE980VhHaRlEDtQoA=",
         "owner": "steveyegge",
         "repo": "beads",
-        "rev": "4f0f5744a6dc2b65d4f8ea4c758c8b7947cf4bb3",
+        "rev": "c99bd00ca71a728b50736c8b5c23d3b05016bc11",
         "type": "github"
       },
       "original": {
@@ -31,11 +31,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1768667804,
-        "narHash": "sha256-lB+O3rZKwfT3hDq+WCaQLo53mt6P0JVDmHx2mdju9SQ=",
+        "lastModified": 1768668696,
+        "narHash": "sha256-iDS3QoEQ2/nOM5C8qSSdkxlQuyu5jKzfy3pidEshWug=",
         "owner": "breezykermo",
         "repo": "bene",
-        "rev": "9e68e1ead5adbc8f85658edd374b100c391c7dda",
+        "rev": "048660f2fc1689517b027fe5fe9b4adc7e04cf40",
         "type": "github"
       },
       "original": {
@@ -269,11 +269,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768598210,
-        "narHash": "sha256-kkgA32s/f4jaa4UG+2f8C225Qvclxnqs76mf8zvTVPg=",
+        "lastModified": 1768749864,
+        "narHash": "sha256-EKRMFBLBRCHrFZ5luX85RTnsN3b2q3FjZEi62vXwJBE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c47b2cc64a629f8e075de52e4742de688f930dc6",
+        "rev": "5148e08046dc8c74c66b8aee4d302a47d6931b56",
         "type": "github"
       },
       "original": {

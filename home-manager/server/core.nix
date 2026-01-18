@@ -42,7 +42,13 @@
     b = "bartib -f ~/.bartib";
     c = "clear";
     m = "maestral";
-    python = "nvim-python3"; 
+    # reMarkable tablet: run with landscape rotation (USB-C on left)
+    # Use -r 1 for 90° CW, -r 2 for 180°, -r 3 for 270° CW
+    rmt = "rmTabletDriver --key=/home/lox/.ssh/id_rsa_remarkable -r 3";
+    rmt-portrait = "rmTabletDriver --key=/home/lox/.ssh/id_rsa_remarkable";
+    # Monitor switching (note: may not work due to Hyprland tablet limitations)
+    rm-laptop = "hyprctl keyword device:remarkabletablet-fakepen:output eDP-1";
+    rm-external = "hyprctl keyword device:remarkabletablet-fakepen:output DP-1";
   };
 
   home.sessionVariables = {
