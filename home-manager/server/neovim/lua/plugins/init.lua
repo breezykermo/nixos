@@ -75,6 +75,7 @@ require('lazy').setup({
   -- Org mode
   {
     'nvim-orgmode/orgmode',
+    tag = '0.7.2',  -- Pin to stable release to avoid buffer handling regression
     event = 'VeryLazy',
     ft = { 'org' },
     config = function()
