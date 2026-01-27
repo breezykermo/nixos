@@ -323,6 +323,26 @@ in
 		    keyword = "ne";
 		    url = "https://app.netlify.com/teams/breezykermo/sites/";
 		  }
+
+		  # Zulip 
+		  {
+		    name = "[f]ree [c]omputing [l]ab";
+		    tags = [];
+		    keyword = "fcl";
+		    url = "https://freecomputinglab.zulipchat.com/#feed";
+		  }
+		  {
+		    name = "[c]ognitive [e]ngineering [l]ab";
+		    tags = [];
+		    keyword = "cel";
+		    url = "https://cognitive-engineering-lab.zulipchat.com/#feed";
+		  }
+		  {
+		    name = "software [fog]";
+		    tags = [];
+		    keyword = "fog";
+		    url = "https://software-fog.zulipchat.com/#feed";
+		  }
 		];
 	};
       };
