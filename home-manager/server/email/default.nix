@@ -113,6 +113,7 @@ in {
     typst2html    # Wrapper script for converting Typst to HTML via stdin/stdout
     khard         # CardDAV contact manager for email autocomplete
     vdirsyncer    # CardDAV synchronization tool
+    libnotify     # provides notify-send for desktop notifications
   ];
 
   programs = {
@@ -165,6 +166,10 @@ in {
 
           # Convert PDFs to text
           "application/pdf" = "pdftotext - -";
+        };
+        triggers = {
+          # Desktop notification on new email
+          new-email = ''exec notify-send -i mail-unread "{{.From | mlist | names | join \", \"}}" "{{.Subject}}"'';
         };
       };
       extraBinds = {

@@ -73,6 +73,7 @@
     font-size = 12
 
     copy-on-select = true
+    desktop-notifications = true
 
     command = tmux attach-session -t .
 
@@ -84,5 +85,24 @@
   programs.rofi = {
     enable = true;
     theme = "${theme.rofiTheme}";
+  };
+
+  # Notification daemon for Wayland/Hyprland
+  services.mako = {
+    enable = true;
+    settings = {
+      "" = {
+        background-color = "${theme.background}";
+        text-color = "${theme.foreground}";
+        border-color = "${theme.colors.blue}";
+        border-radius = 0;
+        border-size = 2;
+        default-timeout = 5000;
+        font = "Berkeley Mono Nerd Font Mono 11";
+        icons = true;
+        max-visible = 3;
+        layer = "overlay";
+      };
+    };
   };
 }
