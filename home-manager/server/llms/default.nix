@@ -1,10 +1,11 @@
 { config, pkgs, lib, inputs, system, ... }:
 let
   abacus = pkgs.callPackage ./abacus.nix { };
+  beads = pkgs.callPackage ./beads.nix { };
 in
 {
   home.packages = [
-    inputs.beads.packages.${system}.default
+    beads
     abacus
   ];
 
