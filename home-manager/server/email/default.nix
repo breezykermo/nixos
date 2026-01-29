@@ -382,6 +382,7 @@ in {
         extraAccounts = {
           folder-map = "~/.config/aerc/brown-foldermap";
           cache-headers = "true";
+          check-mail = "1m";
         };
       };
     };
@@ -418,6 +419,7 @@ in {
         extraAccounts = {
           folder-map = "~/.config/aerc/gmail-foldermap";
           cache-headers = "true";
+          check-mail = "1m";
         };
       };
     };
@@ -452,6 +454,7 @@ in {
         enable = true;
         extraAccounts = {
           cache-headers = "true";
+          check-mail = "1m";
         };
       };
     };
