@@ -167,9 +167,9 @@ in {
           # Convert PDFs to text
           "application/pdf" = "pdftotext - -";
         };
-        triggers = {
+        hooks = {
           # Desktop notification on new email
-          new-email = ''exec notify-send -i mail-unread "{{.From | mlist | names | join \", \"}}" "{{.Subject}}"'';
+          mail-received = ''notify-send "[$AERC_ACCOUNT/$AERC_FOLDER] New mail from $AERC_FROM_NAME" "$AERC_SUBJECT"'';
         };
       };
       extraBinds = {
