@@ -30,6 +30,11 @@
       url = "github:breezykermo/bene/feat/adds-nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Agenix - declarative secrets management
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
@@ -54,11 +59,13 @@
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit userName machineVars; };
+      specialArgs = { inherit inputs userName machineVars; };
       modules = [
         ./configuration.nix
         ./machines/base.nix
         ./machines/${selectedMachine}/configuration.nix
+        ./secrets
+        inputs.agenix.nixosModules.default
 
         home-manager.nixosModules.home-manager {
           # system wide

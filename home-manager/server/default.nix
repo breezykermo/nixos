@@ -10,5 +10,6 @@
     ./llms
     ./writing
     ./machine-report
+    ./zulip
   ];
 }
