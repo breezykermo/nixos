@@ -75,7 +75,7 @@
     copy-on-select = true
     desktop-notifications = true
 
-    command = tmux attach-session -t .
+    command = tmux attach || tmux new-session
 
     keybind = ctrl+v=paste_from_clipboard
     keybind = shift+alt+j=increase_font_size:1
