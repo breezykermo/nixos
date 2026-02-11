@@ -29,6 +29,7 @@
     gh          # Github CLI
     uv          # Python package installer and resolver
     sqlite      # useful little database
+    cargo-binstall # install pre-built Rust binaries
 
   ];
 
