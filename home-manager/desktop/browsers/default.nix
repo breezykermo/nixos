@@ -343,6 +343,14 @@ in
 		    keyword = "fog";
 		    url = "https://software-fog.zulipchat.com/#feed";
 		  }
+
+      # ReMarkable
+      {
+        name = "[r]e[m]arkable";
+        tags = [];
+        keyword = "rm";
+        url = "https://app.remarkable.com/folder/home";
+      }
 		];
 	};
       };
