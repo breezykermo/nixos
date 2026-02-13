@@ -143,6 +143,9 @@ in {
         compose = {
           format-flowed = true;  # Enable RFC 3676 format=flowed for proper text reflow
           editor = "typst-editor";
+          empty-subject-warning = true;
+          no-attachment-warning = "^[^>]*attach(ed|ment)";
+          send-with-delay = "10s";
           reply-to-self = false;  # Exclude own email address from To/Cc when replying
           address-book-cmd = "khard email --remove-first-line --parsable '%s'";
         };
@@ -166,6 +169,12 @@ in {
 
           # Convert PDFs to text
           "application/pdf" = "pdftotext - -";
+
+          # Calendar invites, delivery status, and headers
+          "text/calendar" = "calendar";
+          "message/delivery-status" = "colorize";
+          "message/rfc822" = "colorize";
+          ".headers" = "colorize";
         };
         hooks = {
           # Desktop notification on new email
@@ -223,9 +232,9 @@ in {
           "zb" = ":align bottom<Enter>";
           "<Enter>" = ":view<Enter>";
           "d" = ":choose -o y 'Really delete this message' delete-message<Enter>";
-          "D" = ":delete<Enter>";
-          "a" = ":archive flat<Enter>";
+          "a" = ":prompt 'Archive this message?' archive flat<Enter>";
           "A" = ":unmark -a<Enter>:mark -T<Enter>:archive flat<Enter>";
+          "I" = ":move INBOX<Enter>";
           "C" = ":compose<Enter>";
           "m" = ":compose<Enter>";
           "b" = ":bounce<space>";
@@ -239,8 +248,8 @@ in {
           "$" = ":term<space>";
           "!" = ":term<space>";
           "|" = ":pipe<space>";
-          "/" = ":search<space>";
-          "\\" = ":filter<space>";
+          "/" = ":filter<space>";
+          "\\" = ":search<space>";
           "n" = ":next-result<Enter>";
           "N" = ":prev-result<Enter>";
           "<Esc>" = ":clear<Enter>";
@@ -252,6 +261,7 @@ in {
           "pb" = ":patch rebase<Enter>";
           "pt" = ":patch term<Enter>";
           "ps" = ":patch switch <Tab>";
+          "<C-r>" = ":read -t<Enter>";
         };
         "messages:folder=Drafts" = {
           "<Enter>" = ":recall<Enter>";
@@ -263,8 +273,8 @@ in {
           "o" = ":open<Enter>";
           "S" = ":save<space>";
           "|" = ":pipe<space>";
-          "D" = ":delete<Enter>";
-          "A" = ":archive flat<Enter>";
+          "A" = ":unmark -a<Enter>:mark -T<Enter>:archive flat<Enter>";
+          "I" = ":move INBOX<Enter>";
           "<C-y>" = ":copy-link <space>";
           "<C-l>" = ":open-link <space>";
           "f" = ":forward<Enter>";
@@ -329,7 +339,7 @@ in {
           "n" = ":abort<Enter>";
           "v" = ":preview<Enter>";
           "p" = ":postpone<Enter>";  # Save as draft
-          "q" = ":abort<Enter>";
+          "q" = ":choose -o d discard abort -o p postpone postpone<Enter>";
           "e" = ":edit<Enter>";
           "a" = ":attach<space>";
           "d" = ":detach<space>";
@@ -381,6 +391,10 @@ in {
         enable = true;
         extraAccounts = {
           folder-map = "~/.config/aerc/brown-foldermap";
+          folders = "INBOX,All Mail,Sent Mail,Drafts,Spam";
+          archive = "All Mail";
+          postpone = "Drafts";
+          copy-to = "";  # Gmail SMTP auto-saves to Sent Mail; avoid duplicates
           cache-headers = "true";
           check-mail = "1m";
         };
@@ -418,6 +432,10 @@ in {
         enable = true;
         extraAccounts = {
           folder-map = "~/.config/aerc/gmail-foldermap";
+          folders = "INBOX,All Mail,Sent Mail,Drafts,Spam";
+          archive = "All Mail";
+          postpone = "Drafts";
+          copy-to = "";  # Gmail SMTP auto-saves to Sent Mail; avoid duplicates
           cache-headers = "true";
           check-mail = "1m";
         };
