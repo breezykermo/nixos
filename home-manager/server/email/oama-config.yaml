@@ -1,0 +1,22 @@
+# oama (OAuth Account Manager) configuration for Outlook/Hotmail
+#
+# Uses Thunderbird's public OAuth client ID with device code flow.
+# No Azure app registration or client_secret needed.
+#
+# SETUP:
+#   oama authorize microsoft lachlankermode@live.com --device
+#
+# TEST:
+#   oama access lachlankermode@live.com
+
+encryption:
+  tag: GPG
+  contents: lachie@ohrg.org
+
+services:
+  microsoft:
+    client_id: 9e5f94bc-e8a4-4e73-b8be-63364c29d753
+    auth_scope: https://outlook.office.com/IMAP.AccessAsUser.All
+      https://outlook.office.com/SMTP.Send
+      offline_access
+    tenant: common

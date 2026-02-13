@@ -112,6 +112,7 @@ in {
     pass          # password manager for secure credential storage
     typst-editor  # Wrapper script for editing aerc compose files with Typst syntax highlighting
     typst2html    # Wrapper script for converting Typst to HTML via stdin/stdout
+    oama          # OAuth credential manager for email (used for Outlook/Hotmail)
     khard         # CardDAV contact manager for email autocomplete
     vdirsyncer    # CardDAV synchronization tool
     libnotify     # provides notify-send for desktop notifications
@@ -478,6 +479,73 @@ in {
         };
       };
     };
+
+    # Microsoft/Outlook account using OAuth2 via oama + Thunderbird's public client ID.
+    # Uses device code flow — no Azure app registration or client_secret needed.
+    #
+    # SETUP ON A NEW MACHINE:
+    # 1. Deploy this config: just deploy
+    # 2. If deploy fails with "Existing file ... would be clobbered":
+    #    rm ~/.config/oama/config.yaml && just deploy
+    # 3. If home-manager doesn't create the oama symlink:
+    #    sudo systemctl restart home-manager-lox.service
+    # 4. Authorize oama (opens browser-based device code flow):
+    #    oama authorize microsoft lachlankermode@live.com --device
+    #    - Go to https://microsoft.com/devicelogin
+    #    - Enter the code shown in the terminal
+    #    - Sign in with lachlankermode@live.com and approve permissions
+    # 5. Verify token works:
+    #    oama access lachlankermode@live.com
+    # 6. Open aerc — the outlook account should connect.
+    #
+    # Token renewal is automatic via oama. If tokens expire after extended
+    # downtime, re-run step 4.
+    #
+    # Config details: see oama-config.yaml for OAuth endpoints and scopes.
+    "outlook" = {
+      address = "lachlankermode@live.com";
+      userName = "lachlankermode@live.com";
+      realName = machineVars.userFullName;
+
+      passwordCommand = "oama access lachlankermode@live.com";
+
+      folders = {
+        inbox = "INBOX";
+        sent = "Sent";
+        drafts = "Drafts";
+      };
+
+      imap = {
+        host = "outlook.office365.com";
+        port = 993;
+        tls.enable = true;
+      };
+
+      smtp = {
+        host = "outlook.office365.com";
+        port = 587;
+        tls = {
+          enable = true;
+          useStartTls = true;  # Port 587 uses STARTTLS
+        };
+      };
+
+      aerc = {
+        enable = true;
+        extraAccounts = {
+          # Override source/outgoing to use xoauth2 protocol
+          source = "imaps+xoauth2://lachlankermode%40live.com@outlook.office365.com:993";
+          outgoing = "smtp+xoauth2://lachlankermode%40live.com@outlook.office365.com:587";
+          source-cred-cmd = "oama access lachlankermode@live.com";
+          outgoing-cred-cmd = "oama access lachlankermode@live.com";
+          folders = "INBOX,Sent,Archive,Drafts,Junk Email";
+          archive = "Archive";
+          postpone = "Drafts";
+          cache-headers = "true";
+          check-mail = "1m";
+        };
+      };
+    };
   };
 
   # Folder-map files for Gmail accounts to remove [Gmail]/ prefix
@@ -494,6 +562,9 @@ in {
 
   # Custom Typst-formatted reply template
   xdg.configFile."aerc/templates/quoted_reply_typst".text = builtins.readFile ./quoted_reply_typst.template;
+
+  # oama (OAuth Account Manager) configuration for Outlook/Hotmail
+  xdg.configFile."oama/config.yaml".source = ./oama-config.yaml;
 
   # vdirsyncer configuration for CardDAV contact sync
   xdg.configFile."vdirsyncer/config".source = ./vdirsyncer-config;
