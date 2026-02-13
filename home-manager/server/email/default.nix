@@ -444,41 +444,6 @@ in {
       };
     };
 
-    "inferstudio" = {
-      address = "lachlan@inferstudio.com";
-      userName = "lachlan@inferstudio.com";
-      realName = machineVars.userFullName;
-
-      passwordCommand = "pass show email/inferstudio";
-
-      folders = {
-        inbox = "INBOX";
-      };
-
-      imap = {
-        host = "imappro.zoho.eu";
-        port = 993;
-        tls.enable = true;
-      };
-
-      smtp = {
-        host = "smtppro.zoho.eu";
-        port = 465;
-        tls = {
-          enable = true;
-          useStartTls = false;  # Port 465 uses implicit TLS, not STARTTLS
-        };
-      };
-
-      aerc = {
-        enable = true;
-        extraAccounts = {
-          cache-headers = "true";
-          check-mail = "1m";
-        };
-      };
-    };
-
     # Microsoft/Outlook account using OAuth2 via oama + Thunderbird's public client ID.
     # Uses device code flow — no Azure app registration or client_secret needed.
     #
@@ -540,6 +505,41 @@ in {
           folders = "INBOX,Sent,Archive,Drafts,Junk Email";
           archive = "Archive";
           postpone = "Drafts";
+          cache-headers = "true";
+          check-mail = "1m";
+        };
+      };
+    };
+
+    "inferstudio" = {
+      address = "lachlan@inferstudio.com";
+      userName = "lachlan@inferstudio.com";
+      realName = machineVars.userFullName;
+
+      passwordCommand = "pass show email/inferstudio";
+
+      folders = {
+        inbox = "INBOX";
+      };
+
+      imap = {
+        host = "imappro.zoho.eu";
+        port = 993;
+        tls.enable = true;
+      };
+
+      smtp = {
+        host = "smtppro.zoho.eu";
+        port = 465;
+        tls = {
+          enable = true;
+          useStartTls = false;  # Port 465 uses implicit TLS, not STARTTLS
+        };
+      };
+
+      aerc = {
+        enable = true;
+        extraAccounts = {
           cache-headers = "true";
           check-mail = "1m";
         };
