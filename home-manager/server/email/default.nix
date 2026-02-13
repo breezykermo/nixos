@@ -135,6 +135,7 @@ in {
           sort = "-r date";
           threading-enabled = true;  # Enable threaded view
           force-client-threads = true;  # Use client-side threading
+          styleset-name = "catppuccin-mocha";
         };
         viewer = {
           always-show-mime = true;
@@ -486,6 +487,9 @@ in {
   xdg.configFile."aerc/gmail-foldermap".text = ''
     * = [Gmail]/*
   '';
+
+  # Catppuccin Mocha styleset for aerc
+  xdg.configFile."aerc/stylesets/catppuccin-mocha".source = ./catppuccin-mocha.styleset;
 
   # Custom Typst-formatted reply template
   xdg.configFile."aerc/templates/quoted_reply_typst".text = builtins.readFile ./quoted_reply_typst.template;
