@@ -103,7 +103,6 @@ in {
 
   home.packages = with pkgs; [
     w3m           # text-based web browser for interactive HTML email viewing
-    lynx          # text-based web browser for HTML email rendering with good spacing
     libsixel      # provides img2sixel for high-quality sixel image rendering
     urlscan       # extract and open URLs from emails
     poppler-utils # provides pdftotext for PDF conversion
@@ -162,7 +161,7 @@ in {
           # Render HTML to readable text with color support and numbered links
           # Uses aerc's built-in html filter (network-safe by default)
           # Passes -o display_link_number=1 to w3m for visible link numbers
-          "text/html" = "lynx -dump -stdin -display_charset=UTF-8 -width=90 | colorize";
+          "text/html" = "w3m -I UTF-8 -T text/html -cols 90 -o display_link_number=1 | colorize";
 
           # Plain text with wrapping and colorization
           "text/plain" = "wrap -w 90 | colorize";
@@ -299,7 +298,7 @@ in {
           # Extract and open URLs with urlscan
           "u" = ":pipe urlscan<Enter>";
           # Open email in interactive w3m for rich HTML rendering
-          "W" = ":pipe ! w3m -I UTF-8 -T text/html<Enter>";
+          "W" = ":pipe ! w3m -I UTF-8 -T text/html -cols 100 -o display_link_number=1<Enter>";
         };
         "view::passthrough" = {
           "$noinherit" = "true";
