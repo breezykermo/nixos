@@ -296,7 +296,7 @@ in {
           "K" = ":prev<Enter>";
           "<C-Left>" = ":prev<Enter>";
           # Extract and open URLs with urlscan
-          "u" = ":pipe urlscan<Enter>";
+          "u" = ":pipe urlscan --compact<Enter>";
           # Open email in interactive w3m for rich HTML rendering
           "W" = ":pipe ! w3m -I UTF-8 -T text/html -cols 100 -o display_link_number=1<Enter>";
         };

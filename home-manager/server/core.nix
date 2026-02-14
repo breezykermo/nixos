@@ -123,6 +123,25 @@
     newsboat = {
       enable = true;
       urls = [
+        # --- Section query feeds ---
+        {
+          url = "\"query:Jobs:tags # \\\"jobs\\\"\"";
+          tags = [ ];
+        }
+        {
+          url = "\"query:Blogs:tags # \\\"blog\\\"\"";
+          tags = [ ];
+        }
+        {
+          url = "\"query:Podcasts:tags # \\\"podcast\\\"\"";
+          tags = [ ];
+        }
+        {
+          url = "\"query:News:tags # \\\"news\\\"\"";
+          tags = [ ];
+        }
+
+        # --- Jobs ---
         {
           url = "https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss";
           tags = [ "jobs" "~I-School Feed" ];
@@ -148,6 +167,72 @@
           tags = [ "jobs" "~Oxide" ];
         }
 
+        # --- Blogs ---
+        {
+          url = "https://drewdevault.com/feed.xml";
+          tags = [ "blog" "~Drew DeVault" ];
+        }
+        {
+          url = "https://crystaljjlee.com/rss/";
+          tags = [ "blog" "~Crystal JJ Lee" ];
+        }
+        {
+          url = "https://newleftreview.org/sidecar/feed";
+          tags = [ "blog" "~New Left Review Sidecar" ];
+        }
+        {
+          url = "https://nplusonemag.com/feed/";
+          tags = [ "blog" "~n+1" ];
+        }
+        {
+          url = "https://leifweatherby.substack.com/feed";
+          tags = [ "blog" "~Leif Weatherby" ];
+        }
+        {
+          url = "https://aisnakeoil.substack.com/feed";
+          tags = [ "blog" "~AI Snake Oil" ];
+        }
+        {
+          url = "https://simonw.substack.com/feed";
+          tags = [ "blog" "~Simon Willison" ];
+        }
+        {
+          url = "https://slavoj.substack.com/feed";
+          tags = [ "blog" "~Slavoj Zizek" ];
+        }
+        {
+          url = "https://maxread.substack.com/feed";
+          tags = [ "blog" "~Read Max" ];
+        }
+
+        # --- Podcasts ---
+        {
+          url = "https://www.patreon.com/rss/Macrodose?auth=U7WUJdAv5G6TUSw3WXUwpBsosdDyfFgY&show=865850";
+          tags = [ "podcast" "~Macrodose" ];
+        }
+        {
+          url = "https://www.patreon.com/rss/poltheoryother?auth=p6t2BdMMaBNY7L4V2yVHcUq6cuPdSO_L&show=859104";
+          tags = [ "podcast" "~Pol Theory Other" ];
+        }
+        {
+          url = "https://www.patreon.com/rss/OrdinaryUnhappiness?auth=gyIkT58d5SKu_tw-bVm3jCODJWUSDUdd&show=867820";
+          tags = [ "podcast" "~Ordinary Unhappiness" ];
+        }
+
+        # --- News ---
+        {
+          url = "https://hnrss.org/frontpage?count=100";
+          tags = [ "news" "~Hacker News" ];
+        }
+        {
+          url = "https://kite.kagi.com/tech.xml";
+          tags = [ "news" "~Kagi News - Technology" ];
+        }
+        {
+          url = "http://rss.slashdot.org/Slashdot/slashdot";
+          tags = [ "news" "~Slashdot" ];
+        }
+
       ];
       extraConfig = ''
         # Vim-style keybindings
@@ -169,6 +254,7 @@
         bind-key x pb-delete
 
         # General settings
+        browser "firefox %u"
         auto-reload yes
         reload-time 120
         reload-threads 4
