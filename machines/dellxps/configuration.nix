@@ -14,6 +14,13 @@
   # Disable protonmail-bridge on Dell
   services.protonmail-bridge.enable = false;
 
+  # Disable lid close suspend - keep laptop running when lid is closed
+  services.logind = {
+    lidSwitch = "ignore";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
+  };
+
   # Enable virt-manager on Dell
   programs.virt-manager.enable = true;
 

@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, machineVars, ... }:
 
 {
   services.hypridle = {
-    enable = true;
+    enable = machineVars.hostname != "dellxps";
     package = pkgs.hypridle;
 
     settings = {
