@@ -7,6 +7,8 @@ in
   home.packages = [
     beads
     abacus
+    inputs.llm-agents.packages.${system}.claude-code
+    inputs.llm-agents.packages.${system}.claude-code-router
   ];
 
   home.sessionVariables = {

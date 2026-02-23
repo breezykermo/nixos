@@ -30,6 +30,11 @@
       url = "github:breezykermo/bene/feat/adds-nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # AI coding agent packages (claude-code, claude-code-router, etc.)
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
