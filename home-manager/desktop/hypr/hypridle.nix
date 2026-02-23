@@ -14,18 +14,6 @@
       };
 
       listener = [
-        # Dim screen after 2.5 minutes
-        {
-          timeout = 150;
-          on-timeout = "brightnessctl -s set 10";
-          on-resume = "brightnessctl -r";
-        }
-        # Turn off display after 5 minutes
-        {
-          timeout = 300;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
-        }
         # Lock after 10 minutes
         {
           timeout = 600;
