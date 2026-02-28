@@ -101,6 +101,10 @@ in {
   #
   # ============================================================================
 
+  home.file.".w3m/config".text = ''
+    browser xdg-open %s
+  '';
+
   home.packages = with pkgs; [
     w3m           # text-based web browser for interactive HTML email viewing
     libsixel      # provides img2sixel for high-quality sixel image rendering

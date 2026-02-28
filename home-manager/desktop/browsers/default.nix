@@ -421,6 +421,11 @@ in
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/unofficial-remarkable/latest.xpi";
           installation_mode = "force_installed";
         };
+        # Scroll Indicator:
+        "{133e3b50-f041-4699-b3be-e9f749f01ddf}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/scroll-indicator/latest.xpi";
+          installation_mode = "force_installed";
+        };
         # Zotero
       };
 
