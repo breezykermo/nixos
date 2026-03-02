@@ -20,10 +20,6 @@
       fish_add_path $HOME/.cargo/bin
 
       fish_add_path $HOME/.npm-global/bin
-
-      # Claude Code Router integration
-      set -x ANTHROPIC_BASE_URL http://127.0.0.1:3456
-      set -x ANTHROPIC_AUTH_TOKEN "router"  # Router handles auth
     '';
 
     plugins = [

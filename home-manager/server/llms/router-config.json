@@ -8,7 +8,7 @@
       "name": "anthropic",
       "api_base_url": "https://api.anthropic.com",
       "api_key": "$ANTHROPIC_API_KEY",
-      "models": ["claude-sonnet-4-20250514", "claude-opus-4-20250514"]
+      "models": ["claude-sonnet-4-6", "claude-opus-4-6", "claude-haiku-4-5-20251001"]
     },
     {
       "name": "zai",
@@ -18,7 +18,7 @@
     }
   ],
   "Router": {
-    "default": "anthropic,claude-sonnet-4-20250514",
+    "default": "anthropic,claude-sonnet-4-6",
     "fast": "zai,glm-4.5"
   }
 }
