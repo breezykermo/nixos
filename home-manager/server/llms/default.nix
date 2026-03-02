@@ -24,6 +24,7 @@ in
   home.file = {
     ".claude/skills/typst-author".source = typst-author-skill;
     ".claude/skills/agentic-jujutsu/SKILL.md".source = ./skills/agentic-jujutsu/SKILL.md;
+    ".claude/skills/rheo-author/SKILL.md".source = ./skills/rheo-author/SKILL.md;
   };
 
   home.shellAliases = {
