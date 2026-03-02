@@ -1,0 +1,24 @@
+{
+  "LOG": true,
+  "LOG_LEVEL": "info",
+  "HOST": "127.0.0.1",
+  "PORT": 3456,
+  "Providers": [
+    {
+      "name": "anthropic",
+      "api_base_url": "https://api.anthropic.com",
+      "api_key": "$ANTHROPIC_API_KEY",
+      "models": ["claude-sonnet-4-20250514", "claude-opus-4-20250514"]
+    },
+    {
+      "name": "zai",
+      "api_base_url": "https://api.z.ai/api/anthropic",
+      "api_key": "$ZAI_API_KEY",
+      "models": ["glm-4.5"]
+    }
+  ],
+  "Router": {
+    "default": "anthropic,claude-sonnet-4-20250514",
+    "fast": "zai,glm-4.5"
+  }
+}

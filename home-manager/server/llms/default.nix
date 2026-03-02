@@ -8,6 +8,17 @@ let
     rev = "9e4ace023b255ffbd9dacd26fe27665eef9c6d4b";
     sha256 = "0nl29qhn4i5x7xlai5782zga6xppqzd84i6vv53qz65y105gwahl";
   };
+
+  # Create wrapper script for claude-code-router that reads from pass
+  claude-code-router-wrapper = pkgs.writeShellScriptBin "claude-code-router-wrapper" ''
+    #!${pkgs.bash}/bin/bash
+    # Read API keys from pass
+    export ANTHROPIC_API_KEY=$(${pkgs.pass}/bin/pass show ai/anthropic 2>/dev/null || echo "")
+    export ZAI_API_KEY=$(${pkgs.pass}/bin/pass show ai/zai 2>/dev/null || echo "")
+
+    # Start the router
+    exec ${inputs.llm-agents.packages.${system}.claude-code-router}/bin/claude-code-router "$@"
+  '';
 in
 {
   home.file = {
@@ -17,6 +28,7 @@ in
 
   home.shellAliases = {
     ccb = "claudebox --allow-ssh-agent";
+    cc = "claude";  # Uses router by default
   };
 
   home.packages = [
@@ -34,4 +46,24 @@ in
     DISABLE_ERROR_REPORTING = 1;
     DISABLE_NON_ESSENTIAL_MODEL_CALLS = 1;
   };
+
+  # Claude Code Router systemd service
+  systemd.user.services.claude-code-router = {
+    Unit = {
+      Description = "Claude Code Router - Dynamic LLM switching proxy";
+      After = "network.target";
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${claude-code-router-wrapper}/bin/claude-code-router-wrapper";
+      Restart = "always";
+      RestartSec = "5s";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
+  # Deploy router config
+  xdg.configFile."claude-code-router/config.json".source = ./router-config.json;
 }
