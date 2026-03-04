@@ -8,7 +8,7 @@
 
   # Add additional user groups for Dell
   users.users.${userName} = {
-    extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" "input" ];
   };
 
   # Disable protonmail-bridge on Dell
