@@ -3,6 +3,7 @@
   home.packages = with pkgs; [
     pandoc      # document processor
     tectonic    # LaTeX compilation
+    inputs.typst-flake.packages.${system}.default  # modern typesetting system
     pdfpc       # PDF presentation console
     evince      # PDF viewer
 
