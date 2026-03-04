@@ -24,7 +24,7 @@ in
     set -x ANTHROPIC_BASE_URL https://api.z.ai/api/anthropic
     set -x ANTHROPIC_AUTH_TOKEN (pass show ai/zai)
     set -x ANTHROPIC_MODEL glm-4.5
-    claude --dangerously-skip-permissions $argv[1]
+    claudebox --allow-ssh-agent $argv[1]
   '';
 
   home.packages = [
