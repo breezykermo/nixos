@@ -239,6 +239,13 @@ in
 		    keyword = "co";
 		    url = "https://calendar.proton.me/u/0/";
 		  }
+		  {
+		    name = "[d]rive [o]hrg";
+		    tags = [];
+		    keyword = "do";
+		    url = "https://drive.proton.me/u/0/";
+		  }
+
 
 		  # Hotmail 
 		  {
