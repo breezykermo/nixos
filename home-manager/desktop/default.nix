@@ -11,6 +11,7 @@
     ./office
     ./youtube
     ./remarkable
+    ./protonvpn
     ./_inprogress
   ];
 
