@@ -299,10 +299,10 @@ in {
           "<C-Right>" = ":next<Enter>";
           "K" = ":prev<Enter>";
           "<C-Left>" = ":prev<Enter>";
-          # Extract and open URLs with urlscan
-          "u" = ":pipe urlscan --compact<Enter>";
-          # Open email in interactive w3m for rich HTML rendering
-          "W" = ":pipe ! w3m -I UTF-8 -T text/html -cols 100 -o display_link_number=1<Enter>";
+          # Extract and open URLs with urlscan (shows link text as context)
+          "u" = ":pipe urlscan<Enter>";
+          # Open HTML email in default browser (Firefox)
+          "W" = ":open<Enter>";
         };
         "view::passthrough" = {
           "$noinherit" = "true";
