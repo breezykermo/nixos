@@ -19,6 +19,10 @@
     # services.printing.enable = true;
     protonmail-bridge.enable = lib.mkDefault true;
     system76-scheduler.settings.cfsProfiles.enable = lib.mkDefault true;
+    ollama = {
+      enable = true;
+      loadModels = [ "smoldocling" ];
+    };
   };
 
   programs.virt-manager.enable = lib.mkDefault false;
