@@ -8,6 +8,38 @@ in
   # nmtui and nmcli
   networking.hostName = machineVars.hostname;
   networking.networkmanager.enable = true;
+
+  networking.networkmanager.ensureProfiles = {
+    environmentFiles = [ "/etc/nixos/secrets/eduroam.env" ];
+    profiles.eduroam = {
+      connection = {
+        id = "eduroam";
+        type = "wifi";
+        autoconnect = "true";
+      };
+      wifi = {
+        ssid = "eduroam";
+        mode = "infrastructure";
+      };
+      "wifi-security" = {
+        key-mgmt = "wpa-eap";
+      };
+      "802-1x" = {
+        eap = "peap;";
+        identity = "$EDUROAM_IDENTITY";
+        password = "$EDUROAM_PASSWORD";
+        phase2-auth = "mschapv2";
+        # Use system CA bundle — includes Sectigo root used by Brown's RADIUS servers
+        ca-cert = "/etc/ssl/certs/ca-certificates.crt";
+      };
+      ipv4.method = "auto";
+      ipv6 = {
+        method = "auto";
+        addr-gen-mode = "stable-privacy";
+      };
+    };
+  };
+
   # necessary for routing traffic through wireguard
   networking.firewall.checkReversePath = false;
 
