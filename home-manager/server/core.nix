@@ -92,7 +92,12 @@
     };
 
     # file directory navigation, option 2
-    lf.enable = true;
+    lf = {
+      enable = true;
+      keybindings = {
+        "s" = "$SHELL";
+      };
+    };
 
     # A command-line fuzzy finder
     fzf = {
