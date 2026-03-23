@@ -95,7 +95,7 @@
     lf = {
       enable = true;
       keybindings = {
-        "s" = "$SHELL";
+        "s" = "${pkgs.fish}/bin/fish";
       };
     };
 
