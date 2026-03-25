@@ -19,6 +19,15 @@
   };
 
   xdg = {
+    desktopEntries.bene = {
+      name = "Bene Reader";
+      exec = "bene %f";
+      icon = "bene-app";
+      mimeType = ["application/epub+zip"];
+      terminal = false;
+      categories = ["Office" "Viewer"];
+    };
+
     terminal-exec = {
       enable = true;
       settings.default = ["ghostty.desktop"];
