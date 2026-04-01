@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    protonvpn-gui
+    proton-vpn
     wireguard-tools  # required for WireGuard protocol support
   ];
 }

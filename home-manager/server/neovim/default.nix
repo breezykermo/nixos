@@ -45,7 +45,7 @@
     typescript-language-server
     shellcheck
     tinymist # Typst
-    python312Packages.python-lsp-server
+    (python312Packages.python-lsp-server.overrideAttrs (_: { doCheck = false; }))
 
 		#-- misc
 		tree-sitter

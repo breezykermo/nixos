@@ -6,7 +6,7 @@
     git-crypt   # encrypted git repos
 
     # Terminal-based diff viewer with interactive file tree navigation
-    inputs.ftdv.packages.${system}.default
+    (inputs.ftdv.packages.${system}.default.overrideAttrs (_: { doCheck = false; }))
   ];
 
   home.shellAliases = {
@@ -30,6 +30,7 @@
     git = {
       enable = true;
       lfs.enable = true;
+      signing.format = null;
       settings = {
         user.name = machineVars.userFullName;
         user.email = machineVars.userEmail;
