@@ -43,8 +43,22 @@ require('lazy').setup({
 	-- Nerd tree
 	'preservim/nerdtree',
 
-  -- Rainbow delimiters
-  'hiphish/rainbow-delimiters.nvim',
+  -- Rainbow delimiters (treesitter-based; only attaches when a parser exists)
+  {
+    'hiphish/rainbow-delimiters.nvim',
+    config = function()
+      local rainbow = require('rainbow-delimiters')
+      require('rainbow-delimiters.setup').setup({
+        strategy = {
+          [''] = function(bufnr)
+            local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+            if not ok or not parser then return nil end
+            return rainbow.strategy['global']
+          end,
+        },
+      })
+    end,
+  },
 
   -- Git blame
   {
