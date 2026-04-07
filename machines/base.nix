@@ -21,7 +21,7 @@
     system76-scheduler.settings.cfsProfiles.enable = lib.mkDefault true;
     ollama = {
       enable = true;
-      loadModels = [ "smoldocling" ];
+      loadModels = [ ];
     };
   };
 
