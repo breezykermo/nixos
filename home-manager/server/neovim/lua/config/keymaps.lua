@@ -19,6 +19,9 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 map('n', '<leader>k', ':NERDTreeFind<cr>', opts)
 -- map('n', '<leader>m', ':NERDTreeToggle<cr>', opts)
 
+-- TodoTelescope
+map('n', '<leader>st', ':TodoTelescope<cr>', opts)
+
 -- Tabs, see https://github.com/romgrk/barbar.nvim
 map('n', '<C-z>', '<Cmd>BufferPrevious<CR>', opts)
 map('n', '<C-x>', '<Cmd>BufferNext<CR>', opts)

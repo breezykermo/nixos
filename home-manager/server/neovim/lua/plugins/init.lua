@@ -860,6 +860,7 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'recent-files')
+      pcall(require('telescope').load_extension, 'todo-comments')
       -- pcall(require('telescope').load_extension, 'ui-select')
       -- pcall(require('telescope').load_extension, 'frecency')
 
@@ -877,7 +878,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sa', builtin.live_grep, { desc = '[S]earch [A]ll Files by Grep' })
 
-      vim.keymap.set('n', '<leader>st', builtin.treesitter, { desc = '[S]earch by [T]reesitter' })
+      -- <leader>st is now used for TodoTelescope (see keymaps.lua)
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
