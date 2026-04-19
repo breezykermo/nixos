@@ -28,9 +28,9 @@ in
         eap = "peap;";
         identity = "$EDUROAM_IDENTITY";
         password = "$EDUROAM_PASSWORD";
+        password-flags = "0";
         phase2-auth = "mschapv2";
-        # Use system CA bundle — includes Sectigo root used by Brown's RADIUS servers
-        ca-cert = "/etc/ssl/certs/ca-certificates.crt";
+        system-ca-certs = "true";
       };
       ipv4.method = "auto";
       ipv6 = {
