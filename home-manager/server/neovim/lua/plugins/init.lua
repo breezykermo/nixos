@@ -693,6 +693,7 @@ require('lazy').setup({
 				  barbar = true,
 				  cmp = true,
 				  gitsigns = true,
+				  lualine = true,
 			  },
 		  })
 
