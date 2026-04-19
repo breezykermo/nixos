@@ -1046,3 +1046,10 @@ require('lazy').setup({
     end,
   },
 }, {})
+
+-- Patch: guard against nil nodes in treesitter get_node_text (nvim 0.12.0 compat)
+local original_get_node_text = vim.treesitter.get_node_text
+vim.treesitter.get_node_text = function(node, source, opts)
+  if node == nil then return '' end
+  return original_get_node_text(node, source, opts)
+end
