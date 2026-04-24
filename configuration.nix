@@ -74,7 +74,11 @@ in
     maestral
     pcmanfm
     v4l-utils
+    openvpn
   ];
+
+  # OpenVPN support via NetworkManager
+  networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
 
   # For scrcpy
   # programs.adb.enable = true;
