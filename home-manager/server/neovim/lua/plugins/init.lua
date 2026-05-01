@@ -1048,9 +1048,11 @@ require('lazy').setup({
   },
 }, {})
 
--- Patch: guard against nil nodes in treesitter get_node_text (nvim 0.12.0 compat)
+-- Patch: guard against nil/invalid nodes in treesitter get_node_text (nvim 0.12.0 compat)
 local original_get_node_text = vim.treesitter.get_node_text
 vim.treesitter.get_node_text = function(node, source, opts)
-  if node == nil then return '' end
-  return original_get_node_text(node, source, opts)
+  if node == nil or type(node) ~= 'userdata' or not node.range then return '' end
+  local ok, result = pcall(original_get_node_text, node, source, opts)
+  if not ok then return '' end
+  return result
 end
