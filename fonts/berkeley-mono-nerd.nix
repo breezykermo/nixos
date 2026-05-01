@@ -9,9 +9,8 @@ stdenvNoCC.mkDerivation {
   pname = "berkeley-mono-nerd-font";
   version = "1.4.83";
 
-  # Use builtins.path to include directory with filter for TTF files only
-  src = builtins.path {
-    path = /etc/nixos/fonts/berkeley-mono;
+  src = lib.cleanSourceWith {
+    src = ./berkeley-mono;
     name = "berkeley-mono-source";
     filter = path: type:
       (type == "directory") ||
