@@ -21,6 +21,7 @@ in
 
   programs.firefox = {
     enable = true;
+    configPath = ".mozilla/firefox";
     profiles = {
       default = {
         id = 0;
@@ -462,6 +463,7 @@ in
         "browser.newtabpage.activity-stream.showSponsored" = lock-false;
         "browser.newtabpage.activity-stream.system.showSponsored" = lock-false;
         "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
+        "middlemouse.paste" = lock-false;
       };
     };
   };
