@@ -37,10 +37,7 @@
       enable = true;
       defaultApplications = {
         "application/epub+zip" = "bene.desktop";
-        "application/pdf" = [
-          "org.pwmt.zathura.desktop"
-          "brave-browser.desktop"
-        ];
+        "application/pdf" = "org.pwmt.zathura.desktop";
         "text/html" = "firefox.desktop";
         "x-scheme-handler/http" = "firefox.desktop";
         "x-scheme-handler/https" = "firefox.desktop";
