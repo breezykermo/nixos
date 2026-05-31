@@ -161,6 +161,9 @@ in {
         "multipart-converters" = {
           "text/html" = "${typst2html}/bin/typst2html";
         };
+        openers = {
+          "text/html" = "firefox";
+        };
         filters = {
           # Render HTML to readable text with color support and numbered links
           # Uses aerc's built-in html filter (network-safe by default)
