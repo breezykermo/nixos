@@ -8,7 +8,7 @@ let
       owner = "FreeCap23";
       repo = "reMarkable-tablet-driver";
       rev = "main";
-      sha256 = "sha256-AQhDKzxN+Gkuv0W+P53Xh4pM/iiq8zvKacPXMPYlbW8=";
+      sha256 = "sha256-wx034duPnWek7r664QnJdbElPE1Ng2KsdoXOix/WfW8=";
     };
 
     # Apply rotation patch by replacing source files

@@ -10,7 +10,7 @@
         owner = "usgraphics";
         repo = "usgc-machine-report";
         rev = "master";
-        sha256 = "sha256-w9Dxk052hxARnxN/F5UrTXhgkie2IluZOy8xuaPvQUQ=";
+        sha256 = "sha256-Q7jxDN91w5jnYia0IopM1FtJ8LKkI4uHQd8fq1Kj8Bc=";
       };
 
       buildInputs = [ pkgs.util-linux ];
