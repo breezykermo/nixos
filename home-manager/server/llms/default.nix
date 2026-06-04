@@ -6,19 +6,19 @@ let
     owner = "apcamargo";
     repo = "typst-author";
     rev = "main";
-    sha256 = "01q5z7b5wc5bgzfkkmqqz27ycqcx01x3l8zp6b7md3lqd986pj09";
+    sha256 = "0h9gbb76mhlgjpi42b9vj4qckf52msv88dgzlqm3ql7vdpa7vm9z";
   };
   rheo-author-skill = pkgs.fetchFromGitHub {
     owner = "freecomputinglab";
     repo = "rheo-author";
     rev = "main";
-    sha256 = "0x8qra9ifbz041nzzdkcyx8rglj0z4jzjvay7fj2sdsizxz55dr8";
+    sha256 = "sha256-P9V91G37UDwqpv81hLauorjJMJE7LUHilY/Cas5aL0E=";
   };
   agentic-jujutsu-skill = pkgs.fetchFromGitHub {
     owner = "ruvnet";
     repo = "agentic-flow";
     rev = "main";
-    sha256 = "1vhidz1q72d7hadwb3jmclh5hx34w4hsr3s03bxdcmsf2a97niwr";
+    sha256 = "sha256-P9V91G37UDwqpv81hLauorjJMJE7LUHilY/Cas5aL0E=";
   };
 in
 {
