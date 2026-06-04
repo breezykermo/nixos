@@ -1026,7 +1026,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'python', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query' },
+      ensure_installed = { 'bash', 'c', 'python', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query', 'ocaml', 'ocaml_interface' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       disable = { 'dockerfile' },

@@ -28,6 +28,7 @@
     ffmpeg-full # utility for sound, image, video
     gh          # Github CLI
     uv          # Python package installer and resolver
+    python3     # Python interpreter
     sqlite      # useful little database
     cargo-binstall # install pre-built Rust binaries
     flyctl        # fly.io CLI
