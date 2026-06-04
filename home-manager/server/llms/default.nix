@@ -12,7 +12,7 @@ let
     owner = "freecomputinglab";
     repo = "rheo-author";
     rev = "main";
-    sha256 = "sha256-P9V91G37UDwqpv81hLauorjJMJE7LUHilY/Cas5aL0E=";
+    sha256 = "sha256-airlH21NjuKxUMNeGdtGXhTFFHct4kOZqzIrF7rS3i4=";
   };
   agentic-jujutsu-skill = pkgs.fetchFromGitHub {
     owner = "ruvnet";
