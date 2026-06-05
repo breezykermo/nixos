@@ -91,6 +91,14 @@ lsp.config('rust_analyzer', {
 })
 lsp.enable('rust_analyzer')
 
+-- OCaml
+lsp.config('ocamllsp', {
+  cmd = { 'ocamllsp' },
+  filetypes = { 'ocaml', 'ocaml.menhir', 'ocaml.interface', 'ocaml.ocamllex', 'reason' },
+  root_markers = { 'dune-project', 'dune', '.git', 'opam', '*.opam' },
+})
+lsp.enable('ocamllsp')
+
 -- Show full compile error message (in a floating window)
 vim.api.nvim_set_keymap('n', '<leader>e', ":lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
 

@@ -79,7 +79,7 @@
     bat = {
       enable = true;
       config = {
-        theme = "${theme.fullName}";
+        theme = "Catppuccin Mocha";
         pager = "less -FR";
       };
     };
