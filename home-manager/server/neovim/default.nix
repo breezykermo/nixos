@@ -24,6 +24,9 @@
     # extraLuaPackages = ["luarocks"];
  	};
 
+	xdg.configFile."nvim/after/queries/ocaml/injections.scm".source =
+		./after/queries/ocaml/injections.scm;
+
 	home.packages = with pkgs; [
 		#-- c/c++
 		cmake

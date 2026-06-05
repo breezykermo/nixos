@@ -33,3 +33,6 @@ require('orgmode.syntax')
 -- Load typst extensions
 require('typst.syntax')
 require('typst.citations')
+
+-- ppx_css injection
+require('ocaml.ppx_css')
