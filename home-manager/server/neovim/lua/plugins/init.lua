@@ -780,7 +780,7 @@ require('lazy').setup({
 
 		  -- Map theme names to lualine themes
 		  if theme_name == "catppuccin" then
-			  lualine_theme = "catppuccin"
+			  lualine_theme = "auto"
 		  elseif theme_name == "rosepine" then
 			  lualine_theme = "rose-pine"
 		  elseif theme_name == "gruvbox" then

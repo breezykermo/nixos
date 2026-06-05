@@ -47,7 +47,6 @@
     shellcheck
     tinymist # Typst
     (python312Packages.python-lsp-server.overrideAttrs (_: { doInstallCheck = false; }))
-    ocamlPackages.ocaml-lsp # OCaml language server (provides ocamllsp)
 
 		#-- misc
 		tree-sitter
