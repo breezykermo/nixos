@@ -34,5 +34,5 @@ require('orgmode.syntax')
 require('typst.syntax')
 require('typst.citations')
 
--- ppx_css injection
-require('ocaml.ppx_css')
+-- Bonsai web syntax highlighting (HTML, CSS injections)
+require('bonsai-nvim')
