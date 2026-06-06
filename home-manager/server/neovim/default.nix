@@ -27,6 +27,14 @@
 	xdg.configFile."nvim/after/queries/ocaml/injections.scm".source =
 		./after/queries/ocaml/injections.scm;
 
+	# OCaml REPL (utop) init: auto-load Core/Base and the ppx_jane rewriters.
+	# Requires `core` and `ppx_jane` in the active opam switch.
+	home.file.".ocamlinit".text = ''
+		#require "core.top";;
+		#require "ppx_jane";;
+		open Base;;
+	'';
+
 	home.packages = with pkgs; [
 		#-- c/c++
 		cmake
@@ -58,5 +66,13 @@
 		nil       # language server
 		statix    # lints
 		deadnix   # scan for dead code
+
+		#-- ocaml (toolchain managed via opam; state lives in ~/.opam)
+		opam
+		gnumake     # building opam packages
+		m4          # conf-m4, used by several opam builds
+		pkg-config  # detect system libs during opam builds
+		gmp         # zarith and friends
+		libev       # lwt/async backend used by utop
 	];
 }
