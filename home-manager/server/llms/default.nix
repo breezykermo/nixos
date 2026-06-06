@@ -26,6 +26,7 @@ in
     ".claude/skills/typst-author".source = typst-author-skill;
     ".claude/skills/rheo-author".source = rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${agentic-jujutsu-skill}/packages/agentic-jujutsu";
+    ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
   };
 
   home.shellAliases = {
