@@ -359,6 +359,12 @@ in
 		    keyword = "fog";
 		    url = "https://software-fog.zulipchat.com/#feed";
 		  }
+		  {
+		    name = "[e]eg";
+		    tags = [];
+		    keyword = "eeg";
+		    url = "https://eeg.zulipchat.com/";
+		  }
 
       # ReMarkable
       {
