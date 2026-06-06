@@ -1,6 +1,9 @@
 ;; extends
 
 ; --- CSS injections ---
+; NOTE: #gsub! strips %{...} OCaml interpolations so the CSS parser doesn't
+; choke on them. Position mapping may shift slightly on lines with long
+; interpolations, but subsequent lines remain accurate.
 
 ; [%css {| ... |}]
 ((extension
@@ -10,7 +13,8 @@
      (expression_item
        (quoted_string
          (quoted_string_content) @injection.content))))
- (#set! injection.language "css"))
+ (#set! injection.language "css")
+ (#gsub! @injection.content "%%{[^}]*}" " "))
 
 ; [%css stylesheet {| ... |}]
 ((extension
@@ -21,14 +25,16 @@
        (application_expression
          (quoted_string
            (quoted_string_content) @injection.content)))))
- (#set! injection.language "css"))
+ (#set! injection.language "css")
+ (#gsub! @injection.content "%%{[^}]*}" " "))
 
 ; {%css| ... |}
 ((quoted_extension
    (attribute_id) @_ext_id
    (#eq? @_ext_id "css")
    (quoted_string_content) @injection.content)
- (#set! injection.language "css"))
+ (#set! injection.language "css")
+ (#gsub! @injection.content "%%{[^}]*}" " "))
 
 ; --- HTML injections ---
 
