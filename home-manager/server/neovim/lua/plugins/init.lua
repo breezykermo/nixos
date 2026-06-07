@@ -1046,6 +1046,23 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup(opts)
     end,
   },
+
+  -- Zen mode for writing
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      window = {
+        backdrop = 0.5,
+        width = 80,
+      },
+      options = {
+        number = false,
+        relativenumber = false,
+      },
+    }
+  },
+
+
 }, {})
 
 -- Patch: guard against nil/invalid nodes in treesitter get_node_text (nvim 0.12.0 compat)
