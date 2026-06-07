@@ -1,4 +1,4 @@
-{pkgs, inputs, system, lib, machineVars, theme, ...}:
+{pkgs, inputs, system, lib, naersk, machineVars, theme, ...}:
 {
   home.packages = with pkgs; [
     delta       # syntax-highlighting in git and jj diffs
@@ -11,6 +11,7 @@
 
   home.shellAliases = {
     gt = "ftdv";
+    bjj = "blazingjj";
   };
 
   programs = {
