@@ -12,6 +12,7 @@
   home.shellAliases = {
     gt = "ftdv";
     bjj = "blazingjj";
+    jt = "blazingjj";
   };
 
   programs = {
