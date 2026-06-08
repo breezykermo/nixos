@@ -70,7 +70,7 @@ in
     # Fonts
     corefonts
     nerd-fonts.fira-code
-    docker-compose
+    # docker-compose
     maestral
     pcmanfm
     v4l-utils
@@ -86,7 +86,7 @@ in
   # for a potentially better setup, see 
   # https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
   virtualisation = {
-    docker.enable = true;
+    docker.enable = false;
   };
 
   fonts.packages = with pkgs; [
