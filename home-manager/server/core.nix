@@ -84,16 +84,7 @@
       };
     };
 
-    # file directory navigation, option 1
-    broot = {
-      enable = true;
-      enableFishIntegration = false;
-      settings = {
-        modal = true;
-      };
-    };
-
-    # file directory navigation, option 2
+    # file directory navigation
     lf = {
       enable = true;
       keybindings = {
