@@ -87,7 +87,7 @@
     # file directory navigation, option 1
     broot = {
       enable = true;
-      enableFishIntegration = true;
+      enableFishIntegration = false;
       settings = {
         modal = true;
       };

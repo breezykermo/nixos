@@ -1,26 +1,27 @@
-{ lib, buildGoModule, fetchFromGitHub }:
+{ lib, stdenv, fetchurl }:
 
-buildGoModule rec {
-  pname = "beads";
-  version = "0.49.1";
+stdenv.mkDerivation rec {
+  pname = "beads_rust";
+  version = "0.2.15";
 
-  src = fetchFromGitHub {
-    owner = "steveyegge";
-    repo = "beads";
-    rev = "2e6789d450784ef5e1290db22c627bb16dae0383";
-    hash = "sha256-/1KGZE3uigQvQ3of7yfR9ilS+eZ29y7lBABGP1QMozE=";
+  src = fetchurl {
+    url = "https://github.com/Dicklesworthstone/beads_rust/releases/download/v${version}/br-${version}-linux_musl_amd64.tar.gz";
+    hash = "sha256-c/fxDvhyKYAE9+bXH4KiF9tDUv3OCiL0vENYaPpwDTY=";
   };
 
-  vendorHash = "sha256-gwxGv8y4+1+k0741CnOYcyJPTJ5vTrynqPoO8YS9fbQ=";
+  sourceRoot = ".";
 
-  doCheck = false;
-
-  ldflags = [ "-s" "-w" "-X main.version=${version}" ];
+  installPhase = ''
+    runHook preInstall
+    install -Dm755 br $out/bin/br
+    runHook postInstall
+  '';
 
   meta = with lib; {
-    description = "AI coding agent issue tracker";
-    homepage = "https://github.com/steveyegge/beads";
+    description = "Fast Rust port of beads: local-first issue tracker (SQLite + JSONL)";
+    homepage = "https://github.com/Dicklesworthstone/beads_rust";
     license = licenses.mit;
-    mainProgram = "bd";
+    mainProgram = "br";
+    platforms = [ "x86_64-linux" ];
   };
 }

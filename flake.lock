@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "beads": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1780694014,
-        "narHash": "sha256-GY01T/NBOMW5a9QBbE2ADck1VBFly3LQ7Y5SiQ/qB1I=",
-        "owner": "steveyegge",
-        "repo": "beads",
-        "rev": "0da7f51f3bcb6ae350f836f616d8c7244c2868d0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "steveyegge",
-        "repo": "beads",
-        "type": "github"
-      }
-    },
     "bene": {
       "inputs": {
         "depot": "depot",
@@ -489,7 +469,6 @@
     },
     "root": {
       "inputs": {
-        "beads": "beads",
         "bene": "bene",
         "ftdv": "ftdv",
         "ghostty": "ghostty",
