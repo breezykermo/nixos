@@ -9,12 +9,12 @@
     ./blender
     ./office
     ./youtube
-    ./remarkable
     ./protonvpn
     ./_inprogress
   ] ++ lib.optionals (localProfile == "homework") [
     # Software only needed on the "homework" machine
     ./obs
+    ./remarkable
   ];
 
   home.packages = with pkgs; [
