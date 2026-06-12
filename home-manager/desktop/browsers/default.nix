@@ -454,13 +454,18 @@ in
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/linkding-extension/latest.xpi";
           installation_mode = "force_installed";
         };
+        # beb (theme):
+        "{d863477d-3690-4de1-af42-53fd3ee87684}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/beb/latest.xpi";
+          installation_mode = "force_installed";
+        };
         # Zotero
       };
 
       /* ---- PREFERENCES ---- */
       # Check about:config for options.
       Preferences = {
-        "extensions.activeThemeID" = { Value = "firefox-compact-dark@mozilla.org"; Status = "locked"; };
+        "extensions.activeThemeID" = { Value = "{d863477d-3690-4de1-af42-53fd3ee87684}"; Status = "locked"; };
         "layout.css.light-dark.enabled" = lock-true;
         "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
         "extensions.pocket.enabled" = lock-false;

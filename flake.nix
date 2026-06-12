@@ -40,6 +40,11 @@
       url = "github:agavra/tuicr/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # concord - TUI client for Discord
+    concord = {
+      url = "github:chojs23/concord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{

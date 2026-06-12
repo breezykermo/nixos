@@ -114,6 +114,7 @@ After initial deployment:
 - Default editor: Set via `$EDITOR` environment variable
 - Git default branch: `main`
 - Version control: Both `git` and `jujutsu` (jj) are configured
+- Package source preference: prefer an existing flake input if the package is already available via one; otherwise use a mature `nixpkgs` package; only build from source as a last resort
 
 ## Issue Tracking with Beads
 

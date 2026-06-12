@@ -11,5 +11,6 @@
     ./writing
     ./machine-report
     ./zulip
+    ./concord
   ];
 }

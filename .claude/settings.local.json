@@ -91,7 +91,13 @@
       "Bash(hyprctl monitors:*)",
       "Bash(ls:*)",
       "Bash(file *)",
-      "Bash(nix-instantiate --parse configuration.nixk)"
+      "Bash(nix-instantiate --parse configuration.nixk)",
+      "Bash(find / -maxdepth 10 -ipath \"*rofi*/themes*\" -iname \"*rose*\")",
+      "Read(//nix/store/**)",
+      "Bash(nix-instantiate --parse home-manager/desktop/default.nix)",
+      "Bash(timeout 180 nix eval .#nixosConfigurations.loxnix.config.home-manager.users.lox.programs.rofi.finalConfig)",
+      "Bash(timeout 180 nix eval --impure --expr '\\(builtins.getFlake \\(toString ./.\\)\\).nixosConfigurations.loxnix.config.home-manager.users.lox.programs.rofi.theme')",
+      "Bash(git -C /etc/nixos log -p -1 5bcd746 -- .)"
     ],
     "deny": [],
     "ask": []
