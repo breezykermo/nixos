@@ -454,9 +454,9 @@ in
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/linkding-extension/latest.xpi";
           installation_mode = "force_installed";
         };
-        # beb (theme):
-        "{d863477d-3690-4de1-af42-53fd3ee87684}" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/beb/latest.xpi";
+        # Dark Octo Violet (theme):
+        "{ee3eebdf-f293-4c71-bece-b457232aab1d}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/dark-octo-violet/latest.xpi";
           installation_mode = "force_installed";
         };
         # Zotero
@@ -465,7 +465,7 @@ in
       /* ---- PREFERENCES ---- */
       # Check about:config for options.
       Preferences = {
-        "extensions.activeThemeID" = { Value = "{d863477d-3690-4de1-af42-53fd3ee87684}"; Status = "locked"; };
+        "extensions.activeThemeID" = { Value = "{ee3eebdf-f293-4c71-bece-b457232aab1d}"; Status = "locked"; };
         "layout.css.light-dark.enabled" = lock-true;
         "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
         "extensions.pocket.enabled" = lock-false;

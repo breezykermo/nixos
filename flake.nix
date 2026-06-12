@@ -15,11 +15,6 @@
     };
     # For building Rust packages
     naersk.url = "github:nix-community/naersk";
-    # Terminal-based diff viewer with file tree navigation
-    ftdv = {
-      url = "github:breezykermo/ftdv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Bene - writing tools
     bene = {
       url = "github:breezykermo/bene/feat/adds-nix-flake";
