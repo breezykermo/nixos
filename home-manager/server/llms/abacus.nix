@@ -5,13 +5,13 @@
 
 buildGoModule rec {
   pname = "abacus";
-  version = "0.1.0";
+  version = "0.11.2";
 
   src = fetchFromGitHub {
     owner = "ChrisEdwards";
     repo = "abacus";
     rev = "main";
-    hash = "sha256-1JILOIikJiAAluxIY+BGAqxSkw0WXBlpy73XMYnTwLU=";
+    hash = "sha256-Z6xvLsfQN5qxmJq8PhxU++DsAlPiLIb28b8amNSRMlo=";
   };
 
   vendorHash = "sha256-pZJA8TiYGlMMgH7JPiH+WUN7hNoL9wo/NWL9g+KhUL8=";
