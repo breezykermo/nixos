@@ -63,7 +63,7 @@
       else null;
 
     # Import theme once and pass to all modules
-    theme = import ./themes/default.nix { inherit (nixpkgs) lib; };
+    theme = import ./themes/default.nix { inherit (nixpkgs) lib; inherit localProfile; };
   in
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
