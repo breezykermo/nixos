@@ -25,9 +25,16 @@
 		flex-direction: column-reverse;
 	}
 	.search-one-offs { display: none !important; }
-	#urlbar-searchmode-indicator { display: none !important; }
-	#urlbar-searchmode-indicator-close { display: none !important; }
-	#urlbar-searchmode-switcher { display: none !important; }
+	/* Hide the search-mode switcher / unified search button (FF 151+ uses
+	 * .searchmode-switcher; older versions used the #urlbar-searchmode-* ids).
+	 * Firefox "hides" the unavailable button with position: fixed; top: -999px,
+	 * which the column-reverse layout above breaks, stranding it mid-screen;
+	 * display: none removes it from layout entirely. */
+	#urlbar-searchmode-indicator,
+	#urlbar-searchmode-indicator-close,
+	#urlbar-searchmode-switcher,
+	#urlbar .searchmode-switcher,
+	.searchmode-switcher-panel { display: none !important; }
 	.tab-background { border-top: none !important; }
 	#navigator-toolbox::after { border: none; }
 	#TabsToolbar .tabbrowser-arrowscrollbox,

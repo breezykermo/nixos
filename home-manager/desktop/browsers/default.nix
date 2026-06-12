@@ -57,6 +57,9 @@ in
           "media.ffmpeg.vaapi.enabled" = true;
           "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
 
+          # Disable the unified search button ("This time, search with" dropdown)
+          "browser.urlbar.scotchBonnet.enableOverride" = false;
+
           "extensions.pocket.enabled" = false;
           "dom.security.https_only_mode" = true;
           "dom.security.https_only_mode_ever_enabled" = true;
