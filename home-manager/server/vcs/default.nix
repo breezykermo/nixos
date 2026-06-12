@@ -1,6 +1,7 @@
-{pkgs, inputs, system, lib, naersk, machineVars, ...}:
+{pkgs, inputs, system, lib, naersk, machineVars, theme, ...}:
 let
   naersk' = pkgs.callPackage naersk {};
+  mix = theme.themeLib.mix;
 in
 {
   home.packages = with pkgs; [
@@ -28,6 +29,67 @@ in
   home.shellAliases = {
     dj = "tuicr";
     jt = "blazingjj";
+  };
+
+  xdg.configFile = {
+    "tuicr/config.toml".text = ''
+      theme = "system"
+      transparent_background = true
+    '';
+
+    # Local theme that mirrors the active system theme (see themes/default.nix),
+    # so tuicr's panels blend with the Ghostty terminal background.
+    "tuicr/themes/system.toml".text = ''
+      panel_bg = "${theme.background}"
+      bg_highlight = "${theme.colors.bg2}"
+      fg_primary = "${theme.foreground}"
+      fg_secondary = "${theme.colors.fg2}"
+      fg_dim = "${theme.colors.fg3}"
+
+      diff_add = "${theme.colors.green}"
+      diff_add_bg = "${mix theme.colors.green theme.background 0.18}"
+      diff_del = "${theme.colors.red}"
+      diff_del_bg = "${mix theme.colors.red theme.background 0.18}"
+      diff_context = "${theme.foreground}"
+      diff_hunk_header = "${theme.colors.blue}"
+      expanded_context_fg = "${theme.colors.fg3}"
+
+      syntax_add_bg = "${mix theme.colors.green theme.background 0.12}"
+      syntax_del_bg = "${mix theme.colors.red theme.background 0.12}"
+
+      file_added = "${theme.colors.green}"
+      file_modified = "${theme.colors.yellow}"
+      file_deleted = "${theme.colors.red}"
+      file_renamed = "${theme.colors.purple}"
+
+      reviewed = "${theme.colors.green}"
+      pending = "${theme.colors.yellow}"
+
+      comment_note = "${theme.colors.blue}"
+      comment_suggestion = "${theme.colors.aqua}"
+      comment_issue = "${theme.colors.red}"
+      comment_praise = "${theme.colors.green}"
+
+      border_focused = "${theme.activeBorder}"
+      border_unfocused = "${theme.inactiveBorder}"
+      status_bar_bg = "${theme.colors.bg1}"
+      cursor_color = "${theme.colors.yellow}"
+      cursor_line_bg = "${theme.colors.bg2}"
+      branch_name = "${theme.colors.purple}"
+      help_indicator = "${theme.colors.fg3}"
+
+      message_info_fg = "${theme.background}"
+      message_info_bg = "${theme.colors.blue}"
+      message_warning_fg = "${theme.background}"
+      message_warning_bg = "${theme.colors.yellow}"
+      message_error_fg = "${theme.background}"
+      message_error_bg = "${theme.colors.red}"
+      update_badge_fg = "${theme.background}"
+      update_badge_bg = "${theme.colors.yellow}"
+
+      mode_fg = "${theme.background}"
+      mode_bg = "${theme.activeBorder}"
+    '';
   };
 
   programs = {

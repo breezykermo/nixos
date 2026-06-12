@@ -74,6 +74,28 @@ in
   # since true color blending requires background color info
   withOpacity = hex: opacity: hex;
 
+  # Blend two hex colors together
+  # Example: mix "#ff0000" "#000000" 0.2 => 20% red, 80% black
+  mix = hexA: hexB: ratio:
+    let
+      a = hexToRgb hexA;
+      b = hexToRgb hexB;
+      blend = ca: cb:
+        let
+          v = ca * ratio + cb * (1 - ratio);
+          rounded = builtins.floor (v + 0.5);
+        in
+        if rounded > 255 then 255 else if rounded < 0 then 0 else rounded;
+      toHexByte = n:
+        let
+          hexChars = "0123456789abcdef";
+          hi = n / 16;
+          lo = n - hi * 16;
+        in
+        (builtins.substring hi 1 hexChars) + (builtins.substring lo 1 hexChars);
+    in
+    "#" + toHexByte (blend a.r b.r) + toHexByte (blend a.g b.g) + toHexByte (blend a.b b.b);
+
   # Get contrasting foreground color (simple light/dark check)
   # Returns either light or dark color based on background luminance
   contrastColor = bgHex: lightHex: darkHex:

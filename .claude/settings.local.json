@@ -1,6 +1,14 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Bash(awk *)",
+      "Bash(nix-instantiate --parse home-manager/server/vcs/default.nix)",
+      "Bash(nix-instantiate --parse themes/lib.nix)",
+      "Bash(nix flake)",
+      "Bash(nix eval *)",
+      "Bash(git status *)",
+      "Bash(git check-ignore *)"
+    ],
     "deny": [],
     "ask": []
   }

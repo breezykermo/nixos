@@ -6,7 +6,6 @@
     ./browsers
     ./zathura
     ./spotify
-    ./blender
     ./office
     ./youtube
     ./protonvpn
@@ -15,6 +14,7 @@
     # Software only needed on the "homework" machine
     ./obs
     ./remarkable
+    ./blender
   ];
 
   home.packages = with pkgs; [
