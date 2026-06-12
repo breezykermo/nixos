@@ -325,6 +325,36 @@ in
 		    url = "https://github.com";
 		  }
 		  {
+		    name = "[g]it[h]ub [r]epos";
+		    tags = [];
+		    keyword = "gh/repos";
+		    url = "https://github.com/breezykermo?tab=repositories";
+		  }
+		  {
+		    name = "[g]it[h]ub rheo";
+		    tags = [];
+		    keyword = "gh/rheo";
+		    url = "https://github.com/freecomputinglab/rheo";
+		  }
+		  {
+		    name = "[g]it[h]ub nixos";
+		    tags = [];
+		    keyword = "gh/nixos";
+		    url = "https://github.com/breezykermo/nixos";
+		  }
+		  {
+		    name = "[g]it[h]ub pragma";
+		    tags = [];
+		    keyword = "gh/pragma";
+		    url = "https://github.com/digitaltheorylab/pragma";
+		  }
+		  {
+		    name = "[g]it[h]ub lolm";
+		    tags = [];
+		    keyword = "gh/lolm";
+		    url = "https://github.com/freecomputinglab/lolm.ohrg.org";
+		  }
+		  {
 		    name = "[d]i[s]cord";
 		    tags = [];
 		    keyword = "ds";
