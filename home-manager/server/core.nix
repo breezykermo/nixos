@@ -35,6 +35,9 @@
 
   ];
 
+  # gh extension: dlvhdr/gh-dash, invoked as `gh dash`
+  home.file.".local/share/gh/extensions/gh-dash/gh-dash".source = "${pkgs.gh-dash}/bin/gh-dash";
+
   home.shellAliases = {
     diff = "diff --color=auto";
     grep = "grep --color=auto";
