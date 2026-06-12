@@ -35,6 +35,11 @@
       url = "github:typst/typst-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # tuicr - code review TUI with vim keybindings
+    tuicr = {
+      url = "github:agavra/tuicr/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{

@@ -7,6 +7,9 @@
 
     # Terminal-based diff viewer with interactive file tree navigation
     (inputs.ftdv.packages.${system}.default.overrideAttrs (_: { doCheck = false; }))
+
+    # Code review TUI with vim keybindings (git/jj/mercurial)
+    inputs.tuicr.packages.${system}.default
   ];
 
   home.shellAliases = {
