@@ -1024,6 +1024,7 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 'bash', 'c', 'css', 'python', 'diff', 'rust', 'html', 'markdown', 'markdown_inline', 'query', 'ocaml', 'ocaml_interface' },

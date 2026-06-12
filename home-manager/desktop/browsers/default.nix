@@ -387,6 +387,7 @@ in
         Cryptomining = true;
         Fingerprinting = true;
       };
+      PasswordManagerEnabled = false;
       DisablePocket = true;
       DisableFirefoxAccounts = true;
       DisableAccounts = true;
@@ -458,7 +459,8 @@ in
 
       /* ---- PREFERENCES ---- */
       # Check about:config for options.
-      Preferences = { 
+      Preferences = {
+        "extensions.activeThemeID" = { Value = "firefox-compact-dark@mozilla.org"; Status = "locked"; };
         "layout.css.light-dark.enabled" = lock-true;
         "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
         "extensions.pocket.enabled" = lock-false;
