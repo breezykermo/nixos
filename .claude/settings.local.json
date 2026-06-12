@@ -89,7 +89,9 @@
       "Bash(sudo dmesg:*)",
       "Bash(jj show:*)",
       "Bash(hyprctl monitors:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(file *)",
+      "Bash(nix-instantiate --parse configuration.nixk)"
     ],
     "deny": [],
     "ask": []

@@ -1,4 +1,4 @@
-{ pkgs, machineVars, ... }:
+{ pkgs, lib, machineVars, localProfile, ... }:
 
 {
   services.hypridle = {
@@ -19,6 +19,7 @@
           timeout = 600;
           on-timeout = "loginctl lock-session";
         }
+      ] ++ lib.optionals (localProfile != "homework") [
         # Suspend after 15 minutes
         {
           timeout = 900;

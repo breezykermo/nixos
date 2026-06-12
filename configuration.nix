@@ -9,7 +9,7 @@ in
   networking.hostName = machineVars.hostname;
   networking.networkmanager.enable = true;
 
-  networking.networkmanager.ensureProfiles = lib.mkIf (machineVars.hostname == "loxnix") {
+  networking.networkmanager.ensureProfiles = lib.mkIf (builtins.pathExists /etc/nixos/secrets/eduroam.env) {
     environmentFiles = [ "/etc/nixos/secrets/eduroam.env" ];
     profiles.eduroam = {
       connection = {

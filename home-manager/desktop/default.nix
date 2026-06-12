@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, theme, ... }:
+{ pkgs, inputs, lib, theme, localProfile, ... }:
 {
   imports = [
     ./hypr
@@ -6,13 +6,15 @@
     ./browsers
     ./zathura
     ./spotify
-    ./obs
     ./blender
     ./office
     ./youtube
     ./remarkable
     ./protonvpn
     ./_inprogress
+  ] ++ lib.optionals (localProfile == "homework") [
+    # Software only needed on the "homework" machine
+    ./obs
   ];
 
   home.packages = with pkgs; [

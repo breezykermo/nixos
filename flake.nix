@@ -53,13 +53,22 @@
     machineVars = import ./machines/${selectedMachine}/vars.nix;
     userName = machineVars.userName;
 
+    # Per-machine profile, for gating software that should only be installed
+    # on a specific physical machine (e.g. "homework"). This file is
+    # gitignored and local to each machine -- create
+    # ./machines/local-profile.nix containing a string (e.g. "homework") to
+    # set it. Machines without this file get `null`, i.e. no extra software.
+    localProfile = if builtins.pathExists ./machines/local-profile.nix
+      then import ./machines/local-profile.nix
+      else null;
+
     # Import theme once and pass to all modules
     theme = import ./themes/default.nix { inherit (nixpkgs) lib; };
   in
   {
     nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit userName machineVars; };
+      specialArgs = { inherit userName machineVars localProfile; };
       modules = [
         ./configuration.nix
         ./machines/base.nix
@@ -72,7 +81,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme; };
+            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme localProfile; };
 
             users."${userName}" = import ./home-manager;
           };

@@ -2,3 +2,4 @@ tags
 *.swp
 fonts/berkeley-mono/*.ttf
 secrets/eduroam.env
+machines/local-profile.nix
