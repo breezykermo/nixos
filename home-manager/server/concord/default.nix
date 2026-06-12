@@ -8,4 +8,9 @@
   home.shellAliases = {
     ds = "concord";
   };
+
+  xdg.configFile."concord/keymap.toml".text = ''
+    [keymap]
+    leader = ","
+  '';
 }

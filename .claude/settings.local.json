@@ -7,7 +7,14 @@
       "Bash(nix flake)",
       "Bash(nix eval *)",
       "Bash(git status *)",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "WebFetch(domain:github.com)",
+      "Bash(nix-env -qaP wa-tui)",
+      "Bash(nix search *)",
+      "Bash(xargs ls -ld)",
+      "Bash(timeout 30 gh repo view takshakmudgal/wa-tui --json description,defaultBranchRef)",
+      "Bash(timeout 30 gh api repos/takshakmudgal/wa-tui/tags)",
+      "Bash(timeout 30 curl -sL https://raw.githubusercontent.com/takshakmudgal/wa-tui/v0.1.0/Cargo.lockj)"
     ],
     "deny": [],
     "ask": []
