@@ -32,6 +32,7 @@
     sqlite      # useful little database
     cargo-binstall # install pre-built Rust binaries
     flyctl        # fly.io CLI
+    kagimcp       # Kagi MCP server for web search
 
   ];
 

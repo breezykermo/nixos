@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "kagi": {
+      "command": "uvx",
+      "args": ["kagimcp"],
+      "env": {
+        "KAGI_API_KEY": "@api-key:kagi"
+      }
+    }
+  }
+}

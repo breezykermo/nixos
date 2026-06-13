@@ -75,11 +75,21 @@
 
     # Import theme once and pass to all modules
     theme = import ./themes/default.nix { inherit (nixpkgs) lib; inherit localProfile; };
+
+    # Custom package overlay
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [
+        (self: super: {
+          kagimcp = self.callPackage ./pkgs/kagimcp {};
+        })
+      ];
+    };
   in
   {
-    nixosConfigurations.loxnix = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.loxnix = pkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit userName machineVars localProfile; };
+      specialArgs = { inherit inputs userName machineVars localProfile pkgs; };
       modules = [
         ./configuration.nix
         ./machines/base.nix
@@ -92,7 +102,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme localProfile; };
+            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme localProfile pkgs; };
 
             users."${userName}" = import ./home-manager;
           };
