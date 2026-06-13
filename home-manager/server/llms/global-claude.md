@@ -57,6 +57,8 @@ br dep add <issue> <depends-on>
 
 **Priorities:** 0=critical, 1=high, 2=medium, 3=low, 4=backlog
 
+**Bead names:** Keep them as short and simple as possible. Prefer concise 3-4 character identifiers over descriptive hyphenated names. For example, `rwq` is much better than `airborne-splash-rwq`. The bead ID carries the identity; the name is just a local shorthand.
+
 **Local-only:** `.beads/` is gitignored, never commit it, never run `br sync`.
 
 ---

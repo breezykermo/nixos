@@ -132,7 +132,7 @@ in
     glm = ''
       set -x ANTHROPIC_BASE_URL https://api.z.ai/api/anthropic
       set -x ANTHROPIC_AUTH_TOKEN (pass show ai/zai)
-      set -x ANTHROPIC_MODEL glm-4.5
+      set -x ANTHROPIC_MODEL glm-4.7
       command claude $argv
     '';
   } // lib.optionalAttrs isHomework {
