@@ -8,9 +8,11 @@ let
   isHomework = localProfile == "homework";
 
   # claude-code-router exposes an Anthropic-compatible endpoint backed by the local
-  # ollama OpenAI-compatible API, so Claude Code can talk to local models. Launch
-  # with `ccr code` (aliased to `ccl`), then pick a model in-session with
-  # `/model ollama,<name>`. Routes below set sensible defaults per task class.
+  # ollama OpenAI-compatible API, so Claude Code can talk to local models. The
+  # `glm` fish function (below) launches it via `ccr code`; pick a model
+  # in-session with `/model ollama,<name>` or `/model zai,glm-4.6`. For your
+  # Claude Pro/Max subscription models (not available through the router), use
+  # `claude` instead. Routes below set sensible defaults per task class.
   ccrConfig = {
     LOG = false;
     Providers = [
@@ -77,14 +79,31 @@ in
   };
 
   programs.fish.functions = lib.optionalAttrs isHomework {
-    # Route `claude` through claude-code-router so both ollama and z.ai models are
-    # available (switch in-session with `/model ollama,<name>` or `/model zai,glm-4.6`).
-    # `ccr code` starts the ccr server on first use (lazy — no boot service) and the
-    # spawned server inherits ZAI_API_KEY for the z.ai provider's "$ZAI_API_KEY"
-    # interpolation. No recursion: ccr spawns the real `claude` binary from PATH, which
-    # fish functions don't shadow for child processes.
-    claude = ''
+    # Wrap `ccr` so ZAI_API_KEY is set for any invocation that might (re)start
+    # the router service — e.g. a manual `ccr start`. The router interpolates
+    # "$ZAI_API_KEY" from its own process env once, when the long-lived service
+    # (re)starts; if that process never had the var set, the zai provider's key
+    # stays as the literal unexpanded string and its models are unusable/missing
+    # from `/model`.
+    ccr = ''
       set -x ZAI_API_KEY (pass show ai/zai)
+      command ccr $argv
+    '';
+
+    # `claude` runs the real binary unmodified, against your Claude Pro/Max
+    # subscription login.
+    claude = ''
+      command claude $argv
+    '';
+
+    # `glm` routes through claude-code-router so both ollama and z.ai models are
+    # available (switch in-session with `/model ollama,<name>` or `/model zai,glm-4.6`).
+    # `ccr code` overrides ANTHROPIC_AUTH_TOKEN/ANTHROPIC_BASE_URL, so subscription
+    # models aren't reachable this way — use `claude` for those instead. `ccr code`
+    # starts the ccr server on first use (lazy — no boot service); the first start
+    # can take a few seconds, after which the service stays up for subsequent
+    # invocations.
+    glm = ''
       ccr code $argv
     '';
   };
