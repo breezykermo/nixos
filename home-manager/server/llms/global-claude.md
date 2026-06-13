@@ -21,6 +21,8 @@ jj squash / jj split / jj restore <file>
 jj git fetch / jj rebase -d main
 ```
 
+**`jj squash` can hang waiting on an interactive editor** if both the commit being squashed from and the commit being squashed to already have descriptions — jj opens an editor to combine them. Always pass `-m "<message>"` explicitly to `jj squash` to avoid this (or `--use-destination-message` to keep the destination's existing message unchanged).
+
 **Always end with an empty `@`:** Every process that touches jj must finish with `@` being an empty, unnamed commit on top, e.g.:
 
 ```
@@ -81,7 +83,7 @@ jj config set --user user.email "lachie@ohrg.org"
 3. `jj new` — fresh working commit
 4. Do the work, run tests
 5. `br close <id> --reason "Done"` — close BEFORE squash; this writes `.beads/issues.jsonl` into `@`, which gets included in the next squash
-6. `jj squash` then `jj describe -r @- -m "Present tense description"`
+6. `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"` — using `--use-destination-message` avoids the interactive editor that pops up when both commits already have descriptions
 7. `jj log` — verify history shows correct author on each commit; `@` must be empty and unnamed
 
 ---
@@ -103,7 +105,7 @@ Loop until no open issues:
 4. Repeat
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
-commands), then `jj squash` if that produced changes. Leave `@` empty.
+commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
 
 Report: list all closed issues.
 
@@ -128,7 +130,7 @@ Loop until no open issues or user stops:
    - If user says "stop" or "done", exit the loop
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
-commands), then `jj squash` if that produced changes. Leave `@` empty.
+commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
 
 Report: list all closed issues.
 
