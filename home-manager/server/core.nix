@@ -33,6 +33,8 @@
     cargo-binstall # install pre-built Rust binaries
     flyctl        # fly.io CLI
     kagimcp       # Kagi MCP server for web search
+    lnav          # log file navigator (generic formats, journald, SQL queries)
+    amdgpu_top    # TUI for AMD APU/GPU power, clocks, utilization (Strix Halo)
 
   ];
 
