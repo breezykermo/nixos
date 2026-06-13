@@ -216,6 +216,21 @@
           url = "https://maxread.substack.com/feed";
           tags = [ "blog" "~Read Max" ];
         }
+        {
+          url = "https://weeknotes.ohrg.org/feed.xml";
+          tags = [ "blog" "~Lachlan Kermode" ];
+        }
+        {
+          url = "https://ohrg.org/feed.xml";
+          tags = [ "blog" "~Lachlan Kermode" ];
+        }
+        {
+          url = "https://anil.recoil.org/news.xml";
+          tags = [ "blog" "~Anil Madhavapeddy" ];
+        }
+
+
+
 
         # --- Podcasts ---
         {
@@ -277,7 +292,7 @@
         # HTML rendering with w3m (same as aerc)
         html-renderer "${pkgs.w3m}/bin/w3m -dump -T text/html -cols 100 -o display_link_number=1"
 
-        # Gruvbox theme colors
+        # Theme colors (active theme set in themes/default.nix)
         color background         default   default
         color listnormal         ${theme.helpers.to256Color theme.colors.fg1}  default
         color listnormal_unread  ${theme.helpers.to256Color theme.colors.yellow}  default  bold

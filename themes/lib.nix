@@ -150,6 +150,8 @@ in
         # Helper: absolute value
         abs = x: if x < 0 then -x else x;
 
+        sq = x: x * x;
+
         # Find closest color in 256-color palette using proper color distance
         # The xterm 256-color palette has these value levels for RGB cube:
         # 0: 0, 1: 95, 2: 135, 3: 175, 4: 215, 5: 255
@@ -169,36 +171,28 @@ in
           in
           findIndex distances minDist 0;
 
-        # Grayscale ramp (colors 232-255) for near-gray colors
-        toGrayscale = val:
-          let
-            # Grayscale values: 8, 18, 28, ..., 238 (24 steps of 10)
-            # Map val to nearest step
-            step = builtins.floor ((val - 8 + 5) / 10);
-            clampedStep = max 0 (min 23 step);
-          in
-          232 + clampedStep;
+        # RGB cube candidate (colors 16-231): 16 + 36*r + 6*g + b
+        rLevel = toColorLevel rgb.r;
+        gLevel = toColorLevel rgb.g;
+        bLevel = toColorLevel rgb.b;
+        cubeR = builtins.elemAt colorValues rLevel;
+        cubeG = builtins.elemAt colorValues gLevel;
+        cubeB = builtins.elemAt colorValues bLevel;
+        cubeIndex = 16 + 36 * rLevel + 6 * gLevel + bLevel;
+        cubeDist = sq (rgb.r - cubeR) + sq (rgb.g - cubeG) + sq (rgb.b - cubeB);
 
-        # Check if color is grayscale (all components within 15 of each other)
-        isGrayscale =
-          let
-            minVal = min rgb.r (min rgb.g rgb.b);
-            maxVal = max rgb.r (max rgb.g rgb.b);
-          in
-          (maxVal - minVal) < 15;
+        # Grayscale ramp candidate (colors 232-255): values 8, 18, 28, ..., 238
+        avg = (rgb.r + rgb.g + rgb.b) / 3;
+        grayStepRaw = builtins.floor ((avg - 8 + 5) / 10);
+        grayStep = max 0 (min 23 grayStepRaw);
+        grayVal = 8 + grayStep * 10;
+        grayIndex = 232 + grayStep;
+        grayDist = sq (rgb.r - grayVal) + sq (rgb.g - grayVal) + sq (rgb.b - grayVal);
 
-        colorIndex =
-          if isGrayscale then
-            # Use grayscale ramp
-            toGrayscale ((rgb.r + rgb.g + rgb.b) / 3)
-          else
-            # Use RGB cube: 16 + 36*r + 6*g + b
-            let
-              r = toColorLevel rgb.r;
-              g = toColorLevel rgb.g;
-              b = toColorLevel rgb.b;
-            in
-            16 + 36 * r + 6 * g + b;
+        # Pick whichever candidate is actually closer in RGB space, rather than
+        # guessing from a "looks grayish" threshold (which misclassifies colors
+        # like dark blue-grays into the wrong, much-less-accurate cube cell).
+        colorIndex = if grayDist < cubeDist then grayIndex else cubeIndex;
       in
       "color${toString colorIndex}";
 }
