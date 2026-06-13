@@ -127,6 +127,11 @@ in
     glm = ''
       ccr code $argv
     '';
+
+    # Lists "provider,model" strings usable with `/model` inside `glm`.
+    allmodels = ''
+      jq -r '.Providers[] | .name as $p | .models[] | "\($p),\(.)"' ~/.claude-code-router/config.json
+    '';
   };
 
   home.packages = [
