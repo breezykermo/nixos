@@ -276,6 +276,14 @@ in
         url = "https://mail.zoho.eu/zm/#mail/folder/inbox";
       }
 
+      # Kagi Mail
+      {
+        name = "[mk] kagi mail";
+        tags = [];
+        keyword = "mk";
+        url = "https://kagimail.com/mailbox";
+      }
+
       # Unibo
             # https://outlook.office.com/mail/0/?culture=en-us&country=us
       {

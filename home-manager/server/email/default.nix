@@ -410,6 +410,40 @@ in {
       };
     };
 
+    "kagi" = {
+      address = "lachie@kagimail.com";
+      userName = "lachie@kagimail.com";
+      realName = machineVars.userFullName;
+
+      passwordCommand = "pass show email/kagi";
+
+      folders = {
+        inbox = "INBOX";
+      };
+
+      imap = {
+        host = "mail.kagimail.com";
+        port = 993;
+        tls.enable = true;
+      };
+
+      smtp = {
+        host = "mail.kagimail.com";
+        port = 465;
+        tls = {
+          enable = true;
+          useStartTls = false;  # Port 465 uses implicit TLS, not STARTTLS
+        };
+      };
+
+      aerc = {
+        enable = true;
+        extraAccounts = {
+          cache-headers = "true";
+          check-mail = "1m";
+        };
+      };
+    };
 
     # Microsoft/Outlook account using OAuth2 via oama + Thunderbird's public client ID.
     # Uses device code flow — no Azure app registration or client_secret needed.
