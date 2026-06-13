@@ -410,46 +410,6 @@ in {
       };
     };
 
-    "gmail" = {
-      address = "lachiekermode@gmail.com";
-      userName = "lachiekermode@gmail.com";
-      realName = "Lachie Kermode";
-
-      passwordCommand = "pass show email/gmail";
-
-      folders = {
-        inbox = "INBOX";
-        sent = "[Gmail]/Sent Mail";
-      };
-
-      imap = {
-        host = "imap.gmail.com";
-        port = 993;
-        tls.enable = true;
-      };
-
-      smtp = {
-        host = "smtp.gmail.com";
-        port = 465;
-        tls = {
-          enable = true;
-          useStartTls = false;  # Use implicit TLS (smtps://)
-        };
-      };
-
-      aerc = {
-        enable = true;
-        extraAccounts = {
-          folder-map = "~/.config/aerc/gmail-foldermap";
-          folders = "INBOX,All Mail,Sent Mail,Drafts,Spam";
-          archive = "All Mail";
-          postpone = "Drafts";
-          copy-to = "";  # Gmail SMTP auto-saves to Sent Mail; avoid duplicates
-          cache-headers = "true";
-          check-mail = "1m";
-        };
-      };
-    };
 
     # Microsoft/Outlook account using OAuth2 via oama + Thunderbird's public client ID.
     # Uses device code flow — no Azure app registration or client_secret needed.
@@ -559,9 +519,6 @@ in {
     * = [Gmail]/*
   '';
 
-  xdg.configFile."aerc/gmail-foldermap".text = ''
-    * = [Gmail]/*
-  '';
 
   # Catppuccin Mocha styleset for aerc
   xdg.configFile."aerc/stylesets/catppuccin-mocha".source = ./catppuccin-mocha.styleset;
