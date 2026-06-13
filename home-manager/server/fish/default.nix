@@ -24,6 +24,9 @@
       if command -q opam
         eval (opam env)
       end
+
+      # Set Ollama models directory (for homework machine)
+      set -x OLLAMA_MODELS $HOME/data/ollama/models
     '';
 
     plugins = [
