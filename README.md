@@ -24,3 +24,8 @@ git-crypt unlock ./secret-key
 
 See https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/ for more info.
 
+### Remote SSH access
+
+To reach this machine remotely (e.g. `lox@homework.ohrg.org`) via Tailscale, see
+[docs/remote-ssh.md](docs/remote-ssh.md).
+

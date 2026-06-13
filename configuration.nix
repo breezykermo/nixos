@@ -138,6 +138,11 @@ in
     settings.PasswordAuthentication = false;
   };
 
+  # Tailscale mesh VPN - lets this machine be reached remotely (e.g. over
+  # `lox@homework.ohrg.org`) without router port-forwarding or public exposure.
+  # After deploying, run `sudo tailscale up` once on this node to authenticate it.
+  services.tailscale.enable = true;
+
   # XDG enables wayland to communicate with XDG programs.
   # Most critically, it allows browsers to screenshare wayland screens.
   xdg = {
