@@ -272,6 +272,11 @@
         icons = true;
         max-visible = 3;
         layer = "overlay";
+        # Left-clicking a notification invokes its default action (instead of
+        # just dismissing) so Claude Code's "session needs attention" popups can
+        # focus the originating terminal. Notifications without a default action
+        # still dismiss on left-click.
+        on-button-left = "invoke-default-action";
       };
     };
   };
