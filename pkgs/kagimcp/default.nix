@@ -2,6 +2,7 @@
   lib,
   buildPythonPackage,
   fetchPypi,
+  hatchling,
   fastmcp,
   pydantic,
   python-dateutil,
@@ -12,13 +13,16 @@
 buildPythonPackage rec {
   pname = "kagimcp";
   version = "1.0.0";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-173akdi8xpav22sxhrpxb7yspsh9859bzmsg7gyvmmwb8crwvbk2";
+    hash = "sha256-Yq7NM0OL17r9O0/Xv1JBCeqr/Vn9Zti1EFvdjmKbapw=";
   };
 
-  propagatedBuildInputs = [
+  build-system = [ hatchling ];
+
+  dependencies = [
     fastmcp
     pydantic
     python-dateutil
