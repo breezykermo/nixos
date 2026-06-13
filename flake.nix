@@ -61,8 +61,8 @@
     # read of a gitignored file: `nixos-rebuild --flake .` evaluates only git-tracked
     # files, so a gitignored selector (e.g. machines/local-profile.nix) is invisible at
     # eval time and silently falls back. Keep this set to the machine you are on.
-    selectedMachine = "homework";
-    # selectedMachine = "framework";
+    # selectedMachine = "homework";
+    selectedMachine = "framework";
     # selectedMachine = "dellxps";
 
     # Import machine-specific variables
