@@ -63,6 +63,31 @@ let
     else
       "gruvbox-dark";  # Safe fallback
 
+  # Vivid theme name mapping (vivid ships its own theme names, which do NOT
+  # always match our fullName convention - e.g. we call it "rosepine-main" but
+  # vivid calls it "rose-pine"). Used to generate LS_COLORS. An unknown name
+  # makes `vivid generate` fail at shell startup, so keep this in sync with
+  # `vivid themes`.
+  vividThemeName =
+    if activeTheme == "gruvbox" then
+      if activeVariant == "dark-hard" then "gruvbox-dark-hard"
+      else if activeVariant == "dark-soft" then "gruvbox-dark-soft"
+      else "gruvbox-dark"  # medium/pale -> generic gruvbox-dark
+    else if activeTheme == "catppuccin" then
+      "catppuccin-${activeVariant}"  # mocha/macchiato/frappe/latte match vivid
+    else if activeTheme == "nord" then
+      "nord"  # vivid only ships a single nord theme
+    else if activeTheme == "onedark" then
+      if activeVariant == "light" then "one-light" else "one-dark"
+    else if activeTheme == "molokai" then
+      "molokai"  # vivid only ships a single molokai theme
+    else if activeTheme == "rosepine" then
+      if activeVariant == "moon" then "rose-pine-moon"
+      else if activeVariant == "dawn" then "rose-pine-dawn"
+      else "rose-pine"  # main
+    else
+      "gruvbox-dark";  # Safe fallback
+
 in
 {
   inherit themeLib;
@@ -72,6 +97,7 @@ in
   variant = activeVariant;
   fullName = selectedPalette.name;
   rofiTheme = rofiThemeName;
+  vividTheme = vividThemeName;
 
   # Transparency settings
   transparency = {
