@@ -26,16 +26,15 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  # ── Second NVMe (nvme0n1, ~1.8T) — homework-only, not present on the framework laptop ──
-  # The drive is currently EMPTY/UNFORMATTED. To bring it online (one-time, run as root):
-  #   parted /dev/nvme0n1 -- mklabel gpt
-  #   parted /dev/nvme0n1 -- mkpart primary ext4 0% 100%
-  #   mkfs.ext4 -L DATA /dev/nvme0n1p1
-  # Then uncomment the mount below and `just deploy`:
-  # fileSystems."/home/lox/data" =
-  #   { device = "/dev/disk/by-label/DATA";
-  #     fsType = "ext4";
-  #   };
+  # ── Second NVMe (nvme0n1p1, ~1.8T ext4, label NIXDATA) — homework-only data drive,
+  # not present on the framework laptop. Referenced by label (like / and /boot) so it
+  # survives NVMe re-enumeration. `nofail` keeps this headless server bootable/SSH-able
+  # even if the drive is missing or faulty, rather than dropping to emergency mode.
+  fileSystems."/home/lox/data" =
+    { device = "/dev/disk/by-label/NIXDATA";
+      fsType = "ext4";
+      options = [ "nofail" ];
+    };
 
   swapDevices = [ ];
 

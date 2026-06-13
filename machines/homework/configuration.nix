@@ -9,6 +9,14 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
+  # The NIXDATA data drive (see hardware-configuration.nix) mounts at /home/lox/data
+  # as a fresh ext4 whose root is owned by root. Make it owned by the primary user so
+  # they can actually write to it. tmpfiles runs after local-fs.target, i.e. after the
+  # mount, so this chowns the mounted filesystem rather than a hidden underlay.
+  systemd.tmpfiles.rules = [
+    "d /home/${userName}/data 0755 ${userName} users - -"
+  ];
+
   # ── homework: Framework DESKTOP (Ryzen AI MAX+ 395 / Strix Halo) as an always-on server ──
   # This machine has no battery and no lid, and is SSH'd into for long-running tasks
   # (see docs/remote-ssh.md). The shared laptop power module

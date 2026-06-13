@@ -13,8 +13,8 @@ let
   # THEME CONFIGURATION - Change these values to switch themes
   # ============================================================================
 
-  # Rose Pine only on the "homework" machine (see ./machines/local-profile.nix);
-  # everywhere else keeps the default Catppuccin Mocha theme.
+  # Rose Pine only on the "homework" machine (localProfile mirrors selectedMachine in
+  # flake.nix); everywhere else keeps the default Catppuccin Mocha theme.
   # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine"
   activeTheme = if localProfile == "homework" then "rosepine" else "catppuccin";
   activeVariant = if localProfile == "homework" then "main" else "mocha";

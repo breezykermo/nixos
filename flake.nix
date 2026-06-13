@@ -56,16 +56,13 @@
   let
     system = "x86_64-linux";
 
-    # Which machine config to build. This is read from the gitignored, per-machine
-    # file ./machines/local-profile.nix, which contains the machine name as a string
-    # (e.g. "homework"). Machines without that file -- a fresh checkout and the
-    # "framework" laptop -- default to "framework".
-    #
-    # To target a different machine, create the file with its name, e.g.:
-    #   echo '"homework"' > machines/local-profile.nix   # or "dellxps"
-    selectedMachine = if builtins.pathExists ./machines/local-profile.nix
-      then import ./machines/local-profile.nix
-      else "framework";
+    # Switch machines by changing this ONE line. It must be a hardcoded string, NOT a
+    # read of a gitignored file: `nixos-rebuild --flake .` evaluates only git-tracked
+    # files, so a gitignored selector (e.g. machines/local-profile.nix) is invisible at
+    # eval time and silently falls back. Keep this set to the machine you are on.
+    selectedMachine = "homework";
+    # selectedMachine = "framework";
+    # selectedMachine = "dellxps";
 
     # Import machine-specific variables
     machineVars = import ./machines/${selectedMachine}/vars.nix;

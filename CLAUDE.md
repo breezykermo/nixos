@@ -68,13 +68,11 @@ containing `configuration.nix`, `hardware-configuration.nix`, and `vars.nix`. A 
 includes the hardware config and machine-specific services (power management, hardware
 support, etc.).
 
-Which machine is built is read from the **gitignored** file `machines/local-profile.nix`,
-which contains the machine name as a string. A box without that file (a fresh checkout, and
-the `framework` laptop) defaults to `"framework"`. To target another machine on a given box:
-```bash
-echo '"homework"' > machines/local-profile.nix   # or "dellxps"
-```
-The selected machine name is also exposed to shared modules as `localProfile`, used to gate
+Which machine is built is set by the hardcoded `selectedMachine` string in `flake.nix`
+(toggle it to `"framework"`, `"homework"`, or `"dellxps"` for the box you're on). It must
+be hardcoded, not read from a gitignored file: `nixos-rebuild --flake .` evaluates only
+git-tracked files, so a gitignored selector is invisible at eval time and silently falls
+back. The selected name is also exposed to shared modules as `localProfile`, used to gate
 machine-specific software/behaviour (e.g. `localProfile == "homework"` checks). All machines
 keep `hostname = "loxnix"` in their `vars.nix` so `just deploy` resolves
 `nixosConfigurations.loxnix`.
