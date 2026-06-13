@@ -27,7 +27,7 @@
     };
     # Typst - modern typesetting system
     typst-flake = {
-      url = "github:typst/typst-flake";
+      url = "github:breezykermo/typst-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # tuicr - code review TUI with vim keybindings
@@ -52,6 +52,7 @@
     home-manager,
     naersk,
     orion-browser,
+    typst-flake,
     ... }:
   let
     system = "x86_64-linux";
