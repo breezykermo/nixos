@@ -29,11 +29,13 @@ let
   isHomework = localProfile == "homework";
 
   # claude-code-router exposes an Anthropic-compatible endpoint backed by the local
-  # ollama OpenAI-compatible API, so Claude Code can talk to local models. The
-  # `glm` fish function (below) launches it via `ccr code`; pick a model
-  # in-session with `/model ollama,<name>` or `/model zai,glm-4.6`. For your
-  # Claude Pro/Max subscription models (not available through the router), use
-  # `claude` instead. Routes below set sensible defaults per task class.
+  # ollama OpenAI-compatible API, so Claude Code can talk to local models. Invoke
+  # it directly with `ccr code`; pick a model in-session with
+  # `/model ollama,<name>` (see `allmodels` below for the full list). For z.ai
+  # (GLM) cloud models, use `glm` instead, which talks to z.ai's own
+  # Anthropic-compatible endpoint directly (no router involved). For your Claude
+  # Pro/Max subscription models, use `claude`. Routes below set sensible defaults
+  # per task class.
   ccrConfig = {
     LOG = false;
     Providers = [
@@ -46,16 +48,16 @@ let
           "gpt-oss:120b"
           "MichelRosselli/GLM-4.5-Air:Q5_K_M"
         ];
-      }
-      {
-        # z.ai (GLM) cloud models, reachable in-session with `/model zai,glm-4.6`.
-        # OpenAI-compatible endpoint (CCR providers are OpenAI-format). The key is
-        # interpolated from $ZAI_API_KEY in the ccr process env — exported by the
-        # `claude` wrapper below from `pass` — so no secret lands in the nix store.
-        name = "zai";
-        api_base_url = "https://api.z.ai/api/paas/v4/chat/completions";
-        api_key = "$ZAI_API_KEY";
-        models = [ "glm-4.6" "glm-4.5" ];
+        # qwen3-coder:30b has no thinking mode; Claude Code sends `thinking:
+        # {type: "enabled"}` by default, which Ollama rejects with "does not
+        # support thinking" (https://github.com/musistudio/claude-code-router/issues/972).
+        # The reasoning transformer with enable:false rewrites that to
+        # `thinking: {type: "disabled"}` / `enable_thinking: false`.
+        transformer = {
+          "qwen3-coder:30b" = {
+            use = [ [ "reasoning" { enable = false; } ] ];
+          };
+        };
       }
     ];
     Router = {
@@ -93,6 +95,19 @@ in
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
   } // lib.optionalAttrs isHomework {
     ".claude-code-router/config.json".text = builtins.toJSON ccrConfig;
+    ".config/zai-models.json".text = builtins.toJSON {
+      models = [
+        "GLM-5.1"
+        "GLM-5"
+        "GLM-5-Turbo"
+        "GLM-4.7"
+        "GLM-4.6"
+        "GLM-4.5"
+        "GLM-4.5-Air"
+        "GLM-5V-Turbo"
+        "GLM-4.6V"
+      ];
+    };
   };
 
   home.shellAliases = {
@@ -100,37 +115,30 @@ in
   };
 
   programs.fish.functions = lib.optionalAttrs isHomework {
-    # Wrap `ccr` so ZAI_API_KEY is set for any invocation that might (re)start
-    # the router service — e.g. a manual `ccr start`. The router interpolates
-    # "$ZAI_API_KEY" from its own process env once, when the long-lived service
-    # (re)starts; if that process never had the var set, the zai provider's key
-    # stays as the literal unexpanded string and its models are unusable/missing
-    # from `/model`.
-    ccr = ''
-      set -x ZAI_API_KEY (pass show ai/zai)
-      command ccr $argv
-    '';
-
     # `claude` runs the real binary unmodified, against your Claude Pro/Max
     # subscription login.
     claude = ''
       command claude $argv
     '';
 
-    # `glm` routes through claude-code-router so both ollama and z.ai models are
-    # available (switch in-session with `/model ollama,<name>` or `/model zai,glm-4.6`).
-    # `ccr code` overrides ANTHROPIC_AUTH_TOKEN/ANTHROPIC_BASE_URL, so subscription
-    # models aren't reachable this way — use `claude` for those instead. `ccr code`
-    # starts the ccr server on first use (lazy — no boot service); the first start
-    # can take a few seconds, after which the service stays up for subsequent
-    # invocations.
+    # `glm` points claude directly at z.ai's native Anthropic-compatible
+    # endpoint, so GLM models get full feature parity (e.g. Plan Mode) under
+    # your z.ai plan — no router involved.
     glm = ''
-      ccr code $argv
+      set -x ANTHROPIC_BASE_URL https://api.z.ai/api/anthropic
+      set -x ANTHROPIC_AUTH_TOKEN (pass show ai/zai)
+      set -x ANTHROPIC_MODEL glm-4.5
+      command claude $argv
     '';
 
-    # Lists "provider,model" strings usable with `/model` inside `glm`.
+    # Lists "provider,model" strings usable with `/model` inside `ccr code`.
+    # Shows both ollama models (from config) and z.ai models (from config file).
     allmodels = ''
-      jq -r '.Providers[] | .name as $p | .models[] | "\($p),\(.)"' ~/.claude-code-router/config.json
+      echo "# Ollama models (via ccr code):"
+      jq -r '.Providers[] | select(.name == "ollama") | .name as $p | .models[] | "\($p),\(.)"' ~/.claude-code-router/config.json 2>/dev/null || echo "# No ollama config found"
+      echo ""
+      echo "# z.ai models (via glm wrapper):"
+      jq -r '.models[] | "zai,\(.)"' ~/.config/zai-models.json 2>/dev/null || echo "# No z.ai models config found"
     '';
   };
 
