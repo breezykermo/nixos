@@ -93,6 +93,9 @@ let
 in
 {
   home.file = {
+    # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
+    # applied across every project. Project-level CLAUDE.md files supplement it.
+    ".claude/CLAUDE.md".source = ./global-claude.md;
     ".claude/skills/typst-author".source = typst-author-skill;
     ".claude/skills/rheo-author".source = rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${agentic-jujutsu-skill}/packages/agentic-jujutsu";
