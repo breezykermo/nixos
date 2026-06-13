@@ -1,6 +1,6 @@
 # Adapted from
 # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265
-{ pkgs, lib, theme, ... }:
+{ pkgs, lib, theme, inputs, ... }:
 let
 
   lock-false = {
@@ -15,6 +15,7 @@ in
 {
   home.packages = with pkgs; [
     brave
+    inputs.orion-browser.packages.${pkgs.system}.default
   ];
 
   programs.chromium.enable = true;

@@ -40,12 +40,18 @@
       url = "github:chojs23/concord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Orion Browser - privacy-focused browser
+    orion-browser = {
+      url = "github:dokokitsune/orion-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
     nixpkgs,
     home-manager,
     naersk,
+    orion-browser,
     ... }:
   let
     system = "x86_64-linux";
