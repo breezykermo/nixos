@@ -24,6 +24,16 @@ let
           "MichelRosselli/GLM-4.5-Air:Q5_K_M"
         ];
       }
+      {
+        # z.ai (GLM) cloud models, reachable in-session with `/model zai,glm-4.6`.
+        # OpenAI-compatible endpoint (CCR providers are OpenAI-format). The key is
+        # interpolated from $ZAI_API_KEY in the ccr process env — exported by the
+        # `claude` wrapper below from `pass` — so no secret lands in the nix store.
+        name = "zai";
+        api_base_url = "https://api.z.ai/api/paas/v4/chat/completions";
+        api_key = "$ZAI_API_KEY";
+        models = [ "glm-4.6" "glm-4.5" ];
+      }
     ];
     Router = {
       default = "ollama,qwen3-coder:30b";     # agentic workhorse with reliable tool calls
@@ -64,16 +74,20 @@ in
 
   home.shellAliases = {
     ccb = "claudebox --allow-ssh-agent";
-  } // lib.optionalAttrs isHomework {
-    ccl = "ccr code"; # Claude Code routed to local ollama models
   };
 
-  programs.fish.functions.glm = ''
-    set -x ANTHROPIC_BASE_URL https://api.z.ai/api/anthropic
-    set -x ANTHROPIC_AUTH_TOKEN (pass show ai/zai)
-    set -x ANTHROPIC_MODEL glm-4.5
-    claudebox --allow-ssh-agent $argv[1]
-  '';
+  programs.fish.functions = lib.optionalAttrs isHomework {
+    # Route `claude` through claude-code-router so both ollama and z.ai models are
+    # available (switch in-session with `/model ollama,<name>` or `/model zai,glm-4.6`).
+    # `ccr code` starts the ccr server on first use (lazy — no boot service) and the
+    # spawned server inherits ZAI_API_KEY for the z.ai provider's "$ZAI_API_KEY"
+    # interpolation. No recursion: ccr spawns the real `claude` binary from PATH, which
+    # fish functions don't shadow for child processes.
+    claude = ''
+      set -x ZAI_API_KEY (pass show ai/zai)
+      ccr code $argv
+    '';
+  };
 
   home.packages = [
     beads
@@ -90,5 +104,10 @@ in
     DISABLE_TELEMETRY = 1;
     DISABLE_ERROR_REPORTING = 1;
     DISABLE_NON_ESSENTIAL_MODEL_CALLS = 1;
+  } // lib.optionalAttrs isHomework {
+    # Where ollama stores models (see machines/homework). Set here as a session
+    # variable so it's exported to fish, tmux panes, and non-interactive contexts
+    # alike (home-manager sources hm-session-vars in config.fish).
+    OLLAMA_MODELS = "${config.home.homeDirectory}/data/ollama/models";
   };
 }
