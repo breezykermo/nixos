@@ -38,6 +38,15 @@ let
   # per task class.
   ccrConfig = {
     LOG = false;
+    # Claude Code's global `effortLevel` setting makes it send a
+    # `reasoning_effort` field on every request, including to non-Claude
+    # models. Ollama's /v1/chat/completions rejects this for qwen3-coder:30b
+    # (no thinking mode) with "does not support thinking". This custom
+    # transformer strips reasoning/thinking fields before they reach Ollama.
+    # https://github.com/musistudio/claude-code-router/issues/972
+    transformers = [
+      { path = "${config.home.homeDirectory}/.claude-code-router/transformers/strip-reasoning-params.js"; }
+    ];
     Providers = [
       {
         name = "ollama";
@@ -48,14 +57,9 @@ let
           "gpt-oss:120b"
           "MichelRosselli/GLM-4.5-Air:Q5_K_M"
         ];
-        # qwen3-coder:30b has no thinking mode; Claude Code sends `thinking:
-        # {type: "enabled"}` by default, which Ollama rejects with "does not
-        # support thinking" (https://github.com/musistudio/claude-code-router/issues/972).
-        # The reasoning transformer with enable:false rewrites that to
-        # `thinking: {type: "disabled"}` / `enable_thinking: false`.
         transformer = {
           "qwen3-coder:30b" = {
-            use = [ [ "reasoning" { enable = false; } ] ];
+            use = [ "strip-reasoning-params" ];
           };
         };
       }
@@ -95,6 +99,7 @@ in
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
   } // lib.optionalAttrs isHomework {
     ".claude-code-router/config.json".text = builtins.toJSON ccrConfig;
+    ".claude-code-router/transformers/strip-reasoning-params.js".source = ./transformers/strip-reasoning-params.js;
     ".config/zai-models.json".text = builtins.toJSON {
       models = [
         "GLM-5.1"

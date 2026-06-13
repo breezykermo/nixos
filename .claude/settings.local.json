@@ -16,7 +16,8 @@
       "Bash(timeout 30 gh api repos/takshakmudgal/wa-tui/tags)",
       "Bash(timeout 30 curl -sL https://raw.githubusercontent.com/takshakmudgal/wa-tui/v0.1.0/Cargo.lockj)",
       "Bash(nix flake *)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(sudo netstat -tnp)"
     ],
     "deny": [],
     "ask": []
