@@ -56,22 +56,24 @@
   let
     system = "x86_64-linux";
 
-    # Switch machines by changing this ONE line!
-    selectedMachine = "framework";
-    # selectedMachine = "dellxps";
+    # Which machine config to build. This is read from the gitignored, per-machine
+    # file ./machines/local-profile.nix, which contains the machine name as a string
+    # (e.g. "homework"). Machines without that file -- a fresh checkout and the
+    # "framework" laptop -- default to "framework".
+    #
+    # To target a different machine, create the file with its name, e.g.:
+    #   echo '"homework"' > machines/local-profile.nix   # or "dellxps"
+    selectedMachine = if builtins.pathExists ./machines/local-profile.nix
+      then import ./machines/local-profile.nix
+      else "framework";
 
     # Import machine-specific variables
     machineVars = import ./machines/${selectedMachine}/vars.nix;
     userName = machineVars.userName;
 
-    # Per-machine profile, for gating software that should only be installed
-    # on a specific physical machine (e.g. "homework"). This file is
-    # gitignored and local to each machine -- create
-    # ./machines/local-profile.nix containing a string (e.g. "homework") to
-    # set it. Machines without this file get `null`, i.e. no extra software.
-    localProfile = if builtins.pathExists ./machines/local-profile.nix
-      then import ./machines/local-profile.nix
-      else null;
+    # The machine name doubles as the profile that gates machine-specific software
+    # and behaviour in shared modules (see the `localProfile == "homework"` checks).
+    localProfile = selectedMachine;
 
     # Import theme once and pass to all modules
     theme = import ./themes/default.nix { inherit (nixpkgs) lib; inherit localProfile; };

@@ -63,13 +63,21 @@ Each application domain has its own subdirectory under `home-manager/{server,des
 - The hostname in the flake must match the system hostname for deployment to work
 
 ### Machine-Specific Configurations
-Toggle between machines by commenting/uncommenting imports in `flake.nix:36-37`:
-```nix
-./machines/framework/configuration.nix
-# ./machines/dellxps/configuration.nix
-```
+Each machine has its own directory under `machines/` (`framework`, `homework`, `dellxps`)
+containing `configuration.nix`, `hardware-configuration.nix`, and `vars.nix`. A config
+includes the hardware config and machine-specific services (power management, hardware
+support, etc.).
 
-Each machine config includes hardware-configuration and machine-specific services (power management, hardware support, etc.).
+Which machine is built is read from the **gitignored** file `machines/local-profile.nix`,
+which contains the machine name as a string. A box without that file (a fresh checkout, and
+the `framework` laptop) defaults to `"framework"`. To target another machine on a given box:
+```bash
+echo '"homework"' > machines/local-profile.nix   # or "dellxps"
+```
+The selected machine name is also exposed to shared modules as `localProfile`, used to gate
+machine-specific software/behaviour (e.g. `localProfile == "homework"` checks). All machines
+keep `hostname = "loxnix"` in their `vars.nix` so `just deploy` resolves
+`nixosConfigurations.loxnix`.
 
 ### Secrets Management
 Uses `git-crypt` for encrypted secrets. To unlock:
