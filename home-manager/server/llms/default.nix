@@ -102,6 +102,7 @@ in
     ".claude-code-router/transformers/strip-reasoning-params.js".source = ./transformers/strip-reasoning-params.js;
     ".config/zai-models.json".text = builtins.toJSON {
       models = [
+        "GLM-5.2"
         "GLM-5.1"
         "GLM-5"
         "GLM-5-Turbo"
