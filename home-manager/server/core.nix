@@ -34,6 +34,7 @@
     flyctl        # fly.io CLI
     kagimcp       # Kagi MCP server for web search
     lnav          # log file navigator (generic formats, journald, SQL queries)
+    mosh          # mobile shell - resilient to roaming and intermittent connectivity
   ]
   ++ lib.optionals (localProfile == "homework") (with pkgs; [
     nvtopPackages.amd  # GPU TUI; reads amdgpu sysfs (works on gfx1151 where amdsmi is blind)

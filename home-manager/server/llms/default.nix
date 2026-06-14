@@ -120,20 +120,22 @@ in
     ccb = "claudebox --allow-ssh-agent";
   };
 
-  programs.fish.functions = lib.optionalAttrs isHomework {
-    # `claude` runs the real binary unmodified, against your Claude Pro/Max
-    # subscription login.
-    claude = ''
-      command claude $argv
-    '';
-
+  programs.fish.functions = {
     # `glm` points claude directly at z.ai's native Anthropic-compatible
     # endpoint, so GLM models get full feature parity (e.g. Plan Mode) under
-    # your z.ai plan — no router involved.
+    # your z.ai plan — no router involved. Available on all machines; requires
+    # `pass show ai/zai` to resolve (i.e. the secret + gpg key must be present
+    # on this machine).
     glm = ''
       set -x ANTHROPIC_BASE_URL https://api.z.ai/api/anthropic
       set -x ANTHROPIC_AUTH_TOKEN (pass show ai/zai)
       set -x ANTHROPIC_MODEL glm-4.5
+      command claude $argv
+    '';
+  } // lib.optionalAttrs isHomework {
+    # `claude` runs the real binary unmodified, against your Claude Pro/Max
+    # subscription login.
+    claude = ''
       command claude $argv
     '';
 

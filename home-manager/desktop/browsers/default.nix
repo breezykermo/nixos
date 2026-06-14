@@ -323,7 +323,7 @@ in
 		    name = "[g]it[h]ub";
 		    tags = [];
 		    keyword = "gh";
-		    url = "https://github.com";
+		    url = "https://github.com/notifications";
 		  }
 		  {
 		    name = "[g]it[h]ub [r]epos";

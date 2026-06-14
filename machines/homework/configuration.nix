@@ -75,6 +75,13 @@
     ProtectHome = lib.mkForce false;
   };
 
+  # ── Firewall: allow mosh (mobile shell) for resilient remote connections ──
+  # mosh uses UDP ports in the range 60000-61000 by default for its connection
+  networking.firewall = {
+    enable = true;
+    allowedUDPPorts = [ 60000 61000 ];
+  };
+
   # ── homework: Framework DESKTOP (Ryzen AI MAX+ 395 / Strix Halo) as an always-on server ──
   # This machine has no battery and no lid, and is SSH'd into for long-running tasks
   # (see docs/remote-ssh.md). The shared laptop power module
