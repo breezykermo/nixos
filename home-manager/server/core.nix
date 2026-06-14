@@ -34,9 +34,10 @@
     flyctl        # fly.io CLI
     kagimcp       # Kagi MCP server for web search
     lnav          # log file navigator (generic formats, journald, SQL queries)
-    amdgpu_top    # TUI for AMD APU/GPU power, clocks, utilization (Strix Halo)
-
-  ];
+  ]
+  ++ lib.optionals (localProfile == "homework") (with pkgs; [
+    nvtopPackages.amd  # GPU TUI; reads amdgpu sysfs (works on gfx1151 where amdsmi is blind)
+  ]);
 
   # gh extension: dlvhdr/gh-dash, invoked as `gh dash`
   home.file.".local/share/gh/extensions/gh-dash/gh-dash".source = "${pkgs.gh-dash}/bin/gh-dash";
@@ -119,6 +120,11 @@
     # top but better
     btop = {
       enable = true;
+      # gfx1151's monitoring isn't readable via amdsmi/rocm-smi, so btop's GPU panel
+      # may show N/A for utilization here — nvtop (sysfs-based) is the reliable one.
+      # rocmSupport pulls rocm-smi + recompiles btop, so keep it to homework only.
+      package = lib.mkIf (localProfile == "homework")
+        (pkgs.btop.override { rocmSupport = true; });
       settings = {
         vim_keys = true;
       };
