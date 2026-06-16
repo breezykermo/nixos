@@ -155,7 +155,6 @@ in
     abacus
     inputs.llm-agents.packages.${system}.claude-code
     inputs.llm-agents.packages.${system}.claudebox
-    inputs.llm-agents.packages.${system}.ccusage
   ] ++ lib.optionals isHomework [
     claude-code-router
   ];
