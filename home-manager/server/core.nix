@@ -293,6 +293,7 @@
         html-renderer "${pkgs.w3m}/bin/w3m -dump -T text/html -cols 100 -o display_link_number=1"
 
         # Theme colors (active theme set in themes/default.nix)
+        # Newsboat requires color<n> terminal codes, not hex values
         color background         default   default
         color listnormal         ${theme.helpers.to256Color theme.colors.fg1}  default
         color listnormal_unread  ${theme.helpers.to256Color theme.colors.yellow}  default  bold
