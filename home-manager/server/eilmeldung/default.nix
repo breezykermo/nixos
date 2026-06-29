@@ -17,7 +17,7 @@
     # Import feeds on first run
     if [ -f "$FEEDS_OPML" ] && [ ! -f "$EILMELDUNG_DB" ]; then
       echo "📡 Importing feeds from OPML..."
-      eilmeldung --non-interactive --cmd "importopml $FEEDS_OPML"
+      eilmeldung --import-opml "$FEEDS_OPML"
       echo "✅ Feeds imported!"
     fi
 
@@ -25,9 +25,7 @@
     exec eilmeldung "$@"
   '';
 
-  home.shellAliases = {
-    eilmeldung-ui = "eilmeldung";  # Direct access if needed
-  };
+  home.file.".local/bin/rss".executable = true;
 
   programs.eilmeldung.settings = {
     # Auto-sync feeds on startup

@@ -26,6 +26,9 @@
 
       fish_add_path $HOME/.npm-global/bin
 
+      # Local binaries
+      fish_add_path $HOME/.local/bin
+
       if command -q opam
         eval (opam env)
       end
