@@ -156,108 +156,88 @@
         # --- Jobs ---
         {
           url = "https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss";
-          tags = [ "jobs" "~I-School Feed" ];
+          tags = [ "~/jobs" "~I-School Feed" ];
         }
         {
           url = "https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history";
-          tags = [ "jobs" ];
+          tags = [ "~/jobs" ];
         }
         {
           url = "https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US";
-          tags = [ "jobs" "~MLA TT" ];
+          tags = [ "~/jobs" "~MLA TT" ];
         }
         {
           url = "https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB";
-          tags = [ "jobs" "~THA Britain" ];
+          tags = [ "~/jobs" "~THA Britain" ];
         }
         {
           url = "https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss";
-          tags = [ "jobs" "~jobs.ac.uk" ];
+          tags = [ "~/jobs" "~jobs.ac.uk" ];
         }
         {
           url = "https://oxide.computer/careers/feed";
-          tags = [ "jobs" "~Oxide" ];
+          tags = [ "~/jobs" "~Oxide" ];
         }
 
         # --- Blogs ---
         {
           url = "https://drewdevault.com/feed.xml";
-          tags = [ "blog" "~Drew DeVault" ];
+          tags = [ "~/blog" "~Drew DeVault" ];
         }
         {
           url = "https://crystaljjlee.com/rss/";
-          tags = [ "blog" "~Crystal JJ Lee" ];
+          tags = [ "~/blog" "~Crystal JJ Lee" ];
         }
         {
           url = "https://newleftreview.org/sidecar/feed";
-          tags = [ "blog" "~New Left Review Sidecar" ];
+          tags = [ "~/blog" "~New Left Review Sidecar" ];
         }
         {
           url = "https://nplusonemag.com/feed/";
-          tags = [ "blog" "~n+1" ];
-        }
-        {
-          url = "https://leifweatherby.substack.com/feed";
-          tags = [ "blog" "~Leif Weatherby" ];
+          tags = [ "~/blog" "~n+1" ];
         }
         {
           url = "https://aisnakeoil.substack.com/feed";
-          tags = [ "blog" "~AI Snake Oil" ];
+          tags = [ "~/blog" "~AI Snake Oil" ];
         }
         {
           url = "https://simonw.substack.com/feed";
-          tags = [ "blog" "~Simon Willison" ];
+          tags = [ "~/blog" "~Simon Willison" ];
         }
         {
           url = "https://slavoj.substack.com/feed";
-          tags = [ "blog" "~Slavoj Zizek" ];
+          tags = [ "~/blog" "~Slavoj Zizek" ];
         }
         {
           url = "https://maxread.substack.com/feed";
-          tags = [ "blog" "~Read Max" ];
+          tags = [ "~/blog" "~Read Max" ];
         }
         {
           url = "https://weeknotes.ohrg.org/feed.xml";
-          tags = [ "blog" "~Lachlan Kermode" ];
+          tags = [ "~/blog" "~Lachlan Kermode" ];
         }
         {
           url = "https://ohrg.org/feed.xml";
-          tags = [ "blog" "~Lachlan Kermode" ];
+          tags = [ "~/blog" "~Lachlan Kermode" ];
         }
         {
           url = "https://anil.recoil.org/news.xml";
-          tags = [ "blog" "~Anil Madhavapeddy" ];
+          tags = [ "~/blog" "~Anil Madhavapeddy" ];
         }
 
-
-
-
-        # --- Podcasts ---
-        {
-          url = "https://www.patreon.com/rss/Macrodose?auth=U7WUJdAv5G6TUSw3WXUwpBsosdDyfFgY&show=865850";
-          tags = [ "podcast" "~Macrodose" ];
-        }
-        {
-          url = "https://www.patreon.com/rss/poltheoryother?auth=p6t2BdMMaBNY7L4V2yVHcUq6cuPdSO_L&show=859104";
-          tags = [ "podcast" "~Pol Theory Other" ];
-        }
-        {
-          url = "https://www.patreon.com/rss/OrdinaryUnhappiness?auth=gyIkT58d5SKu_tw-bVm3jCODJWUSDUdd&show=867820";
-          tags = [ "podcast" "~Ordinary Unhappiness" ];
-        }
 
         # --- News ---
         {
           url = "https://hnrss.org/frontpage?count=100";
-          tags = [ "news" "~Hacker News" ];
+          tags = [ "~/news" "~Hacker News" ];
         }
         {
           url = "https://kite.kagi.com/tech.xml";
-          tags = [ "news" "~Kagi News - Technology" ];
+          tags = [ "~/news" "~Kagi News - Technology" ];
         }
         {
           url = "http://rss.slashdot.org/Slashdot/slashdot";
-          tags = [ "news" "~Slashdot" ];
+          tags = [ "~/news" "~Slashdot" ];
         }
 
       ];
