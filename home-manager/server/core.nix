@@ -296,11 +296,11 @@
         # Newsboat requires color<n> terminal codes, not hex values
         color background         default   default
         color listnormal         ${theme.helpers.to256Color theme.colors.fg1}  default
-        color listnormal_unread  ${theme.helpers.to256Color theme.colors.yellow}  default  bold
+        color listnormal_unread  ${theme.helpers.to256Color theme.colors.green}  default  bold
         color listfocus          ${theme.helpers.to256Color theme.colors.fg0}  ${theme.helpers.to256Color theme.colors.bg2}  bold
         color listfocus_unread   ${theme.helpers.to256Color theme.colors.orange}  ${theme.helpers.to256Color theme.colors.bg2}  bold
-        color info               ${theme.helpers.to256Color theme.colors.aqua}  ${theme.helpers.to256Color theme.colors.bg1}  bold
-        color article            ${theme.helpers.to256Color theme.colors.fg1}  default
+        color info               ${theme.helpers.to256Color theme.colors.blue}  ${theme.helpers.to256Color theme.colors.bg1}  bold
+        color article            ${theme.helpers.to256Color theme.colors.fg0}  default
 
         # Highlights for article content
         highlight article "^(Feed|Title|Author|Link|Date|Podcast Download URL):.*$" ${theme.helpers.to256Color theme.colors.aqua} default bold
