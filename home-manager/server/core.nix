@@ -135,110 +135,55 @@
     newsboat = {
       enable = true;
       urls = [
-        # --- Section query feeds ---
-        {
-          url = "\"query:Jobs:tags # \\\"jobs\\\"\"";
-          tags = [ ];
-        }
-        {
-          url = "\"query:Blogs:tags # \\\"blog\\\"\"";
-          tags = [ ];
-        }
-        {
-          url = "\"query:Podcasts:tags # \\\"podcast\\\"\"";
-          tags = [ ];
-        }
-        {
-          url = "\"query:News:tags # \\\"news\\\"\"";
-          tags = [ ];
-        }
-
         # --- Jobs ---
-        {
-          url = "https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss";
-          tags = [ "~/jobs" "~I-School Feed" ];
-        }
-        {
-          url = "https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history";
-          tags = [ "~/jobs" ];
-        }
-        {
-          url = "https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US";
-          tags = [ "~/jobs" "~MLA TT" ];
-        }
-        {
-          url = "https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB";
-          tags = [ "~/jobs" "~THA Britain" ];
-        }
-        {
-          url = "https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss";
-          tags = [ "~/jobs" "~jobs.ac.uk" ];
-        }
-        {
-          url = "https://oxide.computer/careers/feed";
-          tags = [ "~/jobs" "~Oxide" ];
-        }
+        { url = "https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss"; }
+        { url = "https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history"; }
+        { url = "https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US"; }
+        { url = "https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB"; }
+        { url = "https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss"; }
+        { url = "https://oxide.computer/careers/feed"; }
 
         # --- Blogs ---
-        {
-          url = "https://drewdevault.com/feed.xml";
-          tags = [ "~/blog" "~Drew DeVault" ];
-        }
-        {
-          url = "https://crystaljjlee.com/rss/";
-          tags = [ "~/blog" "~Crystal JJ Lee" ];
-        }
-        {
-          url = "https://newleftreview.org/sidecar/feed";
-          tags = [ "~/blog" "~New Left Review Sidecar" ];
-        }
-        {
-          url = "https://nplusonemag.com/feed/";
-          tags = [ "~/blog" "~n+1" ];
-        }
-        {
-          url = "https://aisnakeoil.substack.com/feed";
-          tags = [ "~/blog" "~AI Snake Oil" ];
-        }
-        {
-          url = "https://simonw.substack.com/feed";
-          tags = [ "~/blog" "~Simon Willison" ];
-        }
-        {
-          url = "https://slavoj.substack.com/feed";
-          tags = [ "~/blog" "~Slavoj Zizek" ];
-        }
-        {
-          url = "https://maxread.substack.com/feed";
-          tags = [ "~/blog" "~Read Max" ];
-        }
-        {
-          url = "https://weeknotes.ohrg.org/feed.xml";
-          tags = [ "~/blog" "~Lachlan Kermode" ];
-        }
-        {
-          url = "https://ohrg.org/feed.xml";
-          tags = [ "~/blog" "~Lachlan Kermode" ];
-        }
-        {
-          url = "https://anil.recoil.org/news.xml";
-          tags = [ "~/blog" "~Anil Madhavapeddy" ];
-        }
+        { url = "https://drewdevault.com/feed.xml"; }
+        { url = "https://crystaljjlee.com/rss/"; }
+        { url = "https://newleftreview.org/sidecar/feed"; }
+        { url = "https://nplusonemag.com/feed/"; }
+        { url = "https://aisnakeoil.substack.com/feed"; }
+        { url = "https://simonw.substack.com/feed"; }
+        { url = "https://slavoj.substack.com/feed"; }
+        { url = "https://maxread.substack.com/feed"; }
+        { url = "https://weeknotes.ohrg.org/feed.xml"; }
+        { url = "https://ohrg.org/feed.xml"; }
+        { url = "https://anil.recoil.org/news.xml"; }
+        { url = "https://ancazugo.github.io/blog.xml"; }
+        { url = "https://aneeshnaik.github.io/blog.xml"; }
+        { url = "https://arissaelena.github.io/insect-scanner-weeknotes/atom.xml"; }
+        { url = "https://dave.recoil.org/feed.xml"; }
+        { url = "https://digitalflapjack.com/blog/index.xml"; }
+        { url = "https://digitalflapjack.com/weeknotes/index.xml"; }
+        { url = "https://gabrielmahler.org/feed.xml"; }
+        { url = "https://gazagnaire.org/feed.xml"; }
+        { url = "https://jon.recoil.org/atom.xml"; }
+        { url = "https://kcsrk.info/atom.xml"; }
+        { url = "https://mort.io/atom.xml"; }
+        { url = "https://nick.recoil.org/index.xml"; }
+        { url = "https://oppi.li/posts/index.rss"; }
+        { url = "https://oppi.li/weeklies/index.rss"; }
+        { url = "https://parentheticallyspeaking.org/feed.xml"; }
+        { url = "http://patrick.sirref.org/weeklies/atom.xml"; }
+        { url = "https://patrick.sirref.org/ocaml-blog/atom.xml"; }
+        { url = "https://patrick.sirref.org/posts/atom.xml"; }
+        { url = "https://ryan.freumh.org/atom.xml"; }
+        { url = "https://toao.com/feeds/posts.atom.xml"; }
+        { url = "https://www.dra27.uk/feed.xml"; }
+        { url = "https://www.jonmsterling.com/jms-019X/atom.xml"; }
+        { url = "https://www.tunbury.org/atom.xml"; }
 
 
         # --- News ---
-        {
-          url = "https://hnrss.org/frontpage?count=100";
-          tags = [ "~/news" "~Hacker News" ];
-        }
-        {
-          url = "https://kite.kagi.com/tech.xml";
-          tags = [ "~/news" "~Kagi News - Technology" ];
-        }
-        {
-          url = "http://rss.slashdot.org/Slashdot/slashdot";
-          tags = [ "~/news" "~Slashdot" ];
-        }
+        { url = "https://hnrss.org/frontpage?count=100"; }
+        { url = "https://kite.kagi.com/tech.xml"; }
+        { url = "http://rss.slashdot.org/Slashdot/slashdot"; }
 
       ];
       extraConfig = ''
