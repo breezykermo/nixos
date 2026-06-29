@@ -129,43 +129,6 @@ in
         "fbf1c7" = "color230";  # fg0
         "504945" = "color59";   # bg2
         "3c3836" = "color237";  # bg1
-        # Catppuccin Mocha colors
-        "f38ba8" = "color217";  # red
-        "a6e3a1" = "color151";  # green
-        "f9e2af" = "color223";  # yellow
-        "89b4fa" = "color117";  # blue
-        "cba6f7" = "color183";  # purple
-        "94e2d5" = "color122";  # aqua
-        "fab387" = "color215";  # orange
-        "cdd6f4" = "color254";  # fg0
-        "bac2de" = "color146";  # fg1
-        "181825" = "color235";  # bg1
-        "313244" = "color59";   # bg2
-        "45475a" = "color241";  # bg3
-        # Catppuccin Macchiato colors
-        "ed8796" = "color210";  # red
-        "a6da95" = "color151";  # green
-        "eed49f" = "color223";  # yellow
-        "8aadf4" = "color111";  # blue
-        "c6a0f6" = "color177";  # purple
-        "8bd5ca" = "color116";  # aqua
-        "f5a97f" = "color215";  # orange
-        "cad3f5" = "color254";  # fg0
-        "b8c0e0" = "color146";  # fg1
-        "1e2030" = "color235";  # bg1
-        "363a4f" = "color59";   # bg2
-        # Catppuccin Frappé colors
-        "e78284" = "color210";  # red
-        "a6d189" = "color142";  # green
-        "e5c890" = "color222";  # yellow
-        "8caaee" = "color110";  # blue
-        "ca9ee6" = "color176";  # purple
-        "81c8be" = "color115";  # aqua
-        "ef9f76" = "color215";  # orange
-        "c6d0f5" = "color254";  # fg0
-        "b5bfe2" = "color153";  # fg1
-        "292c3c" = "color235";  # bg1
-        "414559" = "color59";   # bg2
       };
 
       # Check if we have a known mapping
