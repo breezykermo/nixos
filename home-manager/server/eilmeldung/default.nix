@@ -1,59 +1,42 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 {
   imports = [ inputs.eilmeldung.homeManager.default ];
 
   programs.eilmeldung.enable = true;
 
+  # Store feeds.opml for reproducible feed setup
+  xdg.configFile."eilmeldung/feeds.opml".source = ./feeds.opml;
+
+  # Wrapper script to auto-import feeds on first run, then launch eilmeldung
+  home.file.".local/bin/rss".text = ''
+    #!/usr/bin/env bash
+    # Auto-import feeds from OPML if database doesn't exist, then launch eilmeldung
+    FEEDS_OPML="''${XDG_CONFIG_HOME:-$HOME/.config}/eilmeldung/feeds.opml"
+    EILMELDUNG_DB="''${XDG_DATA_HOME:-$HOME/.local/state}/eilmeldung/newsflash.db"
+
+    # Import feeds on first run
+    if [ -f "$FEEDS_OPML" ] && [ ! -f "$EILMELDUNG_DB" ]; then
+      echo "📡 Importing feeds from OPML..."
+      eilmeldung --non-interactive --cmd "importopml $FEEDS_OPML"
+      echo "✅ Feeds imported!"
+    fi
+
+    # Launch eilmeldung
+    exec eilmeldung "$@"
+  '';
+
+  home.shellAliases = {
+    eilmeldung-ui = "eilmeldung";  # Direct access if needed
+  };
+
   programs.eilmeldung.settings = {
-      # --- Feed List ---
-      # All URLs migrated from newsboat
-      feed_list = [
-        # --- Jobs ---
-        "https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss"
-        "https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history"
-        "https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US"
-        "https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB"
-        "https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss"
-        "https://oxide.computer/careers/feed"
-        # --- Blogs ---
-        "https://drewdevault.com/feed.xml"
-        "https://crystaljjlee.com/rss/"
-        "https://newleftreview.org/sidecar/feed"
-        "https://nplusonemag.com/feed/"
-        "https://aisnakeoil.substack.com/feed"
-        "https://simonw.substack.com/feed"
-        "https://slavoj.substack.com/feed"
-        "https://maxread.substack.com/feed"
-        "https://weeknotes.ohrg.org/feed.xml"
-        "https://ohrg.org/feed.xml"
-        "https://anil.recoil.org/news.xml"
-        "https://ancazugo.github.io/blog.xml"
-        "https://aneeshnaik.github.io/blog.xml"
-        "https://arissaelena.github.io/insect-scanner-weeknotes/atom.xml"
-        "https://dave.recoil.org/feed.xml"
-        "https://digitalflapjack.com/blog/index.xml"
-        "https://digitalflapjack.com/weeknotes/index.xml"
-        "https://gabrielmahler.org/feed.xml"
-        "https://gazagnaire.org/feed.xml"
-        "https://jon.recoil.org/atom.xml"
-        "https://kcsrk.info/atom.xml"
-        "https://mort.io/atom.xml"
-        "https://nick.recoil.org/index.xml"
-        "https://oppi.li/posts/index.rss"
-        "https://oppi.li/weeklies/index.rss"
-        "https://parentheticallyspeaking.org/feed.xml"
-        "http://patrick.sirref.org/weeklies/atom.xml"
-        "https://patrick.sirref.org/ocaml-blog/atom.xml"
-        "https://patrick.sirref.org/posts/atom.xml"
-        "https://ryan.freumh.org/atom.xml"
-        "https://toao.com/feeds/posts.atom.xml"
-        "https://www.dra27.uk/feed.xml"
-        "https://www.jonmsterling.com/jms-019X/atom.xml"
-        "https://www.tunbury.org/atom.xml"
-        # --- Tech News ---
-        "https://hnrss.org/frontpage?count=100"
-        "https://kite.kagi.com/tech.xml"
-        "http://rss.slashdot.org/Slashdot/slashdot"
-      ];
+    # Auto-sync feeds on startup
+    startup_commands = [ "sync" ];
+
+    feed_list = [
+      "feeds"
+      "* categories"
+      "tags"
+    ];
   };
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>Newsboat Feeds Export</title>
+    <dateCreated>Sun, 29 Jun 2026 12:00:00 GMT</dateCreated>
+  </head>
+  <body>
+    <outline text="Jobs" title="Jobs">
+      <outline text="Academic Jobs (Recent Changes)" htmlUrl="https://academicjobs.fandom.com/" xmlUrl="https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss"/>
+      <outline text="I-School 2025-2026" htmlUrl="https://academicjobs.fandom.com/" xmlUrl="https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history"/>
+      <outline text="MLA Job List" htmlUrl="https://joblist.mla.org/" xmlUrl="https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US"/>
+      <outline text="THE Jobs" htmlUrl="https://www.timeshighereducation.com/" xmlUrl="https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB"/>
+      <outline text="jobs.ac.uk" htmlUrl="https://www.jobs.ac.uk/" xmlUrl="https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss"/>
+      <outline text="Oxide Computer Careers" htmlUrl="https://oxide.computer/" xmlUrl="https://oxide.computer/careers/feed"/>
+    </outline>
+    <outline text="Blogs" title="Blogs">
+      <outline text="Drew DeVault" htmlUrl="https://drewdevault.com/" xmlUrl="https://drewdevault.com/feed.xml"/>
+      <outline text="Crystal JJ Lee" htmlUrl="https://crystaljjlee.com/" xmlUrl="https://crystaljjlee.com/rss/"/>
+      <outline text="New Left Review" htmlUrl="https://newleftreview.org/" xmlUrl="https://newleftreview.org/sidecar/feed"/>
+      <outline text="n+1" htmlUrl="https://nplusonemag.com/" xmlUrl="https://nplusonemag.com/feed/"/>
+      <outline text="AI Snake Oil" htmlUrl="https://aisnakeoil.substack.com/" xmlUrl="https://aisnakeoil.substack.com/feed"/>
+      <outline text="Simon Willison" htmlUrl="https://simonw.substack.com/" xmlUrl="https://simonw.substack.com/feed"/>
+      <outline text="Slavoj Žižek" htmlUrl="https://slavoj.substack.com/" xmlUrl="https://slavoj.substack.com/feed"/>
+      <outline text="Max Read" htmlUrl="https://maxread.substack.com/" xmlUrl="https://maxread.substack.com/feed"/>
+      <outline text="Weeknotes (OH/RG)" htmlUrl="https://weeknotes.ohrg.org/" xmlUrl="https://weeknotes.ohrg.org/feed.xml"/>
+      <outline text="OH/RG" htmlUrl="https://ohrg.org/" xmlUrl="https://ohrg.org/feed.xml"/>
+      <outline text="Anil R. Patel" htmlUrl="https://anil.recoil.org/" xmlUrl="https://anil.recoil.org/news.xml"/>
+      <outline text="Anca Zugo" htmlUrl="https://ancazugo.github.io/" xmlUrl="https://ancazugo.github.io/blog.xml"/>
+      <outline text="Aneesh Naik" htmlUrl="https://aneeshnaik.github.io/" xmlUrl="https://aneeshnaik.github.io/blog.xml"/>
+      <outline text="Aris Saelen" htmlUrl="https://arissaelena.github.io/" xmlUrl="https://arissaelena.github.io/insect-scanner-weeknotes/atom.xml"/>
+      <outline text="Dave Rolsky" htmlUrl="https://dave.recoil.org/" xmlUrl="https://dave.recoil.org/feed.xml"/>
+      <outline text="Digital Flapjack (Blog)" htmlUrl="https://digitalflapjack.com/" xmlUrl="https://digitalflapjack.com/blog/index.xml"/>
+      <outline text="Digital Flapjack (Weeknotes)" htmlUrl="https://digitalflapjack.com/" xmlUrl="https://digitalflapjack.com/weeknotes/index.xml"/>
+      <outline text="Gabriel Mahler" htmlUrl="https://gabrielmahler.org/" xmlUrl="https://gabrielmahler.org/feed.xml"/>
+      <outline text="Yann Régis-Gianas" htmlUrl="https://gazagnaire.org/" xmlUrl="https://gazagnaire.org/feed.xml"/>
+      <outline text="Jon Sterling" htmlUrl="https://jon.recoil.org/" xmlUrl="https://jon.recoil.org/atom.xml"/>
+      <outline text="KCs" htmlUrl="https://kcsrk.info/" xmlUrl="https://kcsrk.info/atom.xml"/>
+      <outline text="Mort" htmlUrl="https://mort.io/" xmlUrl="https://mort.io/atom.xml"/>
+      <outline text="Nick R." htmlUrl="https://nick.recoil.org/" xmlUrl="https://nick.recoil.org/index.xml"/>
+      <outline text="Olli" htmlUrl="https://oppi.li/" xmlUrl="https://oppi.li/posts/index.rss"/>
+      <outline text="Olli (Weeklies)" htmlUrl="https://oppi.li/" xmlUrl="https://oppi.li/weeklies/index.rss"/>
+      <outline text="Parenthetically Speaking" htmlUrl="https://parentheticallyspeaking.org/" xmlUrl="https://parentheticallyspeaking.org/feed.xml"/>
+      <outline text="Patrick Sirr (Weeklies)" htmlUrl="https://patrick.sirref.org/" xmlUrl="http://patrick.sirref.org/weeklies/atom.xml"/>
+      <outline text="Patrick Sirr (OCaml)" htmlUrl="https://patrick.sirref.org/" xmlUrl="https://patrick.sirref.org/ocaml-blog/atom.xml"/>
+      <outline text="Patrick Sirr (Posts)" htmlUrl="https://patrick.sirref.org/" xmlUrl="https://patrick.sirref.org/posts/atom.xml"/>
+      <outline text="Ryan" htmlUrl="https://ryan.freumh.org/" xmlUrl="https://ryan.freumh.org/atom.xml"/>
+      <outline text="TAO" htmlUrl="https://toao.com/" xmlUrl="https://toao.com/feeds/posts.atom.xml"/>
+      <outline text="DRA27" htmlUrl="https://www.dra27.uk/" xmlUrl="https://www.dra27.uk/feed.xml"/>
+      <outline text="Jon M. Sterling" htmlUrl="https://www.jonmsterling.com/" xmlUrl="https://www.jonmsterling.com/jms-019X/atom.xml"/>
+      <outline text="Tunbury" htmlUrl="https://www.tunbury.org/" xmlUrl="https://www.tunbury.org/atom.xml"/>
+    </outline>
+    <outline text="Tech News" title="Tech News">
+      <outline text="Hacker News Frontpage" htmlUrl="https://news.ycombinator.com/" xmlUrl="https://hnrss.org/frontpage?count=100"/>
+      <outline text="Kagi Tech Newsletter" htmlUrl="https://kite.kagi.com/" xmlUrl="https://kite.kagi.com/tech.xml"/>
+      <outline text="Slashdot" htmlUrl="https://slashdot.org/" xmlUrl="http://rss.slashdot.org/Slashdot/slashdot"/>
+    </outline>
+  </body>
+</opml>
