@@ -6,10 +6,10 @@
   </head>
   <body>
     <outline text="Jobs" title="Jobs">
-      <outline text="Academic Jobs (Recent Changes)" htmlUrl="https://academicjobs.fandom.com/" xmlUrl="https://academicjobs.fandom.com/api.php?hidebots=1&urlversion=1&days=7&limit=50&action=feedrecentchanges&feedformat=rss"/>
-      <outline text="I-School 2025-2026" htmlUrl="https://academicjobs.fandom.com/" xmlUrl="https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&action=history"/>
-      <outline text="MLA Job List" htmlUrl="https://joblist.mla.org/" xmlUrl="https://joblist.mla.org/jobsrss/?Positiontype=20752179&Organizationtype=20752199&Languages=20752056&countrycode=US"/>
-      <outline text="THE Jobs" htmlUrl="https://www.timeshighereducation.com/" xmlUrl="https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&JobType=32%2c36%2c38%2c39&countrycode=GB"/>
+      <outline text="Academic Jobs (Recent Changes)" htmlUrl="https://academicjobs.fandom.com/" xmlUrl="https://academicjobs.fandom.com/api.php?hidebots=1&amp;urlversion=1&amp;days=7&amp;limit=50&amp;action=feedrecentchanges&amp;feedformat=rss"/>
+      <outline text="I-School 2025-2026" htmlUrl="https://academicjobs.fandom.com/" xmlUrl="https://academicjobs.fandom.com/wiki/I-School_2025-2026?feed=rss&amp;action=history"/>
+      <outline text="MLA Job List" htmlUrl="https://joblist.mla.org/" xmlUrl="https://joblist.mla.org/jobsrss/?Positiontype=20752179&amp;Organizationtype=20752199&amp;Languages=20752056&amp;countrycode=US"/>
+      <outline text="THE Jobs" htmlUrl="https://www.timeshighereducation.com/" xmlUrl="https://www.timeshighereducation.com/unijobs/jobsrss/?AcademicDiscipline=513013%2c5%2c20&amp;JobType=32%2c36%2c38%2c39&amp;countrycode=GB"/>
       <outline text="jobs.ac.uk" htmlUrl="https://www.jobs.ac.uk/" xmlUrl="https://www.jobs.ac.uk/jobs/academic-or-research/?format=rss"/>
       <outline text="Oxide Computer Careers" htmlUrl="https://oxide.computer/" xmlUrl="https://oxide.computer/careers/feed"/>
     </outline>

@@ -31,6 +31,9 @@
     # Auto-sync feeds on startup
     startup_commands = [ "sync" ];
 
+    # Show all articles (read ones greyed out) instead of unread-only
+    article_scope = "all";
+
     feed_list = [
       "feeds"
       "* categories"
