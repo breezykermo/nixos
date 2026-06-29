@@ -12,5 +12,6 @@
     ./machine-report
     ./zulip
     ./concord
+    ./eilmeldung
   ];
 }

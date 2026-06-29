@@ -45,6 +45,11 @@
       url = "github:dokokitsune/orion-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # eilmeldung - TUI RSS reader
+    eilmeldung = {
+      url = "github:christo-auer/eilmeldung";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
@@ -53,6 +58,7 @@
     naersk,
     orion-browser,
     typst-flake,
+    eilmeldung,
     ... }:
   let
     system = "x86_64-linux";
@@ -87,7 +93,7 @@
       inherit system;
       specialArgs = { inherit inputs userName machineVars localProfile; };
       modules = [
-        { nixpkgs.overlays = [ overlay ]; }
+        { nixpkgs.overlays = [ overlay eilmeldung.overlays.default ]; }
         ./configuration.nix
         ./machines/base.nix
         ./machines/${selectedMachine}/configuration.nix
@@ -99,7 +105,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme localProfile; };
+            extraSpecialArgs = { inherit inputs system userName naersk machineVars theme localProfile eilmeldung; };
 
             users."${userName}" = import ./home-manager;
           };
