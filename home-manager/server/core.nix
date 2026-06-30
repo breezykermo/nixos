@@ -3,6 +3,7 @@
   services = {
     keybase.enable = true;
     kbfs.enable = true;
+    ssh-agent.enable = true;
   };
 
   home.packages = with pkgs; [
