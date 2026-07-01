@@ -72,33 +72,20 @@ let
       longContextThreshold = 24000;
     };
   };
-  typst-author-skill = pkgs.fetchFromGitHub {
-    owner = "apcamargo";
-    repo = "typst-author";
-    rev = "main";
-    sha256 = "0h9gbb76mhlgjpi42b9vj4qckf52msv88dgzlqm3ql7vdpa7vm9z";
-  };
-  rheo-author-skill = pkgs.fetchFromGitHub {
-    owner = "freecomputinglab";
-    repo = "rheo-author";
-    rev = "main";
-    sha256 = "sha256-eZeW1GCdkqr4zWkYTj4K2uLCvh8rPmEs+bH0mULmums=";
-  };
-  agentic-jujutsu-skill = pkgs.fetchFromGitHub {
-    owner = "ruvnet";
-    repo = "agentic-flow";
-    rev = "main";
-    sha256 = "sha256-P9V91G37UDwqpv81hLauorjJMJE7LUHilY/Cas5aL0E=";
-  };
+  # Skill source pins live in pins.json at the repo root (kept there, not
+  # here, so `just update-pins` can refresh all of them without touching
+  # nix code). See scripts/update-pins.sh.
+  pins = builtins.fromJSON (builtins.readFile ../../../pins.json);
+  pinnedSkills = lib.mapAttrs (_: pkgs.fetchFromGitHub) pins;
 in
 {
   home.file = {
     # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
     # applied across every project. Project-level CLAUDE.md files supplement it.
     ".claude/CLAUDE.md".source = ./global-claude.md;
-    ".claude/skills/typst-author".source = typst-author-skill;
-    ".claude/skills/rheo-author".source = rheo-author-skill;
-    ".claude/skills/agentic-jujutsu".source = "${agentic-jujutsu-skill}/packages/agentic-jujutsu";
+    ".claude/skills/typst-author".source = pinnedSkills.typst-author-skill;
+    ".claude/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
+    ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
   } // lib.optionalAttrs isHomework {
     ".claude-code-router/config.json".text = builtins.toJSON ccrConfig;

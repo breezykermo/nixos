@@ -1,0 +1,20 @@
+{
+  "typst-author-skill": {
+    "owner": "apcamargo",
+    "repo": "typst-author",
+    "rev": "main",
+    "sha256": "sha256-jsjUapSd3DsccodAKTffzYjbmj4a2p+4sAA1GoVfd8Y="
+  },
+  "rheo-author-skill": {
+    "owner": "freecomputinglab",
+    "repo": "rheo-author",
+    "rev": "main",
+    "sha256": "sha256-Di/ZYhvS0417U5jV+VzbR109KN/3CcM+p7WmE7hVYnE="
+  },
+  "agentic-jujutsu-skill": {
+    "owner": "ruvnet",
+    "repo": "agentic-flow",
+    "rev": "main",
+    "sha256": "sha256-370XuRkk1GA68PXmlUkXwjl90xO9gqm/X6jXUZCT1R4="
+  }
+}

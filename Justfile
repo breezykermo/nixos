@@ -12,11 +12,16 @@ debug:
 
 up:
   nix flake update
+  ./scripts/update-pins.sh
 
 # Update specific input
 # usage: just upp home-manager
 upp input:
   nix flake update {{input}}
+
+# Refresh sha256 hashes in pins.json (skill sources) without touching flake inputs
+update-pins:
+  ./scripts/update-pins.sh
 
 history:
   nix profile history --profile /nix/var/nix/profiles/system
