@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ...}:
+{ config, pkgs, lib, machineVars, ...}:
 {
   programs.fish = {
     enable = true;
@@ -32,6 +32,13 @@
       if command -q opam
         eval (opam env)
       end
+
+      # Auto-add SSH keys to agent if defined for this machine
+      ${lib.optionalString (machineVars.sshKeys != []) ''
+        for key in ${lib.concatStringsSep " " machineVars.sshKeys}
+          ssh-add ~/.ssh/$key 2>/dev/null
+        end
+      ''}
     '';
 
     plugins = [

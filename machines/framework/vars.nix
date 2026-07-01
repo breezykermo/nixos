@@ -13,4 +13,5 @@
   # Paths
   dropboxPath = "/home/lox/Dropbox/Lachlan Kermode";
   remarkableKey = "id_rsa_remarkable";
+  sshKeys = [];
 }

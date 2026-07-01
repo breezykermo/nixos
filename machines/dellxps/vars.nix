@@ -13,4 +13,5 @@
   # Paths
   dropboxPath = "/home/alice/Brown Dropbox/Lachlan Kermode";
   remarkableKey = "id_rsa_remarkable";
+  sshKeys = [];
 }
