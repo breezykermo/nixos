@@ -24,6 +24,28 @@ vim.opt.rtp:prepend(lazypath)
 local helpers = require('utils.helpers')
 
 require('lazy').setup({
+  -- Direnv integration: exposes each project's `.envrc`-exported PATH (e.g. a
+  -- Nix flake devShell) to Neovim, so LSP servers spawn with the project's
+  -- toolchain instead of whatever's on the global PATH.
+  {
+    'NotAShelf/direnv.nvim',
+    config = function()
+      require('direnv').setup({
+        autoload_direnv = true,
+      })
+
+      -- LSP clients capture PATH at spawn time; if one attached before direnv
+      -- finished loading (e.g. nvim opened outside the project dir), restart
+      -- it so it picks up the freshly exported env.
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'DirenvLoaded',
+        callback = function()
+          vim.cmd('LspRestart')
+        end,
+      })
+    end,
+  },
+
 	-- Automatically manage Vim.session (for tmux restore)
   -- TODO: not yet working on NixOS
 	'tpope/vim-obsession',
