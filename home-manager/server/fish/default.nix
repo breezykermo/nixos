@@ -5,6 +5,9 @@
     interactiveShellInit = ''
       set fish_greeting # disable greetingfish
 
+      # Trigger bell on sudo password prompt for terminal notification
+      set -x SUDO_PROMPT (printf '\a[sudo] password for %%u: ')
+
       # Set a valid fish theme to avoid theme errors on startup
       if functions -q fish_config
         fish_config theme choose default 2>/dev/null
