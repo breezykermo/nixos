@@ -61,6 +61,23 @@
           end
         end
       '';
+
+      jjfetch = ''
+        set -l original (pwd)
+
+        if test -d .jj
+          jj git fetch && jj new -r "trunk()"
+        else
+          for d in (find . -type d -name .jj)
+            cd $d/..
+
+            echo "=== $PWD ==="
+            jj git fetch && jj new -r "trunk()"
+
+            cd $original
+          end
+        end
+      '';
     };
 
     plugins = [
