@@ -9,7 +9,9 @@ Project-level `CLAUDE.md` files supplement and may override anything here.
 ## Version Control (jj — NEVER use git)
 
 **NEVER run `jj git push` (or any push) — the user always pushes themselves.**
-Prepare commits and bookmarks, then stop and let the user push.
+Prepare commits, then stop and let the user push.
+
+**Do NOT create bookmarks by default.** Never add a bookmark to a commit as a matter of routine (e.g. one per issue during churn/pair). Only run `jj bookmark create` when the user explicitly asks for a bookmark or asks you to open a PR (see PR workflow below).
 
 **NEVER run `git` commands, not even read-only ones** (`git log`, `git show`, `git status`, `git diff`). Always use the jj equivalents (`jj log`, `jj show`, `jj status`, `jj diff`, `jj file show`). This applies in sibling repos too.
 
@@ -32,7 +34,7 @@ jj git fetch / jj rebase -d main
 ◆  ntxzmrum lachie@ohrg.org  main  Introduces .row-card wrapper in VirtualizedTableRow
 ```
 
-**PR workflow:**
+**PR workflow (only when the user asks for a PR/bookmark):**
 ```bash
 jj bookmark create feat/<kebab-case-title> -r @-
 # user pushes (e.g. `jj git push --allow-new`)
