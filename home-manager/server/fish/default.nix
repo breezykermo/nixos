@@ -44,6 +44,25 @@
       ''}
     '';
 
+    functions = {
+      brlist = ''
+        set -l original (pwd)
+
+        if test -d .beads
+          br list
+        else
+          for d in (find . -type d -name .beads)
+            cd $d/..
+
+            echo "=== $PWD ==="
+            br list
+
+            cd $original
+          end
+        end
+      '';
+    };
+
     plugins = [
       { name = "bass"; src = pkgs.fishPlugins.bass.src; }
     ];
