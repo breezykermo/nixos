@@ -77,6 +77,31 @@ let
   # nix code). See scripts/update-pins.sh.
   pins = builtins.fromJSON (builtins.readFile ../../../pins.json);
   pinnedSkills = lib.mapAttrs (_: pkgs.fetchFromGitHub) pins;
+
+  # Enforces the "never git, always jj" rule from global-claude.md as a hard
+  # PreToolUse gate rather than prose. Reads the Bash tool-call JSON on stdin
+  # and exits 2 (blocking, message fed back to Claude) on any direct `git`
+  # invocation — while allowing `jj git ...`, `git-crypt`, `gh`, `lazygit`, and
+  # git as a substring of other words. Wired into ~/.claude/settings.json by the
+  # claudeGitHook activation below.
+  blockGitHook = pkgs.writeShellApplication {
+    name = "claude-block-git";
+    runtimeInputs = with pkgs; [ jq gnugrep coreutils ];
+    # The jq filter and grep pattern intentionally live in single quotes.
+    excludeShellChecks = [ "SC2016" ];
+    text = builtins.readFile ./hooks/block-git.sh;
+  };
+
+  # Idempotently merges the blockGitHook above into ~/.claude/settings.json.
+  # Run from the claudeGitHook activation below; takes the hook command path as
+  # its one argument. See ./hooks/register-git-hook.sh for the why.
+  registerGitHook = pkgs.writeShellApplication {
+    name = "claude-register-git-hook";
+    runtimeInputs = with pkgs; [ jq coreutils ];
+    # The jq filter intentionally lives in single quotes.
+    excludeShellChecks = [ "SC2016" ];
+    text = builtins.readFile ./hooks/register-git-hook.sh;
+  };
 in
 {
   home.file = {
@@ -105,6 +130,13 @@ in
       ];
     };
   };
+
+  # Register the git-blocking PreToolUse hook in ~/.claude/settings.json on every
+  # rebuild. See ./hooks/register-git-hook.sh for why this is a mutable jq merge
+  # rather than a home.file symlink.
+  home.activation.claudeGitHook = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    run ${registerGitHook}/bin/claude-register-git-hook "${blockGitHook}/bin/claude-block-git"
+  '';
 
   home.shellAliases = {
     ccb = "claudebox --allow-ssh-agent";

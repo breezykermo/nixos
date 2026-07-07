@@ -2,6 +2,19 @@
 let
   naersk' = pkgs.callPackage naersk {};
   mix = theme.themeLib.mix;
+
+  # `jjj` (jujutsu jump) — fzf-driven revset picker, after
+  # https://oppi.li/posts/jjj/. Behaves exactly like `jj`, except the revision
+  # is chosen interactively in fzf and spliced in as `-r <rev>`; every other arg
+  # is passed straight through. Uses `builtin_log_oneline` so each change is a
+  # single line whose first 7+ char field is the change-id (what awk extracts).
+  jjj = pkgs.writeShellApplication {
+    name = "jjj";
+    runtimeInputs = with pkgs; [ jujutsu fzf gawk ];
+    # awk expressions intentionally live in single quotes (no shell expansion).
+    excludeShellChecks = [ "SC2016" ];
+    text = builtins.readFile ./jjj.sh;
+  };
 in
 {
   home.packages = with pkgs; [
@@ -11,6 +24,8 @@ in
 
     # Code review TUI with vim keybindings (git/jj/mercurial)
     inputs.tuicr.packages.${system}.default
+
+    jjj         # fzf revset picker for jj (see let-binding above)
 
     # TUI for Jujutsu/jj
     (naersk'.buildPackage rec {

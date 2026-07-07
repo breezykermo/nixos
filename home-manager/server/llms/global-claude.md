@@ -6,6 +6,42 @@ Project-level `CLAUDE.md` files supplement and may override anything here.
 
 ---
 
+## Model Delegation (conserve Opus/Fable allowance)
+
+For all coding tasks, use your judgement to decide an appropriate lower-power model and run
+that work in a subagent. The aim is to keep the main thread on Opus/Fable but not waste that
+allowance on work a cheaper model can handle — delegate the mechanical, well-scoped, or
+easily-verified parts to a subagent with a lower-power model, and reserve Opus/Fable for the
+planning, judgement, and review that genuinely need it.
+
+---
+
+## Docs-first for unfamiliar tools
+
+Before using an unfamiliar CLI or library, read its actual interface rather than
+guessing — run `<tool> --help` (or `<tool> <subcommand> --help`), or read the
+project's docs/README. Modern context windows absorb a lot up front, and a wrong
+guess about flags or API shape is more expensive than the read. Especially cheap
+and worthwhile when delegating to a lower-power subagent.
+
+---
+
+## Hoard reusable examples
+
+Figure a trick out once, then keep a minimal working example so it never has to be
+re-derived. The hoard lives at **`/etc/nixos/home-manager/server/llms/examples/`** —
+in the version-controlled NixOS config repo, so it syncs across all machines. Do
+NOT use `~/.claude/examples/` (machine-local, doesn't travel).
+
+- Before solving a known-shaped problem, search it first:
+  `rg -l <keyword> /etc/nixos/home-manager/server/llms/examples`. Building something
+  new by combining existing working examples beats starting cold.
+- After cracking something reusable (a gnarly command, config pattern, API dance,
+  effective prompt), add it. The `README.md` in that directory documents the exact
+  format and the one-line index to append to.
+
+---
+
 ## Version Control (jj — NEVER use git)
 
 **NEVER run `jj git push` (or any push) — the user always pushes themselves.**
@@ -92,6 +128,9 @@ jj config set --user user.email "lachie@ohrg.org"
 
 ## br/jj Churn (only when user says "br/jj churn")
 
+**ALWAYS run in `/caveman:caveman ultra` mode** for the entire churn — invoke it before the
+first loop iteration and stay in it throughout.
+
 **Before first loop iteration** — verify jj identity (commits without author are broken):
 ```bash
 jj config list --user
@@ -114,6 +153,9 @@ Report: list all closed issues.
 ---
 
 ## br/jj Pair (only when user says "br/jj pair")
+
+**ALWAYS run in `/caveman:caveman ultra` mode** for the entire pair session — invoke it before
+the first loop iteration and stay in it throughout.
 
 **Before first loop iteration** — verify jj identity (commits without author are broken):
 ```bash
