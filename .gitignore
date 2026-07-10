@@ -1,3 +1,5 @@
+.abacus/
+.beads/
 tags
 *.swp
 fonts/berkeley-mono/*.ttf

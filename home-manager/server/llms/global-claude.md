@@ -14,6 +14,9 @@ allowance on work a cheaper model can handle — delegate the mechanical, well-s
 easily-verified parts to a subagent with a lower-power model, and reserve Opus/Fable for the
 planning, judgement, and review that genuinely need it.
 
+**Subagent mode:** Always run subagents in `/caveman:caveman ultra` mode unless instructed otherwise.
+This reduces token usage on delegate work while maintaining full technical accuracy.
+
 ---
 
 ## Docs-first for unfamiliar tools
@@ -79,6 +82,8 @@ gh pr create --base main --head feat/<name> --title "..." --body "- bullet\n- bu
 
 **Commit messages:** Present tense, user-focused. "Displays X in Y", not "Added X" or "Add X".
 
+**NEVER list Claude as a co-author.** Do not add `Co-Authored-By: Claude` (or any Claude/Anthropic attribution) to commit messages or PR bodies. Commits are authored solely by the user.
+
 **PR body:** 3-5 concise bullets. No "This PR", no LLM-style verbosity.
 
 ---
@@ -100,6 +105,8 @@ br dep add <issue> <depends-on>
 **Bead names:** Keep them as short and simple as possible. Prefer concise 3-4 character identifiers over descriptive hyphenated names. For example, `rwq` is much better than `airborne-splash-rwq`. The bead ID carries the identity; the name is just a local shorthand.
 
 **Local-only:** `.beads/` is gitignored, never commit it, never run `br sync`.
+
+**Reimport reverts mutations:** `br` can silently undo a `close` / `--status in_progress` / `delete` because it reimports from `.beads/issues.jsonl`, which still holds the old state. Always re-check with `br list --status=open` (or `br show`) right after mutating, and re-issue if it reverted. For deletes, use `br delete <ids> --force --hard` so the JSONL tombstone is hard-pruned and reimport can't resurrect the issue.
 
 ---
 
@@ -167,11 +174,15 @@ jj config set --user user.email "lachie@ohrg.org"
 
 Loop until no open issues or user stops:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
-2. Implement with br/jj workflow
-3. **Pause and prompt the user** — present what was done, ask whether to continue
+2. Implement with br/jj workflow — but **do NOT close the issue yet**. Leave it `in_progress`.
+   Do the work and run tests; stop before the `br close` / squash steps.
+3. **Pause and prompt the user for review** — present what was done, ask whether to continue.
+   The issue stays `in_progress` until the user confirms.
    - User may review code, request changes, add/modify/remove br issues
-   - Only continue to next issue when the user explicitly says to (e.g. "continue", "next", "go")
-   - If user says "stop" or "done", exit the loop
+   - If user requests changes, apply them and pause for review again (still `in_progress`)
+   - Only when the user explicitly confirms (e.g. "continue", "next", "go"):
+     close the issue (`br close`) and finish the squash, THEN move to the next issue
+   - If user says "stop" or "done", exit the loop (leave the current issue `in_progress`)
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
 commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
