@@ -174,14 +174,19 @@ jj config set --user user.email "lachie@ohrg.org"
 
 Loop until no open issues or user stops:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
-2. Implement with br/jj workflow — but **do NOT close the issue yet**. Leave it `in_progress`.
-   Do the work and run tests; stop before the `br close` / squash steps.
+2. Implement with br/jj workflow, but **do NOT close the issue** — it stays `in_progress`.
+   Do the work, run tests, then **do the full squash so a named jj commit already exists**:
+   `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"`.
+   The `br close` is the ONLY step deferred; everything else (squash into a named commit,
+   empty `@` on top) is done before the pause.
 3. **Pause and prompt the user for review** — present what was done, ask whether to continue.
-   The issue stays `in_progress` until the user confirms.
+   The named commit is already in place; the issue stays `in_progress` until the user confirms.
    - User may review code, request changes, add/modify/remove br issues
-   - If user requests changes, apply them and pause for review again (still `in_progress`)
+   - If user requests changes, apply them, re-squash into the named commit, and pause for
+     review again (still `in_progress`)
    - Only when the user explicitly confirms (e.g. "continue", "next", "go"):
-     close the issue (`br close`) and finish the squash, THEN move to the next issue
+     close the issue (`br close`), then squash the resulting `.beads/issues.jsonl` change into
+     the named commit (`jj squash --use-destination-message`), THEN move to the next issue
    - If user says "stop" or "done", exit the loop (leave the current issue `in_progress`)
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact

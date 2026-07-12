@@ -3,26 +3,12 @@ let
   abacus = pkgs.callPackage ./abacus.nix { };
   beads = pkgs.callPackage ./beads.nix { };
 
-  # The packaged claude-code-router renames dist/cli.js to bin/ccr and drops
-  # dist/index.html, but: (1) `ccr code`'s lazy auto-start path hardcodes a
-  # respawn via `node <dir-of-ccr>/cli.js start` — that file doesn't exist, so
-  # the spawn silently fails and `ccr code` just burns its ~11s wait before
-  # reporting "Service startup timeout"; (2) `ccr ui`'s web dashboard serves
-  # static files from `join(__dirname, "..", "dist")`, i.e. `<prefix>/dist/`
-  # alongside `bin/`, which 404s without index.html there. Node resolves
-  # `__dirname` to the realpath of the running script, so a symlink back into the
-  # original (cli.js-less) store path doesn't help — the binary must be a real
-  # copy, with cli.js copied alongside it and index.html one level up.
-  claude-code-router =
-    let orig = inputs.llm-agents.packages.${system}.claude-code-router;
-    in pkgs.runCommand "claude-code-router-cli-fix" { } ''
-      mkdir -p $out/bin $out/dist
-      cp ${orig}/bin/ccr $out/bin/ccr
-      cp ${orig}/bin/tiktoken_bg.wasm $out/bin/tiktoken_bg.wasm
-      cp ${orig.src}/dist/index.html $out/dist/index.html
-      cp $out/bin/ccr $out/bin/cli.js
-      chmod +x $out/bin/ccr $out/bin/cli.js
-    '';
+  # claude-code-router v3 ships a proper npm layout: bin/ccr is a wrapper that
+  # execs the real dist/main/cli.js, so the old cli-fix hack (copying cli.js/
+  # index.html/tiktoken_bg.wasm around a broken layout) is no longer needed.
+  # `ccr code` respawn (`node <__dirname>/cli.js start`) and `ccr ui`'s static
+  # serve (`resolve(__dirname,"..","renderer")`) both resolve correctly here.
+  claude-code-router = inputs.llm-agents.packages.${system}.claude-code-router;
 
   # Local models only exist on homework (128GB Strix Halo box). See
   # machines/homework/configuration.nix for the ollama / model setup.

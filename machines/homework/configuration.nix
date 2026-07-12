@@ -43,7 +43,7 @@
 
     # Store the models (~170GB for all three) on the 2TB NIXDATA drive mounted at
     # /home/${userName}/data, not the root filesystem.
-    models = "/home/${userName}/data/ollama/models";
+    modelsDir = "/home/${userName}/data/ollama/models";
 
     # Claude Code sends a large system prompt + tool schema on every turn; ollama's
     # default 4096-token context would silently truncate it and break tool use. Give

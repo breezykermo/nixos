@@ -10,7 +10,6 @@
     ./llms
     ./writing
     ./machine-report
-    ./zulip
     ./concord
     ./eilmeldung
   ];
