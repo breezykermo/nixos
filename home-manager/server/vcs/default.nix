@@ -50,6 +50,9 @@ in
     "tuicr/config.toml".text = ''
       theme = "system"
       transparent_background = true
+      show_file_list = false
+      scroll_offset = 3
+      wrap = true
     '';
 
     # Local theme that mirrors the active system theme (see themes/default.nix),
@@ -61,29 +64,29 @@ in
       fg_secondary = "${theme.colors.fg2}"
       fg_dim = "${theme.colors.fg3}"
 
-      diff_add = "${theme.colors.green}"
-      diff_add_bg = "${mix theme.colors.green theme.background 0.18}"
-      diff_del = "${theme.colors.red}"
-      diff_del_bg = "${mix theme.colors.red theme.background 0.18}"
+      diff_add = "#50fa7b"
+      diff_add_bg = "${mix "#50fa7b" theme.background 0.25}"
+      diff_del = "#ff5555"
+      diff_del_bg = "${mix "#ff5555" theme.background 0.25}"
       diff_context = "${theme.foreground}"
       diff_hunk_header = "${theme.colors.blue}"
       expanded_context_fg = "${theme.colors.fg3}"
 
-      syntax_add_bg = "${mix theme.colors.green theme.background 0.12}"
-      syntax_del_bg = "${mix theme.colors.red theme.background 0.12}"
+      syntax_add_bg = "${mix "#50fa7b" theme.background 0.20}"
+      syntax_del_bg = "${mix "#ff5555" theme.background 0.20}"
 
-      file_added = "${theme.colors.green}"
+      file_added = "#50fa7b"
       file_modified = "${theme.colors.yellow}"
-      file_deleted = "${theme.colors.red}"
+      file_deleted = "#ff5555"
       file_renamed = "${theme.colors.purple}"
 
-      reviewed = "${theme.colors.green}"
+      reviewed = "#50fa7b"
       pending = "${theme.colors.yellow}"
 
       comment_note = "${theme.colors.blue}"
       comment_suggestion = "${theme.colors.aqua}"
-      comment_issue = "${theme.colors.red}"
-      comment_praise = "${theme.colors.green}"
+      comment_issue = "#ff5555"
+      comment_praise = "#50fa7b"
 
       border_focused = "${theme.activeBorder}"
       border_unfocused = "${theme.inactiveBorder}"
@@ -98,7 +101,7 @@ in
       message_warning_fg = "${theme.background}"
       message_warning_bg = "${theme.colors.yellow}"
       message_error_fg = "${theme.background}"
-      message_error_bg = "${theme.colors.red}"
+      message_error_bg = "#ff5555"
       update_badge_fg = "${theme.background}"
       update_badge_bg = "${theme.colors.yellow}"
 
