@@ -182,11 +182,18 @@ Loop until no open issues or user stops:
 3. **Pause and prompt the user for review** — present what was done, ask whether to continue.
    The named commit is already in place; the issue stays `in_progress` until the user confirms.
    - User may review code, request changes, add/modify/remove br issues
-   - If user requests changes, apply them, re-squash into the named commit, and pause for
-     review again (still `in_progress`)
+   - If user requests changes: do NOT squash into the existing named commit. The top commit
+     (`@`) is already empty from the prior squash/pause — apply the requested edits directly
+     into it, do NOT run `jj new` first (that would strand a second empty commit). Once edits
+     are done, name it: `jj describe -m "Present tense description"`. THEN run `jj new` once to
+     open the next empty commit, and pause for review again (still `in_progress`). This keeps
+     each review round its own commit, and exactly one empty commit ever sits on top. One bead
+     can map to several jj commits this way — that's fine, the bead-to-commit relationship is
+     one-to-many, not one-to-one.
    - Only when the user explicitly confirms (e.g. "continue", "next", "go"):
      close the issue (`br close`), then squash the resulting `.beads/issues.jsonl` change into
-     the named commit (`jj squash --use-destination-message`), THEN move to the next issue
+     the most recent commit for this bead (`jj squash --use-destination-message`), THEN move to
+     the next issue
    - If user says "stop" or "done", exit the loop (leave the current issue `in_progress`)
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
