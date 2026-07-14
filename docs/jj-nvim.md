@@ -6,8 +6,8 @@ strategy and the log buffer's window layout.
 
 ## Opening it
 
-- `:J log` — open the log buffer (main entry point). Opens as a full-height vertical
-  split (configured via `terminal.window.type = 'vsplit'`).
+- `:J log` — open the log buffer (main entry point). Opens in a new tab (single
+  full-screen window, no split) via `terminal.window.type = 'tab'`.
 - `:Jdiff [rev]` / `:Jhdiff [rev]` — vertical/horizontal diff split against a revision
 - `:Jbrowse [rev]` — open current file/line on remote (GitHub/GitLab/etc.)
 - `:J <subcommand>` — raw passthrough, e.g. `:J status`, `:J new`

@@ -1090,12 +1090,12 @@ require('lazy').setup({
     'NicolasGB/jj.nvim',
     config = function()
       require('jj').setup({
-        -- Vertical split spans the full terminal height (vs. the default hsplit,
-        -- which only takes half the screen height); applies to the log buffer
-        -- and other terminal-based commands.
+        -- Opens in a new tab (single full-screen window, no split) instead of
+        -- the default hsplit; applies to the log buffer and other
+        -- terminal-based commands.
         terminal = {
           window = {
-            type = 'vsplit',
+            type = 'tab',
           },
         },
         cmd = {
