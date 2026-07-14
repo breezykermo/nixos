@@ -1107,6 +1107,13 @@ require('lazy').setup({
     end,
   },
 
+  -- Native two-way diff conflict resolution: complements jj.nvim's `gr` (which
+  -- only auto-resolves via mergiraf/an external tool). Auto-launched by the
+  -- BufReadPost autocmd in lua/config/autocmds.lua whenever a buffer with jj
+  -- conflict markers loads (e.g. via jj.nvim's <S-k> summary-tooltip -> <CR>
+  -- workflow, or opening a conflicted file any other way).
+  'rafikdraoui/jj-diffconflicts',
+
 
 }, {})
 

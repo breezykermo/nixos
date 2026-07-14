@@ -63,6 +63,27 @@ vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
   end
 })
 
+-- Auto-launch jj-diffconflicts whenever a buffer with jj conflict markers loads
+-- (default "diff" marker style, e.g. `<<<<<<< conflict 1 of 1`), such as via
+-- jj.nvim's <S-k> summary-tooltip -> <CR> workflow, or opening a conflicted
+-- file any other way. Restricted to real file buffers so it doesn't fire on
+-- scratch/terminal buffers (e.g. jj.nvim's own log/tooltip windows).
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function(args)
+    if vim.bo[args.buf].buftype ~= '' then
+      return
+    end
+    for _, line in ipairs(vim.api.nvim_buf_get_lines(args.buf, 0, -1, false)) do
+      if line:match('^<+ conflict %d+ of %d+') then
+        vim.schedule(function()
+          vim.cmd('JJDiffConflicts')
+        end)
+        return
+      end
+    end
+  end,
+})
+
 -- jj.nvim sets winfixbuf=true on its log/tooltip windows (jj/ui/terminal.lua) but
 -- doesn't clear it when it later wipes its own buffer out of that window, so the
 -- window is stuck (E1513: Cannot switch buffer) the next time jj.nvim tries to
