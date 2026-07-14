@@ -24,6 +24,10 @@
   ];
   boot.resumeDevice = "/dev/disk/by-label/NIXROOT";
 
+  # Bluetooth peripherals aren't used day-to-day here, so don't power the radio on at
+  # boot (saves idle power). The stack stays available; turn it on with `bt-on`.
+  custom.bluetooth.powerOnBoot = false;
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #

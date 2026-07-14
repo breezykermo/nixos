@@ -24,9 +24,23 @@ in
     # (currently just homework) should turn this on; the heavy per-machine config
     # (package, models, GPU overrides) lives in that machine's configuration.nix.
     ollama.enable = lib.mkEnableOption "local ollama server";
+
+    # Power the Bluetooth radio on at boot. Defaults on; a machine that doesn't rely on
+    # Bluetooth peripherals (e.g. framework) can set this false to save idle power while
+    # keeping the stack available (turn it on on demand with the `bt-on` alias).
+    bluetooth.powerOnBoot = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Power the Bluetooth radio on at boot.";
+    };
   };
 
-  config = lib.mkIf cfg.ollama.enable {
-    services.ollama.enable = true;
-  };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.ollama.enable {
+      services.ollama.enable = true;
+    })
+    {
+      hardware.bluetooth.powerOnBoot = cfg.bluetooth.powerOnBoot;
+    }
+  ];
 }

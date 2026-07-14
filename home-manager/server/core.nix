@@ -54,6 +54,11 @@
     b = "bartib -f ~/.bartib";
     c = "clear";
     m = "maestral";
+    # Bluetooth radio on/off on demand (framework leaves it off at boot — see
+    # custom.bluetooth.powerOnBoot). No sudo needed: bluetoothctl uses the bluez
+    # D-Bus interface as a regular user.
+    bt-on = "bluetoothctl power on";
+    bt-off = "bluetoothctl power off";
   } // lib.optionalAttrs (localProfile == "homework") {
     # reMarkable tablet: run with landscape rotation (USB-C on left)
     # Use -r 1 for 90° CW, -r 2 for 180°, -r 3 for 270° CW

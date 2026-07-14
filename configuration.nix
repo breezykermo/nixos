@@ -122,7 +122,8 @@ in
   # Necessary for Hyprland, otherwise we won't have any of the drivers
   hardware.graphics.enable = true;
   hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+  # powerOnBoot is owned by the custom.bluetooth.powerOnBoot flag (defaults true;
+  # see machines/modules/custom.nix), so a machine can opt out per-machine.
 
   # https://nixos.wiki/wiki/OBS_Studio, necessary for virtual camera
   boot.extraModprobeConfig = ''
