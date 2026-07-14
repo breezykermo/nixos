@@ -13,8 +13,8 @@ let
   # THEME CONFIGURATION - Change these values to switch themes
   # ============================================================================
 
-  # Rose Pine only on the "homework" machine (localProfile mirrors selectedMachine in
-  # flake.nix); everywhere else keeps the default Catppuccin Mocha theme.
+  # Rose Pine only on the "homework" machine (localProfile mirrors the machine name /
+  # flake attr in flake.nix); everywhere else keeps the default Catppuccin Mocha theme.
   #
   # This localProfile check is deliberately RETAINED rather than migrated to the
   # custom.* namespace: this file is a plain function imported at the flake level

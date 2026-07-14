@@ -4,11 +4,15 @@
 #
 ############################################################################
 #
+# Machine is chosen at deploy time from the gitignored per-box marker
+# machines/local-profile.nix (e.g. `"framework"`). The Justfile runs at deploy
+# time, so unlike flake.nix it CAN read a gitignored file. Each machine is exposed
+# as nixosConfigurations.<name>; we pass it as the flake attr.
 deploy:
-  nixos-rebuild switch --flake . --sudo --impure
+  nixos-rebuild switch --flake .#$(tr -d '"' < machines/local-profile.nix) --sudo --impure
 
 debug:
-  nixos-rebuild switch --flake . --sudo --show-trace --verbose
+  nixos-rebuild switch --flake .#$(tr -d '"' < machines/local-profile.nix) --sudo --show-trace --verbose
 
 up:
   nix flake update

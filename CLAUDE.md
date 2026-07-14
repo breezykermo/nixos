@@ -32,9 +32,11 @@ The repository uses a flake-based configuration (`flake.nix`) with the following
 - `ghostty` for the terminal emulator
 - `naersk` for building Rust packages
 
-The main system configuration is `nixosConfigurations.loxnix`, which combines:
+The flake exposes one `nixosConfigurations.<machine>` per directory under `machines/`
+(auto-discovered: `framework`, `homework`, `dellxps`). Each combines:
 - Base system configuration (`configuration.nix`)
-- Machine-specific config (`machines/framework/configuration.nix` or `machines/dellxps/configuration.nix`)
+- Shared machine base (`machines/base.nix`)
+- Machine-specific config (`machines/<machine>/configuration.nix`)
 - Home-manager configuration for the user
 
 ### Configuration Organization
@@ -58,9 +60,10 @@ Each application domain has its own subdirectory under `home-manager/{server,des
 ## Key Configuration Details
 
 ### User and Hostname
-- Current username: `lox` (configurable in `flake.nix`)
-- Hostname: `loxnix` (defined in `configuration.nix`)
-- The hostname in the flake must match the system hostname for deployment to work
+- Username is per-machine, from `machines/<machine>/vars.nix` (`lox` on framework/homework,
+  `alice` on dellxps)
+- Hostname is per-machine, from `machines/<machine>/vars.nix` (`loxnix` on framework/homework,
+  `dellxps` on dellxps); applied as `networking.hostName` in `configuration.nix`
 
 ### Machine-Specific Configurations
 Each machine has its own directory under `machines/` (`framework`, `homework`, `dellxps`)
@@ -68,14 +71,20 @@ containing `configuration.nix`, `hardware-configuration.nix`, and `vars.nix`. A 
 includes the hardware config and machine-specific services (power management, hardware
 support, etc.).
 
-Which machine is built is set by the hardcoded `selectedMachine` string in `flake.nix`
-(toggle it to `"framework"`, `"homework"`, or `"dellxps"` for the box you're on). It must
-be hardcoded, not read from a gitignored file: `nixos-rebuild --flake .` evaluates only
-git-tracked files, so a gitignored selector is invisible at eval time and silently falls
-back. The selected name is also exposed to shared modules as `localProfile`, used to gate
-machine-specific software/behaviour (e.g. `localProfile == "homework"` checks). All machines
-keep `hostname = "loxnix"` in their `vars.nix` so `just deploy` resolves
-`nixosConfigurations.loxnix`.
+`flake.nix` auto-discovers these directories (`builtins.readDir ./machines`, excluding the
+regular files `base.nix`/`local-profile.nix` and the shared `modules/` dir) and exposes each
+as `nixosConfigurations.<machine>` simultaneously — there is NO hardcoded machine selection.
+The machine name is also passed to shared modules as `localProfile`, used to gate
+machine-specific software/behaviour (e.g. `localProfile == "homework"` checks).
+
+**Build-time selection.** Which machine gets built is chosen with the flake attr:
+`nixos-rebuild switch --flake .#<machine>`. `just deploy`/`just debug` fill this in by reading
+the gitignored per-box marker `machines/local-profile.nix` (e.g. `"framework"`). This resolves
+the old eval-time constraint: `flake.nix` still can't read a gitignored selector (flakes only
+see git-tracked files at eval time), but the `Justfile` runs at DEPLOY time, so it CAN read the
+marker and pass it as the attr. Each box keeps its own `local-profile.nix`; there is no shared
+`hostname = "loxnix"` workaround anymore (dellxps freely uses `hostname = "dellxps"` /
+`userName = "alice"`).
 
 ### Secrets Management
 Uses `git-crypt` for encrypted secrets. To unlock:
