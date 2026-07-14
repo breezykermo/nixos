@@ -17,6 +17,7 @@ debug:
 up:
   nix flake update
   ./scripts/update-pins.sh
+  jj desc -m 'Updates flakes'
 
 # Update specific input
 # usage: just upp home-manager

@@ -25,7 +25,6 @@
 
   services = {
     # services.printing.enable = true;
-    protonmail-bridge.enable = lib.mkDefault true;
     system76-scheduler.settings.cfsProfiles.enable = lib.mkDefault true;
     # ollama is opt-in per machine via `custom.ollama.enable` (see
     # ./modules/custom.nix); only homework turns it on.

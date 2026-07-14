@@ -11,9 +11,6 @@
     extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" "input" ];
   };
 
-  # Disable protonmail-bridge on Dell
-  services.protonmail-bridge.enable = false;
-
   # Disable lid close suspend - keep laptop running when lid is closed
   services.logind.settings.Login = {
     HandleLidSwitch = "ignore";
