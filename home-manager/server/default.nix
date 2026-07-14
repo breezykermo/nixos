@@ -12,5 +12,6 @@
     ./machine-report
     ./concord
     ./eilmeldung
+    ./homework.nix
   ];
 }
