@@ -2,6 +2,7 @@
 
 {
 	imports = [
+		./custom.nix
 		./server
 		./desktop
 	];

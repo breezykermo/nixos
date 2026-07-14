@@ -24,11 +24,12 @@
   ];
 
   # ── Local LLMs (ollama) — homework only ─────────────────────────────────────
-  # ollama itself is enabled for every machine in machines/base.nix; homework is
-  # the only box with the RAM (128GB) and the Strix Halo iGPU to run large models,
-  # so all the heavy configuration lives here. The models are exposed to Claude
-  # Code through claude-code-router (see home-manager/server/llms); switch to one
-  # in-session with `/model ollama,<name>`.
+  # homework is the only box with the RAM (128GB) and the Strix Halo iGPU to run
+  # large models, so it is the only machine that opts into ollama (the flag defaults
+  # off in machines/modules/custom.nix). All the heavy configuration lives here. The
+  # models are exposed to Claude Code through claude-code-router (see
+  # home-manager/server/llms); switch to one in-session with `/model ollama,<name>`.
+  custom.ollama.enable = true;
   services.ollama = {
     # GPU: the ROCm build runs inference on the Radeon 8060S iGPU (gfx1151) instead
     # of the CPU. The default pkgs.ollama is CPU-only on this box (logs showed

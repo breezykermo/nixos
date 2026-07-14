@@ -1,6 +1,7 @@
 { config, lib, pkgs, userName, ... }:
 {
   imports = [
+    ./modules/custom.nix
     ./modules/boot.nix
     ./modules/power-management.nix
     ./modules/audio.nix
@@ -25,10 +26,8 @@
     # services.printing.enable = true;
     protonmail-bridge.enable = lib.mkDefault true;
     system76-scheduler.settings.cfsProfiles.enable = lib.mkDefault true;
-    ollama = {
-      enable = true;
-      loadModels = [ ];
-    };
+    # ollama is opt-in per machine via `custom.ollama.enable` (see
+    # ./modules/custom.nix); only homework turns it on.
   };
 
   programs.virt-manager.enable = lib.mkDefault false;
