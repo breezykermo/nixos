@@ -1,4 +1,4 @@
-{pkgs, inputs, system, lib, theme, machineVars, localProfile, ...}:
+{pkgs, inputs, system, lib, theme, ...}:
 {
   services = {
     keybase.enable = true;
@@ -56,14 +56,6 @@
     # D-Bus interface as a regular user.
     bt-on = "bluetoothctl power on";
     bt-off = "bluetoothctl power off";
-  } // lib.optionalAttrs (localProfile == "homework") {
-    # reMarkable tablet: run with landscape rotation (USB-C on left)
-    # Use -r 1 for 90° CW, -r 2 for 180°, -r 3 for 270° CW
-    rmt = "rmTabletDriver --key=/home/${machineVars.userName}/.ssh/${machineVars.remarkableKey} -r 2";
-    rmt-portrait = "rmTabletDriver --key=/home/${machineVars.userName}/.ssh/${machineVars.remarkableKey}";
-    # Monitor switching (note: may not work due to Hyprland tablet limitations)
-    rm-laptop = "hyprctl keyword device:remarkabletablet-fakepen:output eDP-1";
-    rm-external = "hyprctl keyword device:remarkabletablet-fakepen:output DP-1";
   };
 
   home.sessionVariables = {
