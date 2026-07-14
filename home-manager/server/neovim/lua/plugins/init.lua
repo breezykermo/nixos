@@ -1093,11 +1093,18 @@ require('lazy').setup({
     'NicolasGB/jj.nvim',
     config = function()
       require('jj').setup({
-        -- No external merge-tool strategies (meld/mergiraf) installed on this box;
-        -- an empty list falls through to `jj resolve` in a floating terminal, using
-        -- whatever merge-tool jj itself is configured with.
         cmd = {
-          resolve_strategies = {},
+          -- mergiraf (see home-manager/server/vcs/default.nix) does syntax-aware
+          -- conflict resolution; jj already ships a default merge-tools.mergiraf
+          -- config, so this just needs to run it externally. A single strategy
+          -- means `gr` invokes it directly with no picker prompt.
+          resolve_strategies = {
+            {
+              name = 'Mergiraf',
+              args = {'--tool', 'mergiraf'},
+              external = true,
+            },
+          },
         },
       })
     end,
