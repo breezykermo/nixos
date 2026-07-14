@@ -23,7 +23,6 @@
     jq          # A lightweight and flexible command-line JSON processor
     vivid       # for colorschemes
     just        # better makefiles
-    lazydocker  # docker tui client
     bartib      # time tracking
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video

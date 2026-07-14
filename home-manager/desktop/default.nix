@@ -5,10 +5,8 @@
     ./bluetooth
     ./browsers
     ./zathura
-    ./spotify
     ./office
     ./youtube
-    ./protonvpn
     ./_inprogress
     # Software only needed on the "homework" machine. Imports can't depend on
     # `config`, so each of these modules gates its own config on
@@ -51,9 +49,6 @@
 
     # for flashing ZSA keyboards
     keymapp
-
-    # for flashcards
-    anki-bin
 
     # modern terminal
     inputs.ghostty.packages.x86_64-linux.default
