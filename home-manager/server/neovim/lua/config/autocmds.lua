@@ -62,3 +62,20 @@ vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
     vim.bo.filetype = 'typst'
   end
 })
+
+-- jj.nvim sets winfixbuf=true on its log/tooltip windows (jj/ui/terminal.lua) but
+-- doesn't clear it when it later wipes its own buffer out of that window, so the
+-- window is stuck (E1513: Cannot switch buffer) the next time jj.nvim tries to
+-- :edit a file into it (e.g. opening a file from the log buffer's summary
+-- tooltip). Every jj.nvim-managed buffer carries a `jj_keymaps_set` marker, so
+-- clear winfixbuf on any window still showing one right as it's wiped.
+vim.api.nvim_create_autocmd('BufWipeout', {
+  callback = function(args)
+    if not vim.b[args.buf].jj_keymaps_set then
+      return
+    end
+    for _, win in ipairs(vim.fn.win_findbuf(args.buf)) do
+      pcall(function() vim.wo[win].winfixbuf = false end)
+    end
+  end,
+})
