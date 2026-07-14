@@ -13,10 +13,29 @@ activation.
   `.sops.yaml`, then re-encrypt every file under `secrets/` for the new recipient
   (`sops updatekeys secrets/*.yaml`).
 
-## Editing a secrets file
+## Adding a secret for a new service
+
+1. Create `secrets/<service>.yaml` with the plaintext keys you need, e.g.:
+   ```yaml
+   my-service:
+     env: |
+       SOME_TOKEN=...
+   ```
+2. Encrypt it in place: `nix run nixpkgs#sops -- --encrypt --in-place secrets/<service>.yaml`
+   (matches automatically via the `secrets/*.yaml` rule in `.sops.yaml`).
+3. In the machine config, declare:
+   ```nix
+   sops.secrets."my-service/env" = {
+     sopsFile = ../../secrets/<service>.yaml;
+   };
+   ```
+   then reference `config.sops.secrets."my-service/env".path` (e.g. as a systemd
+   `EnvironmentFile`).
+
+## Editing an existing secrets file
 
 ```bash
-nix run nixpkgs#sops -- secrets/erwin-linkding.yaml
+nix run nixpkgs#sops -- secrets/<service>.yaml
 ```
 
 This decrypts to a temp file, opens `$EDITOR`, and re-encrypts on save. Decrypting from the
@@ -24,18 +43,5 @@ CLI (rather than editing) requires root, since the private host key is root-only
 
 ```bash
 sudo env SOPS_AGE_SSH_PRIVATE_KEY_FILE=/etc/ssh/ssh_host_ed25519_key \
-  nix run nixpkgs#sops -- --decrypt secrets/erwin-linkding.yaml
+  nix run nixpkgs#sops -- --decrypt secrets/<service>.yaml
 ```
-
-## secrets/erwin-linkding.yaml
-
-Holds two env-file blobs for the erwin-linkding pattern (see `nixos-wire-7vw` / `nixos-lkd-9t5`):
-
-- `erwin-linkding.drainer-env` — `DRAIN_SECRET` (must match the value set in the Netlify
-  dashboard; also kept in `pass`) and `TARGET_TOKEN` (linkding API token, generated after
-  first login).
-- `erwin-linkding.linkding-env` — `LD_SUPERUSER_NAME` / `LD_SUPERUSER_PASSWORD`, the bootstrap
-  admin account.
-
-Both are currently placeholders (`CHANGEME`) — fill in real values with `sops
-secrets/erwin-linkding.yaml` before enabling `services.linkding` / `services.erwin-drainer`.
