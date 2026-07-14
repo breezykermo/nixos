@@ -51,7 +51,6 @@
     nixpkgs,
     home-manager,
     naersk,
-    typst-flake,
     eilmeldung,
     ... }:
   let
