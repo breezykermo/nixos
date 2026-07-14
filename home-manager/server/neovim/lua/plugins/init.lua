@@ -108,9 +108,6 @@ require('lazy').setup({
     },
   },
 
-  -- JJ resolve
-  'rafikdraoui/jj-diffconflicts',
-
   -- Org mode
   {
     'nvim-orgmode/orgmode',
