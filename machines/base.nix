@@ -4,6 +4,7 @@
     ./modules/custom.nix
     ./modules/boot.nix
     ./modules/power-management.nix
+    ./modules/laptop.nix
     ./modules/audio.nix
     ./modules/security.nix
     ./modules/keyboard-hardware.nix
