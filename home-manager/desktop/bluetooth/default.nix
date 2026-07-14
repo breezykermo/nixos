@@ -1,31 +1,17 @@
-{ lib, pkgs, naersk, ... }: 
+{ lib, pkgs, naersk, ... }:
 let
-  naersk' = pkgs.callPackage naersk {};
+  mkNaerskGithubPackage = import ../../../pkgs/mkNaerskGithubPackage.nix { inherit pkgs naersk; };
 in
 {
-  home.packages = with pkgs; [
+  home.packages = [
     # TUI to easily manage bluetooth
-    (naersk'.buildPackage rec {
+    (mkNaerskGithubPackage {
       name = "bluetui";
       version = "0.6.0";
-
-      # Needed at compile time
-      nativeBuildInputs = [
-        pkg-config
-      ];
-
-      # Needed at run time 
-      buildInputs = [
-        dbus
-        dbus.dev 
-      ];
-
-      src = fetchFromGitHub {
-        owner = "pythops";
-        repo = name;
-        rev = "v${version}"; 
-        sha256 = "0czmmv28ys1y8m22y0qzv7cmgdqqkjmv0haw0qbqxf6akhhwzjzn"; 
-      };
+      owner = "pythops";
+      nativeBuildInputs = [ pkgs.pkg-config ]; # needed at compile time
+      buildInputs = [ pkgs.dbus pkgs.dbus.dev ]; # needed at run time
+      sha256 = "0czmmv28ys1y8m22y0qzv7cmgdqqkjmv0haw0qbqxf6akhhwzjzn";
     })
   ];
 }

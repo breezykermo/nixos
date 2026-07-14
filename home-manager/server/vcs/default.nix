@@ -1,6 +1,6 @@
 {pkgs, inputs, system, lib, naersk, machineVars, theme, ...}:
 let
-  naersk' = pkgs.callPackage naersk {};
+  mkNaerskGithubPackage = import ../../../pkgs/mkNaerskGithubPackage.nix { inherit pkgs naersk; };
   mix = theme.themeLib.mix;
 
   # `jjj` (jujutsu jump) — fzf-driven revset picker, after
@@ -28,16 +28,11 @@ in
     jjj         # fzf revset picker for jj (see let-binding above)
 
     # TUI for Jujutsu/jj
-    (naersk'.buildPackage rec {
+    (mkNaerskGithubPackage {
       name = "blazingjj";
       version = "0.8.0";
-
-      src = fetchFromGitHub {
-        owner = "blazingjj";
-        repo = name;
-        rev = "v${version}";
-        sha256 = "0fvwb8haan7lvx5fz8y1wm4wnddp1lhn4rssls2aakrkg3vw7rxx";
-      };
+      owner = "blazingjj";
+      sha256 = "0fvwb8haan7lvx5fz8y1wm4wnddp1lhn4rssls2aakrkg3vw7rxx";
     })
   ];
 
