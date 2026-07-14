@@ -40,11 +40,6 @@
       url = "github:chojs23/concord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Orion Browser - privacy-focused browser
-    orion-browser = {
-      url = "github:dokokitsune/orion-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # eilmeldung - TUI RSS reader
     eilmeldung = {
       url = "github:christo-auer/eilmeldung";
@@ -56,7 +51,6 @@
     nixpkgs,
     home-manager,
     naersk,
-    orion-browser,
     typst-flake,
     eilmeldung,
     ... }:

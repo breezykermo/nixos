@@ -13,11 +13,6 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    brave
-    inputs.orion-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-  ];
-
   programs.chromium.enable = true;
 
   xdg.mimeApps.defaultApplications = {
