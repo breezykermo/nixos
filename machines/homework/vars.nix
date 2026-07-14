@@ -6,8 +6,8 @@
   jjEmail = "lachie@ohrg.org";
 
   # System settings
-  # NOTE: keep hostname "loxnix" -- the flake output is nixosConfigurations.loxnix
-  # and `just deploy` (nixos-rebuild --flake .) selects the config by hostname.
+  # NOTE: machines/<name>/ dirs are auto-discovered as nixosConfigurations.<name>
+  # (see flake.nix); `just deploy` picks which one via machines/local-profile.nix.
   hostname = "loxnix";
   timezone = "Europe/Amsterdam";
   locale = "en_US.UTF-8";

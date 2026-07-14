@@ -12,8 +12,6 @@
     WINEARCH = "win64";
     WINEPREFIX = "$HOME/wine-battlenet";
   };
-
-  # Steam is installed in dellxps/configuration.nix
 }
 
 
