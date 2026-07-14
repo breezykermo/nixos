@@ -1,6 +1,14 @@
-{pkgs, inputs, system, lib, naersk, machineVars, theme, ...}:
-let
-  mkNaerskGithubPackage = import ../../../pkgs/mkNaerskGithubPackage.nix { inherit pkgs naersk; };
+{
+  pkgs,
+  inputs,
+  system,
+  lib,
+  naersk,
+  machineVars,
+  theme,
+  ...
+}: let
+  mkNaerskGithubPackage = import ../../../pkgs/mkNaerskGithubPackage.nix {inherit pkgs naersk;};
   mix = theme.themeLib.mix;
 
   # `jjj` (jujutsu jump) — fzf-driven revset picker, after
@@ -10,22 +18,21 @@ let
   # single line whose first 7+ char field is the change-id (what awk extracts).
   jjj = pkgs.writeShellApplication {
     name = "jjj";
-    runtimeInputs = with pkgs; [ jujutsu fzf gawk ];
+    runtimeInputs = with pkgs; [jujutsu fzf gawk];
     # awk expressions intentionally live in single quotes (no shell expansion).
-    excludeShellChecks = [ "SC2016" ];
+    excludeShellChecks = ["SC2016"];
     text = builtins.readFile ./jjj.sh;
   };
-in
-{
+in {
   home.packages = with pkgs; [
-    delta       # syntax-highlighting in git and jj diffs
-    lazygit     # git tui client
-    git-crypt   # encrypted git repos
+    delta # syntax-highlighting in git and jj diffs
+    lazygit # git tui client
+    git-crypt # encrypted git repos
 
     # Code review TUI with vim keybindings (git/jj/mercurial)
     inputs.tuicr.packages.${system}.default
 
-    jjj         # fzf revset picker for jj (see let-binding above)
+    jjj # fzf revset picker for jj (see let-binding above)
 
     # TUI for Jujutsu/jj
     (mkNaerskGithubPackage {

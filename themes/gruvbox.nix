@@ -1,6 +1,4 @@
-{ lib }:
-
-{
+{lib}: {
   # Gruvbox color palette with variants
   # Reference: https://github.com/morhetz/gruvbox
 

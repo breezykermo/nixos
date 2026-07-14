@@ -1,6 +1,10 @@
-{ pkgs, lib, machineVars, localProfile, ... }:
-
 {
+  pkgs,
+  lib,
+  machineVars,
+  localProfile,
+  ...
+}: {
   services.hypridle = {
     enable = machineVars.hostname != "dellxps";
     package = pkgs.hypridle;
@@ -13,19 +17,21 @@
         after_sleep_cmd = "hyprctl dispatch dpms on";
       };
 
-      listener = [
-        # Lock after 10 minutes
-        {
-          timeout = 600;
-          on-timeout = "loginctl lock-session";
-        }
-      ] ++ lib.optionals (localProfile != "homework") [
-        # Suspend after 15 minutes
-        {
-          timeout = 900;
-          on-timeout = "systemctl suspend";
-        }
-      ];
+      listener =
+        [
+          # Lock after 10 minutes
+          {
+            timeout = 600;
+            on-timeout = "loginctl lock-session";
+          }
+        ]
+        ++ lib.optionals (localProfile != "homework") [
+          # Suspend after 15 minutes
+          {
+            timeout = 900;
+            on-timeout = "systemctl suspend";
+          }
+        ];
     };
   };
 }

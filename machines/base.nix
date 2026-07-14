@@ -1,5 +1,10 @@
-{ config, lib, pkgs, userName, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  userName,
+  ...
+}: {
   imports = [
     ./modules/custom.nix
     ./modules/boot.nix
@@ -14,7 +19,7 @@
   users.users.${userName} = {
     isNormalUser = true;
     description = "${userName}";
-    extraGroups = lib.mkDefault [ "networkmanager" "wheel" "input" ];
+    extraGroups = lib.mkDefault ["networkmanager" "wheel" "input"];
     # Public keys allowed to SSH in as ${userName} (password auth is disabled; see
     # services.openssh in configuration.nix). Public keys are safe to commit. Add the
     # public key of each device you connect FROM.

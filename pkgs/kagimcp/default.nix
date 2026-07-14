@@ -9,7 +9,6 @@
   typing-extensions,
   urllib3,
 }:
-
 buildPythonPackage rec {
   pname = "kagimcp";
   version = "1.0.0";
@@ -20,7 +19,7 @@ buildPythonPackage rec {
     hash = "sha256-Yq7NM0OL17r9O0/Xv1JBCeqr/Vn9Zti1EFvdjmKbapw=";
   };
 
-  build-system = [ hatchling ];
+  build-system = [hatchling];
 
   dependencies = [
     fastmcp
@@ -33,12 +32,12 @@ buildPythonPackage rec {
   # Upstream pins pydantic~=2.12.5, but nixpkgs ships 2.13.x which works fine.
   dontCheckRuntimeDeps = true;
 
-  pythonImportsCheck = [ "kagimcp" ];
+  pythonImportsCheck = ["kagimcp"];
 
   meta = with lib; {
     description = "Kagi MCP server for Model Context Protocol integration";
     homepage = "https://github.com/kagisearch/kagimcp";
     license = licenses.unfree; # Kagi API requires subscription
-    maintainers = [ ];
+    maintainers = [];
   };
 }

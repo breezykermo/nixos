@@ -1,5 +1,4 @@
-{pkgs, ...}:
-{
+{pkgs, ...}: {
   home.packages = [
     # TR-100 Machine Report - system info display utility
     (pkgs.stdenv.mkDerivation {
@@ -13,7 +12,7 @@
         sha256 = "sha256-Q7jxDN91w5jnYia0IopM1FtJ8LKkI4uHQd8fq1Kj8Bc=";
       };
 
-      buildInputs = [ pkgs.util-linux ];
+      buildInputs = [pkgs.util-linux];
 
       installPhase = ''
         mkdir -p $out/bin

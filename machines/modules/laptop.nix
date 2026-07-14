@@ -4,11 +4,13 @@
 # resume device) lives in that machine's own configuration.nix.
 #
 # Opt a machine in with `custom.laptop = true;` in its configuration.nix.
-{ config, lib, ... }:
-let
-  cfg = config.custom;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.custom;
+in {
   config = lib.mkIf cfg.laptop {
     # Suspend immediately on lid-close (instant, low-latency resume for short
     # closures), then transition to a full hibernate-to-disk after HibernateDelaySec

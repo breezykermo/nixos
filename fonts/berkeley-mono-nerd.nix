@@ -4,7 +4,6 @@
   nerd-font-patcher,
   python3,
 }:
-
 stdenvNoCC.mkDerivation {
   pname = "berkeley-mono-nerd-font";
   version = "1.4.83";
@@ -13,8 +12,8 @@ stdenvNoCC.mkDerivation {
     src = ./berkeley-mono;
     name = "berkeley-mono-source";
     filter = path: type:
-      (type == "directory") ||
-      (lib.hasSuffix ".ttf" path);
+      (type == "directory")
+      || (lib.hasSuffix ".ttf" path);
   };
 
   nativeBuildInputs = [

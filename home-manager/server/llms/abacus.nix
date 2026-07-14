@@ -1,8 +1,8 @@
-{ lib
-, buildGoModule
-, fetchFromGitHub
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
-
 buildGoModule rec {
   pname = "abacus";
   version = "0.11.2";
@@ -21,13 +21,13 @@ buildGoModule rec {
     "-w"
   ];
 
-  subPackages = [ "cmd/abacus" ];
+  subPackages = ["cmd/abacus"];
 
   meta = with lib; {
     description = "Terminal UI for visualizing and navigating Beads issue tracking projects";
     homepage = "https://github.com/ChrisEdwards/abacus";
     license = licenses.mit;
-    maintainers = [ ];
+    maintainers = [];
     mainProgram = "abacus";
   };
 }

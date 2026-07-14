@@ -1,7 +1,6 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   # Load uinput module for rmTabletDriver
-  boot.kernelModules = [ "uinput" ];
+  boot.kernelModules = ["uinput"];
 
   # Udev rules for flashing keyboards with Keymapp
   services.udev.extraRules = ''

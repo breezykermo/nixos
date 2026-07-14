@@ -12,8 +12,12 @@
 #
 # Bare `mkEnableOption` here (not nested under `.enable`) since this is a simple on/off
 # switch with no sub-config -- see the convention note in machines/modules/custom.nix.
-{ config, lib, localProfile, ... }:
 {
+  config,
+  lib,
+  localProfile,
+  ...
+}: {
   options.custom = {
     homework = lib.mkEnableOption "homework-only home configuration";
   };

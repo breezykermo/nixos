@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     (wineWowPackages.full.override {
       wineRelease = "staging";
@@ -13,5 +12,3 @@
     WINEPREFIX = "$HOME/wine-battlenet";
   };
 }
-
-

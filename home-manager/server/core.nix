@@ -1,5 +1,11 @@
-{pkgs, inputs, system, lib, theme, ...}:
 {
+  pkgs,
+  inputs,
+  system,
+  lib,
+  theme,
+  ...
+}: {
   services = {
     keybase.enable = true;
     kbfs.enable = true;
@@ -7,34 +13,34 @@
   };
 
   home.packages = with pkgs; [
-    nix-tree    # profiling
-    nix-index   # local index of nixpkgs for search
-    unzip       # archives
+    nix-tree # profiling
+    nix-index # local index of nixpkgs for search
+    unzip # archives
     zip
     xz
     lz4
-    file        # general file utils
+    file # general file utils
     which
     tree
-    gawk        # GNU awk, a pattern scanning and processing language
-    ripgrep     # recursively searches directories for a regex pattern
-    sad         # CLI search and replace, with diff preview
-    fd          # `fd` is a better find
-    jq          # A lightweight and flexible command-line JSON processor
-    vivid       # for colorschemes
-    just        # better makefiles
-    bartib      # time tracking
+    gawk # GNU awk, a pattern scanning and processing language
+    ripgrep # recursively searches directories for a regex pattern
+    sad # CLI search and replace, with diff preview
+    fd # `fd` is a better find
+    jq # A lightweight and flexible command-line JSON processor
+    vivid # for colorschemes
+    just # better makefiles
+    bartib # time tracking
     imagemagick # manipulate images from the command-line
     ffmpeg-full # utility for sound, image, video
-    gh          # Github CLI
-    uv          # Python package installer and resolver
-    python3     # Python interpreter
-    sqlite      # useful little database
+    gh # Github CLI
+    uv # Python package installer and resolver
+    python3 # Python interpreter
+    sqlite # useful little database
     cargo-binstall # install pre-built Rust binaries
-    flyctl        # fly.io CLI
-    kagimcp       # Kagi MCP server for web search
-    lnav          # log file navigator (generic formats, journald, SQL queries)
-    mosh          # mobile shell - resilient to roaming and intermittent connectivity
+    flyctl # fly.io CLI
+    kagimcp # Kagi MCP server for web search
+    lnav # log file navigator (generic formats, journald, SQL queries)
+    mosh # mobile shell - resilient to roaming and intermittent connectivity
   ];
 
   # gh extension: dlvhdr/gh-dash, invoked as `gh dash`
@@ -121,6 +127,5 @@
         vim_keys = true;
       };
     };
-
   };
 }

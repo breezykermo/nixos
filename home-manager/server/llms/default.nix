@@ -1,7 +1,13 @@
-{ config, pkgs, lib, inputs, system, ... }:
-let
-  abacus = pkgs.callPackage ./abacus.nix { };
-  beads = pkgs.callPackage ./beads.nix { };
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  system,
+  ...
+}: let
+  abacus = pkgs.callPackage ./abacus.nix {};
+  beads = pkgs.callPackage ./beads.nix {};
 
   # Skill source pins live in pins.json at the repo root (kept there, not
   # here, so `just update-pins` can refresh all of them without touching
@@ -17,9 +23,9 @@ let
   # claudeGitHook activation below.
   blockGitHook = pkgs.writeShellApplication {
     name = "claude-block-git";
-    runtimeInputs = with pkgs; [ jq gnugrep coreutils ];
+    runtimeInputs = with pkgs; [jq gnugrep coreutils];
     # The jq filter and grep pattern intentionally live in single quotes.
-    excludeShellChecks = [ "SC2016" ];
+    excludeShellChecks = ["SC2016"];
     text = builtins.readFile ./hooks/block-git.sh;
   };
 
@@ -28,13 +34,12 @@ let
   # its one argument. See ./hooks/register-git-hook.sh for the why.
   registerGitHook = pkgs.writeShellApplication {
     name = "claude-register-git-hook";
-    runtimeInputs = with pkgs; [ jq coreutils ];
+    runtimeInputs = with pkgs; [jq coreutils];
     # The jq filter intentionally lives in single quotes.
-    excludeShellChecks = [ "SC2016" ];
+    excludeShellChecks = ["SC2016"];
     text = builtins.readFile ./hooks/register-git-hook.sh;
   };
-in
-{
+in {
   home.file = {
     # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
     # applied across every project. Project-level CLAUDE.md files supplement it.
@@ -48,7 +53,7 @@ in
   # Register the git-blocking PreToolUse hook in ~/.claude/settings.json on every
   # rebuild. See ./hooks/register-git-hook.sh for why this is a mutable jq merge
   # rather than a home.file symlink.
-  home.activation.claudeGitHook = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.claudeGitHook = lib.hm.dag.entryAfter ["writeBoundary"] ''
     run ${registerGitHook}/bin/claude-register-git-hook "${blockGitHook}/bin/claude-block-git"
   '';
 

@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   # Enable sound with pipewire
   services.pipewire = {
     enable = lib.mkDefault true;

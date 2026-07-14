@@ -1,8 +1,12 @@
 # Adapted from
 # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265
-{ pkgs, lib, theme, inputs, ... }:
-let
-
+{
+  pkgs,
+  lib,
+  theme,
+  inputs,
+  ...
+}: let
   lock-false = {
     Value = false;
     Status = "locked";
@@ -11,8 +15,7 @@ let
     Value = true;
     Status = "locked";
   };
-in
-{
+in {
   programs.chromium.enable = true;
 
   xdg.mimeApps.defaultApplications = {
@@ -35,11 +38,18 @@ in
           default = "Kagi";
           engines = {
             "Kagi" = {
-              urls = [{
-                template = "https://kagi.com/search?";
-                params = [{ name = "q"; value = "{searchTerms}"; }];
-              }];
-              definedAliases = [ "@kg" ];
+              urls = [
+                {
+                  template = "https://kagi.com/search?";
+                  params = [
+                    {
+                      name = "q";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              definedAliases = ["@kg"];
             };
             "wikipedia".metaData.alias = "@wiki";
             "google".metaData.hidden = true;
@@ -61,20 +71,19 @@ in
           "dom.security.https_only_mode_ever_enabled" = true;
         };
         extraConfig = ''
-        user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-        user_pref("full-screen-api.ignore-widgets", true);
-        user_pref("media.ffmpeg.vaapi.enabled", true);
-        user_pref("media.rdd-vpx.enabled", true);
+          user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+          user_pref("full-screen-api.ignore-widgets", true);
+          user_pref("media.ffmpeg.vaapi.enabled", true);
+          user_pref("media.rdd-vpx.enabled", true);
 
-        // Dark Reader - configure manually with these Gruvbox colors:
-        // Background: ${theme.background}
-        // Text: ${theme.foreground}
-        // Selection Background: ${theme.colors.bg2}
-        // Selection Text: ${theme.colors.yellow}
-        // Link: ${theme.colors.blue}
-        // Visited Link: ${theme.colors.purple}
+          // Dark Reader - configure manually with these Gruvbox colors:
+          // Background: ${theme.background}
+          // Text: ${theme.foreground}
+          // Selection Background: ${theme.colors.bg2}
+          // Selection Text: ${theme.colors.yellow}
+          // Link: ${theme.colors.blue}
+          // Visited Link: ${theme.colors.purple}
         '';
-
 
         userChrome = ''
           ${builtins.readFile ./userChrome.css}
@@ -184,234 +193,232 @@ in
             background-color: var(--gruvbox-gray) !important;
           }
         '';
-        
+
         bookmarks = {
-		force = true;
-		settings = [
-		  {
-		    name = "Wikipedia";
-		    tags = [ "wiki" ];
-		    keyword = "wiki";
-		    url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-		  }
-		  # Brown
-		  {
-		    name = "[m]ail [b]rown";
-		    tags = [];
-		    keyword = "mb";
-		    url = "https://mail.google.com/mail/u/0/#inbox";
-		  }
-		  {
-		    name = "[c]alendar [b]rown";
-		    tags = [];
-		    keyword = "cb";
-		    url = "https://calendar.google.com/calendar/u/0/r";
-		  }
-		  {
-		    name = "[d]rive [b]rown";
-		    tags = [];
-		    keyword = "db";
-		    url = "https://drive.google.com/drive/u/0/my-drive";
-		  }
+          force = true;
+          settings = [
+            {
+              name = "Wikipedia";
+              tags = ["wiki"];
+              keyword = "wiki";
+              url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+            }
+            # Brown
+            {
+              name = "[m]ail [b]rown";
+              tags = [];
+              keyword = "mb";
+              url = "https://mail.google.com/mail/u/0/#inbox";
+            }
+            {
+              name = "[c]alendar [b]rown";
+              tags = [];
+              keyword = "cb";
+              url = "https://calendar.google.com/calendar/u/0/r";
+            }
+            {
+              name = "[d]rive [b]rown";
+              tags = [];
+              keyword = "db";
+              url = "https://drive.google.com/drive/u/0/my-drive";
+            }
 
-		  # Personal 
-		  {
-		    name = "[m]ail [p]ersonal";
-		    tags = [];
-		    keyword = "mp";
-		    url = "https://mail.google.com/mail/u/1/#inbox";
-		  }
-		  {
-		    name = "[c]alendar [p]ersonal";
-		    tags = [];
-		    keyword = "cp";
-		    url = "https://calendar.google.com/calendar/u/1/r";
-		  }
-		  {
-		    name = "[d]rive [p]ersonal";
-		    tags = [];
-		    keyword = "dp";
-		    url = "https://drive.google.com/drive/u/1/my-drive";
-		  }
+            # Personal
+            {
+              name = "[m]ail [p]ersonal";
+              tags = [];
+              keyword = "mp";
+              url = "https://mail.google.com/mail/u/1/#inbox";
+            }
+            {
+              name = "[c]alendar [p]ersonal";
+              tags = [];
+              keyword = "cp";
+              url = "https://calendar.google.com/calendar/u/1/r";
+            }
+            {
+              name = "[d]rive [p]ersonal";
+              tags = [];
+              keyword = "dp";
+              url = "https://drive.google.com/drive/u/1/my-drive";
+            }
 
-		  # Ohrg 
-		  {
-		    name = "[m]ail [o]hrg";
-		    tags = [];
-		    keyword = "mo";
-		    url = "https://mail.proton.me/u/0/inbox";
-		  }
-		  {
-		    name = "[c]alendar [o]hrg";
-		    tags = [];
-		    keyword = "co";
-		    url = "https://calendar.proton.me/u/0/";
-		  }
-		  {
-		    name = "[d]rive [o]hrg";
-		    tags = [];
-		    keyword = "do";
-		    url = "https://drive.proton.me/u/0/";
-		  }
+            # Ohrg
+            {
+              name = "[m]ail [o]hrg";
+              tags = [];
+              keyword = "mo";
+              url = "https://mail.proton.me/u/0/inbox";
+            }
+            {
+              name = "[c]alendar [o]hrg";
+              tags = [];
+              keyword = "co";
+              url = "https://calendar.proton.me/u/0/";
+            }
+            {
+              name = "[d]rive [o]hrg";
+              tags = [];
+              keyword = "do";
+              url = "https://drive.proton.me/u/0/";
+            }
 
+            # Hotmail
+            {
+              name = "[m]ail [h]otmail";
+              tags = [];
+              keyword = "mh";
+              url = "https://outlook.live.com/mail/0/";
+            }
 
-		  # Hotmail 
-		  {
-		    name = "[m]ail [h]otmail";
-		    tags = [];
-		    keyword = "mh";
-		    url = "https://outlook.live.com/mail/0/";
-		  }
+            # Inferstudo
+            {
+              name = "[m]ail [i]nferstudo";
+              tags = [];
+              keyword = "mi";
+              url = "https://mail.zoho.eu/zm/#mail/folder/inbox";
+            }
 
-      # Inferstudo
-      {
-        name = "[m]ail [i]nferstudo";
-        tags = [];
-        keyword = "mi";
-        url = "https://mail.zoho.eu/zm/#mail/folder/inbox";
-      }
+            # Kagi Mail
+            {
+              name = "[mk] kagi mail";
+              tags = [];
+              keyword = "mk";
+              url = "https://kagimail.com/mailbox";
+            }
 
-      # Kagi Mail
-      {
-        name = "[mk] kagi mail";
-        tags = [];
-        keyword = "mk";
-        url = "https://kagimail.com/mailbox";
-      }
-
-      # Unibo
+            # Unibo
             # https://outlook.office.com/mail/0/?culture=en-us&country=us
-      {
-        name = "[m]ail [u]nibo";
-        tags = [];
-        keyword = "mu";
-        url = "https://outlook.office.com/mail/0/?culture=en-us&country=us";
-      }
-      {
-        name = "[c]alendar [u]nibo";
-        tags = [];
-        keyword = "cu";
-        url = "https://outlook.office.com/calendar/0/view/month?culture=en-us&country=us";
-      }
+            {
+              name = "[m]ail [u]nibo";
+              tags = [];
+              keyword = "mu";
+              url = "https://outlook.office.com/mail/0/?culture=en-us&country=us";
+            }
+            {
+              name = "[c]alendar [u]nibo";
+              tags = [];
+              keyword = "cu";
+              url = "https://outlook.office.com/calendar/0/view/month?culture=en-us&country=us";
+            }
 
-		  # LLMs
-		  {
-		    name = "[ai] [c]laude";
-		    tags = [];
-		    keyword = "aic";
-		    url = "https://claude.ai/new";
-		  }
-		  {
-		    name = "[ai] [k]agi";
-		    tags = [];
-		    keyword = "aik";
-		    url = "https://kagi.com/assistant";
-		  }
-		  {
-		    name = "[ai] chat [g]pt";
-		    tags = [];
-		    keyword = "aig";
-		    url = "https://chatgpt.com/";
-		  }
-		  {
-		    name = "[ai] co[p]ilot";
-		    tags = [];
-		    keyword = "aip";
-		    url = "https://m365.cloud.microsoft/chat/?auth=2&home=1&from=NoAccountOnStart";
-		  }
+            # LLMs
+            {
+              name = "[ai] [c]laude";
+              tags = [];
+              keyword = "aic";
+              url = "https://claude.ai/new";
+            }
+            {
+              name = "[ai] [k]agi";
+              tags = [];
+              keyword = "aik";
+              url = "https://kagi.com/assistant";
+            }
+            {
+              name = "[ai] chat [g]pt";
+              tags = [];
+              keyword = "aig";
+              url = "https://chatgpt.com/";
+            }
+            {
+              name = "[ai] co[p]ilot";
+              tags = [];
+              keyword = "aip";
+              url = "https://m365.cloud.microsoft/chat/?auth=2&home=1&from=NoAccountOnStart";
+            }
 
+            # Other
+            {
+              name = "[g]it[h]ub";
+              tags = [];
+              keyword = "gh";
+              url = "https://github.com/notifications";
+            }
+            {
+              name = "[g]it[h]ub [r]epos";
+              tags = [];
+              keyword = "gh/repos";
+              url = "https://github.com/breezykermo?tab=repositories";
+            }
+            {
+              name = "[g]it[h]ub rheo";
+              tags = [];
+              keyword = "gh/rheo";
+              url = "https://github.com/freecomputinglab/rheo";
+            }
+            {
+              name = "[g]it[h]ub nixos";
+              tags = [];
+              keyword = "gh/nixos";
+              url = "https://github.com/breezykermo/nixos";
+            }
+            {
+              name = "[g]it[h]ub pragma";
+              tags = [];
+              keyword = "gh/pragma";
+              url = "https://github.com/digitaltheorylab/pragma";
+            }
+            {
+              name = "[g]it[h]ub lolm";
+              tags = [];
+              keyword = "gh/lolm";
+              url = "https://github.com/freecomputinglab/lolm.ohrg.org";
+            }
+            {
+              name = "[d]i[s]cord";
+              tags = [];
+              keyword = "ds";
+              url = "https://discord.com/channels/@me";
+            }
+            {
+              name = "[w]hatsap[p]";
+              tags = [];
+              keyword = "wp";
+              url = "https://web.whatsapp.com/";
+            }
+            {
+              name = "[ne]tlify";
+              tags = [];
+              keyword = "ne";
+              url = "https://app.netlify.com/teams/breezykermo/sites/";
+            }
 
-		  # Other 
-		  {
-		    name = "[g]it[h]ub";
-		    tags = [];
-		    keyword = "gh";
-		    url = "https://github.com/notifications";
-		  }
-		  {
-		    name = "[g]it[h]ub [r]epos";
-		    tags = [];
-		    keyword = "gh/repos";
-		    url = "https://github.com/breezykermo?tab=repositories";
-		  }
-		  {
-		    name = "[g]it[h]ub rheo";
-		    tags = [];
-		    keyword = "gh/rheo";
-		    url = "https://github.com/freecomputinglab/rheo";
-		  }
-		  {
-		    name = "[g]it[h]ub nixos";
-		    tags = [];
-		    keyword = "gh/nixos";
-		    url = "https://github.com/breezykermo/nixos";
-		  }
-		  {
-		    name = "[g]it[h]ub pragma";
-		    tags = [];
-		    keyword = "gh/pragma";
-		    url = "https://github.com/digitaltheorylab/pragma";
-		  }
-		  {
-		    name = "[g]it[h]ub lolm";
-		    tags = [];
-		    keyword = "gh/lolm";
-		    url = "https://github.com/freecomputinglab/lolm.ohrg.org";
-		  }
-		  {
-		    name = "[d]i[s]cord";
-		    tags = [];
-		    keyword = "ds";
-		    url = "https://discord.com/channels/@me";
-		  }
-		  {
-		    name = "[w]hatsap[p]";
-		    tags = [];
-		    keyword = "wp";
-		    url = "https://web.whatsapp.com/";
-		  }
-		  {
-		    name = "[ne]tlify";
-		    tags = [];
-		    keyword = "ne";
-		    url = "https://app.netlify.com/teams/breezykermo/sites/";
-		  }
+            # Zulip
+            {
+              name = "[f]ree [c]omputing [l]ab";
+              tags = [];
+              keyword = "fcl";
+              url = "https://freecomputinglab.zulipchat.com/#feed";
+            }
+            {
+              name = "[c]ognitive [e]ngineering [l]ab";
+              tags = [];
+              keyword = "cel";
+              url = "https://cognitive-engineering-lab.zulipchat.com/#feed";
+            }
+            {
+              name = "software [fog]";
+              tags = [];
+              keyword = "fog";
+              url = "https://software-fog.zulipchat.com/#feed";
+            }
+            {
+              name = "[e]eg";
+              tags = [];
+              keyword = "eeg";
+              url = "https://eeg.zulipchat.com/";
+            }
 
-		  # Zulip 
-		  {
-		    name = "[f]ree [c]omputing [l]ab";
-		    tags = [];
-		    keyword = "fcl";
-		    url = "https://freecomputinglab.zulipchat.com/#feed";
-		  }
-		  {
-		    name = "[c]ognitive [e]ngineering [l]ab";
-		    tags = [];
-		    keyword = "cel";
-		    url = "https://cognitive-engineering-lab.zulipchat.com/#feed";
-		  }
-		  {
-		    name = "software [fog]";
-		    tags = [];
-		    keyword = "fog";
-		    url = "https://software-fog.zulipchat.com/#feed";
-		  }
-		  {
-		    name = "[e]eg";
-		    tags = [];
-		    keyword = "eeg";
-		    url = "https://eeg.zulipchat.com/";
-		  }
-
-      # ReMarkable
-      {
-        name = "[r]e[m]arkable";
-        tags = [];
-        keyword = "rm";
-        url = "https://app.remarkable.com/folder/home";
-      }
-		];
-	};
+            # ReMarkable
+            {
+              name = "[r]e[m]arkable";
+              tags = [];
+              keyword = "rm";
+              url = "https://app.remarkable.com/folder/home";
+            }
+          ];
+        };
       };
     };
 
@@ -419,7 +426,7 @@ in
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
       EnableTrackingProtection = {
-        Value= true;
+        Value = true;
         Locked = true;
         Cryptomining = true;
         Fingerprinting = true;
@@ -436,7 +443,9 @@ in
       DisplayMenuBar = "default-off"; # alternatives: "always", "never" or "default-on"
       SearchBar = "unified"; # alternative: "separate"
 
-      /* ---- EXTENSIONS ---- */
+      /*
+      ---- EXTENSIONS ----
+      */
       # Check about:support for extension/add-on ID strings.
       # To get new values:
       # - Disable blocked installation mode by uncommenting below
@@ -499,12 +508,20 @@ in
         # Zotero
       };
 
-      /* ---- PREFERENCES ---- */
+      /*
+      ---- PREFERENCES ----
+      */
       # Check about:config for options.
       Preferences = {
-        "extensions.activeThemeID" = { Value = "{ee3eebdf-f293-4c71-bece-b457232aab1d}"; Status = "locked"; };
+        "extensions.activeThemeID" = {
+          Value = "{ee3eebdf-f293-4c71-bece-b457232aab1d}";
+          Status = "locked";
+        };
         "layout.css.light-dark.enabled" = lock-true;
-        "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
+        "browser.contentblocking.category" = {
+          Value = "strict";
+          Status = "locked";
+        };
         "extensions.pocket.enabled" = lock-false;
         "extensions.screenshots.disabled" = lock-true;
         "browser.topsites.contile.enabled" = lock-false;
@@ -531,4 +548,3 @@ in
     };
   };
 }
-

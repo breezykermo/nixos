@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   # USB automounting - disabled by default
   # Machine configs can enable these services as needed
   services.devmon.enable = lib.mkDefault false;

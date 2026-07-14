@@ -1,5 +1,11 @@
-{ pkgs, inputs, lib, theme, config, ... }:
 {
+  pkgs,
+  inputs,
+  lib,
+  theme,
+  config,
+  ...
+}: {
   imports = [
     ./hypr
     ./bluetooth
@@ -20,7 +26,7 @@
   home.packages = with pkgs; [
     xdg-utils
 
-    # screenshots 
+    # screenshots
     slurp
     grim
 
@@ -108,150 +114,148 @@
   programs.rofi = {
     enable = true;
     theme =
-      if theme.name == "rosepine" then
-        let
-          inherit (config.lib.formats.rasi) mkLiteral;
-          c = theme.colors;
-        in
-        {
-          "*" = {
-            background = mkLiteral theme.background;
-            background-alt = mkLiteral c.bg1;
-            foreground = mkLiteral theme.foreground;
-            selected = mkLiteral c.purple;
-            active = mkLiteral c.aqua;
-            urgent = mkLiteral c.red;
+      if theme.name == "rosepine"
+      then let
+        inherit (config.lib.formats.rasi) mkLiteral;
+        c = theme.colors;
+      in {
+        "*" = {
+          background = mkLiteral theme.background;
+          background-alt = mkLiteral c.bg1;
+          foreground = mkLiteral theme.foreground;
+          selected = mkLiteral c.purple;
+          active = mkLiteral c.aqua;
+          urgent = mkLiteral c.red;
 
-            background-color = mkLiteral "@background";
-            text-color = mkLiteral "@foreground";
-            border-color = mkLiteral "@selected";
-            separatorcolor = mkLiteral "@background-alt";
-            spacing = 2;
-          };
+          background-color = mkLiteral "@background";
+          text-color = mkLiteral "@foreground";
+          border-color = mkLiteral "@selected";
+          separatorcolor = mkLiteral "@background-alt";
+          spacing = 2;
+        };
 
-          window = {
-            background-color = mkLiteral "@background";
-            border = 1;
-            padding = 5;
-          };
+        window = {
+          background-color = mkLiteral "@background";
+          border = 1;
+          padding = 5;
+        };
 
-          mainbox = {
-            border = 0;
-            padding = 0;
-          };
+        mainbox = {
+          border = 0;
+          padding = 0;
+        };
 
-          message = {
-            border = mkLiteral "1px dash 0px 0px";
-            border-color = mkLiteral "@separatorcolor";
-            padding = mkLiteral "1px";
-          };
+        message = {
+          border = mkLiteral "1px dash 0px 0px";
+          border-color = mkLiteral "@separatorcolor";
+          padding = mkLiteral "1px";
+        };
 
-          textbox = {
-            text-color = mkLiteral "@foreground";
-          };
+        textbox = {
+          text-color = mkLiteral "@foreground";
+        };
 
-          listview = {
-            fixed-height = 0;
-            border = mkLiteral "2px dash 0px 0px";
-            border-color = mkLiteral "@separatorcolor";
-            spacing = mkLiteral "2px";
-            scrollbar = true;
-            padding = mkLiteral "2px 0px 0px";
-          };
+        listview = {
+          fixed-height = 0;
+          border = mkLiteral "2px dash 0px 0px";
+          border-color = mkLiteral "@separatorcolor";
+          spacing = mkLiteral "2px";
+          scrollbar = true;
+          padding = mkLiteral "2px 0px 0px";
+        };
 
-          element = {
-            border = 0;
-            padding = mkLiteral "1px";
-          };
+        element = {
+          border = 0;
+          padding = mkLiteral "1px";
+        };
 
-          "element-text" = {
-            background-color = mkLiteral "inherit";
-            text-color = mkLiteral "inherit";
-          };
+        "element-text" = {
+          background-color = mkLiteral "inherit";
+          text-color = mkLiteral "inherit";
+        };
 
-          "element.normal.normal" = {
-            background-color = mkLiteral "@background";
-            text-color = mkLiteral "@foreground";
-          };
+        "element.normal.normal" = {
+          background-color = mkLiteral "@background";
+          text-color = mkLiteral "@foreground";
+        };
 
-          "element.normal.urgent" = {
-            background-color = mkLiteral "@background";
-            text-color = mkLiteral "@urgent";
-          };
+        "element.normal.urgent" = {
+          background-color = mkLiteral "@background";
+          text-color = mkLiteral "@urgent";
+        };
 
-          "element.normal.active" = {
-            background-color = mkLiteral "@background";
-            text-color = mkLiteral "@active";
-          };
+        "element.normal.active" = {
+          background-color = mkLiteral "@background";
+          text-color = mkLiteral "@active";
+        };
 
-          "element.selected.normal" = {
-            background-color = mkLiteral "@selected";
-            text-color = mkLiteral "@background";
-          };
+        "element.selected.normal" = {
+          background-color = mkLiteral "@selected";
+          text-color = mkLiteral "@background";
+        };
 
-          "element.selected.urgent" = {
-            background-color = mkLiteral "@urgent";
-            text-color = mkLiteral "@background";
-          };
+        "element.selected.urgent" = {
+          background-color = mkLiteral "@urgent";
+          text-color = mkLiteral "@background";
+        };
 
-          "element.selected.active" = {
-            background-color = mkLiteral "@active";
-            text-color = mkLiteral "@background";
-          };
+        "element.selected.active" = {
+          background-color = mkLiteral "@active";
+          text-color = mkLiteral "@background";
+        };
 
-          "element.alternate.normal" = {
-            background-color = mkLiteral "@background-alt";
-            text-color = mkLiteral "@foreground";
-          };
+        "element.alternate.normal" = {
+          background-color = mkLiteral "@background-alt";
+          text-color = mkLiteral "@foreground";
+        };
 
-          scrollbar = {
-            width = mkLiteral "4px";
-            border = 0;
-            handle-width = mkLiteral "8px";
-            padding = 0;
-          };
+        scrollbar = {
+          width = mkLiteral "4px";
+          border = 0;
+          handle-width = mkLiteral "8px";
+          padding = 0;
+        };
 
-          "mode-switcher" = {
-            border = mkLiteral "2px dash 0px 0px";
-            border-color = mkLiteral "@separatorcolor";
-          };
+        "mode-switcher" = {
+          border = mkLiteral "2px dash 0px 0px";
+          border-color = mkLiteral "@separatorcolor";
+        };
 
-          "button.selected" = {
-            background-color = mkLiteral "@selected";
-            text-color = mkLiteral "@background";
-          };
+        "button.selected" = {
+          background-color = mkLiteral "@selected";
+          text-color = mkLiteral "@background";
+        };
 
-          inputbar = {
-            spacing = 0;
-            text-color = mkLiteral "@foreground";
-            padding = mkLiteral "1px";
-            children = map mkLiteral [ "prompt" "textbox-prompt-colon" "entry" "case-indicator" ];
-          };
+        inputbar = {
+          spacing = 0;
+          text-color = mkLiteral "@foreground";
+          padding = mkLiteral "1px";
+          children = map mkLiteral ["prompt" "textbox-prompt-colon" "entry" "case-indicator"];
+        };
 
-          prompt = {
-            spacing = 0;
-            text-color = mkLiteral "@foreground";
-          };
+        prompt = {
+          spacing = 0;
+          text-color = mkLiteral "@foreground";
+        };
 
-          entry = {
-            spacing = 0;
-            text-color = mkLiteral "@foreground";
-          };
+        entry = {
+          spacing = 0;
+          text-color = mkLiteral "@foreground";
+        };
 
-          "case-indicator" = {
-            spacing = 0;
-            text-color = mkLiteral "@foreground";
-          };
+        "case-indicator" = {
+          spacing = 0;
+          text-color = mkLiteral "@foreground";
+        };
 
-          "textbox-prompt-colon" = {
-            expand = false;
-            str = ":";
-            margin = mkLiteral "0px 0.3em 0em 0em";
-            text-color = mkLiteral "@foreground";
-          };
-        }
-      else
-        "${theme.rofiTheme}";
+        "textbox-prompt-colon" = {
+          expand = false;
+          str = ":";
+          margin = mkLiteral "0px 0.3em 0em 0em";
+          text-color = mkLiteral "@foreground";
+        };
+      }
+      else "${theme.rofiTheme}";
   };
 
   # Notification daemon for Wayland/Hyprland

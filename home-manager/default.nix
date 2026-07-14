@@ -1,15 +1,17 @@
-{ userName, pkgs, ... }:
-
 {
-	imports = [
-		./custom.nix
-		./server
-		./desktop
-	];
+  userName,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ./custom.nix
+    ./server
+    ./desktop
+  ];
 
-	home.username = userName;
-	home.homeDirectory = "/home/${userName}";
-	home.stateVersion = "23.11";
-	home.enableNixpkgsReleaseCheck = false;
-	programs.home-manager.enable = true;
+  home.username = userName;
+  home.homeDirectory = "/home/${userName}";
+  home.stateVersion = "23.11";
+  home.enableNixpkgsReleaseCheck = false;
+  programs.home-manager.enable = true;
 }

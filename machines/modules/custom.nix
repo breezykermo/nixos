@@ -16,11 +16,13 @@
 #   (ollama-style), so later options can hang off the same attrset.
 # - A tunable value on an already-enabled feature, not a feature gate itself: a plain
 #   `lib.mkOption` (bluetooth.powerOnBoot-style).
-{ config, lib, ... }:
-let
-  cfg = config.custom;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.custom;
+in {
   options.custom = {
     # Laptop power/input tweaks. Placeholder for a later migration of the shared
     # power-management module (machines/modules/power-management.nix); declared now so

@@ -47,13 +47,13 @@
     };
   };
 
-  outputs = inputs@{
+  outputs = inputs @ {
     nixpkgs,
     home-manager,
     naersk,
     eilmeldung,
-    ... }:
-  let
+    ...
+  }: let
     system = "x86_64-linux";
 
     # Custom package overlay, applied to the system pkgs via the
@@ -69,7 +69,8 @@
     # + vars.nix.
     machinesDir = ./machines;
     machineEntries = builtins.readDir machinesDir;
-    machineNames = builtins.filter
+    machineNames =
+      builtins.filter
       (name: machineEntries.${name} == "directory" && name != "modules")
       (builtins.attrNames machineEntries);
 
@@ -78,44 +79,51 @@
     # `nixosConfigurations.<name>` and the box is chosen at build time with
     # `nixos-rebuild --flake .#<name>` (see the Justfile, which reads the gitignored
     # `machines/local-profile.nix` marker at deploy time).
-    mkMachine = name:
-      let
-        machineVars = import ./machines/${name}/vars.nix;
-        userName = machineVars.userName;
+    mkMachine = name: let
+      machineVars = import ./machines/${name}/vars.nix;
+      userName = machineVars.userName;
 
-        # The machine name doubles as the profile that gates machine-specific
-        # software and behaviour in shared modules (see `localProfile == "homework"`).
-        localProfile = name;
+      # The machine name doubles as the profile that gates machine-specific
+      # software and behaviour in shared modules (see `localProfile == "homework"`).
+      localProfile = name;
 
-        # Theme depends on localProfile, so it is resolved per machine.
-        theme = import ./themes/default.nix { inherit (nixpkgs) lib; inherit localProfile; };
-      in
+      # Theme depends on localProfile, so it is resolved per machine.
+      theme = import ./themes/default.nix {
+        inherit (nixpkgs) lib;
+        inherit localProfile;
+      };
+    in
       nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs userName machineVars localProfile; };
+        specialArgs = {inherit inputs userName machineVars localProfile;};
         modules = [
-          { nixpkgs.overlays = [ overlay eilmeldung.overlays.default ]; }
+          {nixpkgs.overlays = [overlay eilmeldung.overlays.default];}
           ./configuration.nix
           ./machines/base.nix
           ./machines/${name}/configuration.nix
 
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          {
             # system wide
             programs.fish.enable = true;
 
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit inputs system userName naersk machineVars theme localProfile eilmeldung; };
+              extraSpecialArgs = {inherit inputs system userName naersk machineVars theme localProfile eilmeldung;};
 
               users."${userName}" = import ./home-manager;
             };
           }
         ];
       };
-  in
-  {
-    nixosConfigurations = builtins.listToAttrs
-      (map (name: { inherit name; value = mkMachine name; }) machineNames);
+  in {
+    nixosConfigurations =
+      builtins.listToAttrs
+      (map (name: {
+          inherit name;
+          value = mkMachine name;
+        })
+        machineNames);
   };
 }

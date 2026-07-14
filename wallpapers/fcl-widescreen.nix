@@ -1,11 +1,10 @@
-{ pkgs }:
-
+{pkgs}:
 pkgs.stdenv.mkDerivation {
   name = "fcl-widescreen-wallpaper";
 
   src = ../the-fcl.png;
 
-  buildInputs = [ pkgs.imagemagick ];
+  buildInputs = [pkgs.imagemagick];
 
   # Don't try to unpack the PNG file
   dontUnpack = true;

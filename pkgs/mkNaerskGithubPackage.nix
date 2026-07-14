@@ -8,21 +8,23 @@
 #     # optional: repo (defaults to name), rev (defaults to "v${version}"),
 #     # nativeBuildInputs, buildInputs
 #   }
-{ pkgs, naersk }:
-let
+{
+  pkgs,
+  naersk,
+}: let
   naersk' = pkgs.callPackage naersk {};
 in
-{
-  name,
-  version,
-  owner,
-  repo ? name,
-  rev ? "v${version}",
-  sha256,
-  nativeBuildInputs ? [ ],
-  buildInputs ? [ ],
-}:
-naersk'.buildPackage {
-  inherit name version nativeBuildInputs buildInputs;
-  src = pkgs.fetchFromGitHub { inherit owner repo rev sha256; };
-}
+  {
+    name,
+    version,
+    owner,
+    repo ? name,
+    rev ? "v${version}",
+    sha256,
+    nativeBuildInputs ? [],
+    buildInputs ? [],
+  }:
+    naersk'.buildPackage {
+      inherit name version nativeBuildInputs buildInputs;
+      src = pkgs.fetchFromGitHub {inherit owner repo rev sha256;};
+    }

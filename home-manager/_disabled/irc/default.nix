@@ -1,14 +1,17 @@
-{ config, pkgs, lib, ...}:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   myWeechat = pkgs.weechat.override {
-    configure = { availablePlugins, ... }: {
+    configure = {availablePlugins, ...}: {
       scripts = with pkgs.weechatScripts; [
-        wee-slack  
+        wee-slack
         # weechat-matrix
       ];
     };
   };
-in
-{
+in {
   # home.packages = [ myWeechat ];
 }

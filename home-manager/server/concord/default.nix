@@ -1,5 +1,8 @@
-{ inputs, system, ... }:
 {
+  inputs,
+  system,
+  ...
+}: {
   home.packages = [
     # TUI client for Discord
     inputs.concord.packages.${system}.default

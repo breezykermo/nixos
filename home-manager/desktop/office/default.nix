@@ -1,9 +1,8 @@
-{ pkgs, ... }:
-{
-	home.packages = with pkgs; [
-		csvkit        # csv management
-		visidata
-		pdftk         # pdf
+{pkgs, ...}: {
+  home.packages = with pkgs; [
+    csvkit # csv management
+    visidata
+    pdftk # pdf
     qpdf
   ];
 }

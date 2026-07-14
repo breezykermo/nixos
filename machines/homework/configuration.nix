@@ -1,5 +1,10 @@
-{ config, lib, pkgs, userName, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  userName,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -54,8 +59,8 @@
     # Downloaded by ollama-model-loader.service once ollama is up (pull only, runs in
     # the background; ~170GB total on first deploy).
     loadModels = [
-      "qwen3-coder:30b"                   # ~19GB · agentic SWE workhorse, native tool calls → CCR default
-      "gpt-oss:120b"                      # ~65GB · biggest that fits, native tool calls → CCR think/longContext
+      "qwen3-coder:30b" # ~19GB · agentic SWE workhorse, native tool calls → CCR default
+      "gpt-oss:120b" # ~65GB · biggest that fits, native tool calls → CCR think/longContext
       "MichelRosselli/GLM-4.5-Air:Q5_K_M" # ~83GB · strong reasoner (XML tool calls unreliable via ollama)
     ];
   };
@@ -80,7 +85,7 @@
   # mosh uses UDP ports in the range 60000-61000 by default for its connection
   networking.firewall = {
     enable = true;
-    allowedUDPPorts = [ 60000 61000 ];
+    allowedUDPPorts = [60000 61000];
   };
 
   # ── homework: Framework DESKTOP (Ryzen AI MAX+ 395 / Strix Halo) as an always-on server ──
@@ -102,7 +107,7 @@
 
   systemd.services.amd-server-cpu-tuning = {
     description = "Enable CPU turbo boost and set EPP for desktop server use";
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;

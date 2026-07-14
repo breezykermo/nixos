@@ -1,13 +1,14 @@
-{ lib, localProfile ? null }:
-
-let
-  themeLib = import ./lib.nix { inherit lib; };
-  gruvbox = import ./gruvbox.nix { inherit lib; };
-  catppuccin = import ./catppuccin.nix { inherit lib; };
-  nord = import ./nord.nix { inherit lib; };
-  onedark = import ./onedark.nix { inherit lib; };
-  molokai = import ./molokai.nix { inherit lib; };
-  rosepine = import ./rosepine.nix { inherit lib; };
+{
+  lib,
+  localProfile ? null,
+}: let
+  themeLib = import ./lib.nix {inherit lib;};
+  gruvbox = import ./gruvbox.nix {inherit lib;};
+  catppuccin = import ./catppuccin.nix {inherit lib;};
+  nord = import ./nord.nix {inherit lib;};
+  onedark = import ./onedark.nix {inherit lib;};
+  molokai = import ./molokai.nix {inherit lib;};
+  rosepine = import ./rosepine.nix {inherit lib;};
 
   # ============================================================================
   # THEME CONFIGURATION - Change these values to switch themes
@@ -22,17 +23,23 @@ let
   # cannot read a `custom.*` option. Selecting a palette by machine name here is the
   # simplest correct place for it.
   # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine"
-  activeTheme = if localProfile == "homework" then "rosepine" else "catppuccin";
-  activeVariant = if localProfile == "homework" then "main" else "mocha";
-                                     # Gruvbox: "dark-hard", "dark-medium", "dark-soft", "dark-pale"
-                                     # Catppuccin: "mocha", "macchiato", "frappe", "latte"
-                                     # Nord: "polar-night", "snow-storm", "frost", "aurora"
-                                     # OneDark: "dark", "darker", "vivid", "light"
-                                     # Molokai: "classic", "phoenix", "vivid", "dark"
-                                     # Rose Pine: "main", "moon", "dawn"
+  activeTheme =
+    if localProfile == "homework"
+    then "rosepine"
+    else "catppuccin";
+  activeVariant =
+    if localProfile == "homework"
+    then "main"
+    else "mocha";
+  # Gruvbox: "dark-hard", "dark-medium", "dark-soft", "dark-pale"
+  # Catppuccin: "mocha", "macchiato", "frappe", "latte"
+  # Nord: "polar-night", "snow-storm", "frost", "aurora"
+  # OneDark: "dark", "darker", "vivid", "light"
+  # Molokai: "classic", "phoenix", "vivid", "dark"
+  # Rose Pine: "main", "moon", "dawn"
 
-  enableTransparency = true;         # Global transparency setting
-  opacity = "0.98";                  # Default opacity for transparent backgrounds
+  enableTransparency = true; # Global transparency setting
+  opacity = "0.98"; # Default opacity for transparent backgrounds
 
   # ============================================================================
 
@@ -50,24 +57,28 @@ let
 
   # Rofi theme name mapping (Rofi has specific theme file names)
   rofiThemeName =
-    if activeTheme == "gruvbox" then
-      if activeVariant == "dark-hard" then "gruvbox-dark-hard"
-      else if activeVariant == "dark-medium" then "gruvbox-dark"
-      else if activeVariant == "dark-soft" then "gruvbox-dark-soft"
-      else if activeVariant == "dark-pale" then "gruvbox-dark"
+    if activeTheme == "gruvbox"
+    then
+      if activeVariant == "dark-hard"
+      then "gruvbox-dark-hard"
+      else if activeVariant == "dark-medium"
+      then "gruvbox-dark"
+      else if activeVariant == "dark-soft"
+      then "gruvbox-dark-soft"
+      else if activeVariant == "dark-pale"
+      then "gruvbox-dark"
       else "gruvbox-dark"
-    else if activeTheme == "catppuccin" then
-      "arthur"  # Use a default rofi theme for catppuccin
-    else if activeTheme == "nord" then
-      "nord"  # Nord has its own rofi theme if installed
-    else if activeTheme == "onedark" then
-      "Arc-Dark"  # Fallback to similar theme
-    else if activeTheme == "molokai" then
-      "purple"  # Fallback to similar theme
-    else if activeTheme == "rosepine" then
-      "purple"  # Fallback to similar purple/pink theme
-    else
-      "gruvbox-dark";  # Safe fallback
+    else if activeTheme == "catppuccin"
+    then "arthur" # Use a default rofi theme for catppuccin
+    else if activeTheme == "nord"
+    then "nord" # Nord has its own rofi theme if installed
+    else if activeTheme == "onedark"
+    then "Arc-Dark" # Fallback to similar theme
+    else if activeTheme == "molokai"
+    then "purple" # Fallback to similar theme
+    else if activeTheme == "rosepine"
+    then "purple" # Fallback to similar purple/pink theme
+    else "gruvbox-dark"; # Safe fallback
 
   # Vivid theme name mapping (vivid ships its own theme names, which do NOT
   # always match our fullName convention - e.g. we call it "rosepine-main" but
@@ -75,27 +86,33 @@ let
   # makes `vivid generate` fail at shell startup, so keep this in sync with
   # `vivid themes`.
   vividThemeName =
-    if activeTheme == "gruvbox" then
-      if activeVariant == "dark-hard" then "gruvbox-dark-hard"
-      else if activeVariant == "dark-soft" then "gruvbox-dark-soft"
-      else "gruvbox-dark"  # medium/pale -> generic gruvbox-dark
-    else if activeTheme == "catppuccin" then
-      "catppuccin-${activeVariant}"  # mocha/macchiato/frappe/latte match vivid
-    else if activeTheme == "nord" then
-      "nord"  # vivid only ships a single nord theme
-    else if activeTheme == "onedark" then
-      if activeVariant == "light" then "one-light" else "one-dark"
-    else if activeTheme == "molokai" then
-      "molokai"  # vivid only ships a single molokai theme
-    else if activeTheme == "rosepine" then
-      if activeVariant == "moon" then "rose-pine-moon"
-      else if activeVariant == "dawn" then "rose-pine-dawn"
-      else "rose-pine"  # main
-    else
-      "gruvbox-dark";  # Safe fallback
-
-in
-{
+    if activeTheme == "gruvbox"
+    then
+      if activeVariant == "dark-hard"
+      then "gruvbox-dark-hard"
+      else if activeVariant == "dark-soft"
+      then "gruvbox-dark-soft"
+      else "gruvbox-dark" # medium/pale -> generic gruvbox-dark
+    else if activeTheme == "catppuccin"
+    then "catppuccin-${activeVariant}" # mocha/macchiato/frappe/latte match vivid
+    else if activeTheme == "nord"
+    then "nord" # vivid only ships a single nord theme
+    else if activeTheme == "onedark"
+    then
+      if activeVariant == "light"
+      then "one-light"
+      else "one-dark"
+    else if activeTheme == "molokai"
+    then "molokai" # vivid only ships a single molokai theme
+    else if activeTheme == "rosepine"
+    then
+      if activeVariant == "moon"
+      then "rose-pine-moon"
+      else if activeVariant == "dawn"
+      then "rose-pine-dawn"
+      else "rose-pine" # main
+    else "gruvbox-dark"; # Safe fallback
+in {
   inherit themeLib;
 
   # Theme metadata

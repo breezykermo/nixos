@@ -1,8 +1,12 @@
 # ReMarkable related software
-{ config, lib, machineVars, ... }:
 {
+  config,
+  lib,
+  machineVars,
+  ...
+}: {
   imports = [
-    ./remouse  # FreeCap23 tablet driver for Wayland (pressure + tilt)
+    ./remouse # FreeCap23 tablet driver for Wayland (pressure + tilt)
   ];
 
   # This module is imported unconditionally (see home-manager/desktop/default.nix), so

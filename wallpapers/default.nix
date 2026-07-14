@@ -1,5 +1,3 @@
-{ pkgs }:
-
-{
-  fcl-widescreen = import ./fcl-widescreen.nix { inherit pkgs; };
+{pkgs}: {
+  fcl-widescreen = import ./fcl-widescreen.nix {inherit pkgs;};
 }

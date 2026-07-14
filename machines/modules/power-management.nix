@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   services.upower = {
     enable = lib.mkDefault true;
     percentageLow = lib.mkDefault 30;

@@ -1,5 +1,10 @@
-{ config, pkgs, lib, machineVars, ...}:
 {
+  config,
+  pkgs,
+  lib,
+  machineVars,
+  ...
+}: {
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -81,8 +86,10 @@
     };
 
     plugins = [
-      { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+      {
+        name = "bass";
+        src = pkgs.fishPlugins.bass.src;
+      }
     ];
   };
 }
-

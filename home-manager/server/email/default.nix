@@ -1,5 +1,8 @@
-{pkgs, machineVars, ...}:
-let
+{
+  pkgs,
+  machineVars,
+  ...
+}: let
   # Create typst-editor script and add to PATH
   typst-editor = pkgs.writeShellScriptBin "typst-editor" (builtins.readFile ./typst-editor.sh);
 
@@ -106,19 +109,19 @@ in {
   '';
 
   home.packages = with pkgs; [
-    w3m           # text-based web browser for interactive HTML email viewing
-    libsixel      # provides img2sixel for high-quality sixel image rendering
-    urlscan       # extract and open URLs from emails
+    w3m # text-based web browser for interactive HTML email viewing
+    libsixel # provides img2sixel for high-quality sixel image rendering
+    urlscan # extract and open URLs from emails
     poppler-utils # provides pdftotext for PDF conversion
-    gnupg         # GPG for encryption (required by pass)
-    pinentry-curses  # Terminal-based passphrase entry for GPG
-    pass          # password manager for secure credential storage
-    typst-editor  # Wrapper script for editing aerc compose files with Typst syntax highlighting
-    typst2html    # Wrapper script for converting Typst to HTML via stdin/stdout
-    oama          # OAuth credential manager for email (used for Outlook/Hotmail)
-    khard         # CardDAV contact manager for email autocomplete
-    vdirsyncer    # CardDAV synchronization tool
-    libnotify     # provides notify-send for desktop notifications
+    gnupg # GPG for encryption (required by pass)
+    pinentry-curses # Terminal-based passphrase entry for GPG
+    pass # password manager for secure credential storage
+    typst-editor # Wrapper script for editing aerc compose files with Typst syntax highlighting
+    typst2html # Wrapper script for converting Typst to HTML via stdin/stdout
+    oama # OAuth credential manager for email (used for Outlook/Hotmail)
+    khard # CardDAV contact manager for email autocomplete
+    vdirsyncer # CardDAV synchronization tool
+    libnotify # provides notify-send for desktop notifications
   ];
 
   programs = {
@@ -133,26 +136,26 @@ in {
       enable = true;
       extraConfig = {
         general = {
-          unsafe-accounts-conf = true;  # Required for passwordCommand in accounts.email
+          unsafe-accounts-conf = true; # Required for passwordCommand in accounts.email
           default-save-path = "~/Downloads";
         };
         ui = {
           sort = "-r date";
-          threading-enabled = true;  # Enable threaded view
-          force-client-threads = true;  # Use client-side threading
+          threading-enabled = true; # Enable threaded view
+          force-client-threads = true; # Use client-side threading
           styleset-name = "catppuccin-mocha";
         };
         viewer = {
           always-show-mime = true;
-          pager = "less -Rc";  # Support ANSI colors from filters
+          pager = "less -Rc"; # Support ANSI colors from filters
         };
         compose = {
-          format-flowed = true;  # Enable RFC 3676 format=flowed for proper text reflow
+          format-flowed = true; # Enable RFC 3676 format=flowed for proper text reflow
           editor = "typst-editor";
           empty-subject-warning = true;
           no-attachment-warning = "^[^>]*attach(ed|ment)";
           send-with-delay = "10s";
-          reply-to-self = false;  # Exclude own email address from To/Cc when replying
+          reply-to-self = false; # Exclude own email address from To/Cc when replying
           address-book-cmd = "khard email --remove-first-line --parsable '%s'";
         };
         templates = {
@@ -347,12 +350,12 @@ in {
           "y" = ":send<Enter>";
           "n" = ":abort<Enter>";
           "v" = ":preview<Enter>";
-          "p" = ":postpone<Enter>";  # Save as draft
+          "p" = ":postpone<Enter>"; # Save as draft
           "q" = ":abort<Enter>";
           "e" = ":edit<Enter>";
           "a" = ":attach<space>";
           "d" = ":detach<space>";
-          "h" = ":multipart text/html<Enter>";  # Convert from Typst
+          "h" = ":multipart text/html<Enter>"; # Convert from Typst
         };
         terminal = {
           "$noinherit" = "true";
@@ -392,7 +395,7 @@ in {
         port = 465;
         tls = {
           enable = true;
-          useStartTls = false;  # Use implicit TLS (smtps://)
+          useStartTls = false; # Use implicit TLS (smtps://)
         };
       };
 
@@ -403,7 +406,7 @@ in {
           folders = "INBOX,All Mail,Sent Mail,Drafts,Spam";
           archive = "All Mail";
           postpone = "Drafts";
-          copy-to = "";  # Gmail SMTP auto-saves to Sent Mail; avoid duplicates
+          copy-to = ""; # Gmail SMTP auto-saves to Sent Mail; avoid duplicates
           cache-headers = "true";
           check-mail = "1m";
         };
@@ -432,7 +435,7 @@ in {
         port = 465;
         tls = {
           enable = true;
-          useStartTls = false;  # Port 465 uses implicit TLS, not STARTTLS
+          useStartTls = false; # Port 465 uses implicit TLS, not STARTTLS
         };
       };
 
@@ -491,7 +494,7 @@ in {
         port = 587;
         tls = {
           enable = true;
-          useStartTls = true;  # Port 587 uses STARTTLS
+          useStartTls = true; # Port 587 uses STARTTLS
         };
       };
 
@@ -534,7 +537,7 @@ in {
         port = 465;
         tls = {
           enable = true;
-          useStartTls = false;  # Port 465 uses implicit TLS, not STARTTLS
+          useStartTls = false; # Port 465 uses implicit TLS, not STARTTLS
         };
       };
 
@@ -552,7 +555,6 @@ in {
   xdg.configFile."aerc/brown-foldermap".text = ''
     * = [Gmail]/*
   '';
-
 
   # Catppuccin Mocha styleset for aerc
   xdg.configFile."aerc/stylesets/catppuccin-mocha".source = ./catppuccin-mocha.styleset;
@@ -574,8 +576,8 @@ in {
     enable = true;
     pinentry.package = pkgs.pinentry-tty;
     # Cache passphrases for the duration of aerc sessions
-    defaultCacheTtl = 3600;      # 1 hour (default: 600s)
-    maxCacheTtl = 14400;          # 4 hours (default: 7200s)
+    defaultCacheTtl = 3600; # 1 hour (default: 600s)
+    maxCacheTtl = 14400; # 4 hours (default: 7200s)
     defaultCacheTtlSsh = 3600;
     maxCacheTtlSsh = 14400;
   };
@@ -600,7 +602,7 @@ in {
       Persistent = true;
     };
     Install = {
-      WantedBy = [ "timers.target" ];
+      WantedBy = ["timers.target"];
     };
   };
 }

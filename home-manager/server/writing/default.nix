@@ -1,13 +1,18 @@
-{pkgs, inputs, system, lib, ...}:
 {
+  pkgs,
+  inputs,
+  system,
+  lib,
+  ...
+}: {
   home.packages = with pkgs; [
-    pandoc      # document processor
-    tectonic    # LaTeX compilation
-    inputs.typst-flake.packages.${system}.default  # modern typesetting system
-    pdfpc       # PDF presentation console
-    evince      # PDF viewer
+    pandoc # document processor
+    tectonic # LaTeX compilation
+    inputs.typst-flake.packages.${system}.default # modern typesetting system
+    pdfpc # PDF presentation console
+    evince # PDF viewer
 
-    # Bene - EPUB viewer 
+    # Bene - EPUB viewer
     inputs.bene.packages.${system}.default
 
     # Optional: full LaTeX distribution (fallback for tectonic limitations)

@@ -1,5 +1,10 @@
-{ config, lib, pkgs, userName, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  userName,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -8,7 +13,7 @@
 
   # Add additional user groups for Dell
   users.users.${userName} = {
-    extraGroups = [ "networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" "input" ];
+    extraGroups = ["networkmanager" "wheel" "audio" "plugdev" "libvirtd" "docker" "adbusers" "input"];
   };
 
   # Disable lid close suspend - keep laptop running when lid is closed

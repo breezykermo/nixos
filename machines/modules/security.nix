@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   # Hyprlock screen locker (Wayland-native, replaces physlock)
   programs.hyprlock.enable = lib.mkDefault true;
   security.pam.services.hyprlock = {};

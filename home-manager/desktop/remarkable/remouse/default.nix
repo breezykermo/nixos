@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   remarkable-tablet-driver = pkgs.stdenv.mkDerivation rec {
     pname = "remarkable-tablet-driver";
     version = "unstable-2024-01-01-patched";
@@ -28,7 +32,7 @@ let
     ];
 
     # Upstream has printf(format) which triggers -Werror=format-security
-    hardeningDisable = [ "format" ];
+    hardeningDisable = ["format"];
 
     meta = {
       description = "Use reMarkable as a drawing tablet with pressure and tilt on Wayland (with rotation support)";
@@ -40,6 +44,6 @@ let
   };
 in {
   config = lib.mkIf config.custom.homework {
-    home.packages = [ remarkable-tablet-driver ];
+    home.packages = [remarkable-tablet-driver];
   };
 }

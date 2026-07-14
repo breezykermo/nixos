@@ -1,16 +1,21 @@
-{ config, lib, pkgs, userName, machineVars, ... }:
-let
-  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-  inter-typeface = pkgs.callPackage ./fonts/inter.nix { inherit lib; };
-  berkeley-mono-nerd = pkgs.callPackage ./fonts/berkeley-mono-nerd.nix { };
-in
 {
+  config,
+  lib,
+  pkgs,
+  userName,
+  machineVars,
+  ...
+}: let
+  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  inter-typeface = pkgs.callPackage ./fonts/inter.nix {inherit lib;};
+  berkeley-mono-nerd = pkgs.callPackage ./fonts/berkeley-mono-nerd.nix {};
+in {
   # nmtui and nmcli
   networking.hostName = machineVars.hostname;
   networking.networkmanager.enable = true;
 
   networking.networkmanager.ensureProfiles = lib.mkIf (builtins.pathExists /etc/nixos/secrets/eduroam.env) {
-    environmentFiles = [ "/etc/nixos/secrets/eduroam.env" ];
+    environmentFiles = ["/etc/nixos/secrets/eduroam.env"];
     profiles.eduroam = {
       connection = {
         id = "eduroam";
@@ -60,10 +65,10 @@ in
   };
 
   # Enable flakes
-  nix.settings.experimental-features = ["nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
     git
     wget
     curl
@@ -78,13 +83,13 @@ in
   ];
 
   # OpenVPN support via NetworkManager
-  networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
+  networking.networkmanager.plugins = [pkgs.networkmanager-openvpn];
 
   # For scrcpy
   # programs.adb.enable = true;
 
-  # for a potentially better setup, see 
-  # https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix 
+  # for a potentially better setup, see
+  # https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix
   virtualisation = {
     docker.enable = false;
   };
@@ -99,9 +104,9 @@ in
   ];
   fonts.fontconfig = {
     defaultFonts = {
-      serif = [ "Libertinus Serif" ];
-      sansSerif = [ "Inter Variable" ];
-      monospace = [ "Berkeley Mono Nerd Font Mono" ];
+      serif = ["Libertinus Serif"];
+      sansSerif = ["Inter Variable"];
+      monospace = ["Berkeley Mono Nerd Font Mono"];
     };
   };
 
@@ -131,7 +136,7 @@ in
   '';
   security.polkit.enable = true;
   # NB this line is needed for reasons described here: https://discourse.nixos.org/t/normal-users-not-appearing-in-login-manager-lists/4619/4shell
-  environment.shells = with pkgs; [ bashInteractive fish ];
+  environment.shells = with pkgs; [bashInteractive fish];
 
   # SSH server - generates host keys used by agenix for secrets decryption
   services.openssh = {
@@ -172,7 +177,6 @@ in
   nix.settings.auto-optimise-store = true;
 
   nix.extraOptions = ''
-    trusted-users = root ${userName} 
+    trusted-users = root ${userName}
   '';
 }
-

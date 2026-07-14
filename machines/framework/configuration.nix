@@ -1,5 +1,10 @@
-{ config, lib, pkgs, userName, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  userName,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -20,7 +25,10 @@
   # boot.resumeDevice points at the underlying block device. These live here (not in
   # the shared module) because they hardcode this machine's RAM size and disk label.
   swapDevices = [
-    { device = "/var/lib/swapfile"; size = 65536; } # 64GiB: 60GiB RAM + headroom
+    {
+      device = "/var/lib/swapfile";
+      size = 65536;
+    } # 64GiB: 60GiB RAM + headroom
   ];
   boot.resumeDevice = "/dev/disk/by-label/NIXROOT";
 

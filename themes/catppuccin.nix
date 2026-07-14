@@ -1,6 +1,4 @@
-{ lib }:
-
-{
+{lib}: {
   # Catppuccin color palette
   # Reference: https://github.com/catppuccin/catppuccin
 
