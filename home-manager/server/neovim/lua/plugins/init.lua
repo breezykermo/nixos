@@ -1090,6 +1090,14 @@ require('lazy').setup({
     'NicolasGB/jj.nvim',
     config = function()
       require('jj').setup({
+        -- Vertical split spans the full terminal height (vs. the default hsplit,
+        -- which only takes half the screen height); applies to the log buffer
+        -- and other terminal-based commands.
+        terminal = {
+          window = {
+            type = 'vsplit',
+          },
+        },
         cmd = {
           -- mergiraf (see home-manager/server/vcs/default.nix) does syntax-aware
           -- conflict resolution; jj already ships a default merge-tools.mergiraf
