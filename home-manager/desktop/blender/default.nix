@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    blender
-  ];
+  config = lib.mkIf config.custom.homework {
+    home.packages = with pkgs; [
+      blender
+    ];
+  };
 }

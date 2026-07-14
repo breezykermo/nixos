@@ -15,6 +15,12 @@ let
 
   # Rose Pine only on the "homework" machine (localProfile mirrors selectedMachine in
   # flake.nix); everywhere else keeps the default Catppuccin Mocha theme.
+  #
+  # This localProfile check is deliberately RETAINED rather than migrated to the
+  # custom.* namespace: this file is a plain function imported at the flake level
+  # (flake.nix), not a NixOS/home-manager module, so it has no access to `config` and
+  # cannot read a `custom.*` option. Selecting a palette by machine name here is the
+  # simplest correct place for it.
   # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine"
   activeTheme = if localProfile == "homework" then "rosepine" else "catppuccin";
   activeVariant = if localProfile == "homework" then "main" else "mocha";

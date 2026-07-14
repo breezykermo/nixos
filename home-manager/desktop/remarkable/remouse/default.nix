@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   remarkable-tablet-driver = pkgs.stdenv.mkDerivation rec {
     pname = "remarkable-tablet-driver";
@@ -39,5 +39,7 @@ let
     };
   };
 in {
-  home.packages = [ remarkable-tablet-driver ];
+  config = lib.mkIf config.custom.homework {
+    home.packages = [ remarkable-tablet-driver ];
+  };
 }

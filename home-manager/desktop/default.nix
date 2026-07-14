@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, theme, localProfile, config, ... }:
+{ pkgs, inputs, lib, theme, config, ... }:
 {
   imports = [
     ./hypr
@@ -10,8 +10,10 @@
     ./youtube
     ./protonvpn
     ./_inprogress
-  ] ++ lib.optionals (localProfile == "homework") [
-    # Software only needed on the "homework" machine
+    # Software only needed on the "homework" machine. Imports can't depend on
+    # `config`, so each of these modules gates its own config on
+    # `config.custom.homework` (see home-manager/custom.nix) rather than being
+    # conditionally imported here.
     ./obs
     ./remarkable
     ./blender
