@@ -1098,6 +1098,20 @@ require('lazy').setup({
             type = 'tab',
           },
         },
+        -- jj.nvim's own defaults are hardcoded hex (unrelated to the active
+        -- colorscheme), so they clash with whichever theme is active (this repo
+        -- switches between catppuccin/rose-pine/gruvbox/nord/onedark -- see
+        -- themes/default.nix). Link to standard highlight groups instead, so
+        -- these always match whatever theme is active.
+        highlights = {
+          editor = {
+            renamed = { link = 'DiagnosticWarn' },
+          },
+          log = {
+            selected = { link = 'Visual' },
+            targeted = { link = 'String' },
+          },
+        },
         cmd = {
           -- mergiraf (see home-manager/server/vcs/default.nix) does syntax-aware
           -- conflict resolution; jj already ships a default merge-tools.mergiraf

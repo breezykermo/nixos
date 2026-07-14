@@ -130,6 +130,10 @@ in {
         ui.default-command = "log";
         ui.pager = "delta";
         ui.diff-formatter = ":git";
+        # jj defaults timestamps to cyan; blue reads better against the active
+        # terminal/Neovim theme.
+        colors.timestamp = "blue";
+        colors."working_copy timestamp" = "bright blue";
       };
     };
 

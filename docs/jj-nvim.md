@@ -52,3 +52,12 @@ Status buffer: `<CR>` opens file, `<S-x>` restores file.
 - A separate autocmd in the same file works around an upstream jj.nvim bug where opening
   a file from the log buffer's summary tooltip can hit `E1513: Cannot switch buffer`
   (stuck `winfixbuf` on the log/tooltip window).
+- `highlights.log.selected`/`.targeted` and `highlights.editor.renamed` are linked to
+  standard highlight groups (`Visual`/`String`/`DiagnosticWarn`) instead of jj.nvim's
+  hardcoded hex defaults, so they always match whichever colorscheme is active.
+- The log buffer's own text (change id, author, timestamp, etc.) comes from `jj log`'s
+  ANSI output rendered in a terminal buffer — that's **jj's** coloring, not jj.nvim's, and
+  isn't affected by the Neovim colorscheme. If a field's color looks off, it's a
+  `programs.jujutsu.settings.colors.*` tweak in `home-manager/server/vcs/default.nix`
+  (e.g. timestamps were jj's default "cyan", changed to "blue" here) — **requires
+  `just deploy`**, unlike the pure-Lua changes above.
