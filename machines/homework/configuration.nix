@@ -2,12 +2,22 @@
   config,
   lib,
   pkgs,
+  inputs,
   userName,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
+    inputs.sops-nix.nixosModules.sops
   ];
+
+  # Secrets management (see docs/secrets.md). Reuse the existing SSH host key as the
+  # decryption key instead of managing a separate age key: sops-nix derives one from it
+  # at activation, so there is nothing extra to generate or back up.
+  sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+  sops.defaultSopsFile = ../../secrets/erwin-linkding.yaml;
+  sops.secrets."erwin-linkding/drainer-env" = {};
+  sops.secrets."erwin-linkding/linkding-env" = {};
 
   # Enable USB automounting
   services.devmon.enable = true;

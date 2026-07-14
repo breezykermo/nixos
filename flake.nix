@@ -45,6 +45,11 @@
       url = "github:christo-auer/eilmeldung";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # sops-nix - encrypted secrets management
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

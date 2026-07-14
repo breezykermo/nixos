@@ -1,0 +1,7 @@
+keys:
+  - &homework age1epky306e65eqq42xw2fxqhuhfc2sjp8le4m2wduewl3zaxu774sqnju9jt
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *homework
