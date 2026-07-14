@@ -9,6 +9,13 @@
 # Set the flags in each machine's own configuration.nix (e.g.
 # machines/homework/configuration.nix sets `custom.ollama.enable = true`). Add new flags
 # here as more features migrate off `localProfile`.
+#
+# Convention for new flags:
+# - Simple on/off switch with no sub-config: bare `lib.mkEnableOption` (laptop-style).
+# - Whole feature with its own sub-config living elsewhere: nest under `.enable`
+#   (ollama-style), so later options can hang off the same attrset.
+# - A tunable value on an already-enabled feature, not a feature gate itself: a plain
+#   `lib.mkOption` (bluetooth.powerOnBoot-style).
 { config, lib, ... }:
 let
   cfg = config.custom;
