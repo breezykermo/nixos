@@ -1085,6 +1085,24 @@ require('lazy').setup({
     }
   },
 
+  -- jj (Jujutsu) integration: run jj commands from Neovim, with a log buffer that
+  -- supports editing/describing/rebasing/squashing/resolving conflicts on changes
+  -- without leaving the editor. `gr` in the log buffer resolves conflicts for the
+  -- revision under the cursor.
+  {
+    'NicolasGB/jj.nvim',
+    config = function()
+      require('jj').setup({
+        -- No external merge-tool strategies (meld/mergiraf) installed on this box;
+        -- an empty list falls through to `jj resolve` in a floating terminal, using
+        -- whatever merge-tool jj itself is configured with.
+        cmd = {
+          resolve_strategies = {},
+        },
+      })
+    end,
+  },
+
 
 }, {})
 
