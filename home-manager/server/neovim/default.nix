@@ -32,6 +32,8 @@
 
   xdg.configFile."nvim/after/queries/ocaml/injections.scm".source =
     ./after/queries/ocaml/injections.scm;
+  xdg.configFile."nvim/after/ftplugin/ocaml.lua".source =
+    ./after/ftplugin/ocaml.lua;
 
   # OCaml REPL (utop) init: auto-load Core/Base and the ppx_jane rewriters.
   # Requires `core` and `ppx_jane` in the active opam switch.
