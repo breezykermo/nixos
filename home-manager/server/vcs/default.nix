@@ -129,6 +129,12 @@ in {
         };
         ui.default-command = "log";
         ui.pager = "delta";
+        # Show the entire history by default (`::` = all commits) instead of jj's
+        # truncated default revset. This governs bare `jj log` AND jj.nvim's log
+        # buffer, including the refresh it does after <CR>/n/etc. -- so the full
+        # view persists across those operations rather than snapping back to the
+        # default revset.
+        revsets.log = "::";
         ui.diff-formatter = ":git";
         # jj defaults timestamps to cyan; blue reads better against the active
         # terminal/Neovim theme.
