@@ -45,6 +45,48 @@ NOT use `~/.claude/examples/` (machine-local, doesn't travel).
 
 ---
 
+## Development Environment (NixOS + flake devShells)
+
+This machine is **NixOS**. Every project pins its toolchain in a `flake.nix` exposing a
+`devShells.default`, entered automatically via `direnv` (`.envrc` contains `use flake`). So
+inside a project dir the toolchain (compilers, package managers, linters, test runners) is
+already on `PATH` — do NOT `nix-shell`/`nix develop` manually and do NOT install tools
+globally or with the system package manager. If a command is "not found", the fix is adding it
+to the flake's `devShell` (`packages`/`buildInputs`), then re-entering the shell — never a bare
+`pip install`/`cargo install`/`npm -g`.
+
+- Prefer the project's `Justfile` recipes when present — they wrap the correct flags.
+- Build/test/lint commands run from inside the devShell (direnv handles this on `cd`).
+- Some flakes expose extra shells (e.g. `use flake .#cuda`); check `.envrc` comments and
+  `flake.nix` `devShells` before assuming there's only one.
+
+**Two-layer split (the general rule).** The flake provides the *system* layer — the language
+runtime/compiler, its native package manager, C toolchain, and system libraries. The language's
+*own* package manager then manages *language* deps, usually in a **project-local** dir activated
+by the devShell `shellHook`. So: add a system tool/lib → edit the flake; add a language
+library → use that stack's package manager (which the flake put on `PATH`). Typical shapes:
+
+- **OCaml / OxCaml:** flake supplies `opam` + a C/C++ toolchain (for OxCaml, `clang` wrapped to
+  force `-std=c++17`) + system libs (`gmp`, `openssl`, `libffi`, `zlib`). The `shellHook`
+  bootstraps and activates a **project-local opam switch** (`OPAMROOT=$PWD/.opam-root`, switch at
+  `$PWD`) so OCaml deps live in the repo, not globally. OxCaml's `+ox` compiler variant needs
+  network at build time, so it can't build in a Nix sandbox — the flake's package output is a
+  *runner* that execs `just setup && just build`, not a pure derivation. Build via the `Justfile`.
+- **Rust:** flake pins the toolchain via `rust-overlay` reading `rust-toolchain.toml` (single
+  source of truth) + native deps (`pkg-config`, `openssl`, `perl`). `cargo` manages crates from
+  `Cargo.toml`/`Cargo.lock`. Reproducible builds use `crane` with a cached deps-only layer.
+  In-shell you just run `cargo build`/`cargo test` (or `Justfile` recipes).
+- **Python:** flake supplies `pixi` (often wrapped in `steam-run`, a light FHS, so conda/binary
+  wheels find `glibc`/`stdenv.cc.cc.lib`/`zlib`) + optional variant shells (e.g. `.#cuda` sets
+  `CUDA_PATH`/`LD_LIBRARY_PATH`). `pixi` manages Python deps from `pyproject.toml`/`pixi.lock`
+  in a project-local `.pixi/` env — run all Python work through `pixi run ...`/`pixi install`,
+  never ambient `python`/`pip`.
+
+Live examples on this box (may not exist on every machine): `~/code/_karaji/karaji` (OxCaml),
+`~/code/_rheo/rheo` (Rust), `~/code/_pragma/pragma` (Python).
+
+---
+
 ## Version Control (jj — NEVER use git)
 
 **NEVER run `jj git push` (or any push) — the user always pushes themselves.**
@@ -159,7 +201,10 @@ Report: list all closed issues.
 
 ---
 
-## br/jj Pair (only when user says "br/jj pair")
+## br/jj Pair (only when user says "br/jj pair" or "pair")
+
+The trigger `pair on <X>` is equivalent to `br/jj pair on <X>` — bare `pair` and `br/jj pair`
+mean the same thing; run this same workflow either way.
 
 **ALWAYS run in `/caveman:caveman ultra` mode** for the entire pair session — invoke it before
 the first loop iteration and stay in it throughout.

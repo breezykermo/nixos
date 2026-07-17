@@ -299,3 +299,31 @@ The workflow works for:
 Only skip this workflow when:
 - User explicitly requests a different approach
 - Working on unrelated changes that must be separate commits
+
+---
+
+## Process: "Update global CLAUDE devenvs"
+
+The global (user-level) CLAUDE.md source lives at
+`home-manager/server/llms/global-claude.md` in this repo (symlinked to `~/.claude/CLAUDE.md` by
+home-manager). Its **Development Environment (NixOS + flake devShells)** section documents the
+per-stack devShell setup, distilled from a set of canonical example projects.
+
+When the user says **"Update global CLAUDE devenvs"** (or close variant), do this:
+
+1. Read the current **Development Environment** section in
+   `home-manager/server/llms/global-claude.md` — note the canonical example projects listed at
+   the end of it (currently OxCaml `~/code/_karaji/karaji`, Rust `~/code/_rheo/rheo`, Python
+   `~/code/_pragma/pragma`).
+2. Read each canonical project's `flake.nix` (and `.envrc` if relevant). Skip any that no longer
+   exist on this machine and note which were skipped.
+3. Re-derive the **generalized** per-stack description from what the flakes actually do now —
+   the two-layer split (Nix = system layer; language package manager = language layer,
+   project-local, activated by the devShell `shellHook`), the pinned toolchain, native deps,
+   and any build-sandbox caveats. Keep it stack-general, NOT project-specific: the section must
+   still make sense on a machine where those projects are absent.
+4. Edit only that section of `global-claude.md` to match. Preserve the surrounding structure and
+   the "live examples … may not exist on every machine" note.
+5. Report what changed per stack (and any projects skipped as missing).
+
+Do NOT deploy — the user rebuilds home-manager themselves to re-link the file.
