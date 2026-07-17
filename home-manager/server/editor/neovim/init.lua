@@ -25,6 +25,10 @@ require('utils.helpers')
 require('plugins')
 require('plugins.lsp')
 
+-- jj.nvim extensions/defaults (see lua/jjx/). tuicr is a hard dep; NERDTree and the
+-- telescope recent-files picker are optional and auto-detected.
+require('jjx').setup({})
+
 -- Load orgmode extensions
 require('orgmode.citations')
 require('orgmode.links')
