@@ -100,3 +100,77 @@ vim.api.nvim_create_autocmd('BufWipeout', {
     end
   end,
 })
+
+-- <C-d> in the jj.nvim log buffer opens `tuicr` (a code-review TUI) for the commit
+-- under the cursor, complementing <S-d> (jj.nvim's native diff). jj.nvim's own keymap
+-- config only rebinds built-in actions (its resolver iterates a hardcoded specs table),
+-- so a custom handler can't go through setup(); inject a buffer-local map when the log
+-- buffer opens. The log buffer is jj.nvim's main terminal buffer -- identified by the
+-- `jj_keymaps_set` marker plus terminal.state.buf, which excludes the tooltip/floating
+-- buffers. BufEnter fires DURING jj.nvim's buffer creation, before it assigns state.buf
+-- and sets jj_keymaps_set, so defer the check to the next tick (run() is synchronous and
+-- has finished setting both by then).
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufEnter' }, {
+  callback = function(args)
+    local buf = args.buf
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(buf) then
+        return
+      end
+      if not vim.b[buf].jj_keymaps_set or vim.b[buf].tuicr_map_set then
+        return
+      end
+      local ok, term = pcall(require, 'jj.ui.terminal')
+      if not ok or term.state.buf ~= buf then
+        return
+      end
+      vim.b[buf].tuicr_map_set = true
+
+      vim.keymap.set('n', '<C-d>', function()
+      local parser = require('jj.core.parser')
+      -- Revision under the cursor. get_revset returns nil on non-revision lines
+      -- (graph-only/blank) and on wrapped description lines, so walk back to the
+      -- nearest revision line above (mirrors jj.nvim's own get_revset_line).
+      local rev = parser.get_revset(vim.api.nvim_get_current_line())
+      if not rev then
+        local row = vim.api.nvim_win_get_cursor(0)[1]
+        for i = row - 1, 1, -1 do
+          local l = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1]
+          rev = parser.get_revset(l)
+          if rev then
+            break
+          end
+        end
+      end
+      if not rev or rev == '' then
+        vim.notify('jj: no revision under cursor', vim.log.levels.WARN)
+        return
+      end
+      -- Run tuicr in its own tab. On exit, close that tab's window and return to the
+      -- log tab. Close the WINDOW rather than wiping a captured buffer: jobstart with
+      -- term=true can leave the empty tab buffer behind, so wiping only the terminal
+      -- buffer would strand that empty buffer in the tab when tuicr quits. stopinsert
+      -- restores normal mode so the log cursor responds immediately instead of
+      -- lingering in terminal-insert.
+      local log_tab = vim.api.nvim_get_current_tabpage()
+      vim.cmd('tabnew')
+      local tuicr_win = vim.api.nvim_get_current_win()
+      vim.fn.jobstart({ 'tuicr', '-r', rev }, {
+        term = true,
+        on_exit = function()
+          vim.schedule(function()
+            if vim.api.nvim_win_is_valid(tuicr_win) then
+              pcall(vim.api.nvim_win_close, tuicr_win, true)
+            end
+            if vim.api.nvim_tabpage_is_valid(log_tab) then
+              vim.api.nvim_set_current_tabpage(log_tab)
+            end
+            vim.cmd('stopinsert')
+          end)
+        end,
+      })
+      vim.cmd('startinsert')
+      end, { buffer = buf, desc = 'Review commit under cursor in tuicr' })
+    end)
+  end,
+})
