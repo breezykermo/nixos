@@ -174,3 +174,51 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufEnter' }, {
     end)
   end,
 })
+
+-- `nvim` with no file argument, launched inside a jj repo, opens straight into the
+-- `:J log -r ::` view -- the full history (`::` = all commits), not jj's default
+-- truncated revset (the `e`/$EDITOR alias in a project folder). Guarded to fire only on a
+-- pristine startup (empty unnamed scratch buffer, no file/dir arg, not piped stdin) so
+-- it never hijacks `nvim <file>`, `nvim .`, session restores, or `cmd | nvim -`.
+vim.api.nvim_create_autocmd('StdinReadPre', {
+  callback = function()
+    vim.g._nvim_started_with_stdin = true
+  end,
+})
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    if vim.fn.argc() ~= 0 or vim.g._nvim_started_with_stdin then
+      return
+    end
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.api.nvim_buf_get_name(buf) ~= ''
+      or vim.bo[buf].buftype ~= ''
+      or vim.bo[buf].filetype ~= ''
+      or vim.api.nvim_buf_line_count(buf) > 1
+      or vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] ~= ''
+    then
+      return
+    end
+    if vim.fn.executable('jj') == 0 then
+      return
+    end
+    vim.fn.system({ 'jj', 'root' })
+    if vim.v.shell_error ~= 0 then
+      return
+    end
+    vim.schedule(function()
+      vim.cmd('J log -r ::')
+      -- :J log opens in its own tab (terminal.window.type='tab'), leaving the empty
+      -- startup buffer behind in the first tab; wipe it so only the log tab remains.
+      vim.schedule(function()
+        if vim.api.nvim_buf_is_valid(buf)
+          and vim.api.nvim_buf_get_name(buf) == ''
+          and vim.api.nvim_buf_line_count(buf) == 1
+          and vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] == ''
+        then
+          pcall(vim.cmd, 'bwipeout ' .. buf)
+        end
+      end)
+    end)
+  end,
+})
