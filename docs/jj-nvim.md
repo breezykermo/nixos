@@ -1,6 +1,6 @@
 # jj.nvim cheat sheet
 
-`jj.nvim` (see `home-manager/server/neovim/lua/plugins/init.lua`) brings Jujutsu into
+`jj.nvim` (see `home-manager/server/editor/neovim/lua/plugins/init.lua`) brings Jujutsu into
 Neovim. These are the default keymaps — none are remapped here except `gr`'s resolve
 strategy and the log buffer's window layout.
 
@@ -42,7 +42,7 @@ Status buffer: `<CR>` opens file, `<S-x>` restores file.
 
 ## Local customizations
 
-- `gr` resolves with **mergiraf only** (see `home-manager/server/vcs/default.nix` for the
+- `gr` resolves with **mergiraf only** (see `home-manager/server/editor/vcs/default.nix` for the
   package, `lua/plugins/init.lua` for the single `resolve_strategies` entry) — no picker
   prompt, since there's only one strategy configured.
 - Opening a still-conflicted file (via `<S-k>` -> `<CR>`, or any other route) auto-launches
@@ -58,6 +58,6 @@ Status buffer: `<CR>` opens file, `<S-x>` restores file.
 - The log buffer's own text (change id, author, timestamp, etc.) comes from `jj log`'s
   ANSI output rendered in a terminal buffer — that's **jj's** coloring, not jj.nvim's, and
   isn't affected by the Neovim colorscheme. If a field's color looks off, it's a
-  `programs.jujutsu.settings.colors.*` tweak in `home-manager/server/vcs/default.nix`
+  `programs.jujutsu.settings.colors.*` tweak in `home-manager/server/editor/vcs/default.nix`
   (e.g. timestamps were jj's default "cyan", changed to "blue" here) — **requires
   `just deploy`**, unlike the pure-Lua changes above.

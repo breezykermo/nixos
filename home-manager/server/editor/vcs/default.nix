@@ -8,7 +8,7 @@
   theme,
   ...
 }: let
-  mkNaerskGithubPackage = import ../../../pkgs/mkNaerskGithubPackage.nix {inherit pkgs naersk;};
+  mkNaerskGithubPackage = import ../../../../pkgs/mkNaerskGithubPackage.nix {inherit pkgs naersk;};
   mix = theme.themeLib.mix;
 
   # `jjj` (jujutsu jump) — fzf-driven revset picker, after
@@ -33,7 +33,7 @@ in {
     # merge-tools.mergiraf config out of the box (`jj config list --include-defaults
     # merge-tools | grep mergiraf`), so having the binary on PATH is all that's needed
     # for `jj resolve --tool mergiraf` (used by jj.nvim's resolve strategy, see
-    # home-manager/server/neovim/lua/plugins/init.lua).
+    # home-manager/server/editor/neovim/lua/plugins/init.lua).
     mergiraf
 
     # Code review TUI with vim keybindings (git/jj/mercurial)

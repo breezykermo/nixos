@@ -21,7 +21,7 @@
       :lua vim.g.dropbox_path = "${machineVars.dropboxPath}"
       :lua vim.g.theme_name = "${theme.name}"
       :lua vim.g.theme_variant = "${theme.variant}"
-      :luafile /etc/nixos/home-manager/server/neovim/init.lua
+      :luafile /etc/nixos/home-manager/server/editor/neovim/init.lua
     '';
     plugins = with pkgs.vimPlugins; [
       catppuccin-nvim

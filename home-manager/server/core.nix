@@ -51,7 +51,6 @@
     grep = "grep --color=auto";
     ip = "ip -color=auto";
     l = "exa --long --all --group --group-directories-first";
-    e = "$EDITOR";
     t = "tmux";
     b = "bartib -f ~/.bartib";
     c = "clear";

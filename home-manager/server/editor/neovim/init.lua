@@ -10,8 +10,8 @@ vim.g.maplocalleader = ','
 
 -- Add the lua directory to the runtime path so require() can find our modules
 local config_path = vim.fn.stdpath('config')
-package.path = package.path .. ';/etc/nixos/home-manager/server/neovim/lua/?.lua'
-package.path = package.path .. ';/etc/nixos/home-manager/server/neovim/lua/?/init.lua'
+package.path = package.path .. ';/etc/nixos/home-manager/server/editor/neovim/lua/?.lua'
+package.path = package.path .. ';/etc/nixos/home-manager/server/editor/neovim/lua/?/init.lua'
 
 -- Load configuration modules
 require('config.options')

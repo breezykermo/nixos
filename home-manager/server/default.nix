@@ -1,10 +1,9 @@
 {...}: {
   imports = [
     ./core.nix
-    ./vcs
+    ./editor
     ./fish
     ./tmux
-    ./neovim
     ./email
     ./llms
     ./writing
