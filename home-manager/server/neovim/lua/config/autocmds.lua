@@ -126,6 +126,89 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufEnter' }, {
       end
       vim.b[buf].tuicr_map_set = true
 
+      -- `q` from the log quits nvim entirely. jj.nvim's default `q` just bwipeouts
+      -- the log buffer, which drops to a stray empty [No Name] when other buffers/tabs
+      -- are around (e.g. after Enter opened a file or <C-d> opened tuicr). Treat the
+      -- log as home: `:qa!` force-quits regardless of other/unsaved buffers.
+      vim.keymap.set('n', 'q', '<cmd>qa!<cr>',
+        { buffer = buf, desc = 'Quit nvim from the jj log' })
+
+      -- Global <leader>k is :NERDTreeFind, which errors in the log buffer ("no file
+      -- for the current buffer") since it's a fileless terminal buffer. Open the tree
+      -- rooted at the cwd (the repo root when launched via `e`) instead.
+      vim.keymap.set('n', '<leader>k', '<cmd>NERDTreeCWD<cr>',
+        { buffer = buf, desc = 'Open NERDTree at repo root' })
+
+      -- <CR> normally just `jj edit`s the revision under cursor (jj.nvim built-in).
+      -- Extend it to also open that commit's first changed file, editable in a new
+      -- tab -- the same end state as <S-k><S-k> -> first file -> <CR>. jj.nvim's
+      -- keymap config only rebinds built-in actions, so override the buffer-local
+      -- <CR> map (same injection as <C-d>).
+      vim.keymap.set('n', '<CR>', function()
+        local parser = require('jj.core.parser')
+        local rev = parser.get_revset(vim.api.nvim_get_current_line())
+        if not rev then
+          local row = vim.api.nvim_win_get_cursor(0)[1]
+          for i = row - 1, 1, -1 do
+            local l = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1]
+            rev = parser.get_revset(l)
+            if rev then
+              break
+            end
+          end
+        end
+        if not rev or rev == '' then
+          vim.notify('jj: no revision under cursor', vim.log.levels.WARN)
+          return
+        end
+        -- Resolve the commit's changed files (and repo root) BEFORE editing, while
+        -- `rev` still names the target commit.
+        local files = vim.fn.systemlist({ 'jj', 'diff', '--name-only', '-r', rev })
+        local root = vim.fn.systemlist({ 'jj', 'root' })[1]
+        -- Check out the change (synchronous, so the working copy is updated before we
+        -- open the file), then refresh the log to reflect the new @.
+        vim.fn.system({ 'jj', 'edit', rev })
+        if vim.v.shell_error ~= 0 then
+          vim.notify('jj edit failed: ' .. rev, vim.log.levels.ERROR)
+          return
+        end
+        pcall(function()
+          require('jj.utils').reload_changed_file_buffers()
+        end)
+        pcall(function()
+          require('jj.cmd.log').log({})
+        end)
+        local target
+        for _, f in ipairs(files) do
+          if f ~= '' then
+            target = root .. '/' .. f
+            break
+          end
+        end
+        -- Empty commit (no changed files): fall back to the repo's README.md, else
+        -- the first regular file at the repo root.
+        if not target and root then
+          local readme = root .. '/README.md'
+          if vim.fn.filereadable(readme) == 1 then
+            target = readme
+          else
+            local entries = vim.fn.readdir(root, function(name)
+              local hidden = name:sub(1, 1) == '.'
+              local isfile = vim.fn.isdirectory(root .. '/' .. name) == 0
+              return (isfile and not hidden) and 1 or 0
+            end)
+            if entries and entries[1] then
+              target = root .. '/' .. entries[1]
+            end
+          end
+        end
+        if target then
+          vim.schedule(function()
+            vim.cmd('tabedit ' .. vim.fn.fnameescape(target))
+          end)
+        end
+      end, { buffer = buf, desc = 'Edit revision and open its first changed file' })
+
       vim.keymap.set('n', '<C-d>', function()
       local parser = require('jj.core.parser')
       -- Revision under the cursor. get_revset returns nil on non-revision lines
@@ -187,26 +270,27 @@ vim.api.nvim_create_autocmd('StdinReadPre', {
 })
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
+    -- Decide only from launch intent: no file/dir arg and not piped stdin. Avoid
+    -- guarding on the start buffer's buftype/filetype/contents -- another VimEnter
+    -- handler (netrw/NERDTree hijack, direnv, barbar) can touch that buffer before
+    -- us and trip a strict guard, which is what broke this. An unnamed buffer plus
+    -- argc()==0 already rules out `nvim <file>`/`nvim .`; this repo has no session
+    -- restore. Defer the work so it runs after the other VimEnter handlers settle.
     if vim.fn.argc() ~= 0 or vim.g._nvim_started_with_stdin then
       return
     end
     local buf = vim.api.nvim_get_current_buf()
-    if vim.api.nvim_buf_get_name(buf) ~= ''
-      or vim.bo[buf].buftype ~= ''
-      or vim.bo[buf].filetype ~= ''
-      or vim.api.nvim_buf_line_count(buf) > 1
-      or vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] ~= ''
-    then
-      return
-    end
-    if vim.fn.executable('jj') == 0 then
-      return
-    end
-    vim.fn.system({ 'jj', 'root' })
-    if vim.v.shell_error ~= 0 then
+    if vim.api.nvim_buf_get_name(buf) ~= '' then
       return
     end
     vim.schedule(function()
+      if vim.fn.executable('jj') == 0 then
+        return
+      end
+      vim.fn.system({ 'jj', 'root' })
+      if vim.v.shell_error ~= 0 then
+        return
+      end
       vim.cmd('J log -r ::')
       -- :J log opens in its own tab (terminal.window.type='tab'), leaving the empty
       -- startup buffer behind in the first tab; wipe it so only the log tab remains.
