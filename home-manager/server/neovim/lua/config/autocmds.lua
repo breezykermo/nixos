@@ -139,6 +139,20 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufEnter' }, {
       vim.keymap.set('n', '<leader>k', '<cmd>NERDTreeCWD<cr>',
         { buffer = buf, desc = 'Open NERDTree at repo root' })
 
+      -- Global <space>. opens the telescope recent-files picker, whose default select
+      -- edits into the CURRENT window. The log window is winfixbuf=true (jj.nvim), so
+      -- that buffer switch is blocked and the pick silently no-ops. Route selection to
+      -- a new tab here so the picked file actually opens.
+      vim.keymap.set('n', '<space>.', function()
+        local actions = require('telescope.actions')
+        require('telescope').extensions['recent-files'].recent_files({
+          attach_mappings = function(_, map)
+            map({ 'i', 'n' }, '<CR>', actions.select_tab)
+            return true
+          end,
+        })
+      end, { buffer = buf, desc = 'Recent files (open in a new tab)' })
+
       -- <CR> normally just `jj edit`s the revision under cursor (jj.nvim built-in).
       -- Extend it to also open that commit's first changed file, editable in a new
       -- tab -- the same end state as <S-k><S-k> -> first file -> <CR>. jj.nvim's
