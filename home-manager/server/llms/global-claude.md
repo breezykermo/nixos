@@ -175,6 +175,41 @@ jj config set --user user.email "lachie@ohrg.org"
 
 ---
 
+## Workspace isolation (ALWAYS for br/jj churn & pair)
+
+Churn and pair sessions are long-running and may run **concurrently with other agents** on the
+same repo. Two agents sharing one checkout fight over the single `@` working-copy commit and
+stomp each other's uncommitted changes. So **before starting any churn or pair loop, create a
+dedicated jj workspace and do every step of the loop inside it.** A workspace is an independent
+working copy on disk that shares the same underlying repo — commits, operation log, and history —
+with the main checkout, so all committed work still lands in the one repo; only the working
+copies are isolated.
+Ref: https://www.joshualyman.com/2026/02/demystifying-jujutsu-jj-workspaces/
+
+**Set up (once, before the loop):**
+```bash
+# Run from inside the repo. <tag> = a short, unique session id (vary it per agent).
+jj workspace add --name <tag> -r main ../<repo>-<tag>   # sibling dir; working copy on top of main
+cd ../<repo>-<tag>
+direnv allow                                            # new dir has the tracked .envrc but isn't allowed yet
+```
+- The workspace dir MUST be a **sibling** of the repo (`../<repo>-<tag>`), never nested inside it.
+- **beads:** `br` reads `.beads/` from the current dir. If `.beads/` is **tracked**, it's checked
+  out into the workspace automatically and just works. If it's **gitignored** (the usual case —
+  check `.gitignore`), it won't exist in the fresh workspace, so `br` will start empty there —
+  run `br` from the main checkout, or symlink the main repo's `.beads/` into the workspace first.
+- The empty-`@` rule and the full br/jj per-task sequence apply unchanged — just inside this workspace.
+
+**Tear down (when the session ends):**
+```bash
+cd <main repo>            # back to the primary working copy
+jj workspace forget <tag> # drops the workspace ref; its empty @ is abandoned
+rm -rf ../<repo>-<tag>    # remove the directory
+```
+`jj log` from the main checkout still shows every commit the workspace created — they live in the shared repo.
+
+---
+
 ## br/jj Churn (only when user says "br/jj churn")
 
 **ALWAYS run in `/caveman:caveman ultra` mode** for the entire churn — invoke it before the
@@ -188,6 +223,9 @@ jj config set --user user.name "Lachlan Kermode"
 jj config set --user user.email "lachie@ohrg.org"
 ```
 
+**Then set up an isolated jj workspace** and run the ENTIRE churn inside it — see
+*Workspace isolation* above. Never churn in the shared main checkout.
+
 Loop until no open issues:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
 2. Implement with br/jj workflow
@@ -196,6 +234,7 @@ Loop until no open issues:
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
 commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
+Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace isolation*).
 
 Report: list all closed issues.
 
@@ -216,6 +255,9 @@ jj config list --user
 jj config set --user user.name "Lachlan Kermode"
 jj config set --user user.email "lachie@ohrg.org"
 ```
+
+**Then set up an isolated jj workspace** and run the ENTIRE pair session inside it — see
+*Workspace isolation* above. Never pair in the shared main checkout.
 
 Loop until no open issues or user stops:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
@@ -243,6 +285,7 @@ Loop until no open issues or user stops:
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
 commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
+Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace isolation*).
 
 Report: list all closed issues.
 
