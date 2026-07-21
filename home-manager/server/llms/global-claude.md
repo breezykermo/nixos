@@ -194,10 +194,20 @@ cd ../<repo>-<tag>
 direnv allow                                            # new dir has the tracked .envrc but isn't allowed yet
 ```
 - The workspace dir MUST be a **sibling** of the repo (`../<repo>-<tag>`), never nested inside it.
-- **beads:** `br` reads `.beads/` from the current dir. If `.beads/` is **tracked**, it's checked
-  out into the workspace automatically and just works. If it's **gitignored** (the usual case —
-  check `.gitignore`), it won't exist in the fresh workspace, so `br` will start empty there —
-  run `br` from the main checkout, or symlink the main repo's `.beads/` into the workspace first.
+- **beads coordination (prevent double-claims):** `br` reads `.beads/` from the current dir.
+  If `.beads/` is **tracked** it's checked out into each workspace, but then every workspace has
+  its OWN copy, so a claim/close in one is invisible to the others. If it's **gitignored** (the
+  usual case — check `.gitignore`) a fresh workspace has no `.beads/` at all, so `br` starts
+  empty there. Both naive fixes — run `br` from the main checkout, or symlink the main repo's
+  `.beads/` into each workspace — make N agents share ONE mutable sqlite+jsonl, which exposes
+  the "reimport reverts mutations" race above: `br update --status in_progress` is NOT a reliable
+  claim, so two agents can both `br ready` and pick the SAME top issue → two commits for one bead.
+  - **Protocol (single-writer):** the orchestrator (or you, before spawning agents) runs
+    `br ready` **once**, partitions the ready issues into **disjoint** per-agent sets, and hands
+    each agent the **explicit issue IDs** to work. Agents do NOT self-select from a shared
+    `br ready`. One writer owns `.beads/` and applies every `br` mutation (claim/close); the
+    other agents just report results back to it. This is the only reliable guard against two
+    agents solving the same bead.
 - The empty-`@` rule and the full br/jj per-task sequence apply unchanged — just inside this workspace.
 
 **Tear down (when the session ends):**
