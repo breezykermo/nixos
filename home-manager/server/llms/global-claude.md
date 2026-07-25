@@ -148,6 +148,8 @@ br dep add <issue> <depends-on>
 
 **Local-only:** `.beads/` is gitignored, never commit it, never run `br sync`.
 
+**Labels reject `/`:** `br create -l <label>` allows only alphanumeric, hyphen, underscore, colon. The `feat/<kebab>` / `fix/<kebab>` convention (used for jj bookmarks / branches) CANNOT be a bead label verbatim — the slash fails validation (`invalid characters`). Use the hyphen form for the bead label (e.g. `feat-auto-label`, `chore-doc-test-sync`) while keeping the slash form for the bookmark/branch.
+
 **Reimport reverts mutations:** `br` can silently undo a `close` / `--status in_progress` / `delete` because it reimports from `.beads/issues.jsonl`, which still holds the old state. Always re-check with `br list --status=open` (or `br show`) right after mutating, and re-issue if it reverted. For deletes, use `br delete <ids> --force --hard` so the JSONL tombstone is hard-pruned and reimport can't resurrect the issue.
 
 ---
