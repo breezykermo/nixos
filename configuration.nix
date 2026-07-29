@@ -88,11 +88,13 @@ in {
   # For scrcpy
   # programs.adb.enable = true;
 
-  # for a potentially better setup, see
+  # Containers/VMs are opt-in per machine, not global. Docker hangs off
+  # `custom.docker.enable` (see machines/modules/custom.nix); only homework turns it on,
+  # and the NixOS default for `virtualisation.docker.enable` is already false, so there
+  # is nothing to declare here.
+  #
+  # for a potentially better setup of libvirt, see
   # https://github.com/erictossell/nixflakes/blob/main/modules/virt/libvirt.nix
-  virtualisation = {
-    docker.enable = false;
-  };
 
   fonts.packages = with pkgs; [
     # nerd-fonts.fira-code

@@ -90,6 +90,14 @@
     ProtectHome = lib.mkForce false;
   };
 
+  # ── Containers (docker + compose) — homework only ───────────────────────────
+  # This is the always-on box that services and dev containers actually run on, so it is
+  # the only machine that opts into the docker daemon (the flag defaults off in
+  # machines/modules/custom.nix). Enabling it also adds ${userName} to the `docker` group
+  # (machines/base.nix) — that is root-equivalent via the socket, which is why the
+  # laptops stay off. Both `docker compose` and `docker-compose` are available.
+  custom.docker.enable = true;
+
   # ── Firewall: allow mosh (mobile shell) for resilient remote connections ──
   # mosh uses UDP ports in the range 60000-61000 by default for its connection
   networking.firewall = {

@@ -19,6 +19,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.custom;
@@ -34,6 +35,13 @@ in {
     # (package, models, GPU overrides) lives in that machine's configuration.nix.
     ollama.enable = lib.mkEnableOption "local ollama server";
 
+    # Docker daemon + compose. Opt-in per machine (currently only homework, which is the
+    # always-on box that actually runs containers): the daemon is a persistent root
+    # service and a `docker` group member is effectively root, so the laptops leave it
+    # off. Enabling this also puts the primary user in the `docker` group (see
+    # machines/base.nix) so `docker` works without sudo.
+    docker.enable = lib.mkEnableOption "docker daemon and compose";
+
     # Power the Bluetooth radio on at boot. Defaults on; a machine that doesn't rely on
     # Bluetooth peripherals (e.g. framework) can set this false to save idle power while
     # keeping the stack available (turn it on on demand with the `bt-on` alias).
@@ -47,6 +55,25 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.ollama.enable {
       services.ollama.enable = true;
+    })
+    (lib.mkIf cfg.docker.enable {
+      virtualisation.docker = {
+        enable = true;
+        # Socket-activate the daemon instead of starting it at boot: it spins up on the
+        # first `docker` call and costs nothing until then.
+        enableOnBoot = false;
+        # Reclaim dangling images/containers/networks weekly so the store of built
+        # layers doesn't grow without bound.
+        autoPrune = {
+          enable = true;
+          dates = "weekly";
+        };
+      };
+
+      # `docker compose` (the v2 subcommand) already works: pkgs.docker bundles the
+      # compose CLI plugin by default. This adds the standalone `docker-compose`
+      # executable as well, since plenty of projects' scripts still call it by that name.
+      environment.systemPackages = [pkgs.docker-compose];
     })
     {
       hardware.bluetooth.powerOnBoot = cfg.bluetooth.powerOnBoot;

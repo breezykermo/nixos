@@ -19,7 +19,12 @@
   users.users.${userName} = {
     isNormalUser = true;
     description = "${userName}";
-    extraGroups = lib.mkDefault ["networkmanager" "wheel" "input"];
+    # `docker` is added only where the daemon exists (custom.docker.enable, i.e. homework):
+    # membership grants root-equivalent access via the socket, so it is not handed out on
+    # machines that don't run containers.
+    extraGroups =
+      lib.mkDefault (["networkmanager" "wheel" "input"]
+        ++ lib.optional config.custom.docker.enable "docker");
     # Public keys allowed to SSH in as ${userName} (password auth is disabled; see
     # services.openssh in configuration.nix). Public keys are safe to commit. Add the
     # public key of each device you connect FROM.
