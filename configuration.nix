@@ -147,6 +147,10 @@ in {
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
+    # Deny root SSH outright. The default is "prohibit-password", which still permits root
+    # login by public key; the primary user already has passwordless wheel (and nix
+    # trusted-user status), so there is no need for direct root SSH.
+    settings.PermitRootLogin = "no";
   };
 
   # Tailscale mesh VPN - lets this machine be reached remotely (e.g. over

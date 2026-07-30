@@ -131,9 +131,8 @@ ssh lox@homework.ohrg.org
   to manage `authorizedKeys`. The committed key approach above is the simpler, self-contained
   default.
 
-- **Hardening** (low urgency since SSH is no longer public): set
-  `services.openssh.settings.PermitRootLogin = "no";`. If you ever switch to direct public
-  exposure, also enable `services.fail2ban.enable = true;`.
+- **Hardening:** `services.openssh.settings.PermitRootLogin = "no";` is set (root SSH denied).
+  If you ever switch to direct public exposure, also enable `services.fail2ban.enable = true;`.
 
 - **`mosh`** (`programs.mosh.enable = true;`) gives resilient sessions over flaky/roaming links.
 
