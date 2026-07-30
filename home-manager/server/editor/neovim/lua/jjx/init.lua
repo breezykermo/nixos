@@ -18,7 +18,22 @@ local M = {}
 
 local defaults = {
   -- Open `:J log` when nvim starts in a jj repo with no file argument.
-  startup_log = { enabled = true, revset = '::' },
+  startup_log = { enabled = true },
+  -- Default revset for EVERY log render inside nvim: the startup buffer and each
+  -- refresh jj.nvim performs after a mutating command. It has to be applied at the
+  -- module level (see install_log_revset_default) rather than as a `-r` on the
+  -- startup command, because jj.cmd.log merges every call against its own defaults,
+  -- which carry no `revisions` -- so a startup-only revset would snap back to jj's
+  -- `revsets.log` (`::`) the first time you hit <CR>.
+  --
+  -- `working_copies()` surfaces every workspace's tip, which is what makes
+  -- concurrent-agent sessions legible; the bare `trunk()` term anchors the graph so
+  -- the stacks render connected rather than as floating fragments. Caveat inherited
+  -- from jj itself: a sibling workspace's uncommitted edits read as `(empty)` until
+  -- some jj command runs inside that workspace's own root.
+  --
+  -- Set to nil to defer to jj's `revsets.log` instead.
+  log_revset = 'trunk() | trunk().. | working_copies()',
   -- Feature toggles: 'auto' (detect), true (force on), false (off).
   tuicr = 'auto',
   nerdtree = 'auto',

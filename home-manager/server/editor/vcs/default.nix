@@ -135,6 +135,21 @@ in {
         # view persists across those operations rather than snapping back to the
         # default revset.
         revsets.log = "::";
+        # `jj ws` -- a workspace dashboard for concurrent-agent sessions. Each
+        # `jj workspace add` gets its own working-copy commit, marked `<name>@`
+        # in the log; this narrows the full `::` view to just trunk, everything
+        # built on it, and every workspace's tip, so who-is-where is legible at
+        # a glance. `working_copies()` covers all workspaces including the
+        # current one; the bare `trunk()` term anchors the graph so the stacks
+        # render connected rather than as floating fragments. Caveat: jj only
+        # snapshots the CURRENT workspace's working copy, so a sibling's
+        # uncommitted edits read as `(empty)` here until a jj command runs
+        # inside that workspace's own root.
+        aliases.ws = [
+          "log"
+          "-r"
+          "trunk() | trunk().. | working_copies()"
+        ];
         ui.diff-formatter = ":git";
         # jj defaults timestamps to cyan; blue reads better against the active
         # terminal/Neovim theme.

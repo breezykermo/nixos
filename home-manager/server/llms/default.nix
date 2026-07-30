@@ -63,6 +63,13 @@ in {
     ".claude/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
+
+    # Mirror skills for pi (pi dev) alongside Claude Code so either agent
+    # reads the same skill set without manual copy/paste.
+    ".pi/agent/skills/typst-author".source = pinnedSkills.typst-author-skill;
+    ".pi/agent/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
+    ".pi/agent/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
+    ".pi/agent/skills/bonsai-author".source = ./skills/bonsai-author;
   };
 
   # Register the git-blocking PreToolUse hook in ~/.claude/settings.json on every

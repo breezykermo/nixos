@@ -104,7 +104,6 @@ let
 in {
   home.file = {
     ".pi/agent/prompts".source = ./pi/prompts;
-    ".pi/agent/skills".source = ./pi/skills;
     ".pi/agent/extensions".source = ./pi/extensions;
     ".pi/agent/themes".source = ./pi/themes;
     ".pi/agent/models.json".source = piModelsFile;
