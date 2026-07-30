@@ -185,6 +185,11 @@ in {
   # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
   nix.settings.auto-optimise-store = true;
 
+  # PRIVILEGE GRANT (not just convenience): a nix trusted-user can set arbitrary substituters,
+  # disable the build sandbox, and inject store paths the system then activates — i.e. effective
+  # root via the nix daemon. Acceptable here because this is a single-user box where ${userName}
+  # already has passwordless wheel. Kept so remote-builder / `nix copy` / `--option substituters`
+  # workflows work; narrow to `allowed-users` or remove if that stops being needed.
   nix.extraOptions = ''
     trusted-users = root ${userName}
   '';
