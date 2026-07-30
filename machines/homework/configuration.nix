@@ -77,10 +77,70 @@
   # size in the `common_memory_breakdown_print` log lines against
   # `cat /sys/module/ttm/parameters/pages_limit` (x 4 KiB) before suspecting anything
   # else, and cap the model with `"options": {"num_gpu": <layers>}`.
+  #
+  # ── SECOND, DISTINCT CAUSE of that same hang: an amdgpu SVM / kcompactd deadlock ──
+  #
+  # The ceiling above is not the only thing that wedges a load at "offloaded N/N layers
+  # to GPU", and the two wear the same disguise. Measured 2026-07-30 with the 110 GiB
+  # cap in place: GLM-4.5-Air:Q5_K_M at full offload (48/48 layers) allocates *fine* —
+  # `projected to use 78302 MiB`, `ROCm0 model buffer size = 76486.61 MiB`, tensors
+  # streamed off NVMe at 1.9 GB/s — and then stops dead immediately after
+  # `load_tensors: offloaded 48/48 layers to GPU` with no further log line, ever.
+  # Confirmed still wedged at 19 minutes under OLLAMA_LOAD_TIMEOUT=30m, so it is not a
+  # timeout. gpt-oss:120b (61 GiB of buffers) is fine; 76 GiB is not — the trigger looks
+  # like buffer size, well below the 110 GiB cap.
+  #
+  # The kernel stacks say it is a lock inversion, not a memory shortage
+  # (`journalctl -k -b | grep -A45 'blocked for more than'`; `dmesg` itself is refused
+  # because kernel.dmesg_restrict = 1):
+  #
+  #   llama-server  ioctl(/dev/kfd) -> kfd_ioctl_svm -> svm_range_set_attr -> mutex
+  #   kcompactd0    compact_zone -> svm_range_cpu_invalidate_pagetables -> same mutex
+  #   both reported "blocked on a mutex likely owned by task kworker/6:0"
+  #
+  # Memory compaction walks into amdgpu's MMU-notifier invalidate callback, which wants
+  # the mutex that the SVM range setup llama-server is waiting on. llama-server then
+  # sits in D state and is UNKILLABLE: the ~78 GiB of GTT is never released, kcompactd0
+  # stays stuck, and even `ps`/`pgrep`/`pidof` appear to hang because they too enter D
+  # state reading the wedged process's /proc entry. Only a reboot recovers.
+  #
+  # TELLING THE TWO APART: the GTT-ceiling hang has projected size at or above the cap;
+  # this one has GTT sitting comfortably *below* it, plus an unkillable D-state
+  # llama-server and the stacks above. Ceiling hangs are also killable.
+  #
+  # MITIGATION, measured 2026-07-30: `vm.compaction_proactiveness=0` (set below) removes
+  # the deadlock. kcompactd is literally one of the two participants, so stopping
+  # proactive compaction targets the bug directly, and retrying the same GLM-4.5-Air full
+  # offload with it set gave a completely different failure: the load still stalled after
+  # `offloaded 48/48 layers`, but llama-server stayed in **R** state at 55% CPU, `journalctl
+  # -k` logged ZERO `blocked for more than` warnings (hung-task detection fires at 120 s of
+  # D state, so nothing was ever wedged), ollama's 5-minute OLLAMA_LOAD_TIMEOUT killed it
+  # cleanly, GTT fell from 77 GiB back to 365 MiB and memory returned to 121 GiB available.
+  # No reboot needed. An unkillable kernel deadlock became an ordinary failed load.
+  #
+  # What did NOT get fixed: GLM-4.5-Air still does not finish loading at 48/48 layers. It
+  # spends its time in some phase after tensor load that emits no log line and leaves
+  # gpu_busy_percent at 0-5%. Whether a longer timeout ever completes it is untested — the
+  # cell was abandoned deliberately rather than spend more reboots on it. So treat
+  # GLM-4.5-Air as unusable at full offload here: cap it with `"options": {"num_gpu":
+  # <layers>}` or run it on CPU (measured 7.1 tok/s generation, 33 tok/s prefill).
+  #
+  # Benchmark data behind all of the above: ~/ollama-bench/REPORT.md, harness at
+  # home-manager/server/llms/examples/ollama-gpu-cpu-bench.py.
   boot.kernelParams = [
     "amdgpu.gttsize=112640"
     "ttm.pages_limit=28835840"
   ];
+
+  # Proactive memory compaction is one half of the amdgpu SVM lock inversion documented
+  # above: kcompactd walks into amdgpu's MMU-notifier invalidate callback and deadlocks
+  # against a large GPU allocation, leaving llama-server unkillable and the box needing a
+  # reboot. 0 disables only the *proactive* background pass; compaction still happens on
+  # demand when an allocation needs it, so the cost is at worst some extra latency on huge-
+  # page allocations, which this workload does not care about. Verified to convert the
+  # unkillable wedge into a clean, recoverable failure. Revert at runtime without a rebuild
+  # via `sudo sysctl vm.compaction_proactiveness=20` (20 is the kernel default).
+  boot.kernel.sysctl."vm.compaction_proactiveness" = 0;
 
   # ── Local LLMs (ollama) — homework only ─────────────────────────────────────
   # homework is the only box with the RAM (128GB) and the Strix Halo iGPU to run
@@ -187,9 +247,22 @@
   # PrivateTmp and DevicePolicy=closed were each tested individually and discovery
   # succeeded under all of them.
   #
-  # Fix: block startup until the node exists. There is no `dev-kfd.device` unit to
-  # order against — udev doesn't tag the node — so poll. Timing out starts the daemon
-  # anyway rather than failing the unit: degraded CPU inference beats no ollama.
+  # Fix: block startup until the GPU node is genuinely ready. There is no
+  # `dev-kfd.device` unit to order against — udev doesn't tag the node — so poll.
+  # Timing out starts the daemon anyway rather than failing the unit: degraded CPU
+  # inference beats no ollama.
+  #
+  # The gate deliberately tests more than the device nodes' existence. On the cold boot
+  # of 2026-07-30 the earlier version of this script logged `KFD node appeared after 2
+  # polls (~1s)` — so it did wait, and the race is real — and yet ollama's probe *still*
+  # came back `library=cpu` / `total_vram="0 B"`, and only a manual `systemctl restart
+  # ollama` produced ROCm. `/dev/kfd` and `/dev/dri/renderD128` therefore appear before
+  # amdgpu has finished bringing the compute node up, which makes existence too weak a
+  # signal. The stronger one is the topology: each node under
+  # /sys/class/kfd/kfd/topology/nodes/*/properties carries a `gfx_target_version`, which
+  # reads 0 until the driver has really populated it and 110501 (gfx1151) once it has.
+  # Note node 0 is the CPU node and reports 0 permanently, hence the match on *any* node
+  # with a nonzero version rather than on a particular one.
   #
   # IS THIS STILL NEEDED? The script says so itself on every start, so just read the
   # log after a reboot:
@@ -214,18 +287,22 @@
       "${pkgs.writeShellScript "ollama-wait-for-kfd" ''
         polls=0
         while [ "$polls" -lt 60 ]; do
-          if [ -e /dev/kfd ] && [ -e /dev/dri/renderD128 ]; then
+          # Nodes exist AND amdgpu has populated a real gfx_target_version (110501 for
+          # gfx1151). Node 0 is the CPU node and stays 0, so match any nonzero one.
+          if [ -e /dev/kfd ] && [ -e /dev/dri/renderD128 ] \
+             && ${pkgs.gnugrep}/bin/grep -qsE '^gfx_target_version[[:space:]]+[1-9]' \
+                  /sys/class/kfd/kfd/topology/nodes/*/properties; then
             if [ "$polls" -eq 0 ]; then
-              echo "ollama-wait-for-kfd: KFD node already present at unit start" >&2
+              echo "ollama-wait-for-kfd: KFD GPU node ready at unit start (gfx_target_version populated)" >&2
             else
-              echo "ollama-wait-for-kfd: KFD node appeared after $polls polls (~$((polls / 2))s) - boot race still live, keep this ExecStartPre" >&2
+              echo "ollama-wait-for-kfd: KFD GPU node became ready after $polls polls (~$((polls / 2))s) - boot race still live, keep this ExecStartPre" >&2
             fi
             exit 0
           fi
           polls=$((polls + 1))
           sleep 0.5
         done
-        echo "ollama-wait-for-kfd: no /dev/kfd after 30s, starting anyway (expect CPU inference)" >&2
+        echo "ollama-wait-for-kfd: no KFD node with a populated gfx_target_version after 30s, starting anyway (expect CPU inference; 'systemctl restart ollama' recovers ROCm)" >&2
       ''}"
     ];
   };
