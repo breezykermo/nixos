@@ -15,14 +15,10 @@ Hyprland
 ```
 
 ## Manual steps
-### Unencrypt secrets
+### Secrets
 
-```bash
-pbpaste | base64 --decode > ./secret-key
-git-crypt unlock ./secret-key
-```
-
-See https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/ for more info.
+Secrets are managed with [sops-nix](https://github.com/Mic92/sops-nix) and decrypt
+automatically at activation — there is no manual unlock step. See [docs/secrets.md](docs/secrets.md).
 
 ### Remote SSH access
 

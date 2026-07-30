@@ -87,13 +87,8 @@ marker and pass it as the attr. Each box keeps its own `local-profile.nix`; ther
 `userName = "alice"`).
 
 ### Secrets Management
-Uses `git-crypt` for encrypted secrets. To unlock:
-```bash
-pbpaste | base64 --decode > ./secret-key
-git-crypt unlock ./secret-key
-```
-
-Reference: https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/
+Secrets are managed with [sops-nix](https://github.com/Mic92/sops-nix) and decrypt
+automatically at activation (no manual unlock). See `docs/secrets.md`.
 
 ### Neovim Configuration
 

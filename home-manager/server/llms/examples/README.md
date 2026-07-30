@@ -50,5 +50,4 @@ Notes: anything non-obvious (why it works, gotchas, where the inputs come from).
 
 ## Index
 
-- [Unlock git-crypt secrets](git-crypt-unlock.md) — decrypt this repo's secrets after a fresh checkout
 - [Benchmark ollama iGPU vs CPU honestly](ollama-gpu-cpu-bench.md) — prefill/generation tok/s without the four traps that fake the numbers; carries the measured gfx1151 figures

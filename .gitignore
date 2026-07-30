@@ -4,6 +4,8 @@ tags
 *.swp
 fonts/berkeley-mono/*.ttf
 machines/local-profile.nix
+# Belt-and-braces: never let a git-crypt-style key file get snapshotted into history
+secret-key
 
 # Secrets: fail closed. git-crypt was decommissioned (its .gitattributes filter was inert),
 # so nothing here is transparently encrypted. Only sops-encrypted *.yaml is safe to commit;
