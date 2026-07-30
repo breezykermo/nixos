@@ -242,14 +242,14 @@ jj config set --user user.name "Lachlan Kermode"
 jj config set --user user.email "lachie@ohrg.org"
 ```
 
-**Always end with an empty `@`:** After every jj workflow, `@` must be an empty unnamed commit on top. `br close` modifies `.beads/issues.jsonl`, so always close the issue **before** `jj squash` — that way the metadata change is included in the commit rather than left dangling in `@`.
+**Always end with an empty `@`:** After every jj workflow, `@` must be an empty unnamed commit on top. `.beads/` is gitignored (see `.gitignore`), so `br close` never modifies a tracked file and never rides in a jj commit — its ordering relative to `jj squash` is immaterial for version control. Close whenever is convenient; nothing beads-related is ever committed.
 
 **Per-task sequence:**
 1. `br update <id> --status in_progress`
 2. `jj log` — if empty unnamed commit below working commit, name it: `jj describe -m "..."`
 3. `jj new` — fresh working commit
 4. Do the work, run tests
-5. `br close <id> --reason "Done"` — close BEFORE squash; this writes `.beads/issues.jsonl` into `@`, which gets included in the next squash
+5. `br close <id> --reason "Done"` — records the issue as done. `.beads/` is gitignored, so this changes no tracked file; there is nothing beads-related to squash into any commit.
 6. `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"` — using `--use-destination-message` avoids the interactive editor that pops up when both commits already have descriptions
 7. `jj log` — verify history shows correct author on each commit; `@` must be empty and unnamed
 
@@ -368,9 +368,8 @@ Loop until no open issues or user stops:
      can map to several jj commits this way — that's fine, the bead-to-commit relationship is
      one-to-many, not one-to-one.
    - Only when the user explicitly confirms (e.g. "continue", "next", "go"):
-     close the issue (`br close`), then squash the resulting `.beads/issues.jsonl` change into
-     the most recent commit for this bead (`jj squash --use-destination-message`), THEN move to
-     the next issue
+     close the issue (`br close`) — `.beads/` is gitignored so this touches no tracked file and
+     needs no squash — then move to the next issue
    - If user says "stop" or "done", exit the loop (leave the current issue `in_progress`)
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
