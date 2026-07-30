@@ -3,5 +3,10 @@
 tags
 *.swp
 fonts/berkeley-mono/*.ttf
-secrets/eduroam.env
 machines/local-profile.nix
+
+# Secrets: fail closed. git-crypt was decommissioned (its .gitattributes filter was inert),
+# so nothing here is transparently encrypted. Only sops-encrypted *.yaml is safe to commit;
+# everything else under secrets/ (raw .env, keys, etc.) must stay untracked.
+secrets/*
+!secrets/*.yaml
