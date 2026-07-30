@@ -25,3 +25,14 @@ automatically at activation — there is no manual unlock step. See [docs/secret
 To reach this machine remotely (e.g. `lox@homework.ohrg.org`) via Tailscale, see
 [docs/remote-ssh.md](docs/remote-ssh.md).
 
+## License
+
+This configuration is released under the [MIT License](LICENSE), with these exceptions that
+retain their own terms:
+
+- `fonts/inter/` — Inter, under the SIL Open Font License (see `fonts/inter/LICENSE.txt`).
+- `fonts/berkeley-mono/` — proprietary; the `.ttf` files are gitignored and not redistributed.
+- `home-manager/desktop/remarkable/remouse/patched/` — patched from
+  [FreeCap23/reMarkable-tablet-driver](https://github.com/FreeCap23/reMarkable-tablet-driver),
+  which retains its upstream license.
+
