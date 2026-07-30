@@ -40,7 +40,18 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('User', {
         pattern = 'DirenvLoaded',
         callback = function()
-          vim.cmd('LspRestart')
+          -- Nothing attached yet means nothing to restart -- both commands
+          -- below error out on an empty client list.
+          if #vim.lsp.get_clients({ bufnr = 0 }) == 0 then return end
+
+          -- Nvim 0.12 ships a builtin `:lsp` command, which makes
+          -- nvim-lspconfig's plugin/lspconfig.lua bail out before defining its
+          -- own `:Lsp*` commands -- so `:LspRestart` only exists on 0.11-.
+          if vim.fn.exists(':lsp') == 2 then
+            vim.cmd('lsp restart')
+          else
+            vim.cmd('LspRestart')
+          end
         end,
       })
     end,
