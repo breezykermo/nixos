@@ -10,6 +10,16 @@
   beads = pkgs.callPackage ./beads.nix {};
   pi = pkgs.callPackage ./pi.nix {};
 
+  # Prose-style toggle. When true, ./pellucid.md is appended to the global Claude
+  # memory file, so its rules apply to every piece of prose Claude writes (docs,
+  # explanations, commit/PR bodies, bead descriptions, subagent prompts). Flip to
+  # false to drop the rules without editing either markdown file.
+  pellucid = true;
+
+  globalClaudeMd =
+    builtins.readFile ./global-claude.md
+    + lib.optionalString pellucid ("\n---\n\n" + builtins.readFile ./pellucid.md);
+
   # Skill source pins live in pins.json at the repo root (kept there, not
   # here, so `just update-pins` can refresh all of them without touching
   # nix code). See scripts/update-pins.sh.
@@ -41,10 +51,14 @@
     text = builtins.readFile ./hooks/register-git-hook.sh;
   };
 in {
+  # Declarative pi (pi.dev) config lives in its own module for readability.
+  imports = [./pi-config.nix];
+
   home.file = {
     # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
     # applied across every project. Project-level CLAUDE.md files supplement it.
-    ".claude/CLAUDE.md".source = ./global-claude.md;
+    # Assembled (not symlinked) so the `pellucid` prose rules can be toggled in.
+    ".claude/CLAUDE.md".text = globalClaudeMd;
     ".claude/skills/typst-author".source = pinnedSkills.typst-author-skill;
     ".claude/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";

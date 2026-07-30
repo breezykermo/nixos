@@ -1,8 +1,10 @@
 # CLAUDE.md (global / user-level)
 
-This is the computer-wide memory file, symlinked to `~/.claude/CLAUDE.md` by home-manager
-(`home-manager/server/llms/default.nix`). It applies to **every** project on this machine.
-Project-level `CLAUDE.md` files supplement and may override anything here.
+This is the computer-wide memory file. home-manager (`home-manager/server/llms/default.nix`)
+concatenates it with the optional `pellucid` prose rules (`./pellucid.md`, appended when the
+`pellucid` toggle in that module is true) and writes the result to `~/.claude/CLAUDE.md`. It
+applies to **every** project on this machine. Project-level `CLAUDE.md` files supplement and may
+override anything here.
 
 ---
 
@@ -84,6 +86,42 @@ library → use that stack's package manager (which the flake put on `PATH`). Ty
 
 Live examples on this box (may not exist on every machine): `~/code/_karaji/karaji` (OxCaml),
 `~/code/_rheo/rheo` (Rust), `~/code/_pragma/pragma` (Python).
+
+---
+
+## pi coding agent (NixOS-managed — config MUST live in /etc/nixos)
+
+This machine's **pi** (`pi.dev`, binary `pi`) is installed declaratively via home-manager,
+NOT via `npm install -g` or `curl | sh`. Everything about pi lives in the version-controlled
+NixOS config repo under **`/etc/nixos/home-manager/server/llms/`**:
+
+- **`pi.nix`** — builds the `pi` binary from the upstream release tarball (version + two hashes;
+  the bump recipe is in the file's header comment). This is the ONLY place the pi version changes.
+- **`pi-config.nix`** — the standalone config module (imported by `default.nix` via `imports`).
+  All declarative pi config is defined here. `default.nix` itself only adds the binary to
+  `home.packages` and the `imports` line.
+- **`pi/`** — the read-only resource tree, sourced by `pi-config.nix`: `prompts/`, `skills/`,
+  `extensions/`, `themes/` (each seeded with `.gitkeep`). Add a prompt/skill/extension/theme by
+  dropping it in the matching subdir. See `pi/README.md`.
+- **`hooks/merge-pi-settings.sh`** — the jq-merge script for settings.json (below).
+
+**To edit pi config so it persists, change the source in `/etc/nixos` and rebuild — never
+hand-edit `~/.pi/agent/`.** Two distinct mechanisms, by how pi treats each path:
+
+- **Read-only resources** (`extensions`/`skills`/`prompts`/`themes`): `home.file` symlinks from
+  `./pi/<dir>` into the nix store (same pattern as the pinned Claude skills). `~/.pi/agent/<dir>`
+  is a read-only store symlink — editing it directly fails or is wiped on rebuild.
+- **`settings.json`** (read-WRITE — pi persists `/settings`, `/model`, theme, changelog dismissal):
+  NOT symlinked. Managed defaults live in the `piSettings` attrset in `pi-config.nix` and are
+  jq-merged into the mutable file on activation (mirrors the `claudeGitHook` precedent). Managed
+  keys WIN, so an interactive `/settings` change to a managed key is reset to the nix value on the
+  next rebuild — edit `piSettings` to change a default. pi's runtime-only keys are preserved.
+- **NOT managed** (secrets/runtime state, stays machine-local): `auth.json`, `models-store.json`,
+  `sessions/`.
+
+Apply changes with `just deploy` from `/etc/nixos` (never by touching `~/.pi/agent/` or the nix
+store). New files must be jj-tracked before the flake sees them — `jj status` snapshots the
+working copy.
 
 ---
 
