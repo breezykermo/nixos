@@ -6,7 +6,6 @@
   machineVars,
   ...
 }: let
-  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
   inter-typeface = pkgs.callPackage ./fonts/inter.nix {inherit lib;};
   berkeley-mono-nerd = pkgs.callPackage ./fonts/berkeley-mono-nerd.nix {};
 in {
@@ -118,10 +117,6 @@ in {
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
-      unstable = import unstableTarball {
-        config = config.nixpkgs.config;
-      };
-
       # Skip tests so that we don't get the 3.13 python issue
       maestral = pkgs.maestral.overridePythonAttrs (oldAttrs: {
         doCheck = false;
