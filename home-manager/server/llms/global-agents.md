@@ -298,6 +298,8 @@ rm -rf ../<repo>-<tag>    # remove the directory
 ```
 `jj log` from the main checkout still shows every commit the workspace created — they live in the shared repo.
 
+**Concurrent commits are safe:** multiple workspaces committing into the one shared repo use jj's optimistic operation log. Under concurrency jj may print `concurrent modification` but auto-reconciles — inspect with `jj op log` if curious; no manual action is normally needed. Don't panic at the warning.
+
 ---
 
 ## br/jj Churn (only when user says "br/jj churn")
