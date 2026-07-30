@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Note**: This project uses beads for issue tracking via the `br` CLI. Global process rules (including beads workflow, version control conventions, and pi behavior) are in `home-manager/server/llms/global-claude.md` — follow those.
+**Note**: This project uses beads for issue tracking via the `br` CLI. Global process rules (including beads workflow, version control conventions, and pi behavior) are in `home-manager/server/llms/global-agents.md` — follow those.
 
 ## Overview
 
@@ -133,7 +133,7 @@ After initial deployment:
 
 ## Issue Tracking (br/beads)
 
-All process rules for beads/br are in the global-level memory file at `home-manager/server/llms/global-claude.md` — **follow those**, not simplified duplicates here. Key points:
+All process rules for beads/br are in the global-level memory file at `home-manager/server/llms/global-agents.md` — **follow those**, not simplified duplicates here. Key points:
 
 - Use `br` (not `bd`) for all issue tracking commands with `--json`. `.beads/` is gitignored.
 - Always end jj work with an empty unnamed `@` on top.
@@ -144,14 +144,14 @@ All process rules for beads/br are in the global-level memory file at `home-mana
 ## Process: "Update global CLAUDE devenvs"
 
 The global (user-level) CLAUDE.md source lives at
-`home-manager/server/llms/global-claude.md` in this repo (symlinked to `~/.claude/CLAUDE.md` by
+`home-manager/server/llms/global-agents.md` in this repo (symlinked to `~/.claude/CLAUDE.md` by
 home-manager). Its **Development Environment (NixOS + flake devShells)** section documents the
 per-stack devShell setup, distilled from a set of canonical example projects.
 
 When the user says **"Update global CLAUDE devenvs"** (or close variant), do this:
 
 1. Read the current **Development Environment** section in
-   `home-manager/server/llms/global-claude.md` — note the canonical example projects listed at
+   `home-manager/server/llms/global-agents.md` — note the canonical example projects listed at
    the end of it (currently OxCaml `~/code/_karaji/karaji`, Rust `~/code/_rheo/rheo`, Python
    `~/code/_pragma/pragma`).
 2. Read each canonical project's `flake.nix` (and `.envrc` if relevant). Skip any that no longer
@@ -161,7 +161,7 @@ When the user says **"Update global CLAUDE devenvs"** (or close variant), do thi
    project-local, activated by the devShell `shellHook`), the pinned toolchain, native deps,
    and any build-sandbox caveats. Keep it stack-general, NOT project-specific: the section must
    still make sense on a machine where those projects are absent.
-4. Edit only that section of `global-claude.md` to match. Preserve the surrounding structure and
+4. Edit only that section of `global-agents.md` to match. Preserve the surrounding structure and
    the "live examples … may not exist on every machine" note.
 5. Report what changed per stack (and any projects skipped as missing).
 

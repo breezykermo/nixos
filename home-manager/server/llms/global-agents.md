@@ -1,10 +1,50 @@
-# CLAUDE.md (global / user-level)
+# Agents.md (global / user-level)
 
 This is the computer-wide memory file. home-manager (`home-manager/server/llms/default.nix`)
 concatenates it with the optional `pellucid` prose rules (`./pellucid.md`, appended when the
-`pellucid` toggle in that module is true) and writes the result to `~/.claude/CLAUDE.md`. It
-applies to **every** project on this machine. Project-level `CLAUDE.md` files supplement and may
-override anything here.
+`pellucid` toggle in that module is true) and writes the result to both `~/.claude/CLAUDE.md`
+**and** `~/.pi/agent/AGENTS.md`. It applies to **every** project on this machine. Project-level `CLAUDE.md` files supplement and may override anything here.
+
+---
+
+## Work on this machine (NixOS — imperative ops are always wrong)
+
+This machine is NixOS. **Everything is defined declaratively in /etc/nixos and rebuilt.**
+The live filesystem is a managed snapshot — you cannot expect the conventions of a normal Linux
+install. The following apply to **both Claude Code and pi** equally: **never mutate the running
+system imperatively**; always do configuration through /etc/nixos.
+
+### What's guaranteed true (and false)
+- **Package manager is `nix`, NOT apt/yum/dnf/brew/pip/cargo/npm.** There *may* be
+  language-pkg-managers available inside project devShells (opam, cargo, pixi) but they
+  manage *language deps*, not system software.
+- **/etc/nixos is the only place you define anything that persists across reboots.**
+  Anything else (manual file drops, config in /tmp, env vars set in a session)
+  disappears on rebuild or login.
+- **There is no `sudo`.** You are not root. NixOS does not use the traditional
+  permission model — user config lives in ~/.config and home-manager manages everything.
+
+### What to do instead
+- **Software:** always install via `nixpkgs` (flake `packages.<system>.<name>`), project devShell,
+  or home-manager `home.packages`. Build from source only as a last resort. The user will rebuild
+  (via pi: `just deploy` from /etc/nixos; via Claude Code: commit and wait for the human to push +
+  rebuild).
+- **Hardware:** only configurable through NixOS `hardware.<something>.enable = true;`
+  options or by adding packages to `home.packages`. Never "download and run" a binary
+  installer or use a PPA.
+- **Environment variables / scripts:** go in home-manager (`home.sessionVariables` or
+  home activation scripts), not in shell rc files. If a tool needs a wrapper, add it as an
+  `extraPackages` entry or write a small script in the project.
+- **/etc/nixos is version-controlled** (jj). It's also available at project level when editing:
+  it's just `.` if you're in that repo. Changes land via the processes documented below
+  (pi) or after the human pushes + rebuilds (Claude Code).
+
+### NixOS filesystem conventions to remember
+- Packages live in `/nix/store/…`. Symlinked into the user profile at
+  `/home/lox/.nix-profile/bin/<name>`. That home-directory path is itself a symlink.
+  The store path may change between rebuilds — **never hardcode a /nix/store hash** in your code.
+- If you need to reference a file relative to this config repo (e.g. reading docs), use
+  the absolute path on disk: `/etc/nixos/…`. This is always available inside any directory.
 
 ---
 

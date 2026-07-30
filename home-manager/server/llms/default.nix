@@ -17,7 +17,7 @@
   pellucid = true;
 
   globalClaudeMd =
-    builtins.readFile ./global-claude.md
+    builtins.readFile ./global-agents.md
     + lib.optionalString pellucid ("\n---\n\n" + builtins.readFile ./pellucid.md);
 
   # Skill source pins live in pins.json at the repo root (kept there, not
@@ -26,7 +26,7 @@
   pins = builtins.fromJSON (builtins.readFile ../../../pins.json);
   pinnedSkills = lib.mapAttrs (_: pkgs.fetchFromGitHub) pins;
 
-  # Enforces the "never git, always jj" rule from global-claude.md as a hard
+  # Enforces the "never git, always jj" rule from global-agents.md as a hard
   # PreToolUse gate rather than prose. Reads the Bash tool-call JSON on stdin
   # and exits 2 (blocking, message fed back to Claude) on any direct `git`
   # invocation — while allowing `jj git ...`, `git-crypt`, `gh`, `lazygit`, and
@@ -59,6 +59,8 @@ in {
     # applied across every project. Project-level CLAUDE.md files supplement it.
     # Assembled (not symlinked) so the `pellucid` prose rules can be toggled in.
     ".claude/CLAUDE.md".text = globalClaudeMd;
+    # Mirror to ~/.pi/agent/AGENTS.md so pi picks up the same global context.
+    ".pi/agent/AGENTS.md".text = globalClaudeMd;
     ".claude/skills/typst-author".source = pinnedSkills.typst-author-skill;
     ".claude/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";

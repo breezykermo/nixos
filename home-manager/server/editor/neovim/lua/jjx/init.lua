@@ -32,7 +32,9 @@ local defaults = {
   -- from jj itself: a sibling workspace's uncommitted edits read as `(empty)` until
   -- some jj command runs inside that workspace's own root.
   --
-  -- Set to nil to defer to jj's `revsets.log` instead.
+  -- Set to `false` -- not nil -- to defer to jj's own `revsets.log`: setup() merges
+  -- with vim.tbl_deep_extend, and a nil field is simply absent from the override
+  -- table, so it would silently leave this default standing.
   log_revset = 'trunk() | trunk().. | working_copies()',
   -- Feature toggles: 'auto' (detect), true (force on), false (off).
   tuicr = 'auto',
@@ -84,6 +86,53 @@ end
 -----------------------------------------------------------------------
 -- Shared helpers
 -----------------------------------------------------------------------
+
+-- True if raw command-line flags already pin a revset, so the default must stand
+-- aside. Covers `-r`, `-r<rev>`, `--revisions <rev>` and `--revisions=<rev>`.
+local function has_revset_flag(raw_flags)
+  for _, f in ipairs(raw_flags or {}) do
+    if f:match('^%-r') or f:match('^%-%-revisions') then
+      return true
+    end
+  end
+  return false
+end
+
+-- Wrap a jj.nvim log entry point so a call that names no revset gets config.log_revset.
+local function with_default_revset(orig)
+  return function(opts)
+    opts = opts or {}
+    if config.log_revset and opts.revisions == nil and not has_revset_flag(opts.raw_flags) then
+      opts = vim.tbl_extend('force', opts, { revisions = config.log_revset })
+    end
+    return orig(opts)
+  end
+end
+
+local log_revset_wrapped = false
+
+-- Install the default revset by wrapping jj.nvim's log entry points. Idempotent, and
+-- a no-op when jj.nvim isn't loaded yet -- callers re-invoke it later.
+local function install_log_revset_default()
+  if log_revset_wrapped or not config.log_revset then
+    return
+  end
+  local ok, log_mod = pcall(require, 'jj.cmd.log')
+  if not ok then
+    return
+  end
+  -- Two dispatch surfaces, and wrapping only the obvious one silently leaves half the
+  -- refreshes on jj's `revsets.log`: the ~20 call sites inside jj/cmd/log.lua resolve
+  -- `M.log` through this table at call time, but jj/cmd/init.lua takes a *snapshot*
+  -- (`M.log = log_module.log`) at load, and both the `:J log` dispatcher and its own
+  -- ~30 post-command refreshes go through that copy. So wrap both tables.
+  log_mod.log = with_default_revset(log_mod.log)
+  local ok_cmd, cmd_mod = pcall(require, 'jj.cmd')
+  if ok_cmd and cmd_mod.log then
+    cmd_mod.log = with_default_revset(cmd_mod.log)
+  end
+  log_revset_wrapped = true
+end
 
 -- Revision under the cursor. jj.nvim's parser returns nil on non-revision lines
 -- (graph-only/blank) and on wrapped description lines, so walk back to the nearest
@@ -340,8 +389,13 @@ local function setup_autocmds()
           if vim.v.shell_error ~= 0 then
             return
           end
-          local rev = config.startup_log.revset
-          vim.cmd(rev and ('J log -r ' .. rev) or 'J log')
+          -- Late install, in case jj.nvim hadn't loaded when setup() ran. Note the
+          -- revset deliberately never reaches the Ex cmdline as `J log -r <rev>`:
+          -- `trunk() | trunk().. | working_copies()` would be split on whitespace and
+          -- its `|` read as a command separator. The wrapper injects it below the
+          -- cmdline instead, so bare `:J log` is both safe and correct.
+          install_log_revset_default()
+          vim.cmd('J log')
           -- :J log opens in its own tab; wipe the empty startup buffer so only the log
           -- tab remains (and q -> :qa! then exits nvim cleanly).
           vim.schedule(function()
@@ -366,6 +420,7 @@ end
 --- @param opts? table Merged over defaults (see `defaults` above).
 function M.setup(opts)
   config = vim.tbl_deep_extend('force', vim.deepcopy(defaults), opts or {})
+  install_log_revset_default()
   setup_autocmds()
 end
 
