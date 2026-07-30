@@ -45,8 +45,11 @@ in {
     };
   };
 
-  # necessary for routing traffic through wireguard
-  networking.firewall.checkReversePath = false;
+  # Loose reverse-path filtering: WireGuard/ProtonVPN traffic legitimately arrives on an
+  # interface that is not the routing-table return path, which strict rp_filter would drop.
+  # "loose" keeps anti-spoofing on (rp_filter=2) while allowing the tunnel; do NOT use `false`
+  # (rp_filter=0), which disables the check entirely.
+  networking.firewall.checkReversePath = "loose";
 
   time.timeZone = machineVars.timezone;
   i18n.defaultLocale = machineVars.locale;
