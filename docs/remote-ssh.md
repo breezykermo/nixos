@@ -140,6 +140,6 @@ ssh lox@homework.ohrg.org
   name, `homework.<tailnet>.ts.net`.
 
 - **Direct public SSH** (if you must connect from a non-Tailscale device): forward an external
-  port on the router to `192.168.1.63:22` (and/or open an IPv6 inbound pinhole), then run a
+  port on the router to the machine's LAN address (`192.168.x.y:22`) (and/or open an IPv6 inbound pinhole), then run a
   dynamic-DNS updater (e.g. `services.inadyn` / `ddclient`) to keep `A`/`AAAA homework.ohrg.org`
   current, since the ISP address and IPv6 prefix are dynamic.
