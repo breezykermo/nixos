@@ -24,8 +24,8 @@ let
   # settings.json; these keys win, pi's runtime-only keys are preserved.
   piSettings = {
     theme = "dark";
-    defaultProvider = "anthropic";
-    defaultModel = "claude-opus-4-8";
+    defaultProvider = "ollama";
+    defaultModel = "qwen3.6:35b";
     defaultThinkingLevel = "medium";
   };
   piSettingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON piSettings);
