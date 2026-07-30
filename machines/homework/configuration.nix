@@ -316,10 +316,18 @@
   custom.docker.enable = true;
 
   # ── Firewall: allow mosh (mobile shell) for resilient remote connections ──
-  # mosh uses UDP ports in the range 60000-61000 by default for its connection
+  # mosh picks the first free UDP port from the bottom of its range (default 60000-61000).
+  # allowedUDPPorts takes INDIVIDUAL ports, so [60000 61000] opened only those two and blocked
+  # every port mosh actually lands on. Use a contiguous range instead; a handful is plenty for
+  # one user (connect with `mosh -p 60000:60010 …` if mosh ever needs pinning to this window).
   networking.firewall = {
     enable = true;
-    allowedUDPPorts = [60000 61000];
+    allowedUDPPortRanges = [
+      {
+        from = 60000;
+        to = 60010;
+      }
+    ];
   };
 
   # ── homework: Framework DESKTOP (Ryzen AI MAX+ 395 / Strix Halo) as an always-on server ──
