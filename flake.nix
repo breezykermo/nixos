@@ -25,6 +25,11 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # qwen-code CLI, built from source out of my own fork (carries the flake)
+    qwen-code = {
+      url = "github:breezykermo/qwen-code/nixed";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Typst - modern typesetting system
     typst-flake = {
       url = "github:breezykermo/typst-flake";

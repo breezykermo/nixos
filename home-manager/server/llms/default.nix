@@ -80,6 +80,11 @@ in {
     abacus
     inputs.llm-agents.packages.${system}.claude-code
     inputs.llm-agents.packages.${system}.claudebox
+    # Qwen Coder CLI (https://coder.qwen.ai/) — binary is `qwen`. Built from source
+    # out of my fork github.com/breezykermo/qwen-code, which carries the flake:
+    # nixpkgs and llm-agents.nix both lag upstream, and the fork lets local patches
+    # ship exactly as deployed. Bump with `just upp i=qwen-code`.
+    inputs.qwen-code.packages.${system}.qwen-code
   ];
 
   home.sessionVariables = {

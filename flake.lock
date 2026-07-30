@@ -543,6 +543,27 @@
         "type": "github"
       }
     },
+    "qwen-code": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785392730,
+        "narHash": "sha256-3igfyydscyEMcnmp+NkQgkVrDqjBGw/Oc0AetjB/woM=",
+        "owner": "breezykermo",
+        "repo": "qwen-code",
+        "rev": "c78b87a3079a7d68866ad8d37c7fe066df30a4ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "breezykermo",
+        "ref": "nixed",
+        "repo": "qwen-code",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "bene": "bene",
@@ -553,6 +574,7 @@
         "llm-agents": "llm-agents",
         "naersk": "naersk",
         "nixpkgs": "nixpkgs_2",
+        "qwen-code": "qwen-code",
         "sops-nix": "sops-nix",
         "tuicr": "tuicr",
         "typst-flake": "typst-flake"
