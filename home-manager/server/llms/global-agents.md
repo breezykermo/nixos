@@ -289,6 +289,12 @@ direnv allow                                            # new dir has the tracke
     other agents just report results back to it. This is the only reliable guard against two
     agents solving the same bead.
 - The empty-`@` rule and the full br/jj per-task sequence apply unchanged — just inside this workspace.
+- **Toolchain re-bootstrap:** project-local language envs are gitignored (e.g. `.opam-root/`,
+  `.pixi/`, opam switch dirs, Rust `target/`), so a fresh workspace does NOT inherit them — the
+  first `direnv allow` there re-runs the flake `shellHook` and rebuilds the whole toolchain
+  (slow, duplicate disk). To avoid it, symlink the project-local env dir(s) from the main
+  checkout into the new workspace. Trade-off: shared build state can race across concurrent
+  agents for some stacks, so symlink only read-heavy caches, not active build/output dirs.
 
 **Tear down (when the session ends):**
 ```bash
