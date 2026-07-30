@@ -8,6 +8,7 @@
 }: let
   abacus = pkgs.callPackage ./abacus.nix {};
   beads = pkgs.callPackage ./beads.nix {};
+  pi = pkgs.callPackage ./pi.nix {};
 
   # Skill source pins live in pins.json at the repo root (kept there, not
   # here, so `just update-pins` can refresh all of them without touching
@@ -78,6 +79,9 @@ in {
   home.packages = [
     beads
     abacus
+    # pi coding agent (https://pi.dev) — binary is `pi`. Built from source out of
+    # the upstream release tarball; see ./pi.nix for the version-bump recipe.
+    pi
     inputs.llm-agents.packages.${system}.claude-code
     inputs.llm-agents.packages.${system}.claudebox
     # Qwen Coder CLI (https://coder.qwen.ai/) — binary is `qwen`. Built from source
