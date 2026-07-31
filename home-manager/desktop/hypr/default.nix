@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   theme,
@@ -41,6 +42,14 @@ in {
       	col.active_border = ${activeBorderColor}
       	col.inactive_border = ${inactiveBorderColor}
       }
+
+      ${lib.optionalString config.custom.homework ''
+        # OBS scene switching. OBS's own hotkeys only fire while OBS has focus on
+        # Wayland, so the switch goes through obs-websocket instead and works
+        # whatever window is active. The names must match the scene collection.
+        bind = , F1, exec, obs-scene "Screenshare"
+        bind = , F2, exec, obs-scene "Camera"
+      ''}
     '';
   };
 }
