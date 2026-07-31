@@ -307,6 +307,101 @@
     ];
   };
 
+  # ── SECOND HALF OF THE SAME WORKAROUND: verify the probe, don't just gate it ──
+  #
+  # The ExecStartPre above is a *proxy* for readiness, and measurement says the proxy
+  # is not tight enough. Cold boot of 2026-07-31 10:18: the gate logged "KFD GPU node
+  # became ready after 2 polls (~1s)" — so gfx_target_version was populated — and
+  # ollama's probe still came back `id=cpu library=cpu` / `total_vram="0 B"`. Every
+  # model then ran at `100% CPU` per `ollama ps` for the whole 12-hour uptime. The
+  # cold boot of 2026-07-30 14:11 waited the same 2 polls and *did* get ROCm, so the
+  # signal is genuinely racy rather than simply wrong, and no stronger sysfs proxy has
+  # been found. Across the two days, 3 of 4 cold boots lost the race while 4 of 4
+  # manual `systemctl restart ollama` won it.
+  #
+  # So stop guessing at a proxy and check the ground truth instead: ollama logs the
+  # result of its one-shot probe as `msg="inference compute"`, naming either
+  # `library=ROCm compute=gfx1151` or `library=cpu`. This unit reads that line for the
+  # current boot and, if it says cpu, restarts ollama exactly once — which is the same
+  # remedy that has always worked by hand, just applied automatically and ~2s after
+  # boot instead of whenever the CPU-speed inference is noticed.
+  #
+  # Ordered Before ollama-model-loader.service (the `loadModels` puller) so the restart
+  # can't interrupt a `/api/pull` mid-download; the loader waits for this oneshot.
+  # Exits 0 on every path, including "still CPU-only after the restart" — degraded
+  # inference beats a failed boot, matching the ExecStartPre's timeout behaviour.
+  #
+  # THIS BLOCK GOES AWAY WITH THE ONE ABOVE. Both exist only because ollama probes
+  # once and caches; the upstream fix is retrying discovery or a real hardware
+  # ordering dependency on its unit. `journalctl -u ollama-gpu-recheck -b` tells you
+  # which case each boot hit — "probe already found ROCm" on several consecutive cold
+  # boots means the race is gone and this can be deleted along with the ExecStartPre.
+  systemd.services.ollama-gpu-recheck = {
+    description = "Restart ollama once if its startup GPU probe came back CPU-only";
+    after = [ "ollama.service" ];
+    wants = [ "ollama.service" ];
+    before = [ "ollama-model-loader.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      journalctl=${config.systemd.package}/bin/journalctl
+      systemctl=${config.systemd.package}/bin/systemctl
+      grep=${pkgs.gnugrep}/bin/grep
+
+      probes() {
+        $journalctl -u ollama.service -b --no-pager -o cat \
+          | $grep -F 'msg="inference compute"' || true
+      }
+      probe_count() { probes | ${pkgs.coreutils}/bin/wc -l; }
+      latest_probe() { probes | ${pkgs.coreutils}/bin/tail -1; }
+
+      # Wait for at least $1 probe lines to exist, up to 30s.
+      wait_for_probes() {
+        polls=0
+        while [ "$polls" -lt 60 ]; do
+          if [ "$(probe_count)" -ge "$1" ]; then
+            return 0
+          fi
+          polls=$((polls + 1))
+          sleep 0.5
+        done
+        return 1
+      }
+
+      if ! wait_for_probes 1; then
+        echo "ollama-gpu-recheck: no 'inference compute' line within 30s of ollama start; leaving the daemon alone" >&2
+        exit 0
+      fi
+
+      case "$(latest_probe)" in
+        *library=ROCm*)
+          echo "ollama-gpu-recheck: probe already found ROCm, nothing to do (cold-boot race may be fixed upstream - see the comment in machines/homework/configuration.nix)" >&2
+          exit 0
+          ;;
+      esac
+
+      echo "ollama-gpu-recheck: startup probe came back CPU-only, restarting ollama once to re-probe" >&2
+      $systemctl restart --no-block ollama.service
+
+      if ! wait_for_probes 2; then
+        echo "ollama-gpu-recheck: restart produced no new 'inference compute' line within 30s; giving up (expect CPU inference)" >&2
+        exit 0
+      fi
+
+      case "$(latest_probe)" in
+        *library=ROCm*)
+          echo "ollama-gpu-recheck: ROCm recovered after one restart" >&2
+          ;;
+        *)
+          echo "ollama-gpu-recheck: still CPU-only after one restart - this is no longer just the boot race, investigate the ROCm runtime (expect CPU inference)" >&2
+          ;;
+      esac
+    '';
+  };
+
   # ── Containers (docker + compose) — homework only ───────────────────────────
   # This is the always-on box that services and dev containers actually run on, so it is
   # the only machine that opts into the docker daemon (the flag defaults off in

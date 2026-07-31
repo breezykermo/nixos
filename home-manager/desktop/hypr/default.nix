@@ -49,6 +49,7 @@ in {
         # whatever window is active. The names must match the scene collection.
         bind = , F1, exec, obs-scene "Screenshare"
         bind = , F2, exec, obs-scene "Camera"
+        bind = , F3, exec, obs-scene "Holding"
 
         # ReMarkable tablet (rmTabletDriver, alias `rmt`). The pen is an absolute
         # positioning device, so without an output binding it stretches across every
