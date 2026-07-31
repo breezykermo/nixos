@@ -342,6 +342,12 @@ in {
               url = "https://github.com/breezykermo?tab=repositories";
             }
             {
+              name = "[g]it[h]ub [r]epos (mine)";
+              tags = [];
+              keyword = "gh/r";
+              url = "https://github.com/repos?q=owner%3A%40me";
+            }
+            {
               name = "[g]it[h]ub rheo";
               tags = [];
               keyword = "gh/rheo";
