@@ -49,6 +49,17 @@ in {
         # whatever window is active. The names must match the scene collection.
         bind = , F1, exec, obs-scene "Screenshare"
         bind = , F2, exec, obs-scene "Camera"
+
+        # ReMarkable tablet (rmTabletDriver, alias `rmt`). The pen is an absolute
+        # positioning device, so without an output binding it stretches across every
+        # monitor. Pin it to the 4K panel. The name is the uinput device name from
+        # remouse/patched/tabletDriver.c ("reMarkableTablet-FakePen"), lowercased.
+        # The device only exists while the driver runs; Hyprland applies the rule
+        # when it appears, so this can be declared up front.
+        device {
+          name = remarkabletablet-fakepen
+          output = DP-3
+        }
       ''}
     '';
   };
