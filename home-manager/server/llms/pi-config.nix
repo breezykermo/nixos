@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  pellucid,
   ...
 }:
 # Declarative pi (pi.dev) config, kept standalone from default.nix for
@@ -27,6 +28,37 @@ let
     defaultProvider = "ollama";
     defaultModel = "qwen3.6:35b";
     defaultThinkingLevel = "medium";
+    # Packages pi auto-installs on startup if missing. See docs/packages.md;
+    # entries here mirror what `pi install <spec>` would write. Sources land
+    # under ~/.pi/agent/{npm,git}/ (runtime state, machine-local, NOT managed).
+    #
+    # Rejected during the 2026-07-31 audit and deliberately absent:
+    #   - rpiv-todo, pi-beads-extension: duplicate/misname the br/jj/beads
+    #     workflow that global-agents.md pins as the source of truth. A
+    #     first-party replacement is tracked as beads issue nixos-0eu.
+    #   - pi-lens: auto-installs ~25 external linter/LSP binaries into
+    #     ~/.pi-lens/{bin,tools}/ via npx/pip/GitHub-release curls, a
+    #     direct violation of the NixOS "everything declarative" rule and
+    #     redundant with the per-project devShell toolchains.
+    #   - context-mode: runtime-installs better-sqlite3 via ambient npm,
+    #     ships ~1.5 MB of minified bundles, Elastic-2.0-licensed, and its
+    #     before-agent hook mutates systemPrompt in a way that collides
+    #     with ponytail's prefix-cache preservation. A first-party
+    #     context-preservation extension is tracked as beads issue
+    #     nixos-wfp (see the description there for the workarounds required).
+    #
+    # @dietrichgebert/ponytail is gated on the `pellucid` toggle in
+    # ./default.nix: the two prose regimes are mutually exclusive (see the
+    # comment there), so pellucid=true drops the package and pellucid=false
+    # (this machine's default) installs it.
+    packages =
+      [
+        "npm:pi-web-access" # https://pi.dev/packages/pi-web-access
+        "git:github.com/breezykermo/pi-caveman" # https://github.com/breezykermo/pi-caveman
+      ]
+      ++ lib.optionals (!pellucid) [
+        "npm:@dietrichgebert/ponytail" # https://pi.dev/packages/@dietrichgebert/ponytail
+      ];
   };
   piSettingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON piSettings);
 

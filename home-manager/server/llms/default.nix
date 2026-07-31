@@ -10,11 +10,18 @@
   beads = pkgs.callPackage ./beads.nix {};
   pi = pkgs.callPackage ./pi.nix {};
 
-  # Prose-style toggle. When true, ./pellucid.md is appended to the global Claude
-  # memory file, so its rules apply to every piece of prose Claude writes (docs,
-  # explanations, commit/PR bodies, bead descriptions, subagent prompts). Flip to
-  # false to drop the rules without editing either markdown file.
-  pellucid = true;
+  # Prose-style toggle. Governs BOTH the appended global-memory rules AND the
+  # pi package set (see ./pi-config.nix), since the two writing-style regimes are
+  # mutually exclusive:
+  #   pellucid = true  → append ./pellucid.md to the global Claude/pi memory
+  #                      file (Bentley-Hart-style ornamented prose rules), and
+  #                      OMIT the ponytail pi extension.
+  #   pellucid = false → skip pellucid.md and INSTALL @dietrichgebert/ponytail,
+  #                      which injects lazy-senior-dev minimalism instructions
+  #                      into every turn. Pi's default posture on this machine.
+  # The two disagree on ornament vs. terseness; running them together would give
+  # the model contradictory nudges, so the toggle picks one.
+  pellucid = false;
 
   globalClaudeMd =
     builtins.readFile ./global-agents.md
@@ -52,7 +59,10 @@
   };
 in {
   # Declarative pi (pi.dev) config lives in its own module for readability.
+  # `pellucid` is threaded in via _module.args below so pi-config.nix can gate
+  # the ponytail package on the same toggle that gates ./pellucid.md.
   imports = [./pi-config.nix];
+  _module.args.pellucid = pellucid;
 
   home.file = {
     # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
