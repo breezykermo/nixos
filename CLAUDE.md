@@ -130,9 +130,18 @@ After initial deployment:
 
 All process rules for beads/br are in the global-level memory file at `home-manager/server/llms/global-agents.md` — **follow those**, not simplified duplicates here. Key points:
 
-- Use `br` (not `bd`) for all issue tracking commands with `--json`. `.beads/` is gitignored.
+- Use `br` (not `bd`) for all issue tracking commands with `--json`.
 - Always end jj work with an empty unnamed `@` on top.
 - Label convention: alphanumeric/hyphen/underscore only (no `/`). Use hyphen form for labels, slash for bookmarks.
+
+- Beads are **partly committed**: `.beads/open.jsonl` is tracked, everything else under
+  `.beads/` is ignored. Run `brsave` before every `jj squash`. This is the global rule now
+  (see the Issue Tracking section of `global-agents.md`), not a local exception.
+
+This repo is also where `brsave` itself is defined: `home-manager/server/llms/scripts/brsave.sh`,
+packaged in `home-manager/server/llms/default.nix` and installed computer-wide. The store here
+is project-local, prefix `nixos`, and the three `.beads` lines at the end of `.gitignore` are
+order-sensitive — read the comment there before touching them.
 
 ---
 

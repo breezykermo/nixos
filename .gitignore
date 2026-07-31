@@ -1,5 +1,4 @@
 .abacus/
-.beads/
 tags
 *.swp
 fonts/berkeley-mono/*.ttf
@@ -14,3 +13,23 @@ secret-key
 # everything else under secrets/ (raw .env, keys, etc.) must stay untracked.
 secrets/*
 !secrets/*.yaml
+
+# Issue tracker (beads). Nearly all of .beads/ is per-machine working state: the
+# sqlite DB and its lock files, the local history backups, and issues.jsonl —
+# br's own full export, which br rewrites wholesale on every mutation and which
+# carries every closed bead along with the open ones.
+#
+# The one shared file is open.jsonl, a derived export holding only open and
+# in-progress work; scripts/beads-export.sh writes it. Ignore rules select paths,
+# not lines, so an open-only view has to be its own file — there is no pattern
+# that reaches inside issues.jsonl.
+#
+# Three lines, in this order, because a negation cannot re-enter a directory that
+# was excluded as a directory. `~/.config/git/ignore` on this machine carries a
+# `**/.beads/` rule from an old `bd init --stealth`, which would otherwise hide
+# open.jsonl however it were spelled here; a repo .gitignore outranks that file, so
+# the directory is un-ignored first, its contents excluded second, and the one
+# shared export re-included last.
+!/.beads/
+/.beads/*
+!/.beads/open.jsonl

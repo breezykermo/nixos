@@ -47,6 +47,20 @@
     text = builtins.readFile ./hooks/block-git.sh;
   };
 
+  # `brsave` — derives .beads/open.jsonl, the open/in-progress slice of the issue
+  # tracker that every repo commits (global-agents.md, "Issue Tracking"). Installed
+  # computer-wide rather than copied into each project, since the rule is
+  # computer-wide; it resolves the repo root itself, so it works from anywhere.
+  # `br` comes from the beads package above so the export format tracks the same
+  # binary the agents call.
+  brsave = pkgs.writeShellApplication {
+    name = "brsave";
+    runtimeInputs = [beads] ++ (with pkgs; [jq coreutils diffutils gnugrep]);
+    # The jq filter intentionally lives in single quotes.
+    excludeShellChecks = ["SC2016"];
+    text = builtins.readFile ./scripts/brsave.sh;
+  };
+
   # Idempotently merges the blockGitHook above into ~/.claude/settings.json.
   # Run from the claudeGitHook activation below; takes the hook command path as
   # its one argument. See ./hooks/register-git-hook.sh for the why.
@@ -111,6 +125,7 @@ in {
 
   home.packages = [
     beads
+    brsave
     abacus
     # pi coding agent (https://pi.dev) — binary is `pi`. Built from source out of
     # the upstream release tarball; see ./pi.nix for the version-bump recipe.

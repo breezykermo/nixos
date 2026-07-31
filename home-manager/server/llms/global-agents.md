@@ -224,7 +224,35 @@ br dep add <issue> <depends-on>
 
 **Bead names:** Keep them as short and simple as possible. Prefer concise 3-4 character identifiers over descriptive hyphenated names. For example, `rwq` is much better than `airborne-splash-rwq`. The bead ID carries the identity; the name is just a local shorthand.
 
-**Local-only:** `.beads/` is gitignored, never commit it, never run `br sync`.
+**Partly committed — `brsave` before every squash.** Nearly all of `.beads/` is per-machine
+working state (the sqlite db, its locks, `.br_history/`, and `issues.jsonl` — br's own full
+export, rewritten wholesale on each mutation and carrying every closed bead). Exactly one file
+is shared: **`.beads/open.jsonl`**, holding the `open` and `in_progress` beads and nothing else,
+so live work travels with the repo while closed beads and the db stay local.
+
+```bash
+brsave            # refresh .beads/open.jsonl — run before every `jj squash`
+brsave --check    # exit 1 if the export is out of date, write nothing
+brsave --import   # seed a local db from the export (fresh clone, no .beads/ db yet)
+```
+
+`brsave` is installed computer-wide (home-manager, `home-manager/server/llms/scripts/brsave.sh`
+in /etc/nixos) and resolves the repo root itself, so it works from any subdirectory of any repo
+— there is nothing to copy into a new project. It runs `br sync --flush-only --force` first, so
+`br sync` is expected here rather than forbidden. Do NOT run a bare `br sync` yourself.
+
+Each repo's `.gitignore` needs these three lines, **in this order** (a negation cannot re-enter
+a directory excluded as a directory, and `~/.config/git/ignore` on this machine carries a
+`**/.beads/` rule from an old `bd init --stealth` that a repo `.gitignore` has to outrank):
+
+```gitignore
+!/.beads/
+/.beads/*
+!/.beads/open.jsonl
+```
+
+Remove any blanket `.beads/` line when adding them. `brsave` warns when they are missing; it
+never edits `.gitignore` itself.
 
 **Labels reject `/`:** `br create -l <label>` allows only alphanumeric, hyphen, underscore, colon. The `feat/<kebab>` / `fix/<kebab>` convention (used for jj bookmarks / branches) CANNOT be a bead label verbatim — the slash fails validation (`invalid characters`). Use the hyphen form for the bead label (e.g. `feat-auto-label`, `chore-doc-test-sync`) while keeping the slash form for the bookmark/branch.
 
@@ -242,16 +270,19 @@ jj config set --user user.name "Lachlan Kermode"
 jj config set --user user.email "lachie@ohrg.org"
 ```
 
-**Always end with an empty `@`:** After every jj workflow, `@` must be an empty unnamed commit on top. `.beads/` is gitignored (see `.gitignore`), so `br close` never modifies a tracked file and never rides in a jj commit — its ordering relative to `jj squash` is immaterial for version control. Close whenever is convenient; nothing beads-related is ever committed.
+**Always end with an empty `@`:** After every jj workflow, `@` must be an empty unnamed commit on top.
+
+**Ordering around `br close`:** `.beads/open.jsonl` is tracked, so beads state DOES ride in jj commits — but only the open/in-progress slice, which `brsave` derives. Close the issue first, then `brsave`, then squash: the close drops the bead out of the export, so the same commit that finishes the work also removes it from the shared list. Everything else under `.beads/` is ignored and never committed.
 
 **Per-task sequence:**
 1. `br update <id> --status in_progress`
 2. `jj log` — if empty unnamed commit below working commit, name it: `jj describe -m "..."`
 3. `jj new` — fresh working commit
 4. Do the work, run tests
-5. `br close <id> --reason "Done"` — records the issue as done. `.beads/` is gitignored, so this changes no tracked file; there is nothing beads-related to squash into any commit.
-6. `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"` — using `--use-destination-message` avoids the interactive editor that pops up when both commits already have descriptions
-7. `jj log` — verify history shows correct author on each commit; `@` must be empty and unnamed
+5. `br close <id> --reason "Done"` — records the issue as done
+6. `brsave` — refresh `.beads/open.jsonl` so the closed bead leaves the shared export. ALWAYS before the squash; the export is a tracked file and belongs in the same commit as the work.
+7. `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"` — using `--use-destination-message` avoids the interactive editor that pops up when both commits already have descriptions
+8. `jj log` — verify history shows correct author on each commit; `@` must be empty and unnamed
 
 ---
 
@@ -272,22 +303,28 @@ Ref: https://www.joshualyman.com/2026/02/demystifying-jujutsu-jj-workspaces/
 jj workspace add --name <tag> -r main ../<repo>-<tag>   # sibling dir; working copy on top of main
 cd ../<repo>-<tag>
 direnv allow                                            # new dir has the tracked .envrc but isn't allowed yet
+brsave --import                                         # tracked open.jsonl came with the checkout; the db did not
 ```
+Skip the `brsave --import` in a multi-agent session — there the orchestrator owns beads entirely
+(see the single-writer protocol below).
 - The workspace dir MUST be a **sibling** of the repo (`../<repo>-<tag>`), never nested inside it.
-- **beads coordination (prevent double-claims):** `br` reads `.beads/` from the current dir.
-  If `.beads/` is **tracked** it's checked out into each workspace, but then every workspace has
-  its OWN copy, so a claim/close in one is invisible to the others. If it's **gitignored** (the
-  usual case — check `.gitignore`) a fresh workspace has no `.beads/` at all, so `br` starts
-  empty there. Both naive fixes — run `br` from the main checkout, or symlink the main repo's
-  `.beads/` into each workspace — make N agents share ONE mutable sqlite+jsonl, which exposes
-  the "reimport reverts mutations" race above: `br update --status in_progress` is NOT a reliable
+- **beads coordination (prevent double-claims):** `br` reads `.beads/` from the current dir. A
+  fresh workspace checks out `.beads/open.jsonl` (tracked) but no db — everything else under
+  `.beads/` is ignored — so `br` there starts empty until someone runs `brsave --import`. Doing
+  that gives each workspace its OWN db, so a claim/close in one is invisible to the others; the
+  naive alternatives — run `br` from the main checkout, or symlink the main repo's `.beads/` into
+  each workspace — make N agents share ONE mutable sqlite+jsonl, which exposes the "reimport
+  reverts mutations" race above. Either way `br update --status in_progress` is NOT a reliable
   claim, so two agents can both `br ready` and pick the SAME top issue → two commits for one bead.
   - **Protocol (single-writer):** the orchestrator (or you, before spawning agents) runs
     `br ready` **once**, partitions the ready issues into **disjoint** per-agent sets, and hands
     each agent the **explicit issue IDs** to work. Agents do NOT self-select from a shared
     `br ready`. One writer owns `.beads/` and applies every `br` mutation (claim/close); the
     other agents just report results back to it. This is the only reliable guard against two
-    agents solving the same bead.
+    agents solving the same bead. The single writer also owns `brsave`: an agent whose workspace
+    has no db (or a stale imported one) would export a wrong `open.jsonl` and conflict with the
+    others, so in a multi-agent session only the writer refreshes the export. A solo workspace
+    session is the normal case and runs `brsave` itself, per the per-task sequence.
 - The empty-`@` rule and the full br/jj per-task sequence apply unchanged — just inside this workspace.
 - **Toolchain re-bootstrap:** project-local language envs are gitignored (e.g. `.opam-root/`,
   `.pixi/`, opam switch dirs, Rust `target/`), so a fresh workspace does NOT inherit them — the
@@ -331,8 +368,9 @@ Loop until no open issues:
 4. Repeat
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
-commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
-Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace isolation*).
+commands) and `brsave`, then `jj squash --use-destination-message` if that produced changes.
+Leave `@` empty. Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace
+isolation*).
 
 Report: list all closed issues.
 
@@ -360,7 +398,8 @@ jj config set --user user.email "lachie@ohrg.org"
 Loop until no open issues or user stops:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
 2. Implement with br/jj workflow, but **do NOT close the issue** — it stays `in_progress`.
-   Do the work, run tests, then **do the full squash so a named jj commit already exists**:
+   Do the work, run tests, run `brsave` (the `in_progress` status belongs in the export), then
+   **do the full squash so a named jj commit already exists**:
    `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"`.
    The `br close` is the ONLY step deferred; everything else (squash into a named commit,
    empty `@` on top) is done before the pause.
@@ -376,13 +415,15 @@ Loop until no open issues or user stops:
      can map to several jj commits this way — that's fine, the bead-to-commit relationship is
      one-to-many, not one-to-one.
    - Only when the user explicitly confirms (e.g. "continue", "next", "go"):
-     close the issue (`br close`) — `.beads/` is gitignored so this touches no tracked file and
-     needs no squash — then move to the next issue
+     close the issue (`br close`), then `brsave` — the commit for this bead is already named, so
+     the refreshed export rides in the next commit (or in the end-of-session squash below) rather
+     than getting its own — then move to the next issue
    - If user says "stop" or "done", exit the loop (leave the current issue `in_progress`)
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
-commands), then `jj squash --use-destination-message` if that produced changes. Leave `@` empty.
-Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace isolation*).
+commands) and `brsave`, then `jj squash --use-destination-message` if that produced changes.
+Leave `@` empty. Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace
+isolation*).
 
 Report: list all closed issues.
 
@@ -399,6 +440,9 @@ Report: list all closed issues.
 4. If yes: run `br create` commands (parallel where possible), set up deps with `br dep add`
    - Each issue's `--description` must be **fully self-contained** — written for a less capable agent with zero prior context. Do all research and code dives during planning; embed the findings directly in the description. Include: background/motivation, every relevant file path and line number, exact step-by-step instructions, and the precise expected outcome. The implementer must not need to investigate, infer, or look anything up.
    - Issues must also be **human-readable**: during `br/jj pair` the user reads each issue to verify agents are working correctly, so write in clear prose, not cryptic shorthand.
-5. List created IDs and stop — do NOT implement, do NOT ask if user wants to implement
+5. `brsave` — the new issues are shared work, so put them in `.beads/open.jsonl`. Then commit
+   just the export: `jj describe -m "Files <n> beads for <topic>"` and `jj new`. This is the one
+   file edit plan mode makes.
+6. List created IDs and stop — do NOT implement, do NOT ask if user wants to implement
 
 **Exits** when user says "br/jj churn", "br/jj pair", "start implementing", or "go".
