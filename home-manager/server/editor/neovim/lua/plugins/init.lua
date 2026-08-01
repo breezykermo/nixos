@@ -773,15 +773,42 @@ require('lazy').setup({
 	  end
   },
 
+  -- moonfly color scheme
+  {
+	  "bluz71/vim-moonfly-colors",
+	  name = "moonfly",
+	  lazy = false,
+	  priority = 1000,
+	  cond = function()
+		  -- Only load if moonfly is the active theme
+		  return vim.g.theme_name == "moonfly"
+	  end,
+	  config = function()
+		  -- moonfly has a single palette, so vim.g.theme_variant is unused here.
+		  -- Transparent background matches the ghostty/tuicr setup; the terminal
+		  -- already paints moonfly's #080808.
+		  vim.g.moonflyTransparent = true
+		  vim.g.moonflyCursorColor = true
+		  vim.g.moonflyWinSeparator = 2
+		  vim.g.moonflyNormalFloat = true
+
+		  vim.cmd.colorscheme "moonfly"
+
+		  -- Make comments more prominent -- they are important.
+		  local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
+		  vim.api.nvim_set_hl(0, 'Comment', bools)
+	  end
+  },
+
   -- Gruvbox/base16 fallback color scheme (for other themes)
   {
 	  "wincent/base16-nvim",
 	  lazy = false,
 	  priority = 1000,
 	  cond = function()
-		  -- Load for any theme that isn't catppuccin or rosepine
+		  -- Load for any theme without a dedicated spec above
 		  local theme = vim.g.theme_name or "gruvbox"
-		  return theme ~= "catppuccin" and theme ~= "rosepine"
+		  return theme ~= "catppuccin" and theme ~= "rosepine" and theme ~= "moonfly"
 	  end,
 	  config = function()
 		  -- Fallback to gruvbox for other themes
@@ -813,6 +840,8 @@ require('lazy').setup({
 			  lualine_theme = "auto"
 		  elseif theme_name == "rosepine" then
 			  lualine_theme = "rose-pine"
+		  elseif theme_name == "moonfly" then
+			  lualine_theme = "moonfly"
 		  elseif theme_name == "gruvbox" then
 			  lualine_theme = "gruvbox"
 		  elseif theme_name == "nord" then

@@ -1,6 +1,7 @@
 {
   pkgs,
   machineVars,
+  theme,
   ...
 }: let
   # Create typst-editor script and add to PATH
@@ -143,7 +144,7 @@ in {
           sort = "-r date";
           threading-enabled = true; # Enable threaded view
           force-client-threads = true; # Use client-side threading
-          styleset-name = "catppuccin-mocha";
+          styleset-name = "system";
         };
         viewer = {
           always-show-mime = true;
@@ -556,8 +557,95 @@ in {
     * = [Gmail]/*
   '';
 
-  # Catppuccin Mocha styleset for aerc
-  xdg.configFile."aerc/stylesets/catppuccin-mocha".source = ./catppuccin-mocha.styleset;
+  # Styleset for aerc, generated from the active palette in themes/default.nix
+  xdg.configFile."aerc/stylesets/system".text = ''
+    # Styleset for aerc, mirroring the active palette from themes/default.nix
+
+    # Base styles
+    *.default=true
+    *.selected.reverse=toggle
+
+    # General UI
+    error.fg=${theme.colors.red}
+    error.bold=true
+    warning.fg=${theme.colors.yellow}
+    warning.bold=true
+    success.fg=${theme.colors.green}
+    success.bold=true
+    title.fg=${theme.colors.blue}
+    title.bold=true
+    header.fg=${theme.colors.purple}
+    header.bold=true
+    border.fg=${theme.colors.bg3}
+    spinner.fg=${theme.colors.blue}
+
+    # Tabs
+    tab.fg=${theme.colors.fg2}
+    tab.bg=${theme.background}
+    tab.selected.fg=${theme.foreground}
+    tab.selected.bg=${theme.colors.bg2}
+    tab.selected.bold=true
+
+    # Status bar
+    statusline_default.fg=${theme.colors.fg2}
+    statusline_default.bg=${theme.colors.bg1}
+    statusline_error.fg=${theme.colors.red}
+    statusline_error.bg=${theme.colors.bg1}
+    statusline_error.bold=true
+    statusline_success.fg=${theme.colors.green}
+    statusline_success.bg=${theme.colors.bg1}
+    statusline_success.bold=true
+
+    # Directory list (sidebar)
+    dirlist_default.fg=${theme.colors.fg2}
+    dirlist_unread.fg=${theme.colors.blue}
+    dirlist_unread.bold=true
+    dirlist_recent.fg=${theme.colors.green}
+
+    # Message list
+    msglist_default.fg=${theme.colors.fg2}
+    msglist_unread.fg=${theme.foreground}
+    msglist_unread.bold=true
+    msglist_read.fg=${theme.colors.fg3}
+    msglist_flagged.fg=${theme.colors.yellow}
+    msglist_flagged.bold=true
+    msglist_deleted.fg=${theme.colors.fg4}
+    msglist_marked.fg=${theme.colors.purple}
+    msglist_marked.bold=true
+    msglist_result.fg=${theme.colors.orange}
+    msglist_result.bold=true
+    msglist_answered.fg=${theme.colors.aqua}
+    msglist_forwarded.fg=${theme.colors.aqua}
+    msglist_forwarded.italic=true
+    msglist_gutter.fg=${theme.colors.blue}
+    msglist_pill.fg=${theme.colors.blue}
+    msglist_pill.reverse=true
+    msglist_thread_folded.fg=${theme.colors.yellow}
+    msglist_thread_context.fg=${theme.colors.fg4}
+    msglist_thread_context.italic=true
+
+    # Part switcher
+    part_switcher.fg=${theme.colors.fg2}
+    part_switcher.selected.fg=${theme.foreground}
+    part_switcher.selected.bg=${theme.colors.bg2}
+    part_filename.fg=${theme.colors.blue}
+    part_mimetype.fg=${theme.colors.fg3}
+
+    # Completion
+    completion_default.fg=${theme.colors.fg2}
+    completion_default.selected.fg=${theme.foreground}
+    completion_default.selected.bg=${theme.colors.bg2}
+    completion_description.fg=${theme.colors.fg3}
+    completion_gutter.fg=${theme.colors.blue}
+    completion_pill.fg=${theme.colors.blue}
+    completion_pill.reverse=true
+
+    # Selector (choose prompts)
+    selector_default.fg=${theme.colors.fg2}
+    selector_focused.fg=${theme.foreground}
+    selector_focused.bold=true
+    selector_chooser.bold=true
+  '';
 
   # Custom Typst-formatted reply template
   xdg.configFile."aerc/templates/quoted_reply_typst".text = builtins.readFile ./quoted_reply_typst.template;

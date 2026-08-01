@@ -88,7 +88,13 @@
     bat = {
       enable = true;
       config = {
-        theme = "Catppuccin Mocha";
+        # bat's themes are .tmTheme files with baked-in hex colors, so none of
+        # them can track themes/default.nix. "ansi" draws only from the terminal's
+        # 16 colors, which ghostty sets from the active palette (see the
+        # `palette =` block in home-manager/desktop/default.nix) -- so bat, delta
+        # (which uses bat's themes) and LS_COLORS all stay in sync by
+        # construction. Swap for a named theme (`bat --list-themes`) to override.
+        theme = "ansi";
         pager = "less -FR";
       };
     };
@@ -125,7 +131,69 @@
       # home-manager/server/homework.nix.
       settings = {
         vim_keys = true;
+        color_theme = "system";
+        # Let the terminal background show through (ghostty runs at
+        # theme.transparency.opacity), matching tuicr/neovim.
+        theme_background = false;
+        truecolor = true;
       };
+      # Palette-driven theme, written to ~/.config/btop/themes/system.theme.
+      # btop themes are flat `theme[key]="#rrggbb"` files; the *_start/_mid/_end
+      # triples are gradient stops for the meters and graphs.
+      themes.system = ''
+        theme[main_bg]="${theme.background}"
+        theme[main_fg]="${theme.foreground}"
+        theme[title]="${theme.foreground}"
+        theme[hi_fg]="${theme.colors.blue}"
+        theme[selected_bg]="${theme.colors.bg2}"
+        theme[selected_fg]="${theme.foreground}"
+        theme[inactive_fg]="${theme.colors.fg4}"
+        theme[graph_text]="${theme.colors.fg2}"
+        theme[meter_bg]="${theme.colors.bg2}"
+        theme[proc_misc]="${theme.colors.purple}"
+
+        theme[cpu_box]="${theme.colors.blue}"
+        theme[mem_box]="${theme.colors.green}"
+        theme[net_box]="${theme.colors.purple}"
+        theme[proc_box]="${theme.colors.aqua}"
+        theme[div_line]="${theme.colors.bg3}"
+
+        theme[temp_start]="${theme.colors.blue}"
+        theme[temp_mid]="${theme.colors.yellow}"
+        theme[temp_end]="${theme.colors.red}"
+
+        theme[cpu_start]="${theme.colors.aqua}"
+        theme[cpu_mid]="${theme.colors.blue}"
+        theme[cpu_end]="${theme.colors.purple}"
+
+        theme[free_start]="${theme.colors.bg3}"
+        theme[free_mid]="${theme.colors.gray}"
+        theme[free_end]="${theme.colors.fg2}"
+
+        theme[cached_start]="${theme.colors.aqua}"
+        theme[cached_mid]="${theme.colors.blue}"
+        theme[cached_end]="${theme.colors.bright_blue}"
+
+        theme[available_start]="${theme.colors.yellow}"
+        theme[available_mid]="${theme.colors.orange}"
+        theme[available_end]="${theme.colors.bright_orange}"
+
+        theme[used_start]="${theme.colors.green}"
+        theme[used_mid]="${theme.colors.bright_green}"
+        theme[used_end]="${theme.colors.red}"
+
+        theme[download_start]="${theme.colors.aqua}"
+        theme[download_mid]="${theme.colors.blue}"
+        theme[download_end]="${theme.colors.bright_blue}"
+
+        theme[upload_start]="${theme.colors.purple}"
+        theme[upload_mid]="${theme.colors.bright_purple}"
+        theme[upload_end]="${theme.colors.bright_red}"
+
+        theme[process_start]="${theme.colors.green}"
+        theme[process_mid]="${theme.colors.yellow}"
+        theme[process_end]="${theme.colors.red}"
+      '';
     };
   };
 }

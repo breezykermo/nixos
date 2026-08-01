@@ -217,6 +217,12 @@ end
 -- tab's window and return to the log tab. Close the WINDOW (not a captured buffer):
 -- jobstart term=true can leave the empty tab buffer behind. stopinsert restores normal
 -- mode so the log cursor responds immediately.
+--
+-- Launch profile: XDG_CONFIG_HOME points at ~/.config/tuicr-nvim, a second tuicr
+-- config tree (home-manager/server/editor/vcs/default.nix) that turns the file list
+-- on and single-file view (`:f`) on -- the standalone `dj` alias keeps the plain
+-- whole-diff layout. tuicr has no config key for the initially focused panel, so
+-- `;h` (leader-h -> focus file list) is sent once the job is up.
 local function review_in_tuicr(buf)
   return function()
     local rev = rev_under_cursor(buf)
@@ -227,8 +233,9 @@ local function review_in_tuicr(buf)
     local log_tab = vim.api.nvim_get_current_tabpage()
     vim.cmd('tabnew')
     local tuicr_win = vim.api.nvim_get_current_win()
-    vim.fn.jobstart({ 'tuicr', '-r', rev }, {
+    local job = vim.fn.jobstart({ 'tuicr', '-r', rev }, {
       term = true,
+      env = { XDG_CONFIG_HOME = vim.fn.expand('~/.config/tuicr-nvim') },
       on_exit = function()
         vim.schedule(function()
           if vim.api.nvim_win_is_valid(tuicr_win) then
@@ -241,6 +248,14 @@ local function review_in_tuicr(buf)
         end)
       end,
     })
+    if job > 0 then
+      -- Focus the file tree. Deferred so the keys land after tuicr has entered
+      -- raw mode; anything written earlier still sits in the pty buffer, so the
+      -- delay only guards against the terminal setup, not against a slow diff.
+      vim.defer_fn(function()
+        pcall(vim.fn.chansend, job, ';h')
+      end, 200)
+    end
     vim.cmd('startinsert')
   end
 end

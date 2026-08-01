@@ -9,34 +9,30 @@
   onedark = import ./onedark.nix {inherit lib;};
   molokai = import ./molokai.nix {inherit lib;};
   rosepine = import ./rosepine.nix {inherit lib;};
+  moonfly = import ./moonfly.nix {inherit lib;};
 
   # ============================================================================
   # THEME CONFIGURATION - Change these values to switch themes
   # ============================================================================
 
-  # Rose Pine only on the "homework" machine (localProfile mirrors the machine name /
-  # flake attr in flake.nix); everywhere else keeps the default Catppuccin Mocha theme.
+  # Active palette for every machine. `localProfile` (the machine name / flake
+  # attr from flake.nix) is still passed in and can be branched on here when a
+  # box needs its own palette -- this file is a plain function imported at the
+  # flake level, not a NixOS/home-manager module, so it has no access to
+  # `config` and cannot read a `custom.*` option; selecting by machine name here
+  # is the simplest correct place for it.
   #
-  # This localProfile check is deliberately RETAINED rather than migrated to the
-  # custom.* namespace: this file is a plain function imported at the flake level
-  # (flake.nix), not a NixOS/home-manager module, so it has no access to `config` and
-  # cannot read a `custom.*` option. Selecting a palette by machine name here is the
-  # simplest correct place for it.
-  # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine"
-  activeTheme =
-    if localProfile == "homework"
-    then "rosepine"
-    else "catppuccin";
-  activeVariant =
-    if localProfile == "homework"
-    then "main"
-    else "mocha";
+  # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine",
+  #          "moonfly"
+  activeTheme = "moonfly";
+  activeVariant = "default";
   # Gruvbox: "dark-hard", "dark-medium", "dark-soft", "dark-pale"
   # Catppuccin: "mocha", "macchiato", "frappe", "latte"
   # Nord: "polar-night", "snow-storm", "frost", "aurora"
   # OneDark: "dark", "darker", "vivid", "light"
   # Molokai: "classic", "phoenix", "vivid", "dark"
   # Rose Pine: "main", "moon", "dawn"
+  # Moonfly: "default" (single palette)
 
   enableTransparency = true; # Global transparency setting
   opacity = "0.98"; # Default opacity for transparent backgrounds
@@ -51,34 +47,10 @@
     onedark = onedark.variants;
     molokai = molokai.variants;
     rosepine = rosepine.variants;
+    moonfly = moonfly.variants;
   };
 
   selectedPalette = themePalettes.${activeTheme}.${activeVariant};
-
-  # Rofi theme name mapping (Rofi has specific theme file names)
-  rofiThemeName =
-    if activeTheme == "gruvbox"
-    then
-      if activeVariant == "dark-hard"
-      then "gruvbox-dark-hard"
-      else if activeVariant == "dark-medium"
-      then "gruvbox-dark"
-      else if activeVariant == "dark-soft"
-      then "gruvbox-dark-soft"
-      else if activeVariant == "dark-pale"
-      then "gruvbox-dark"
-      else "gruvbox-dark"
-    else if activeTheme == "catppuccin"
-    then "arthur" # Use a default rofi theme for catppuccin
-    else if activeTheme == "nord"
-    then "nord" # Nord has its own rofi theme if installed
-    else if activeTheme == "onedark"
-    then "Arc-Dark" # Fallback to similar theme
-    else if activeTheme == "molokai"
-    then "purple" # Fallback to similar theme
-    else if activeTheme == "rosepine"
-    then "purple" # Fallback to similar purple/pink theme
-    else "gruvbox-dark"; # Safe fallback
 
   # Vivid theme name mapping (vivid ships its own theme names, which do NOT
   # always match our fullName convention - e.g. we call it "rosepine-main" but
@@ -111,6 +83,13 @@
       else if activeVariant == "dawn"
       then "rose-pine-dawn"
       else "rose-pine" # main
+    else if activeTheme == "moonfly"
+    # vivid ships no moonfly theme. "ansi" emits only the 16 ANSI codes, so
+    # LS_COLORS is rendered with whatever palette the terminal carries -- which
+    # is this palette (see the ghostty `palette =` block in
+    # home-manager/desktop/default.nix). Exact by construction, at the cost of
+    # the extra truecolor shades a native vivid theme would use.
+    then "ansi"
     else "gruvbox-dark"; # Safe fallback
 in {
   inherit themeLib;
@@ -119,7 +98,6 @@ in {
   name = activeTheme;
   variant = activeVariant;
   fullName = selectedPalette.name;
-  rofiTheme = rofiThemeName;
   vividTheme = vividThemeName;
 
   # Transparency settings

@@ -26,6 +26,7 @@
     plugins = with pkgs.vimPlugins; [
       catppuccin-nvim
       rose-pine
+      vim-moonfly-colors
     ];
     # extraLuaPackages = ["luarocks"];
   };

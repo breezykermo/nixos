@@ -7,8 +7,8 @@ This NixOS configuration uses a centralized theming system that allows you to ea
 To change your theme, edit `/etc/nixos/themes/default.nix` and modify these variables:
 
 ```nix
-activeTheme = "gruvbox";           # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai"
-activeVariant = "dark-hard";       # See variant options below for each theme
+activeTheme = "moonfly";           # Options: "gruvbox", "catppuccin", "nord", "onedark", "molokai", "rosepine", "moonfly"
+activeVariant = "default";         # See variant options below for each theme
 enableTransparency = true;         # Global transparency setting
 opacity = "0.95";                  # Default opacity for transparent backgrounds
 ```
@@ -19,6 +19,8 @@ opacity = "0.95";                  # Default opacity for transparent backgrounds
 - Nord: `polar-night`, `snow-storm`, `frost`, `aurora`
 - OneDark: `dark`, `darker`, `vivid`, `light`
 - Molokai: `classic`, `phoenix`, `vivid`, `dark`
+- Rose Pine: `main`, `moon`, `dawn`
+- Moonfly: `default` (single palette)
 
 Then run `just deploy` to apply the changes.
 
@@ -82,25 +84,60 @@ A Vim port of the Monokai theme with vibrant, high-contrast colors.
 
 **Characteristics:** High contrast, vibrant colors, excellent syntax differentiation
 
+### Moonfly
+
+bluz71's near-black dark scheme: a #080808 background under soft grey text and
+pastel-bright accents.
+
+**Variants:**
+- `default` - the only palette moonfly ships
+
+**Characteristics:** Very dark background, low-glare grey foreground, saturated
+accents. The `colors`/`bright_*` slots are moonfly's own ANSI 0-15, so the
+ghostty palette is the upstream terminal palette verbatim
+(https://terminalcolors.com/themes/moonfly/default/). Neovim uses the real
+`vim-moonfly-colors` plugin; vivid has no moonfly theme, so LS_COLORS falls back
+to `ansi` and is rendered with the terminal's (i.e. this) palette.
+
+**Current default:** `moonfly` with `default` variant
+
 ## Applications Using Theme System
 
 The following applications automatically use your configured theme:
 
 ### Terminal & Shell
-- **Ghostty** - Terminal emulator (background color, opacity)
+- **Ghostty** - Terminal emulator (background, opacity, full ANSI palette)
 - **Tmux** - Terminal multiplexer (status bar, borders, mode colors)
-- **Bat** - Syntax highlighting for `cat` (native theme support)
-- **LS_COLORS** - Directory listing colors (via vivid)
+- **Fish** - Syntax highlighting and pager colors (`fish_color_*`, set in `interactiveShellInit`)
+- **Bat** - `theme = "ansi"`, i.e. the terminal's 16 colors, which ghostty sets from the palette
+- **LS_COLORS** - Directory listing colors (via vivid; `lf` inherits these)
 - **FZF** - Fuzzy finder colors
+- **btop** - Generated `~/.config/btop/themes/system.theme` (`color_theme = "system"`)
 
 ### Window Manager & Desktop
 - **Hyprland** - Window manager borders (active/inactive)
-- **Rofi** - Application launcher (native theme support)
+- **Hyprlock** - Lock screen (background, text, accent)
+- **Mako** - Notification daemon (background, text, border)
+- **Rofi** - Application launcher (`$mainMod+D` drun; palette-driven rasi built in `home-manager/desktop/default.nix`)
+- **Zathura** - PDF viewer, including `recolor` (bound to `i`) so documents invert into the palette
+- **Firefox** - `userChrome.css` custom properties (`--theme-*`). Dark Reader can't be
+  configured declaratively (no managed-storage support), so a matching import file is
+  generated at `~/.config/darkreader/import-settings.json` for a one-time manual import
 
 ### Development Tools
-- **Neovim** - Editor colorscheme (gruvbox-dark-hard)
-- **Lualine** - Neovim statusline (gruvbox theme)
-- **ftdv** - File tree diff viewer (complete color mapping)
+- **Neovim** - Editor colorscheme (dedicated plugin per palette, see `lua/plugins/init.lua`)
+- **Lualine** - Neovim statusline (theme mapped from `vim.g.theme_name`)
+- **tuicr** - Code review TUI (two config trees; see `home-manager/server/editor/vcs/default.nix`)
+- **delta** - git/jj diff pager (diff styles, hunk/file headers, line numbers)
+- **lazygit** - git TUI (`programs.lazygit.settings.gui.theme`)
+- **aerc** - Email TUI (generated `~/.config/aerc/stylesets/system`)
+
+### Not wired to the palette
+
+These are installed but take colors from somewhere else, or offer no useful color config:
+`blazingjj` (no color config), `visidata` (`.visidatarc` supports colors, unthemed),
+`concord`, `bluetui`, `pulsemixer`, `nvtop`, `eilmeldung` (terminal defaults),
+`tuigreet` (system-level greeter, runs before the user session).
 
 ## Theme Structure
 
