@@ -20,7 +20,6 @@
       <outline text="n+1" htmlUrl="https://nplusonemag.com/" xmlUrl="https://nplusonemag.com/feed/"/>
       <outline text="AI Snake Oil" htmlUrl="https://aisnakeoil.substack.com/" xmlUrl="https://aisnakeoil.substack.com/feed"/>
       <outline text="Simon Willison" htmlUrl="https://simonw.substack.com/" xmlUrl="https://simonw.substack.com/feed"/>
-      <outline text="LLM Architecture Gallery (Raschka)" htmlUrl="https://sebastianraschka.com/llm-architecture-gallery/" xmlUrl="https://sebastianraschka.com/llm-architecture-gallery/rss.xml"/>
       <outline text="Slavoj Žižek" htmlUrl="https://slavoj.substack.com/" xmlUrl="https://slavoj.substack.com/feed"/>
       <outline text="Max Read" htmlUrl="https://maxread.substack.com/" xmlUrl="https://maxread.substack.com/feed"/>
       <outline text="Weeknotes (OH/RG)" htmlUrl="https://weeknotes.ohrg.org/" xmlUrl="https://weeknotes.ohrg.org/feed.xml"/>
@@ -50,6 +49,9 @@
       <outline text="DRA27" htmlUrl="https://www.dra27.uk/" xmlUrl="https://www.dra27.uk/feed.xml"/>
       <outline text="Jon M. Sterling" htmlUrl="https://www.jonmsterling.com/" xmlUrl="https://www.jonmsterling.com/jms-019X/atom.xml"/>
       <outline text="Tunbury" htmlUrl="https://www.tunbury.org/" xmlUrl="https://www.tunbury.org/atom.xml"/>
+    </outline>
+    <outline text="Updates" title="Updates">
+      <outline text="LLM Architecture Gallery (Raschka)" htmlUrl="https://sebastianraschka.com/llm-architecture-gallery/" xmlUrl="https://sebastianraschka.com/llm-architecture-gallery/rss.xml"/>
     </outline>
     <outline text="Tech News" title="Tech News">
       <outline text="Hacker News Frontpage" htmlUrl="https://news.ycombinator.com/" xmlUrl="https://hnrss.org/frontpage?count=100"/>
