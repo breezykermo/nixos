@@ -2,6 +2,7 @@
   pkgs,
   lib,
   pellucid,
+  theme,
   ...
 }:
 # Declarative pi (pi.dev) config, kept standalone from default.nix for
@@ -21,10 +22,14 @@
 # NOT managed here (pure runtime state / secrets, stays machine-local in
 # ~/.pi/agent): auth.json, models-store.json, sessions/.
 let
+  mix = theme.themeLib.mix;
+
   # Nix-managed pi defaults — single source of truth. Merged into the mutable
   # settings.json; these keys win, pi's runtime-only keys are preserved.
   piSettings = {
-    theme = "dark";
+    # Selects piTheme below. pi resolves this against the theme's `name` field
+    # (not its filename), so the two must stay in sync.
+    theme = "system";
     defaultProvider = "ollama";
     defaultModel = "qwen3.6:35b";
     defaultThinkingLevel = "medium";
@@ -123,6 +128,108 @@ let
   };
   piModelsFile = pkgs.writeText "pi-models.json" (builtins.toJSON piModels);
 
+  # pi TUI theme, generated from the active palette in themes/default.nix so pi
+  # matches Ghostty, Neovim and Claude Code rather than pi's built-in `dark`.
+  # pi discovers themes from ~/.pi/agent/themes/*.json and selects by the `name`
+  # field, so this is called `system` (as tuicr's theme is, see
+  # home-manager/server/editor/vcs/default.nix) and tracks whatever palette is
+  # active without needing a rename.
+  #
+  # Unlike Claude Code's theme format there is no `base` to inherit from: pi
+  # validates that all 51 required tokens are present, so every one is listed.
+  # `vars` is skipped -- nix already interpolates the palette, so the hexes go
+  # in directly. Docs: <pi store path>/packages/coding-agent/docs/themes.md.
+  piTheme = {
+    name = "system";
+    colors = {
+      # Core UI. `muted` is secondary text, `dim` tertiary; `text = ""` would
+      # mean the terminal default, but the palette's own fg is more exact.
+      accent = theme.colors.aqua;
+      border = theme.colors.blue;
+      borderAccent = theme.colors.aqua;
+      borderMuted = theme.colors.bg3;
+      success = theme.colors.green;
+      error = theme.colors.red;
+      warning = theme.colors.yellow;
+      muted = theme.colors.fg3;
+      dim = theme.colors.fg4;
+      text = theme.foreground;
+      thinkingText = theme.colors.fg3;
+
+      # Backgrounds and message content.
+      selectedBg = theme.colors.bg2;
+      userMessageBg = theme.colors.bg1;
+      userMessageText = theme.foreground;
+      customMessageBg = mix theme.colors.purple theme.background 0.15;
+      customMessageText = theme.foreground;
+      customMessageLabel = theme.colors.purple;
+      toolPendingBg = theme.colors.bg1;
+      toolSuccessBg = mix theme.colors.green theme.background 0.12;
+      toolErrorBg = mix theme.colors.red theme.background 0.12;
+      toolTitle = theme.foreground;
+      toolOutput = theme.colors.fg3;
+
+      # Markdown rendering.
+      mdHeading = theme.colors.yellow;
+      mdLink = theme.colors.blue;
+      mdLinkUrl = theme.colors.fg4;
+      mdCode = theme.colors.aqua;
+      mdCodeBlock = theme.colors.fg1;
+      mdCodeBlockBorder = theme.colors.bg3;
+      mdQuote = theme.colors.fg3;
+      mdQuoteBorder = theme.colors.bg4;
+      mdHr = theme.colors.bg3;
+      mdListBullet = theme.colors.aqua;
+
+      # Tool diffs. pi colors the text (not the background) here, so these are
+      # the plain palette hues rather than the mixed washes delta/tuicr use.
+      toolDiffAdded = theme.colors.green;
+      toolDiffRemoved = theme.colors.red;
+      toolDiffContext = theme.colors.fg3;
+
+      # Syntax highlighting in code blocks.
+      syntaxComment = theme.colors.fg4;
+      syntaxKeyword = theme.colors.purple;
+      syntaxFunction = theme.colors.blue;
+      syntaxVariable = theme.colors.fg1;
+      syntaxString = theme.colors.green;
+      syntaxNumber = theme.colors.orange;
+      syntaxType = theme.colors.aqua;
+      syntaxOperator = theme.colors.bright_aqua;
+      syntaxPunctuation = theme.colors.fg2;
+
+      # Editor border per thinking level, subtle -> prominent.
+      thinkingOff = theme.colors.bg3;
+      thinkingMinimal = theme.colors.fg4;
+      thinkingLow = theme.colors.blue;
+      thinkingMedium = theme.colors.bright_blue;
+      thinkingHigh = theme.colors.purple;
+      thinkingXhigh = theme.colors.bright_purple;
+      thinkingMax = theme.colors.bright_red;
+
+      # Editor border while typing a `!` shell command.
+      bashMode = theme.colors.bright_orange;
+    };
+    # Colors for `/export`'s HTML output; derived from userMessageBg if omitted.
+    export = {
+      pageBg = theme.background;
+      cardBg = theme.colors.bg1;
+      infoBg = mix theme.colors.yellow theme.background 0.15;
+    };
+  };
+  piThemeFile = pkgs.writeText "system.json" (builtins.toJSON piTheme);
+
+  # ~/.pi/agent/themes must be ONE directory, and pi only reads it, so the
+  # static tree (./pi/themes) and the generated theme above are joined into a
+  # single store path rather than symlinked in separately -- home.file cannot
+  # add a child to a directory that is itself a read-only store symlink.
+  piThemesDir = pkgs.runCommand "pi-themes" {} ''
+    mkdir -p "$out"
+    cp -r ${./pi/themes}/. "$out"/
+    chmod -R u+w "$out"
+    cp ${piThemeFile} "$out"/system.json
+  '';
+
   # Idempotently merges piSettingsFile into ~/.pi/agent/settings.json.
   mergePiSettings = pkgs.writeShellApplication {
     name = "pi-merge-settings";
@@ -137,7 +244,7 @@ in {
   home.file = {
     ".pi/agent/prompts".source = ./pi/prompts;
     ".pi/agent/extensions".source = ./pi/extensions;
-    ".pi/agent/themes".source = ./pi/themes;
+    ".pi/agent/themes".source = piThemesDir;
     ".pi/agent/models.json".source = piModelsFile;
   };
 

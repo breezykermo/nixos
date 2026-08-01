@@ -4,11 +4,17 @@
   lib,
   inputs,
   system,
+  theme,
   ...
 }: let
-  abacus = pkgs.callPackage ./abacus.nix {};
+  # `theme` is threaded in so abacus can be built with a generated theme source
+  # file matching the active palette -- its themes are compiled in, not
+  # configurable. See the header comment there.
+  abacus = pkgs.callPackage ./abacus.nix {inherit theme;};
   beads = pkgs.callPackage ./beads.nix {};
   pi = pkgs.callPackage ./pi.nix {};
+
+  mix = theme.themeLib.mix;
 
   # Prose-style toggle. Governs BOTH the appended global-memory rules AND the
   # pi package set (see ./pi-config.nix), since the two writing-style regimes are
@@ -61,6 +67,108 @@
     text = builtins.readFile ./scripts/brsave.sh;
   };
 
+  # Claude Code custom theme, generated from the active palette in
+  # themes/default.nix so the TUI matches Ghostty and Neovim instead of Claude's
+  # built-in presets. Claude Code loads ~/.claude/themes/<slug>.json, where the
+  # slug is the FILENAME; selecting it records `custom:<slug>` in settings.json
+  # (docs: code.claude.com/docs/en/terminal-config#create-a-custom-theme,
+  # requires Claude Code >= 2.1.118). Only listed tokens are overridden -- the
+  # rest fall through to `base`, and unknown tokens / invalid colors are ignored
+  # rather than fatal, so an upstream token rename degrades to the preset.
+  #
+  # Named `system` rather than `moonfly` for the same reason tuicr's theme is
+  # (home-manager/server/editor/vcs/default.nix): it follows whatever palette
+  # themes/default.nix has active, so switching themes needs no rename here.
+  claudeTheme = {
+    name = "System (${theme.fullName})";
+    base = "dark";
+    overrides = {
+      # Text and accents. `subtle` is faint borders, `inactive` is hint text.
+      claude = theme.colors.aqua;
+      claudeShimmer = mix theme.colors.aqua theme.foreground 0.45;
+      text = theme.foreground;
+      inverseText = theme.background;
+      inactive = theme.colors.fg4;
+      inactiveShimmer = theme.colors.fg3;
+      subtle = theme.colors.bg4;
+      suggestion = theme.colors.blue;
+      permission = theme.colors.purple;
+      permissionShimmer = theme.colors.bright_purple;
+      remember = theme.colors.orange;
+
+      # Status.
+      success = theme.colors.green;
+      error = theme.colors.red;
+      warning = theme.colors.yellow;
+      warningShimmer = theme.colors.bright_yellow;
+      merged = theme.colors.purple;
+
+      # Input box border, one color per permission mode.
+      promptBorder = theme.colors.blue;
+      promptBorderShimmer = theme.colors.bright_blue;
+      planMode = theme.colors.bright_blue;
+      autoAccept = theme.colors.bright_green;
+      bashBorder = theme.colors.bright_orange;
+      ide = theme.colors.blue;
+      fastMode = theme.colors.bright_yellow;
+      fastModeShimmer = theme.colors.yellow;
+
+      # Diffs. The `*Dimmed` pair is context near a change, so it gets a lighter
+      # wash of the same hue; the word-level pair is the strongest. Same
+      # palette-mixed washes delta and tuicr use, so a diff reads identically in
+      # all three.
+      diffAdded = mix theme.colors.green theme.background 0.25;
+      diffRemoved = mix theme.colors.red theme.background 0.25;
+      diffAddedDimmed = mix theme.colors.green theme.background 0.12;
+      diffRemovedDimmed = mix theme.colors.red theme.background 0.12;
+      diffAddedWord = mix theme.colors.green theme.background 0.45;
+      diffRemovedWord = mix theme.colors.red theme.background 0.45;
+
+      # Fullscreen rendering only (`/tui fullscreen`).
+      userMessageBackground = theme.colors.bg1;
+      userMessageBackgroundHover = theme.colors.bg2;
+      bashMessageBackgroundColor = mix theme.colors.orange theme.background 0.15;
+      memoryBackgroundColor = mix theme.colors.purple theme.background 0.15;
+      selectionBg = theme.colors.bg2;
+
+      # `/usage` meter and the You/Claude transcript labels.
+      rate_limit_fill = theme.colors.aqua;
+      rate_limit_empty = theme.colors.bg3;
+      briefLabelYou = theme.colors.blue;
+      briefLabelClaude = theme.colors.aqua;
+
+      # The eight named colors a subagent/parallel task can be tagged with.
+      # Moonfly has no pink, so crimson (its bright red) stands in.
+      red_FOR_SUBAGENTS_ONLY = theme.colors.red;
+      blue_FOR_SUBAGENTS_ONLY = theme.colors.blue;
+      green_FOR_SUBAGENTS_ONLY = theme.colors.green;
+      yellow_FOR_SUBAGENTS_ONLY = theme.colors.yellow;
+      purple_FOR_SUBAGENTS_ONLY = theme.colors.purple;
+      orange_FOR_SUBAGENTS_ONLY = theme.colors.orange;
+      pink_FOR_SUBAGENTS_ONLY = theme.colors.bright_red;
+      cyan_FOR_SUBAGENTS_ONLY = theme.colors.aqua;
+    };
+  };
+  claudeThemeFile = pkgs.writeText "claude-theme-system.json" (builtins.toJSON claudeTheme);
+
+  # Nix-managed Claude Code settings defaults. Kept minimal on purpose: the file
+  # is read-write (Claude persists plugin state, statusline, model, theme), so
+  # every key listed here WINS over an interactive change on the next rebuild.
+  claudeSettings = {
+    # Selects claudeThemeFile above. Must stay `custom:<filename-without-.json>`.
+    theme = "custom:system";
+  };
+  claudeSettingsFile = pkgs.writeText "claude-settings.json" (builtins.toJSON claudeSettings);
+
+  # Idempotently merges claudeSettingsFile into ~/.claude/settings.json.
+  mergeClaudeSettings = pkgs.writeShellApplication {
+    name = "claude-merge-settings";
+    runtimeInputs = with pkgs; [jq coreutils];
+    # The jq filter intentionally lives in single quotes.
+    excludeShellChecks = ["SC2016"];
+    text = builtins.readFile ./hooks/merge-claude-settings.sh;
+  };
+
   # Idempotently merges the blockGitHook above into ~/.claude/settings.json.
   # Run from the claudeGitHook activation below; takes the hook command path as
   # its one argument. See ./hooks/register-git-hook.sh for the why.
@@ -85,6 +193,12 @@ in {
     ".claude/CLAUDE.md".text = globalClaudeMd;
     # Mirror to ~/.pi/agent/AGENTS.md so pi picks up the same global context.
     ".pi/agent/AGENTS.md".text = globalClaudeMd;
+    # Palette-driven Claude Code theme (see claudeTheme above). Selected by the
+    # `theme = "custom:system"` key merged into settings.json below. Claude Code
+    # watches this directory and hot-reloads, but it only starts watching if the
+    # directory existed at launch -- so the first rebuild that creates it needs
+    # one Claude restart.
+    ".claude/themes/system.json".source = claudeThemeFile;
     ".claude/skills/typst-author".source = pinnedSkills.typst-author-skill;
     ".claude/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
@@ -103,6 +217,13 @@ in {
   # rather than a home.file symlink.
   home.activation.claudeGitHook = lib.hm.dag.entryAfter ["writeBoundary"] ''
     run ${registerGitHook}/bin/claude-register-git-hook "${blockGitHook}/bin/claude-block-git"
+  '';
+
+  # Merge the managed defaults (currently just the theme selection) into the same
+  # mutable settings.json. Separate from the hook activation above because that
+  # one rewrites a hook array in place, while this is a plain key merge.
+  home.activation.claudeSettings = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    run ${mergeClaudeSettings}/bin/claude-merge-settings "${claudeSettingsFile}"
   '';
 
   home.shellAliases = {

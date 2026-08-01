@@ -201,10 +201,148 @@ in {
           "trunk() | trunk().. | working_copies()"
         ];
         ui.diff-formatter = ":git";
-        # jj defaults timestamps to cyan; blue reads better against the active
-        # terminal/Neovim theme.
-        colors.timestamp = "blue";
-        colors."working_copy timestamp" = "bright blue";
+        # Palette-driven log/diff colors. jj accepts a bare color name, an
+        # `ansi-color-<n>` index, or a `#rrggbb` hex string per label
+        # (`jj util config-schema`), so the same hexes the rest of the desktop
+        # uses go in verbatim instead of jj's 16 ANSI defaults -- which are the
+        # terminal's palette and so drift from the theme whenever a slot is
+        # remapped. Every label below overrides one jj ships (see
+        # `jj config list --include-defaults colors`); labels not listed keep
+        # their default.
+        #
+        # The `working_copy <label>` rows are the `@` line: jj composes labels,
+        # so the more specific pair wins there. Those use the bright half of the
+        # palette so the working copy stands out from the rest of the graph,
+        # mirroring jj's own default/bright split.
+        colors = {
+          # Log fields.
+          commit_id = theme.colors.blue;
+          change_id = theme.colors.purple;
+          author = theme.colors.yellow;
+          committer = theme.colors.yellow;
+          timestamp = theme.colors.blue;
+          bookmark = theme.colors.purple;
+          bookmarks = theme.colors.purple;
+          local_bookmarks = theme.colors.purple;
+          remote_bookmarks = theme.colors.purple;
+          tag = theme.colors.purple;
+          tags = theme.colors.purple;
+          git_ref = theme.colors.green;
+          workspace_name = theme.colors.green;
+          working_copies = theme.colors.green;
+          divergent = theme.colors.purple;
+          empty = theme.colors.green;
+          root = theme.colors.green;
+          conflict = theme.colors.red;
+          conflict_description = theme.colors.yellow;
+          "conflict_description difficult" = theme.colors.red;
+          placeholder = theme.colors.red;
+          "description placeholder" = theme.colors.yellow;
+          "empty description placeholder" = theme.colors.green;
+          # Graph furniture: the `~` elision marker, the `|` separators and the
+          # dimmed tail of a change/commit id after its unique prefix.
+          separator = theme.colors.bg4;
+          elided = theme.colors.bg4;
+          rest = theme.colors.bg4;
+
+          # The `@` row.
+          "working_copy commit_id" = theme.colors.bright_blue;
+          "working_copy change_id" = theme.colors.bright_purple;
+          "working_copy timestamp" = theme.colors.bright_blue;
+          "working_copy author" = theme.colors.bright_yellow;
+          "working_copy committer" = theme.colors.bright_yellow;
+          "working_copy bookmark" = theme.colors.bright_purple;
+          "working_copy bookmarks" = theme.colors.bright_purple;
+          "working_copy local_bookmarks" = theme.colors.bright_purple;
+          "working_copy remote_bookmarks" = theme.colors.bright_purple;
+          "working_copy tag" = theme.colors.bright_purple;
+          "working_copy tags" = theme.colors.bright_purple;
+          "working_copy git_ref" = theme.colors.bright_green;
+          "working_copy working_copies" = theme.colors.bright_green;
+          "working_copy divergent" = theme.colors.bright_purple;
+          "working_copy empty" = theme.colors.bright_green;
+          "working_copy conflict" = theme.colors.bright_red;
+          "working_copy placeholder" = theme.colors.bright_red;
+          "working_copy description placeholder" = theme.colors.yellow;
+          "working_copy empty description placeholder" = theme.colors.bright_green;
+
+          # Diagnostics. Written as tables because jj's defaults carry `bold`
+          # here, and a bare string would replace the whole entry and drop it.
+          "error heading" = {
+            fg = theme.colors.red;
+            bold = true;
+          };
+          "warning heading" = {
+            fg = theme.colors.yellow;
+            bold = true;
+          };
+          "hint heading" = {
+            fg = theme.colors.aqua;
+            bold = true;
+          };
+
+          # `jj config list` output.
+          "config_list name" = theme.colors.green;
+          "config_list value" = theme.colors.yellow;
+          "config_list source" = theme.colors.blue;
+          "config_list path" = theme.colors.purple;
+          "config_list overridden" = theme.colors.bg4;
+
+          # jj's own diff renderer. Mostly unused here -- ui.diff-formatter is
+          # `:git` and the pager is delta, so `jj diff`/`jj show` are colored by
+          # the delta block in programs.git below -- but `jj resolve`, `jj log
+          # -p` fallbacks and any `--config ui.pager=:builtin` run still hit it.
+          "diff header" = theme.colors.yellow;
+          "diff file_header" = {
+            fg = theme.colors.purple;
+            bold = true;
+          };
+          "diff hunk_header" = theme.colors.blue;
+          "diff empty" = theme.colors.aqua;
+          "diff binary" = theme.colors.aqua;
+          "diff removed" = {
+            fg = theme.colors.red;
+            bg = mix theme.colors.red theme.background 0.25;
+          };
+          "diff added" = {
+            fg = theme.colors.green;
+            bg = mix theme.colors.green theme.background 0.25;
+          };
+          "diff modified" = theme.colors.yellow;
+          "diff renamed" = theme.colors.purple;
+          "diff copied" = theme.colors.aqua;
+          "diff untracked" = theme.colors.orange;
+
+          # Graph node glyphs (`@`, `○`, `◆`, `×`). Tables again -- the defaults
+          # set `bold` alongside the color.
+          "node elided".fg = theme.colors.bg4;
+          "node working_copy" = {
+            fg = theme.colors.bright_green;
+            bold = true;
+          };
+          "node immutable" = {
+            fg = theme.colors.aqua;
+            bold = true;
+          };
+          "node conflicted" = {
+            fg = theme.colors.red;
+            bold = true;
+          };
+          "node current_operation" = {
+            fg = theme.colors.bright_green;
+            bold = true;
+          };
+
+          # `jj op log`.
+          "operation id" = theme.colors.blue;
+          "operation user" = theme.colors.yellow;
+          "operation time" = theme.colors.aqua;
+          "operation attributes" = theme.colors.purple;
+          "operation current_operation id" = theme.colors.bright_blue;
+          "operation current_operation user" = theme.colors.bright_yellow;
+          "operation current_operation time" = theme.colors.bright_aqua;
+          "operation current_operation attributes" = theme.colors.bright_purple;
+        };
       };
     };
 
