@@ -330,21 +330,30 @@ jj config set --user user.email "lachie@ohrg.org"
 
 Churn and pair sessions are long-running and may run **concurrently with other agents** on the
 same repo. Two agents sharing one checkout fight over the single `@` working-copy commit and
-stomp each other's uncommitted changes. So **before starting any churn or pair loop, create a
-dedicated jj workspace and do every step of the loop inside it.** A workspace is an independent
-working copy on disk that shares the same underlying repo — commits, operation log, and history —
-with the main checkout, so all committed work still lands in the one repo; only the working
-copies are isolated.
+stomp each other's uncommitted changes. So **while actively implementing a bead, do every step
+inside a dedicated jj workspace.** A workspace is an independent working copy on disk that shares
+the same underlying repo — commits, operation log, and history — with the main checkout, so all
+committed work still lands in the one repo; only the working copies are isolated.
 Ref: https://www.joshualyman.com/2026/02/demystifying-jujutsu-jj-workspaces/
 
-**Set up (once, before the loop):**
+**A workspace lives exactly as long as the implementation does.** Create it when you start a
+bead; fold it back into the main checkout the moment that bead's work is committed, BEFORE
+pausing to prompt the user. A workspace must never be sitting around while you wait on a human —
+if the next thing you do is ask a question, the workspace should already be gone. Further work
+means a NEW workspace. Churn, which never pauses, may keep one workspace for its whole loop;
+pair creates and folds one per bead.
+
+**Set up (at the start of each bead):**
 ```bash
-# Run from inside the repo. <tag> = a short, unique session id (vary it per agent).
-jj workspace add --name <tag> -r main ../<repo>-<tag>   # sibling dir; working copy on top of main
+# Run from inside the repo. <tag> = a short, unique session id (vary it per agent/bead).
+jj workspace add --name <tag> -r @- ../<repo>-<tag>     # sibling dir; branch off the latest work, NOT stale main
 cd ../<repo>-<tag>
 direnv allow                                            # new dir has the tracked .envrc but isn't allowed yet
 brsave --import                                         # tracked open.jsonl came with the checkout; the db did not
 ```
+Branch the workspace off the tip of the work so far (`@-` in the main checkout, i.e. the last
+named commit), not off `main`. Branching off `main` every time produces parallel chains that
+have to be rebased together later.
 Skip the `brsave --import` in a multi-agent session — there the orchestrator owns beads entirely
 (see the single-writer protocol below).
 - The workspace dir MUST be a **sibling** of the repo (`../<repo>-<tag>`), never nested inside it.
@@ -376,13 +385,23 @@ Skip the `brsave --import` in a multi-agent session — there the orchestrator o
   checkout into the new workspace. Trade-off: shared build state can race across concurrent
   agents for some stacks, so symlink only read-heavy caches, not active build/output dirs.
 
-**Tear down (when the session ends):**
+**Fold back into main (as soon as the bead's work is committed):**
 ```bash
-cd <main repo>            # back to the primary working copy
-jj workspace forget <tag> # drops the workspace ref; its empty @ is abandoned
-rm -rf ../<repo>-<tag>    # remove the directory
+cd <main repo>                     # back to the primary working copy
+jj workspace forget <tag>          # drops the workspace ref; its empty @ is abandoned
+rm -rf ../<repo>-<tag>             # remove the directory
+jj rebase -s <main @> -d <tip>     # restack the main working copy ON TOP of the new commits
+jj status                          # @ must now be empty again
 ```
-`jj log` from the main checkout still shows every commit the workspace created — they live in the shared repo.
+`jj log` from the main checkout already shows every commit the workspace created — they live in
+the shared repo. But **`jj workspace forget` alone does not fold the work in**: the main
+checkout's `@` is still parked wherever it was when the workspace was created, so the new commits
+sit off to one side and the next bead branches off stale history. The `jj rebase -s <main @> -d
+<tip>` is the fold — without it you accumulate parallel chains and end up rebasing by hand later.
+`<tip>` is the last named commit the workspace produced; `<main @>` is the main checkout's
+working-copy change id. After the rebase `@` should report `(empty)` — if it does not, inspect
+`jj diff` before continuing (a stray file, e.g. `.claude/settings.local.json`, may have been
+snapshotted into it).
 
 **Concurrent commits are safe:** multiple workspaces committing into the one shared repo use jj's optimistic operation log. Under concurrency jj may print `concurrent modification` but auto-reconciles — inspect with `jj op log` if curious; no manual action is normally needed. Don't panic at the warning.
 
@@ -412,8 +431,8 @@ Loop until no open issues:
 
 When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
 commands) and `brsave`, then `jj squash --use-destination-message` if that produced changes.
-Leave `@` empty. Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace
-isolation*).
+Leave `@` empty. Then fold the workspace back into main (`jj workspace forget` + `rm -rf` +
+`jj rebase`, see *Workspace isolation*).
 
 Report: list all closed issues.
 
@@ -435,38 +454,39 @@ jj config set --user user.name "Lachlan Kermode"
 jj config set --user user.email "lachie@ohrg.org"
 ```
 
-**Then set up an isolated jj workspace** and run the ENTIRE pair session inside it — see
-*Workspace isolation* above. Never pair in the shared main checkout.
+**Each bead gets its own jj workspace**, created when you start implementing it and folded back
+into the main checkout before you pause for review — see *Workspace isolation* above. Never pair
+in the shared main checkout, and never leave a workspace standing while waiting on the user.
 
 Loop until no open issues or user stops:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
-2. Implement with br/jj workflow, but **do NOT close the issue** — it stays `in_progress`.
-   Do the work, run tests, run `brsave` (the `in_progress` status belongs in the export), then
-   **do the full squash so a named jj commit already exists**:
-   `jj squash --use-destination-message` then `jj describe -r @- -m "Present tense description"`.
-   The `br close` is the ONLY step deferred; everything else (squash into a named commit,
-   empty `@` on top) is done before the pause.
-3. **Pause and prompt the user for review** — present what was done, ask whether to continue.
+2. **Create the workspace for this bead** (`jj workspace add --name <tag> -r @- ../<repo>-<tag>`,
+   see *Workspace isolation*), then implement with the br/jj workflow inside it, but **do NOT
+   close the issue** — it stays `in_progress`. Do the work, run tests, run `brsave` (the
+   `in_progress` status belongs in the export), then **do the full squash so a named jj commit
+   already exists**: `jj squash --use-destination-message` then
+   `jj describe -r @- -m "Present tense description"`. The `br close` is the ONLY step deferred;
+   everything else (squash into a named commit, empty `@` on top) is done before the pause.
+3. **Fold the workspace back into main** — `jj workspace forget <tag>`, `rm -rf` the directory,
+   and rebase the main checkout's `@` onto the new tip, per *Workspace isolation*. Do this
+   BEFORE step 4: the user is about to review, and no workspace should exist while you wait.
+4. **Pause and prompt the user for review** — present what was done, ask whether to continue.
    The named commit is already in place; the issue stays `in_progress` until the user confirms.
    - User may review code, request changes, add/modify/remove br issues
-   - If user requests changes: do NOT squash into the existing named commit. The top commit
-     (`@`) is already empty from the prior squash/pause — apply the requested edits directly
-     into it, do NOT run `jj new` first (that would strand a second empty commit). Once edits
-     are done, name it: `jj describe -m "Present tense description"`. THEN run `jj new` once to
-     open the next empty commit, and pause for review again (still `in_progress`). This keeps
-     each review round its own commit, and exactly one empty commit ever sits on top. One bead
-     can map to several jj commits this way — that's fine, the bead-to-commit relationship is
-     one-to-many, not one-to-one.
+   - If user requests changes: that is more implementation, so **open a fresh workspace for it**
+     (same `jj workspace add` as step 2) and fold it back again before pausing. Do NOT squash
+     into the existing named commit — commit the edits as their own named commit on top, so each
+     review round is its own commit. One bead can map to several jj commits this way; that's
+     fine, the bead-to-commit relationship is one-to-many, not one-to-one.
    - Only when the user explicitly confirms (e.g. "continue", "next", "go"):
      close the issue (`br close`), then `brsave` — the commit for this bead is already named, so
      the refreshed export rides in the next commit (or in the end-of-session squash below) rather
      than getting its own — then move to the next issue
    - If user says "stop" or "done", exit the loop (leave the current issue `in_progress`)
 
-When done, run the project's formatter and linter (see the project's `CLAUDE.md` for exact
-commands) and `brsave`, then `jj squash --use-destination-message` if that produced changes.
-Leave `@` empty. Then tear down the workspace (`jj workspace forget` + `rm -rf`, see *Workspace
-isolation*).
+When done — with no workspace open, in the main checkout — run the project's formatter and linter
+(see the project's `CLAUDE.md` for exact commands) and `brsave`, then
+`jj squash --use-destination-message` if that produced changes. Leave `@` empty.
 
 Report: list all closed issues.
 
