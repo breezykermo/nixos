@@ -30,8 +30,8 @@ let
     # Selects piTheme below. pi resolves this against the theme's `name` field
     # (not its filename), so the two must stay in sync.
     theme = "system";
-    defaultProvider = "ollama";
-    defaultModel = "qwen3.6:35b";
+    defaultProvider = "anthropic";
+    defaultModel = "claude-opus-4-8";
     defaultThinkingLevel = "medium";
     # Packages pi auto-installs on startup if missing. See docs/packages.md;
     # entries here mirror what `pi install <spec>` would write. Sources land
@@ -87,9 +87,6 @@ let
         # first-class source loaded in place (not copied), so in-place edits
         # are safe and `pi update` skips it. See ~/code/_konrad/falconry.
         "/home/lox/code/_konrad/falconry"
-      ]
-      ++ lib.optionals (!pellucid) [
-        "npm:@dietrichgebert/ponytail" # https://pi.dev/packages/@dietrichgebert/ponytail
       ];
   };
   piSettingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON piSettings);
