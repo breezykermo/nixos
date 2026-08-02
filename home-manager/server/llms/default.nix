@@ -204,6 +204,21 @@ in {
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
 
+    # austringer workflow skills, symlinked live (mkOutOfStoreSymlink) into
+    # Claude Code so both harnesses share ONE source — editing a SKILL.md in the
+    # austringer repo changes what Claude Code sees, no rebuild. This is what
+    # lets the procedural prose live once in the package's skills/ rather than
+    # being duplicated in global-procedures.md (closes the drift bug). pi reads
+    # these directly from the loaded austringer package, so no pi mirror needed.
+    # See aus-zkt.
+    ".claude/skills/br-jj-workflow".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/br-jj-workflow";
+    ".claude/skills/br-jj-hack".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/br-jj-hack";
+    ".claude/skills/br-jj-slip".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/br-jj-slip";
+    ".claude/skills/jj-workspaces".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/jj-workspaces";
+    ".claude/skills/beads-plan-mode".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/beads-plan-mode";
+    ".claude/skills/nixos-machine".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/nixos-machine";
+    ".claude/skills/bead-quality".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/bead-quality";
+
     # Mirror skills for pi (pi dev) alongside Claude Code so either agent
     # reads the same skill set without manual copy/paste.
     ".pi/agent/skills/typst-author".source = pinnedSkills.typst-author-skill;
