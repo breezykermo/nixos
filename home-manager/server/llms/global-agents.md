@@ -254,6 +254,46 @@ a directory excluded as a directory, and `~/.config/git/ignore` on this machine 
 Remove any blanket `.beads/` line when adding them. `brsave` warns when they are missing; it
 never edits `.gitignore` itself.
 
+**A conflict in `.beads/open.jsonl` is ALWAYS resolved by union — never by picking a side.**
+The file is one bead per line, and two sides that touched it were, almost always, filing
+*different* beads. Taking either side silently deletes the other's work, and because the
+losing beads were never anywhere else, there is nothing to notice afterwards.
+
+The rule:
+
+1. **Never `jj restore` / checkout one side of this file.** Not as a shortcut, not "to unblock
+   the rebase". The whole point of the file is that it is additive.
+2. Take the side with the **closes** as the base — a bead absent from an export was closed, and
+   re-adding it silently reopens finished work. Then add the beads the other side introduced.
+   Match on the `id` field; ids are unique, so a union keyed on id is well-defined.
+3. Verify all three properties before committing, because each is a distinct way to get it
+   wrong: every id from both sides is present, no closed bead came back, and the count equals
+   what you expect.
+4. Resolve at the **db** level, not just the file: whichever db you then `brsave` from must know
+   about both sides, or the very next export undoes the merge. `brsave --import` on the unioned
+   file first, then `brsave`, is the safe order.
+
+Note that `git`'s `merge=union` driver in `.gitattributes` would do exactly this automatically,
+but jj does not honour gitattributes merge drivers, so this stays a manual rule.
+
+**What causes these conflicts (and the loss that comes with them):** two `br` writers against
+one repo. `br` resolves its db from the *repo root*, so a **jj workspace shares the main
+checkout's `.beads/` db** — a sibling workspace dir does NOT get its own, whatever the
+workspace-isolation section might suggest. Two agents therefore mutate one sqlite db while
+exporting into two different checkouts' `open.jsonl`.
+
+Worse than the file conflict: `br` reimports from `.beads/issues.jsonl` on some operations, so
+one session's mutation can **silently erase beads another session just created** — not
+conflict, erase. Observed 2026-08-02: seven freshly created beads vanished from every db and
+every export, recoverable only because the `br create` invocations were still in the agent's
+scrollback. So:
+
+- Treat "I created beads and another session was running" as a claim to VERIFY, not to assume:
+  `br list -l <label>` immediately after, and again after any `brsave`.
+- Keep the `br create` text recoverable (a file, or the transcript) until it is committed.
+- One writer at a time. This is the single-writer protocol below, and the reason for it is loss,
+  not merely double-claims.
+
 **Labels reject `/`:** `br create -l <label>` allows only alphanumeric, hyphen, underscore, colon. The `feat/<kebab>` / `fix/<kebab>` convention (used for jj bookmarks / branches) CANNOT be a bead label verbatim — the slash fails validation (`invalid characters`). Use the hyphen form for the bead label (e.g. `feat-auto-label`, `chore-doc-test-sync`) while keeping the slash form for the bookmark/branch.
 
 **Reimport reverts mutations:** `br` can silently undo a `close` / `--status in_progress` / `delete` because it reimports from `.beads/issues.jsonl`, which still holds the old state. Always re-check with `br list --status=open` (or `br show`) right after mutating, and re-issue if it reverted. For deletes, use `br delete <ids> --force --hard` so the JSONL tombstone is hard-pruned and reimport can't resurrect the issue.
@@ -308,14 +348,17 @@ brsave --import                                         # tracked open.jsonl cam
 Skip the `brsave --import` in a multi-agent session — there the orchestrator owns beads entirely
 (see the single-writer protocol below).
 - The workspace dir MUST be a **sibling** of the repo (`../<repo>-<tag>`), never nested inside it.
-- **beads coordination (prevent double-claims):** `br` reads `.beads/` from the current dir. A
-  fresh workspace checks out `.beads/open.jsonl` (tracked) but no db — everything else under
-  `.beads/` is ignored — so `br` there starts empty until someone runs `brsave --import`. Doing
-  that gives each workspace its OWN db, so a claim/close in one is invisible to the others; the
-  naive alternatives — run `br` from the main checkout, or symlink the main repo's `.beads/` into
-  each workspace — make N agents share ONE mutable sqlite+jsonl, which exposes the "reimport
-  reverts mutations" race above. Either way `br update --status in_progress` is NOT a reliable
-  claim, so two agents can both `br ready` and pick the SAME top issue → two commits for one bead.
+- **beads coordination (prevent double-claims AND loss):** `br` resolves its db from the **repo
+  root**, not the current directory — and a jj workspace's repo root is the SHARED repo. Measured
+  2026-08-02: a `../<repo>-<tag>` workspace never grew a `.beads/` directory at all; `brsave
+  --import`, every `br create`, and a later `brsave` all read and wrote the MAIN checkout's db
+  and the MAIN checkout's `open.jsonl`. So a workspace does **not** give an agent its own beads
+  db, and cannot be used to isolate one.
+  That makes the failure worse than double-claiming. N agents in N workspaces share ONE mutable
+  sqlite+jsonl, which is exactly the "reimport reverts mutations" race above — and it does not
+  merely revert a status, it can **delete beads one agent created while another was writing**.
+  `br update --status in_progress` is therefore not a reliable claim either: two agents can both
+  `br ready` and pick the SAME top issue → two commits for one bead.
   - **Protocol (single-writer):** the orchestrator (or you, before spawning agents) runs
     `br ready` **once**, partitions the ready issues into **disjoint** per-agent sets, and hands
     each agent the **explicit issue IDs** to work. Agents do NOT self-select from a shared
