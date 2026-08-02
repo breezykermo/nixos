@@ -9,12 +9,12 @@
     "owner": "freecomputinglab",
     "repo": "rheo-author",
     "rev": "main",
-    "sha256": "sha256-Di/ZYhvS0417U5jV+VzbR109KN/3CcM+p7WmE7hVYnE="
+    "sha256": "sha256-uWGi/13YiO2pxZdxrD5vcIIzvJxzFxEdWgk8Y0eqoew="
   },
   "agentic-jujutsu-skill": {
     "owner": "ruvnet",
     "repo": "agentic-flow",
     "rev": "main",
-    "sha256": "sha256-370XuRkk1GA68PXmlUkXwjl90xO9gqm/X6jXUZCT1R4="
+    "sha256": "sha256-LtubwQEIASaXTQD+4QLDlg4EGuwsogohb41XAFaWnpA="
   }
 }
