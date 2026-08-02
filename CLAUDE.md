@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Note**: This project uses beads for issue tracking via the `br` CLI. Global process rules (including beads workflow, version control conventions, and pi behavior) are in `home-manager/server/llms/global-agents.md` — follow those.
+**Note**: This project uses beads for issue tracking via the `br` CLI. Global process rules (including beads workflow, version control conventions, and pi behavior) are in `home-manager/server/llms/global-core.md` — follow those.
 
 ## Overview
 
@@ -128,34 +128,34 @@ After initial deployment:
 
 ## Issue Tracking (br/beads)
 
-All process rules for beads/br are in the global-level memory file at `home-manager/server/llms/global-agents.md` — **follow those**, not simplified duplicates here. Key points:
+All process rules for beads/br are in the global-level memory file at `home-manager/server/llms/global-core.md` — **follow those**, not simplified duplicates here. Key points:
 
 - Use `br` (not `bd`) for all issue tracking commands with `--json`.
 - Always end jj work with an empty unnamed `@` on top.
 - Label convention: alphanumeric/hyphen/underscore only (no `/`). Use hyphen form for labels, slash for bookmarks.
 
 - Beads are **partly committed**: `.beads/open.jsonl` is tracked, everything else under
-  `.beads/` is ignored. Run `brsave` before every `jj squash`. This is the global rule now
-  (see the Issue Tracking section of `global-agents.md`), not a local exception.
+  `.beads/` is ignored. The **falconry pi extension** refreshes `.beads/open.jsonl`
+  automatically after any `br` mutation inside a pi session; no manual export step. Outside a pi
+  session the export can go stale until the next pi session notices. See the Issue Tracking
+  section of `global-core.md`.
 
-This repo is also where `brsave` itself is defined: `home-manager/server/llms/scripts/brsave.sh`,
-packaged in `home-manager/server/llms/default.nix` and installed computer-wide. The store here
-is project-local, prefix `nixos`, and the three `.beads` lines at the end of `.gitignore` are
-order-sensitive — read the comment there before touching them.
+The store here is project-local, prefix `nixos`, and the three `.beads` lines at the end of
+`.gitignore` are order-sensitive — read the comment there before touching them.
 
 ---
 
 ## Process: "Update global CLAUDE devenvs"
 
 The global (user-level) CLAUDE.md source lives at
-`home-manager/server/llms/global-agents.md` in this repo (symlinked to `~/.claude/CLAUDE.md` by
+`home-manager/server/llms/global-core.md` in this repo (symlinked to `~/.claude/CLAUDE.md` by
 home-manager). Its **Development Environment (NixOS + flake devShells)** section documents the
 per-stack devShell setup, distilled from a set of canonical example projects.
 
 When the user says **"Update global CLAUDE devenvs"** (or close variant), do this:
 
 1. Read the current **Development Environment** section in
-   `home-manager/server/llms/global-agents.md` — note the canonical example projects listed at
+   `home-manager/server/llms/global-core.md` — note the canonical example projects listed at
    the end of it (currently OxCaml `~/code/_karaji/karaji`, Rust `~/code/_rheo/rheo`, Python
    `~/code/_pragma/pragma`).
 2. Read each canonical project's `flake.nix` (and `.envrc` if relevant). Skip any that no longer
@@ -165,7 +165,7 @@ When the user says **"Update global CLAUDE devenvs"** (or close variant), do thi
    project-local, activated by the devShell `shellHook`), the pinned toolchain, native deps,
    and any build-sandbox caveats. Keep it stack-general, NOT project-specific: the section must
    still make sense on a machine where those projects are absent.
-4. Edit only that section of `global-agents.md` to match. Preserve the surrounding structure and
+4. Edit only that section of `global-core.md` to match. Preserve the surrounding structure and
    the "live examples … may not exist on every machine" note.
 5. Report what changed per stack (and any projects skipped as missing).
 

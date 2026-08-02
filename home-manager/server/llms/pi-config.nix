@@ -39,7 +39,7 @@ let
     #
     # Rejected during the 2026-07-31 audit and deliberately absent:
     #   - rpiv-todo, pi-beads-extension: duplicate/misname the br/jj/beads
-    #     workflow that global-agents.md pins as the source of truth. A
+    #     workflow that global-core.md pins as the source of truth. A
     #     first-party replacement is tracked as beads issue nixos-0eu.
     #   - pi-lens: auto-installs ~25 external linter/LSP binaries into
     #     ~/.pi-lens/{bin,tools}/ via npx/pip/GitHub-release curls, a
@@ -59,7 +59,7 @@ let
     packages =
       [
         "npm:pi-web-access" # https://pi.dev/packages/pi-web-access
-        # caveman is now VENDORED inside the austringer package
+        # caveman is now VENDORED inside the falconry package
         # (extensions/caveman + skills/caveman), so the unpinned git source is
         # gone: `pi update` hard-resets a git clone and would destroy edits, and
         # a duplicate skill name would load non-deterministically. See aus-cvm-rn0.
@@ -85,8 +85,8 @@ let
         "npm:@benvargas/pi-claude-code-use" # https://github.com/ben-vargas/pi-packages/tree/main/packages/pi-claude-code-use
         # First-party br/jj enforcement package. Local absolute path: a
         # first-class source loaded in place (not copied), so in-place edits
-        # are safe and `pi update` skips it. See ~/code/austringer.
-        "/home/lox/code/austringer"
+        # are safe and `pi update` skips it. See ~/code/_konrad/falconry.
+        "/home/lox/code/_konrad/falconry"
       ]
       ++ lib.optionals (!pellucid) [
         "npm:@dietrichgebert/ponytail" # https://pi.dev/packages/@dietrichgebert/ponytail

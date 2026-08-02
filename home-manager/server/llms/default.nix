@@ -29,8 +29,13 @@
   # the model contradictory nudges, so the toggle picks one.
   pellucid = false;
 
-  globalClaudeMd =
-    builtins.readFile ./global-agents.md
+  # global-core.md holds the always-on rules and prohibitions, rendered to BOTH
+  # harnesses. The long-running beads/jj PROCEDURES are NOT here — they live once,
+  # as lazily-loaded skills in the falconry package, read by pi directly and by
+  # Claude Code via the ~/.claude/skills symlinks (see default.nix home.file and
+  # aus-zkt). So there is no separate procedures file to duplicate. See aus-doc-vn5.
+  globalMemory =
+    builtins.readFile ./global-core.md
     + lib.optionalString pellucid ("\n---\n\n" + builtins.readFile ./pellucid.md);
 
   # Skill source pins live in pins.json at the repo root (kept there, not
@@ -39,7 +44,7 @@
   pins = builtins.fromJSON (builtins.readFile ../../../pins.json);
   pinnedSkills = lib.mapAttrs (_: pkgs.fetchFromGitHub) pins;
 
-  # Enforces the "never git, always jj" rule from global-agents.md as a hard
+  # Enforces the "never git, always jj" rule from global-core.md as a hard
   # PreToolUse gate rather than prose. Reads the Bash tool-call JSON on stdin
   # and exits 2 (blocking, message fed back to Claude) on any direct `git`
   # invocation — while allowing `jj git ...`, `git-crypt`, `gh`, `lazygit`, and
@@ -53,19 +58,13 @@
     text = builtins.readFile ./hooks/block-git.sh;
   };
 
-  # `brsave` — derives .beads/open.jsonl, the open/in-progress slice of the issue
-  # tracker that every repo commits (global-agents.md, "Issue Tracking"). Installed
-  # computer-wide rather than copied into each project, since the rule is
-  # computer-wide; it resolves the repo root itself, so it works from anywhere.
-  # `br` comes from the beads package above so the export format tracks the same
-  # binary the agents call.
-  brsave = pkgs.writeShellApplication {
-    name = "brsave";
-    runtimeInputs = [beads] ++ (with pkgs; [jq coreutils diffutils gnugrep]);
-    # The jq filter intentionally lives in single quotes.
-    excludeShellChecks = ["SC2016"];
-    text = builtins.readFile ./scripts/brsave.sh;
-  };
+  # brsave (the shell script that derived .beads/open.jsonl) was REMOVED: the
+  # falconry pi extension now owns that derivation and refreshes open.jsonl
+  # automatically after any br mutation inside a pi session (verified live
+  # 2026-08-02). Keeping two implementations of the same export invited silent
+  # drift. Accepted consequence: outside a pi session nothing refreshes the
+  # export; a bare-shell `br close` leaves it stale until the next pi session's
+  # session-start invariant check notices (visible, not silent). See aus-rmb-95j.
 
   # Claude Code custom theme, generated from the active palette in
   # themes/default.nix so the TUI matches Ghostty and Neovim instead of Claude's
@@ -190,9 +189,9 @@ in {
     # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
     # applied across every project. Project-level CLAUDE.md files supplement it.
     # Assembled (not symlinked) so the `pellucid` prose rules can be toggled in.
-    ".claude/CLAUDE.md".text = globalClaudeMd;
+    ".claude/CLAUDE.md".text = globalMemory;
     # Mirror to ~/.pi/agent/AGENTS.md so pi picks up the same global context.
-    ".pi/agent/AGENTS.md".text = globalClaudeMd;
+    ".pi/agent/AGENTS.md".text = globalMemory;
     # Palette-driven Claude Code theme (see claudeTheme above). Selected by the
     # `theme = "custom:system"` key merged into settings.json below. Claude Code
     # watches this directory and hot-reloads, but it only starts watching if the
@@ -204,20 +203,20 @@ in {
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
 
-    # austringer workflow skills, symlinked live (mkOutOfStoreSymlink) into
+    # falconry workflow skills, symlinked live (mkOutOfStoreSymlink) into
     # Claude Code so both harnesses share ONE source — editing a SKILL.md in the
-    # austringer repo changes what Claude Code sees, no rebuild. This is what
+    # falconry repo changes what Claude Code sees, no rebuild. This is what
     # lets the procedural prose live once in the package's skills/ rather than
-    # being duplicated in global-procedures.md (closes the drift bug). pi reads
-    # these directly from the loaded austringer package, so no pi mirror needed.
-    # See aus-zkt.
-    ".claude/skills/br-jj-workflow".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/br-jj-workflow";
-    ".claude/skills/br-jj-hack".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/br-jj-hack";
-    ".claude/skills/br-jj-slip".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/br-jj-slip";
-    ".claude/skills/jj-workspaces".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/jj-workspaces";
-    ".claude/skills/beads-plan-mode".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/beads-plan-mode";
-    ".claude/skills/nixos-machine".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/nixos-machine";
-    ".claude/skills/bead-quality".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/austringer/skills/bead-quality";
+    # being duplicated in global-core.md (closes the drift bug). pi reads these
+    # directly from the loaded falconry package, so no pi mirror needed.
+    # See aus-zkt / aus-doc-vn5.
+    ".claude/skills/br-jj-workflow".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/br-jj-workflow";
+    ".claude/skills/br-jj-hack".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/br-jj-hack";
+    ".claude/skills/br-jj-slip".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/br-jj-slip";
+    ".claude/skills/jj-workspaces".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/jj-workspaces";
+    ".claude/skills/beads-plan-mode".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/beads-plan-mode";
+    ".claude/skills/nixos-machine".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/nixos-machine";
+    ".claude/skills/bead-quality".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/bead-quality";
 
     # Mirror skills for pi (pi dev) alongside Claude Code so either agent
     # reads the same skill set without manual copy/paste.
@@ -261,7 +260,6 @@ in {
 
   home.packages = [
     beads
-    brsave
     abacus
     # pi coding agent (https://pi.dev) — binary is `pi`. Built from source out of
     # the upstream release tarball; see ./pi.nix for the version-bump recipe.
