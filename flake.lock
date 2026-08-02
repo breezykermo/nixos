@@ -841,11 +841,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1785517032,
-        "narHash": "sha256-K8VpKTnpUKtqFWMbTIAUPw/TyV/xQE9i1ecp+o+xFQI=",
+        "lastModified": 1785683681,
+        "narHash": "sha256-fcQ1qiJnaCIn1anIeungM+FI5rxjqtJjZBQEIxr8dWk=",
         "owner": "agavra",
         "repo": "tuicr",
-        "rev": "246f839e83ac4149489c43357e5ee2230bd16676",
+        "rev": "f7514de5f81803eb00a02dd2f34d11938de25baf",
         "type": "github"
       },
       "original": {
