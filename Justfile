@@ -17,6 +17,7 @@ debug:
 up:
   nix flake update
   ./scripts/update-pins.sh
+  pi update --extensions
   jj desc -m 'Updates flakes'
 
 # Update specific input
