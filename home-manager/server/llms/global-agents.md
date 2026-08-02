@@ -170,7 +170,7 @@ working copy.
 **NEVER run `jj git push` (or any push) — the user always pushes themselves.**
 Prepare commits, then stop and let the user push.
 
-**Do NOT create bookmarks by default.** Never add a bookmark to a commit as a matter of routine (e.g. one per issue during churn/pair). Only run `jj bookmark create` when the user explicitly asks for a bookmark or asks you to open a PR (see PR workflow below).
+**Do NOT create bookmarks by default.** Never add a bookmark to a commit as a matter of routine (e.g. one per issue during a hack or slip). Only run `jj bookmark create` when the user explicitly asks for a bookmark or asks you to open a PR (see PR workflow below).
 
 **NEVER run `git` commands, not even read-only ones** (`git log`, `git show`, `git status`, `git diff`). Always use the jj equivalents (`jj log`, `jj show`, `jj status`, `jj diff`, `jj file show`). This applies in sibling repos too.
 
@@ -326,9 +326,9 @@ jj config set --user user.email "lachie@ohrg.org"
 
 ---
 
-## Workspace isolation (ALWAYS for br/jj churn & pair)
+## Workspace isolation (ALWAYS for br/jj hack & slip)
 
-Churn and pair sessions are long-running and may run **concurrently with other agents** on the
+Hack and slip sessions are long-running and may run **concurrently with other agents** on the
 same repo. Two agents sharing one checkout fight over the single `@` working-copy commit and
 stomp each other's uncommitted changes. So **while actively implementing a bead, do every step
 inside a dedicated jj workspace.** A workspace is an independent working copy on disk that shares
@@ -340,8 +340,8 @@ Ref: https://www.joshualyman.com/2026/02/demystifying-jujutsu-jj-workspaces/
 bead; fold it back into the main checkout the moment that bead's work is committed, BEFORE
 pausing to prompt the user. A workspace must never be sitting around while you wait on a human —
 if the next thing you do is ask a question, the workspace should already be gone. Further work
-means a NEW workspace. Churn, which never pauses, may keep one workspace for its whole loop;
-pair creates and folds one per bead.
+means a NEW workspace. A hack, which never pauses, may keep one workspace for its whole loop;
+a slip creates and folds one per bead.
 
 **Set up (at the start of each bead):**
 ```bash
@@ -407,9 +407,12 @@ snapshotted into it).
 
 ---
 
-## br/jj Churn (only when user says "br/jj churn")
+## br/jj Hack (only when user says "hack" or "br/jj hack")
 
-**ALWAYS run in `/caveman:caveman ultra` mode** for the entire churn — invoke it before the
+*Hacking is the period when a young hawk is flown free and unsupervised, returning at will — here,
+the ready queue worked straight through with no review pauses.* `churn` is still an accepted alias.
+
+**ALWAYS run in `/caveman:caveman ultra` mode** for the entire hack — invoke it before the
 first loop iteration and stay in it throughout.
 
 **Before first loop iteration** — verify jj identity (commits without author are broken):
@@ -420,8 +423,8 @@ jj config set --user user.name "Lachlan Kermode"
 jj config set --user user.email "lachie@ohrg.org"
 ```
 
-**Then set up an isolated jj workspace** and run the ENTIRE churn inside it — see
-*Workspace isolation* above. Never churn in the shared main checkout.
+**Then set up an isolated jj workspace** and run the ENTIRE hack inside it — see
+*Workspace isolation* above. Never run a hack in the shared main checkout.
 
 Loop until no open issues:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
@@ -438,12 +441,15 @@ Report: list all closed issues.
 
 ---
 
-## br/jj Pair (only when user says "br/jj pair" or "pair")
+## br/jj Slip (only when user says "slip" or "br/jj slip")
 
-The trigger `pair on <X>` is equivalent to `br/jj pair on <X>` — bare `pair` and `br/jj pair`
+*A slip is a single flight loosed at one quarry — here, one bead at a time, with a review pause
+between each.* `pair` is still accepted as an alias.
+
+The trigger `slip on <X>` is equivalent to `br/jj slip on <X>` — bare `slip` and `br/jj slip`
 mean the same thing; run this same workflow either way.
 
-**ALWAYS run in `/caveman:caveman ultra` mode** for the entire pair session — invoke it before
+**ALWAYS run in `/caveman:caveman ultra` mode** for the entire slip — invoke it before
 the first loop iteration and stay in it throughout.
 
 **Before first loop iteration** — verify jj identity (commits without author are broken):
@@ -455,8 +461,8 @@ jj config set --user user.email "lachie@ohrg.org"
 ```
 
 **Each bead gets its own jj workspace**, created when you start implementing it and folded back
-into the main checkout before you pause for review — see *Workspace isolation* above. Never pair
-in the shared main checkout, and never leave a workspace standing while waiting on the user.
+into the main checkout before you pause for review — see *Workspace isolation* above. Never run a
+slip in the shared main checkout, and never leave a workspace standing while waiting on the user.
 
 Loop until no open issues or user stops:
 1. `br ready --json` — pick highest priority (bugs/tasks/features, not epics/chores)
@@ -502,10 +508,10 @@ Report: list all closed issues.
 3. Present proposal to user, ask if they want to create the issues
 4. If yes: run `br create` commands (parallel where possible), set up deps with `br dep add`
    - Each issue's `--description` must be **fully self-contained** — written for a less capable agent with zero prior context. Do all research and code dives during planning; embed the findings directly in the description. Include: background/motivation, every relevant file path and line number, exact step-by-step instructions, and the precise expected outcome. The implementer must not need to investigate, infer, or look anything up.
-   - Issues must also be **human-readable**: during `br/jj pair` the user reads each issue to verify agents are working correctly, so write in clear prose, not cryptic shorthand.
+   - Issues must also be **human-readable**: during a slip the user reads each issue to verify agents are working correctly, so write in clear prose, not cryptic shorthand.
 5. `brsave` — the new issues are shared work, so put them in `.beads/open.jsonl`. Then commit
    just the export: `jj describe -m "Files <n> beads for <topic>"` and `jj new`. This is the one
    file edit plan mode makes.
 6. List created IDs and stop — do NOT implement, do NOT ask if user wants to implement
 
-**Exits** when user says "br/jj churn", "br/jj pair", "start implementing", or "go".
+**Exits** when user says "hack", "slip", "start implementing", or "go".
