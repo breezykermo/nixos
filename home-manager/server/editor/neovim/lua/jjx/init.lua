@@ -274,12 +274,119 @@ local function picker_in_tab()
 end
 
 -----------------------------------------------------------------------
+-- Idle auto-refresh
+-----------------------------------------------------------------------
+
+-- Refresh the open log buffer WITHOUT jj.nvim's `M.log()`, which wipes and recreates
+-- the terminal buffer (terminal.run) and so tears the hsplit down and rebuilds it --
+-- the visible flash. Instead reuse the log buffer's still-open nvim_open_term channel:
+-- run `jj log` in a pty job (sized to the window so wrapping/colour match), BUFFER its
+-- full output, then paint clear+content in ONE chan_send on exit. One atomic redraw --
+-- no blank frame, no top-down fill. jj log is fast, so buffering the whole thing is
+-- cheap. Falls back to M.log() if the log buffer isn't currently open.
+local function refresh_in_place()
+  local ok_term, term = pcall(require, 'jj.ui.terminal')
+  local ok_log, log = pcall(require, 'jj.cmd.log')
+  if not (ok_term and ok_log) or not term.is_log_buffer_open() then
+    if ok_log then log.log({}) end
+    return
+  end
+  local buf, chan = term.state.buf, term.state.chan
+  if not (buf and chan and vim.api.nvim_buf_is_valid(buf)) then
+    log.log({})
+    return
+  end
+  local win = vim.fn.bufwinid(buf)
+  if win == -1 then
+    return -- log buffer exists but isn't shown; nothing to repaint
+  end
+  local cursor = vim.api.nvim_win_get_cursor(win)
+  local cmd = log.build_log_cmd({ revisions = config.log_revset })
+  local chunks = {}
+  vim.fn.jobstart(cmd, {
+    pty = true,
+    width = vim.api.nvim_win_get_width(win),
+    height = vim.api.nvim_win_get_height(win),
+    env = { TERM = 'xterm-256color', PAGER = 'cat', COLORTERM = 'truecolor', DFT_BACKGROUND = 'light' },
+    on_stdout = function(_, data)
+      chunks[#chunks + 1] = table.concat(data, '\n')
+    end,
+    on_exit = function()
+      if not vim.api.nvim_buf_is_valid(buf) then
+        return
+      end
+      -- Clear screen + scrollback + home, then the whole new frame, in one write.
+      vim.api.nvim_chan_send(chan, '\27[2J\27[3J\27[H' .. table.concat(chunks))
+      vim.defer_fn(function()
+        if vim.api.nvim_win_is_valid(win) then
+          pcall(vim.api.nvim_win_set_cursor, win, cursor)
+        end
+      end, 20) -- let the terminal finish painting before restoring the cursor
+    end,
+  })
+end
+
+-- After IDLE_DELAY_MS without activity in the log buffer, refresh it every
+-- REFRESH_INTERVAL_MS until the user moves again -- keeps concurrent-agent sessions
+-- live without a keypress. A programmatic refresh must not count as activity (the
+-- repaint can fire CursorMoved), so guard with `refreshing` cleared on a short defer to
+-- absorb any async event.
+local uv = vim.uv or vim.loop
+local IDLE_DELAY_MS = 3000
+local REFRESH_INTERVAL_MS = 2000
+local idle = { timer = nil, last_activity = 0, refreshing = false }
+
+local function mark_activity()
+  if not idle.refreshing then
+    idle.last_activity = uv.now()
+  end
+end
+
+local function stop_idle_timer()
+  if idle.timer then
+    idle.timer:stop()
+    pcall(function() idle.timer:close() end)
+    idle.timer = nil
+  end
+end
+
+local function start_idle_refresh(buf)
+  stop_idle_timer()
+  idle.last_activity = uv.now()
+  idle.timer = uv.new_timer()
+  idle.timer:start(REFRESH_INTERVAL_MS, REFRESH_INTERVAL_MS, function()
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(buf) then
+        stop_idle_timer()
+        return
+      end
+      if vim.api.nvim_get_current_buf() ~= buf then
+        return -- only refresh while the log is focused
+      end
+      if uv.now() - idle.last_activity < IDLE_DELAY_MS then
+        return
+      end
+      idle.refreshing = true
+      pcall(refresh_in_place)
+      vim.defer_fn(function() idle.refreshing = false end, 300)
+    end)
+  end)
+end
+
+-----------------------------------------------------------------------
 -- Per-log-buffer setup
 -----------------------------------------------------------------------
 
 local function setup_log_buffer(buf)
   vim.b[buf].jjx_map_set = true
   local k = config.keys
+
+  -- Idle auto-refresh: reset the clock on any activity, then run the timer.
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'TextChanged' }, {
+    buffer = buf,
+    callback = mark_activity,
+  })
+  start_idle_refresh(buf)
 
   -- q -> quit nvim entirely. jj.nvim's default q bwipeouts the log, dropping to a
   -- stray empty [No Name] when other buffers/tabs exist. Treat the log as home.
