@@ -60,6 +60,26 @@ let
       [
         "npm:pi-web-access" # https://pi.dev/packages/pi-web-access
         "git:github.com/breezykermo/pi-caveman" # https://github.com/breezykermo/pi-caveman
+        # Lets pi's built-in `anthropic` provider talk to a Claude Code OAuth
+        # subscription instead of a metered API key. Only touches OAuth
+        # requests: it rewrites the system prompt's pi-specific wording,
+        # filters/aliases tools to the MCP-style names the OAuth endpoint
+        # accepts (`web_search_exa` -> `mcp__exa_mcp__web_search_exa`), and
+        # rewrites history so the naming stays consistent. API-key and
+        # non-Anthropic paths are untouched.
+        #
+        # Accepted where the 2026-07-31 rejects were not: MIT, no runtime
+        # installs outside pi's own npm dir, no ambient binaries, and it
+        # amends the provider rather than replacing pi's transport. Caveats:
+        #   - Anthropic's policy scopes Claude Code OAuth tokens to Claude
+        #     Code; a third-party client is a grey area, so this rides on
+        #     ~/.pi/agent/auth.json (machine-local, unmanaged) and can be
+        #     dropped by deleting this line.
+        #   - Its optional alias-override file lives at
+        #     ~/.pi/agent/extensions/pi-claude-code-use.json, but that dir is
+        #     a read-only store symlink here. Automatic derivation needs no
+        #     file; to override, add the JSON under ./pi/extensions/.
+        "npm:@benvargas/pi-claude-code-use" # https://github.com/ben-vargas/pi-packages/tree/main/packages/pi-claude-code-use
       ]
       ++ lib.optionals (!pellucid) [
         "npm:@dietrichgebert/ponytail" # https://pi.dev/packages/@dietrichgebert/ponytail
