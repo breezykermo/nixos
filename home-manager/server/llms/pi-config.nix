@@ -59,7 +59,10 @@ let
     packages =
       [
         "npm:pi-web-access" # https://pi.dev/packages/pi-web-access
-        "git:github.com/breezykermo/pi-caveman" # https://github.com/breezykermo/pi-caveman
+        # caveman is now VENDORED inside the austringer package
+        # (extensions/caveman + skills/caveman), so the unpinned git source is
+        # gone: `pi update` hard-resets a git clone and would destroy edits, and
+        # a duplicate skill name would load non-deterministically. See aus-cvm-rn0.
         # Lets pi's built-in `anthropic` provider talk to a Claude Code OAuth
         # subscription instead of a metered API key. Only touches OAuth
         # requests: it rewrites the system prompt's pi-specific wording,
