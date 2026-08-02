@@ -80,6 +80,10 @@ let
         #     a read-only store symlink here. Automatic derivation needs no
         #     file; to override, add the JSON under ./pi/extensions/.
         "npm:@benvargas/pi-claude-code-use" # https://github.com/ben-vargas/pi-packages/tree/main/packages/pi-claude-code-use
+        # First-party br/jj enforcement package. Local absolute path: a
+        # first-class source loaded in place (not copied), so in-place edits
+        # are safe and `pi update` skips it. See ~/code/austringer.
+        "/home/lox/code/austringer"
       ]
       ++ lib.optionals (!pellucid) [
         "npm:@dietrichgebert/ponytail" # https://pi.dev/packages/@dietrichgebert/ponytail
