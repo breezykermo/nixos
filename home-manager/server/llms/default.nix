@@ -34,6 +34,24 @@
   # as lazily-loaded skills in the falconry package, read by pi directly and by
   # Claude Code via the ~/.claude/skills symlinks (see default.nix home.file and
   # aus-zkt). So there is no separate procedures file to duplicate. See aus-doc-vn5.
+  # The falconry repo, symlinked live into ~/.claude/skills below. Bound ONCE:
+  # the path was previously repeated on seven lines and went stale (it said
+  # /home/lox/code/falconry, a directory that no longer exists), which silently
+  # dangled every skill symlink. See nixos-m1n.
+  falconryRepo = "/home/lox/code/_konrad/falconry";
+  falconrySkillLinks = lib.listToAttrs (map (name: {
+    name = ".claude/skills/${name}";
+    value.source = config.lib.file.mkOutOfStoreSymlink "${falconryRepo}/skills/${name}";
+  }) [
+    "falconry-workflow"
+    "falconry-hack"
+    "falconry-slip"
+    "jj-workspaces"
+    "beads-plan-mode"
+    "nixos-machine"
+    "bead-quality"
+  ]);
+
   globalMemory =
     builtins.readFile ./global-core.md
     + lib.optionalString pellucid ("\n---\n\n" + builtins.readFile ./pellucid.md);
@@ -185,6 +203,8 @@ in {
   imports = [./pi-config.nix];
   _module.args.pellucid = pellucid;
 
+  # falconrySkillLinks is merged in at the end: it supplies the seven
+  # .claude/skills/<name> live symlinks (see the let block).
   home.file = {
     # Computer-wide Claude Code memory: the shared jj/beads workflow processes,
     # applied across every project. Project-level CLAUDE.md files supplement it.
@@ -209,14 +229,8 @@ in {
     # lets the procedural prose live once in the package's skills/ rather than
     # being duplicated in global-core.md (closes the drift bug). pi reads these
     # directly from the loaded falconry package, so no pi mirror needed.
-    # See aus-zkt / aus-doc-vn5.
-    ".claude/skills/br-jj-workflow".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/br-jj-workflow";
-    ".claude/skills/br-jj-hack".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/br-jj-hack";
-    ".claude/skills/br-jj-slip".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/br-jj-slip";
-    ".claude/skills/jj-workspaces".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/jj-workspaces";
-    ".claude/skills/beads-plan-mode".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/beads-plan-mode";
-    ".claude/skills/nixos-machine".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/nixos-machine";
-    ".claude/skills/bead-quality".source = config.lib.file.mkOutOfStoreSymlink "/home/lox/code/falconry/skills/bead-quality";
+    # See aus-zkt / aus-doc-vn5. The seven entries come from falconrySkillLinks
+    # in the let block above (one place holds the repo path).
 
     # Mirror skills for pi (pi dev) alongside Claude Code so either agent
     # reads the same skill set without manual copy/paste.
@@ -224,7 +238,8 @@ in {
     ".pi/agent/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".pi/agent/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".pi/agent/skills/bonsai-author".source = ./skills/bonsai-author;
-  };
+  }
+  // falconrySkillLinks;
 
   # Register the git-blocking PreToolUse hook in ~/.claude/settings.json on every
   # rebuild. See ./hooks/register-git-hook.sh for why this is a mutable jq merge

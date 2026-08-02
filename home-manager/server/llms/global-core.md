@@ -152,7 +152,7 @@ br dep add <issue> <depends-on>
 carries identity, the name is shorthand (`rwq`, not `airborne-splash-rwq`).
 
 The **workflows** (per-task sequence, hack, slip, workspaces, plan mode) and **how to write a
-bead** are lazily-loaded skills (`br-jj-workflow`, `br-jj-hack`, `br-jj-slip`, `jj-workspaces`,
+bead** are lazily-loaded skills (`falconry-workflow`, `falconry-hack`, `falconry-slip`, `jj-workspaces`,
 `beads-plan-mode`, `bead-quality`) available to both harnesses — read the relevant one; this file
 carries only the always-on rules below.
 
