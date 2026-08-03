@@ -21,6 +21,7 @@
     ./obs
     ./remarkable
     ./blender
+    ./qgis
   ];
 
   home.packages = with pkgs; [
