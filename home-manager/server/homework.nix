@@ -163,6 +163,7 @@ in {
       ]
       ++ (with pkgs; [
         nvtopPackages.amd # GPU TUI; reads amdgpu sysfs (works on gfx1151 where amdsmi is blind)
+        qgis # GIS desktop app; homework-only
       ]);
 
     home.sessionVariables = {
