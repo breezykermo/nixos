@@ -1,28 +1,17 @@
 {
-  config,
   pkgs,
-  lib,
   inputs,
   system,
   llmShared,
   theme,
   ...
 }: let
-  inherit (llmShared) falconryRepo globalMemory pinnedSkills;
+  inherit (llmShared) globalMemory mkFalconrySkillLinks pinnedSkills;
   mix = theme.themeLib.mix;
 
-  falconrySkillLinks = lib.listToAttrs (map (name: {
-    name = ".claude/skills/${name}";
-    value.source = config.lib.file.mkOutOfStoreSymlink "${falconryRepo}/skills/${name}";
-  }) [
-    "falconry-workflow"
-    "falconry-hack"
-    "falconry-slip"
-    "jj-workspaces"
-    "beads-plan-mode"
-    "nixos-machine"
-    "bead-quality"
-  ]);
+  # Claude Code consumes Falconry's portable skill-only surface. Pi loads the
+  # repository root separately and therefore also gets extensions and prompts.
+  falconrySkillLinks = mkFalconrySkillLinks ".claude/skills";
 
   # Palette-driven custom theme.
   claudeTheme = {
