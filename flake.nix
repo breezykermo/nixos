@@ -20,7 +20,7 @@
       url = "github:breezykermo/bene/feat/adds-nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # AI coding agent packages (claude-code, claude-code-router, etc.)
+    # Claude Code and Claudebox packages
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -57,6 +57,11 @@
     };
     codex-nix = {
       url = "github:SecBear/codex-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # pi terminal coding agent, package and Home Manager module
+    pi = {
+      url = "github:lukasl-dev/pi.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

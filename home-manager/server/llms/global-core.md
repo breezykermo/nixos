@@ -84,11 +84,12 @@ shapes) is in the **`nixos-machine` skill**.
 
 ## pi coding agent (NixOS-managed — config MUST live in /etc/nixos)
 
-pi (`pi.dev`) is installed declaratively via home-manager, NOT `npm -g`/`curl | sh`. All pi config
-lives under `/etc/nixos/home-manager/server/llms/` (`pi.nix` = the binary/version; `pi-config.nix`
-= declarative config; `pi/` = read-only `prompts/skills/extensions/themes`). **Edit the source in
+pi (`pi.dev`) is installed declaratively via the `pi` flake and its Home Manager module, NOT
+`npm -g`/`curl | sh`. All pi config lives under `/etc/nixos/home-manager/server/llms/` (`pi.nix`
+= declarative harness config, models, and generated theme). **Edit the source in
 `/etc/nixos` and rebuild — never hand-edit `~/.pi/agent/`** (resources are read-only store
-symlinks; `settings.json` is jq-merged so managed keys reset on rebuild; `auth.json`/`sessions/`
+symlinks; `settings.json` is merged by the flake wrapper so managed keys reset when pi starts;
+`auth.json`/`sessions/`
 are machine-local). Apply with `just deploy`; jj-track new files first (`jj status` snapshots).
 
 ---

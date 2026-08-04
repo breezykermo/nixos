@@ -146,8 +146,8 @@
   # homework is the only box with the RAM (128GB) and the Strix Halo iGPU to run
   # large models, so it is the only machine that opts into ollama (the flag defaults
   # off in machines/modules/custom.nix). All the heavy configuration lives here. The
-  # models are exposed to Claude Code through claude-code-router (see
-  # home-manager/server/llms); switch to one in-session with `/model ollama,<name>`.
+  # models are exposed to the Pi and Qwen coding harnesses through their
+  # dedicated modules under home-manager/server/llms.
   custom.ollama.enable = true;
   services.ollama = {
     # GPU: the ROCm build runs inference on the Radeon 8060S iGPU (gfx1151) instead
@@ -172,8 +172,8 @@
     # This is a DEFAULT, not a cap: /api/generate and /api/chat callers that pass
     # `options.num_ctx` get whatever they ask for regardless of this value (verified —
     # with the env at 32768, a num_ctx=262144 request loaded at 262144). It matters
-    # because our actual clients — claude-code-router and qwen-code — talk to the
-    # OpenAI-compatible /v1 endpoint, which has no num_ctx field, so they always get
+    # because our actual clients — pi and qwen-code — talk to the OpenAI-compatible
+    # /v1 endpoint, which has no num_ctx field, so they always get
     # this default. For them this number IS the window.
     #
     # 131072 chosen over ollama's own VRAM-derived default (262144 on this box, see
@@ -194,7 +194,7 @@
     # the largest window every model here can actually take.
     #
     # If you change this, keep the `contextWindowSize` values in
-    # home-manager/server/homework.nix in sync — those are the client-side halves of
+    # home-manager/server/llms/qwen-code.nix in sync — those are the client-side halves of
     # the same number. Re-measure with:
     #   curl -s http://127.0.0.1:11434/api/generate \
     #     -d '{"model":"qwen3-coder:30b","prompt":"hi","stream":false,
