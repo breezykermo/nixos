@@ -8,7 +8,6 @@
     ./llms
     ./writing
     ./machine-report
-    ./concord
     ./eilmeldung
     ./homework.nix
   ];
