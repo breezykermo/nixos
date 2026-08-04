@@ -103,15 +103,20 @@ let
       baseUrl = "http://localhost:11434/v1";
       api = "openai-completions";
       apiKey = "ollama";
+
       compat = {
+        supportsStore = false;
         supportsDeveloperRole = false;
         supportsReasoningEffort = false;
+        supportsStrictMode = false;
+        maxTokensField = "max_tokens";
       };
+
       models = [
         {
           id = "qwen3-coder:30b";
           name = "Qwen3 Coder 30B (Local)";
-          input = ["text"];
+          input = [ "text" ];
           contextWindow = 262144;
           maxTokens = 32768;
         }
@@ -119,7 +124,7 @@ let
           id = "qwen3.6:35b";
           name = "Qwen3.6 35B (Local)";
           reasoning = true;
-          input = ["text"];
+          input = [ "text" ];
           contextWindow = 262144;
           maxTokens = 32768;
         }
@@ -127,7 +132,7 @@ let
           id = "gpt-oss:120b";
           name = "GPT-OSS 120B (Local)";
           reasoning = true;
-          input = ["text"];
+          input = [ "text" ];
           contextWindow = 131072;
           maxTokens = 32768;
         }
@@ -135,7 +140,7 @@ let
           id = "MichelRosselli/GLM-4.5-Air:Q5_K_M";
           name = "GLM-4.5 Air (Local)";
           reasoning = true;
-          input = ["text"];
+          input = [ "text" ];
           contextWindow = 131072;
           maxTokens = 32768;
         }
@@ -143,7 +148,7 @@ let
           id = "deepseek-r1:latest";
           name = "DeepSeek R1 (Local)";
           reasoning = true;
-          input = ["text"];
+          input = [ "text" ];
           contextWindow = 131072;
           maxTokens = 32768;
         }

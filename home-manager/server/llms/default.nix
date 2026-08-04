@@ -279,6 +279,7 @@ in {
     # pi coding agent (https://pi.dev) — binary is `pi`. Built from source out of
     # the upstream release tarball; see ./pi.nix for the version-bump recipe.
     pi
+    inputs.codex-nix.packages.${system}.codex
     inputs.llm-agents.packages.${system}.claude-code
     inputs.llm-agents.packages.${system}.claudebox
     # Qwen Coder CLI (https://coder.qwen.ai/) — binary is `qwen`. Built from source
