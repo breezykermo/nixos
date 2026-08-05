@@ -26,16 +26,17 @@ local defaults = {
   -- which carry no `revisions` -- so a startup-only revset would snap back to jj's
   -- `revsets.log` (`::`) the first time you hit <CR>.
   --
-  -- `working_copies()` surfaces every workspace's tip, which is what makes
-  -- concurrent-agent sessions legible; the bare `trunk()` term anchors the graph so
-  -- the stacks render connected rather than as floating fragments. Caveat inherited
-  -- from jj itself: a sibling workspace's uncommitted edits read as `(empty)` until
-  -- some jj command runs inside that workspace's own root.
+  -- `::` (all commits) matches the top-level `revsets.log` set in
+  -- home-manager/server/editor/vcs/default.nix, so plain `jj log` and the nvim log
+  -- buffer always agree, and every workspace's tip is included (each workspace's `@`
+  -- is a visible head, and `::` covers all of them). Caveat inherited from jj itself:
+  -- a sibling workspace's uncommitted edits read as `(empty)` until some jj command
+  -- runs inside that workspace's own root.
   --
   -- Set to `false` -- not nil -- to defer to jj's own `revsets.log`: setup() merges
   -- with vim.tbl_deep_extend, and a nil field is simply absent from the override
   -- table, so it would silently leave this default standing.
-  log_revset = 'trunk() | trunk().. | working_copies()',
+  log_revset = '::',
   -- Feature toggles: 'auto' (detect), true (force on), false (off).
   tuicr = 'auto',
   nerdtree = 'auto',
