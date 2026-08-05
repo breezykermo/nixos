@@ -157,31 +157,20 @@ bead** are lazily-loaded skills (`falconry-workflow`, `falconry-hack`, `falconry
 `beads-plan-mode`, `bead-quality`) available to both harnesses — read the relevant one; this file
 carries only the always-on rules below.
 
-**The export is maintained automatically.** Only `.beads/open.jsonl` (the `open`/`in_progress`
-slice) is committed; the db and `issues.jsonl` stay local. Under **pi**, the falconry extension
-refreshes `open.jsonl` after any `br` mutation — no manual export, no bare `br sync`. **Outside a
-pi session nothing refreshes it** (a bare-shell or other-harness `br close` leaves it stale until
-the next pi session's session-start check reports it — delay, not loss).
+**Nothing under `.beads/` is committed.** `br` owns the whole directory — the db, its lock files,
+and `issues.jsonl` (br's own full export, rewritten wholesale on every mutation) are all
+machine-local. Falconry does NOT maintain a derived `open.jsonl` slice or any other tracked
+export: a `br` mutation produces nothing to commit, so never look for a beads file in `jj status`
+after one.
 
-Each repo's `.gitignore` needs these three lines **in this order** (a negation cannot re-enter a
-directory excluded as a directory, and this machine's `~/.config/git/ignore` has a `**/.beads/`
-rule a repo `.gitignore` must outrank):
+Each repo's `.gitignore` needs one line:
 
 ```gitignore
-!/.beads/
-/.beads/*
-!/.beads/open.jsonl
+/.beads/
 ```
 
-Remove any blanket `.beads/` line. Under pi the session-start check warns if these are missing or
-misordered (it never edits `.gitignore`).
-
-**Conflicts in `.beads/open.jsonl` are union-only — never take one side** (it silently deletes
-the other's beads, which existed nowhere else). Under pi, run the `/beads-resolve` command
-(falconry): it unions both sides by id, drops ids the db already has closed, refuses on
-corruption, and re-teaches the db so the next export keeps the merge — this is **pi-only**. By
-hand elsewhere: keep every bead line from both sides, drop ids the db has closed, and never `jj
-restore` one side. (jj cannot bind a merge=union driver to a path, so this stays a command.)
+Bead state therefore does not travel between machines or agents through the repo — it lives only
+in the local db. Treat `br` as a per-checkout tool, not a shared record.
 
 **Two `br` writers on one repo can erase each other's newly-created beads** (`br` reimports from
 `issues.jsonl`, and a jj workspace shares the repo-root db rather than getting its own). Under pi,

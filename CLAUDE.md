@@ -134,14 +134,11 @@ All process rules for beads/br are in the global-level memory file at `home-mana
 - Always end jj work with an empty unnamed `@` on top.
 - Label convention: alphanumeric/hyphen/underscore only (no `/`). Use hyphen form for labels, slash for bookmarks.
 
-- Beads are **partly committed**: `.beads/open.jsonl` is tracked, everything else under
-  `.beads/` is ignored. The **falconry pi extension** refreshes `.beads/open.jsonl`
-  automatically after any `br` mutation inside a pi session; no manual export step. Outside a pi
-  session the export can go stale until the next pi session notices. See the Issue Tracking
-  section of `global-core.md`.
+- Beads are **never committed**: the whole of `.beads/` is ignored and machine-local. Nothing
+  — not falconry, not a script — maintains a tracked export, so a `br` mutation leaves nothing
+  to commit. See the Issue Tracking section of `global-core.md`.
 
-The store here is project-local, prefix `nixos`, and the three `.beads` lines at the end of
-`.gitignore` are order-sensitive — read the comment there before touching them.
+The store here is project-local, prefix `nixos`.
 
 ---
 
