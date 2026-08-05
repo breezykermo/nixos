@@ -21,7 +21,7 @@ let
     packages =
       [
         "npm:pi-web-access"
-        "npm:@benvargas/pi-claude-code-use" # Claude Code OAuth compatibility.
+        # "npm:@benvargas/pi-claude-code-use" # Claude Code OAuth compatibility.
         "/home/lox/code/_konrad/falconry" # Workflow extensions and skills.
       ];
   };
