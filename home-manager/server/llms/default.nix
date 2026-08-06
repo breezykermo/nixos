@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   theme,
@@ -7,24 +6,22 @@
 }: let
   # Shared harness resources.
   pellucid = false;
-  falconryRepo = "/home/lox/code/_konrad/falconry";
-  # Complete portable Falconry surface. Keep explicit: pure flake evaluation
-  # cannot discover directories from the live out-of-store checkout above.
-  falconrySkillNames = [
+  # Complete portable Soroban surface. Keep explicit: pure flake evaluation
+  # cannot discover directories inside the fetched pin below.
+  sorobanSkillNames = [
     "bead-quality"
     "beads-plan-mode"
     "caveman"
-    "falconry-hack"
-    "falconry-slip"
-    "falconry-workflow"
     "jj-workspaces"
-    "nixos-machine"
+    "soroban-hack"
+    "soroban-slip"
+    "soroban-workflow"
   ];
-  mkFalconrySkillLinks = destination:
+  mkSorobanSkillLinks = destination:
     lib.listToAttrs (map (name: {
       name = "${destination}/${name}";
-      value.source = config.lib.file.mkOutOfStoreSymlink "${falconryRepo}/skills/${name}";
-    }) falconrySkillNames);
+      value.source = "${pinnedSkills.soroban}/skills/${name}";
+    }) sorobanSkillNames);
   globalMemory =
     builtins.readFile ./global-core.md
     + lib.optionalString pellucid ("\n---\n\n" + builtins.readFile ./pellucid.md);
@@ -43,7 +40,7 @@ in {
   ];
 
   _module.args.llmShared = {
-    inherit globalMemory mkFalconrySkillLinks pinnedSkills;
+    inherit globalMemory mkSorobanSkillLinks pinnedSkills;
   };
 
   home.packages = [beads abacus];

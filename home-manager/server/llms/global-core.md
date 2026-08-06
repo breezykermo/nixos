@@ -3,11 +3,11 @@
 This is the computer-wide memory file: the always-on rules and prohibitions, rendered to **both**
 `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md` (home-manager, `default.nix`, plus the optional
 `pellucid` prose when that toggle is on). The long-running beads/jj **procedures** are NOT here —
-they live once as lazily-loaded **skills** in the falconry package, read by pi directly and by
+they live once as lazily-loaded **skills** in the soroban package, read by pi directly and by
 Claude Code via the `~/.claude/skills` symlinks. It applies to **every** project on this machine.
 Project-level `CLAUDE.md` files supplement and may override anything here.
 
-**Per-harness note:** where a rule below names a pi command or the falconry extension, that
+**Per-harness note:** where a rule below names a pi command or the soroban extension, that
 behaviour is **pi-only**. Under Claude Code (or any other harness) do the equivalent by hand; the
 automatic mechanism does not exist there.
 
@@ -153,13 +153,13 @@ br dep add <issue> <depends-on>
 carries identity, the name is shorthand (`rwq`, not `airborne-splash-rwq`).
 
 The **workflows** (per-task sequence, hack, slip, workspaces, plan mode) and **how to write a
-bead** are lazily-loaded skills (`falconry-workflow`, `falconry-hack`, `falconry-slip`, `jj-workspaces`,
+bead** are lazily-loaded skills (`soroban-workflow`, `soroban-hack`, `soroban-slip`, `jj-workspaces`,
 `beads-plan-mode`, `bead-quality`) available to both harnesses — read the relevant one; this file
 carries only the always-on rules below.
 
 **Nothing under `.beads/` is committed.** `br` owns the whole directory — the db, its lock files,
 and `issues.jsonl` (br's own full export, rewritten wholesale on every mutation) are all
-machine-local. Falconry does NOT maintain a derived `open.jsonl` slice or any other tracked
+machine-local. Soroban does NOT maintain a derived `open.jsonl` slice or any other tracked
 export: a `br` mutation produces nothing to commit, so never look for a beads file in `jj status`
 after one.
 
@@ -174,7 +174,7 @@ in the local db. Treat `br` as a per-checkout tool, not a shared record.
 
 **Two `br` writers on one repo can erase each other's newly-created beads** (`br` reimports from
 `issues.jsonl`, and a jj workspace shares the repo-root db rather than getting its own). Under pi,
-a session serializes its own `br` calls via the falconry lock; other callers and other harnesses
+a session serializes its own `br` calls via the soroban lock; other callers and other harnesses
 do not. So run **one writer at a time**, and after creating beads verify them with `br list`
 rather than assuming they stuck.
 

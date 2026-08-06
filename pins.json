@@ -16,5 +16,11 @@
     "repo": "agentic-flow",
     "rev": "main",
     "sha256": "sha256-LtubwQEIASaXTQD+4QLDlg4EGuwsogohb41XAFaWnpA="
+  },
+  "soroban": {
+    "owner": "freecomputinglab",
+    "repo": "soroban",
+    "rev": "26e8cd55894a8a22052a76f25aff43a0d9d97623",
+    "sha256": "sha256-AjEjvetrhX64khtWTe5IhUUbADIqYAeMT31B/XanB6w="
   }
 }

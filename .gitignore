@@ -17,7 +17,7 @@ secrets/*
 # Issue tracker (beads). All of .beads/ is per-machine working state: the sqlite
 # DB and its lock files, the local history backups, and issues.jsonl — br's own
 # full export, which br rewrites wholesale on every mutation. Nothing maintains a
-# derived open-only export any more (falconry dropped it, and the
+# derived open-only export any more (soroban dropped it, and the
 # scripts/beads-export.sh this once credited never existed), so nothing here is
 # committed.
 /.beads/

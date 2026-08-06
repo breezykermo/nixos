@@ -135,7 +135,7 @@ All process rules for beads/br are in the global-level memory file at `home-mana
 - Label convention: alphanumeric/hyphen/underscore only (no `/`). Use hyphen form for labels, slash for bookmarks.
 
 - Beads are **never committed**: the whole of `.beads/` is ignored and machine-local. Nothing
-  — not falconry, not a script — maintains a tracked export, so a `br` mutation leaves nothing
+  — not soroban, not a script — maintains a tracked export, so a `br` mutation leaves nothing
   to commit. See the Issue Tracking section of `global-core.md`.
 
 The store here is project-local, prefix `nixos`.

@@ -22,7 +22,7 @@ let
       [
         "npm:pi-web-access"
         # "npm:@benvargas/pi-claude-code-use" # Claude Code OAuth compatibility.
-        "/home/lox/code/_konrad/falconry" # Workflow extensions and skills.
+        "https://github.com/freecomputinglab/soroban" # Workflow extensions and skills.
       ];
   };
 
@@ -178,6 +178,7 @@ in {
     ".pi/agent/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".pi/agent/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".pi/agent/skills/bonsai-author".source = ./skills/bonsai-author;
+    ".pi/agent/skills/nixos-machine".source = ./skills/nixos-machine;
     ".pi/agent/themes/system.json".source = piThemeFile;
     ".pi/agent/models.json".source = piModelsFile;
   };

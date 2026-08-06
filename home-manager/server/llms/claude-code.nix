@@ -6,12 +6,12 @@
   theme,
   ...
 }: let
-  inherit (llmShared) globalMemory mkFalconrySkillLinks pinnedSkills;
+  inherit (llmShared) globalMemory mkSorobanSkillLinks pinnedSkills;
   mix = theme.themeLib.mix;
 
-  # Claude Code consumes Falconry's portable skill-only surface. Pi loads the
+  # Claude Code consumes Soroban's portable skill-only surface. Pi loads the
   # repository root separately and therefore also gets extensions and prompts.
-  falconrySkillLinks = mkFalconrySkillLinks ".claude/skills";
+  sorobanSkillLinks = mkSorobanSkillLinks ".claude/skills";
 
   # Palette-driven custom theme.
   claudeTheme = {
@@ -91,9 +91,10 @@ in {
     ".claude/skills/rheo-author".source = pinnedSkills.rheo-author-skill;
     ".claude/skills/agentic-jujutsu".source = "${pinnedSkills.agentic-jujutsu-skill}/packages/agentic-jujutsu";
     ".claude/skills/bonsai-author".source = ./skills/bonsai-author;
+    ".claude/skills/nixos-machine".source = ./skills/nixos-machine;
 
   }
-  // falconrySkillLinks;
+  // sorobanSkillLinks;
 
   home.shellAliases = {
     ccb = "claudebox --allow-ssh-agent";
